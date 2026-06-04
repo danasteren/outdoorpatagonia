@@ -6,16 +6,16 @@ Usage: python migrate_wp_articles.py [--dry-run]
 
 import os
 import re
-import sys
 import math
 import time
 import argparse
 import requests
 from datetime import datetime, timezone
+from typing import Optional
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-WP_BASE_URL      = "https://www.outdoorpatagonia.com/wp-json/wp/v2"
+WP_BASE_URL      = "https://outdoorpatagonia.com/wp-json/wp/v2"
 SUPABASE_URL     = os.environ["SUPABASE_URL"]
 SUPABASE_KEY     = os.environ["SUPABASE_SERVICE_ROLE_KEY"]  # needs service role
 BATCH_SIZE       = 100   # WordPress API max per_page
@@ -30,7 +30,7 @@ HEADERS = {
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
-def fetch_wp_posts(page: int, language: str | None = None) -> list[dict]:
+def fetch_wp_posts(page: int, language: Optional[str] = None) -> list[dict]:
     params = {
         "per_page": BATCH_SIZE,
         "page":     page,
@@ -38,25 +38,33 @@ def fetch_wp_posts(page: int, language: str | None = None) -> list[dict]:
         "_fields":  "id,slug,title,content,excerpt,date,categories,tags,yoast_head_json,_links",
     }
     if language:
-        params["lang"] = language  # requires Polylang or WPML
+        params["lang"] = language
 
     r = requests.get(f"{WP_BASE_URL}/posts", params=params, timeout=30)
-    if r.status_code == 400:
+    if r.status_code in (400, 404):
         return []
     r.raise_for_status()
-    return r.json()
+    posts = r.json()
+    # tag each post with the language used to fetch it
+    if language:
+        for p in posts:
+            p["_language"] = language
+    return posts
 
 
 def fetch_all_wp_posts() -> list[dict]:
-    posts, page = [], 1
-    while True:
-        batch = fetch_wp_posts(page)
-        if not batch:
-            break
-        posts.extend(batch)
-        print(f"  Fetched page {page} ({len(batch)} posts, total {len(posts)})")
-        page += 1
-        time.sleep(SLEEP_BETWEEN)
+    posts = []
+    for lang in ("es", "en"):
+        print(f"  [{lang}] fetching...")
+        page = 1
+        while True:
+            batch = fetch_wp_posts(page, language=lang)
+            if not batch:
+                break
+            posts.extend(batch)
+            print(f"  [{lang}] page {page}: {len(batch)} posts (total {len(posts)})")
+            page += 1
+            time.sleep(SLEEP_BETWEEN)
     return posts
 
 
@@ -67,14 +75,8 @@ def estimate_reading_time(html: str) -> int:
 
 
 def detect_language(post: dict) -> str:
-    """
-    Best-effort language detection.
-    Tries slug suffix (/en/), Polylang meta, or defaults to 'es'.
-    """
-    slug = post.get("slug", "")
-    # Common Polylang pattern: slug ends with -en or -2 (for English duplicate)
-    if slug.endswith("-en") or "/en/" in post.get("link", ""):
-        return "en"
+    if post.get("_language"):
+        return post["_language"]
     yoast = post.get("yoast_head_json", {}) or {}
     og_locale = yoast.get("og_locale", "")
     if og_locale.startswith("en"):
@@ -82,7 +84,7 @@ def detect_language(post: dict) -> str:
     return "es"
 
 
-def extract_cover_image(post: dict) -> str | None:
+def extract_cover_image(post: dict) -> Optional[str]:
     yoast = post.get("yoast_head_json", {}) or {}
     og_images = yoast.get("og_image", [])
     if og_images and isinstance(og_images, list):
@@ -132,6 +134,7 @@ def upsert_to_supabase(rows: list[dict], dry_run: bool) -> None:
     r = requests.post(
         f"{SUPABASE_URL}/rest/v1/articles",
         headers={**HEADERS, "Prefer": "resolution=merge-duplicates,return=minimal"},
+        params={"on_conflict": "slug,language"},
         json=rows,
         timeout=60,
     )
