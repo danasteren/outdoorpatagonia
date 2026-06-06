@@ -136,3 +136,65 @@
     @apply font-sans;
   }
 }
+
+/* Article body — WordPress HTML content */
+.article-body {
+  @apply text-foreground leading-relaxed;
+
+  h2 {
+    font-family: var(--font-playfair);
+    @apply text-2xl font-bold mt-10 mb-4;
+  }
+  h3 {
+    font-family: var(--font-playfair);
+    @apply text-xl font-semibold mt-8 mb-3;
+  }
+  h4 {
+    @apply text-lg font-semibold mt-6 mb-2;
+  }
+  p {
+    @apply mb-5;
+  }
+  a {
+    @apply text-[var(--color-teal)] underline underline-offset-2 hover:text-[var(--color-teal-light)] transition-colors;
+  }
+  strong {
+    @apply font-semibold;
+  }
+  em {
+    @apply italic;
+  }
+  ul {
+    @apply list-disc pl-6 mb-5 space-y-1;
+  }
+  ol {
+    @apply list-decimal pl-6 mb-5 space-y-1;
+  }
+  li {
+    @apply leading-relaxed;
+  }
+  blockquote {
+    @apply border-l-4 border-[var(--color-teal)] pl-5 my-6 italic text-muted-foreground;
+  }
+  img {
+    @apply rounded-md w-full my-6 object-cover;
+  }
+  hr {
+    @apply border-border my-8;
+  }
+  figure {
+    @apply my-6;
+  }
+  figcaption {
+    @apply text-sm text-muted-foreground mt-2 text-center;
+  }
+  pre {
+    @apply bg-muted rounded-md p-4 overflow-x-auto text-sm my-6;
+  }
+  code {
+    @apply bg-muted rounded px-1 py-0.5 text-sm font-mono;
+  }
+  pre code {
+    @apply bg-transparent p-0;
+  }
+}
