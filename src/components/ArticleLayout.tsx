@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Calendar, Clock, Hash } from "lucide-react";
 
 interface Article {
   title: string;
@@ -22,35 +22,9 @@ export function ArticleLayout({ article }: { article: Article }) {
       }).format(new Date(article.published_at))
     : null;
 
-  const altLangHref =
-    article.language === "es"
-      ? `/en/${article.slug}`
-      : `/${article.slug}`;
-
-  const altLangLabel = article.language === "es" ? "English" : "Español";
-
   return (
-    <div className="min-h-screen bg-background">
-      {/* Minimal nav */}
-      <header className="sticky top-0 z-10 bg-background/90 backdrop-blur border-b border-border">
-        <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-bold text-sm tracking-wider uppercase text-foreground hover:text-[var(--color-teal)] transition-colors"
-          >
-            Outdoor Patagonia
-          </Link>
-          <Link
-            href={altLangHref}
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            {altLangLabel}
-          </Link>
-        </div>
-      </header>
-
-      <main className="max-w-3xl mx-auto px-4 py-10">
-        <article>
+    <div className="max-w-3xl mx-auto px-4 py-10">
+      <article>
           {/* Category badge */}
           {article.category && (
             <span className="inline-block text-xs font-semibold uppercase tracking-widest px-2.5 py-1 rounded-sm bg-[var(--color-terracotta)] text-white mb-6">
@@ -74,11 +48,17 @@ export function ArticleLayout({ article }: { article: Article }) {
           )}
 
           {/* Meta row */}
-          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-10 pb-8 border-b border-border">
-            {publishedDate && <span>{publishedDate}</span>}
+          <div className="flex items-center gap-5 text-sm text-muted-foreground mb-10 pb-8 border-b border-border">
+            {publishedDate && (
+              <span className="inline-flex items-center gap-1.5">
+                <Calendar size={13} strokeWidth={1.5} />
+                {publishedDate}
+              </span>
+            )}
             {article.reading_time_min && (
-              <span>
-                {article.reading_time_min} min de lectura
+              <span className="inline-flex items-center gap-1.5">
+                <Clock size={13} strokeWidth={1.5} />
+                {article.reading_time_min} min
               </span>
             )}
           </div>
@@ -100,19 +80,24 @@ export function ArticleLayout({ article }: { article: Article }) {
 
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
-            <div className="mt-12 pt-6 border-t border-border flex flex-wrap gap-2">
-              {article.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
+            <div className="mt-12 pt-6 border-t border-border">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
+                <Hash size={12} strokeWidth={1.5} />
+                <span className="uppercase tracking-widest font-medium">Tags</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {article.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
-        </article>
-      </main>
+      </article>
     </div>
   );
 }

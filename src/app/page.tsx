@@ -1,15 +1,48 @@
-export default function Home() {
+import { createClient } from "@/lib/supabase/server";
+import { ArticleCard } from "@/components/ArticleCard";
+
+async function getArticles() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("articles")
+    .select(
+      "title, excerpt, category, reading_time_min, published_at, cover_image_url, slug, language"
+    )
+    .eq("language", "es")
+    .eq("status", "published")
+    .order("published_at", { ascending: false })
+    .limit(12);
+  return data ?? [];
+}
+
+export default async function Home() {
+  const articles = await getArticles();
+  const [featured, ...rest] = articles;
+
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-[#1a3a2a] text-[#f5f0e8] px-6 text-center gap-8">
-      <p className="text-sm uppercase tracking-widest text-[#c8a96e] font-medium">
-        outdoorpatagonia.com
-      </p>
-      <h1 className="text-4xl md:text-6xl font-bold max-w-2xl leading-tight">
-        Algo mucho más grande está en camino.
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      <h1
+        className="text-3xl md:text-5xl font-bold text-foreground leading-tight mb-10"
+        style={{ fontFamily: "var(--font-playfair)" }}
+      >
+        Naturaleza, cultura e historias
+        <br className="hidden md:block" /> de la Patagonia.
       </h1>
-      <p className="text-[#a8b8a0] max-w-md text-lg">
-        Naturaleza, cultura, historias y herramientas únicas para explorar la Patagonia.
-      </p>
-    </main>
+
+      {articles.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {featured && (
+            <div className="md:col-span-2">
+              <ArticleCard {...featured} featured />
+            </div>
+          )}
+          {rest.map((article) => (
+            <ArticleCard key={article.slug} {...article} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-muted-foreground text-center py-20">Sin artículos publicados aún.</p>
+      )}
+    </div>
   );
 }
