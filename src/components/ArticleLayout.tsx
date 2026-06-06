@@ -94,7 +94,7 @@ export function ArticleLayout({ article }: { article: Article }) {
 
           {/* Body */}
           <div
-            className="article-body"
+            className="article-body overflow-x-hidden"
             dangerouslySetInnerHTML={{ __html: article.content ?? "" }}
           />
 

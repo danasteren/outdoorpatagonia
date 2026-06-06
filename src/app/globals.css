@@ -177,7 +177,19 @@
     @apply border-l-4 border-[var(--color-teal)] pl-5 my-6 italic text-muted-foreground;
   }
   img {
-    @apply rounded-md w-full my-6 object-cover;
+    @apply rounded-md my-6 object-cover;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+  /* WordPress figures with fixed dimensions */
+  figure, .wp-block-image, .size-full, .size-large {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  /* Tables cause overflow too */
+  table {
+    @apply w-full overflow-x-auto block;
   }
   hr {
     @apply border-border my-8;
