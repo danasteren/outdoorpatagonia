@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Calendar, Clock, Hash } from "lucide-react";
 
 interface Article {
@@ -13,7 +14,13 @@ interface Article {
   slug: string;
 }
 
-export function ArticleLayout({ article }: { article: Article }) {
+export function ArticleLayout({
+  article,
+  altLangHref,
+}: {
+  article: Article;
+  altLangHref: string | null;
+}) {
   const publishedDate = article.published_at
     ? new Intl.DateTimeFormat(article.language === "en" ? "en-US" : "es-AR", {
         year: "numeric",
@@ -22,8 +29,31 @@ export function ArticleLayout({ article }: { article: Article }) {
       }).format(new Date(article.published_at))
     : null;
 
+  const altLangLabel = article.language === "es" ? "English" : "Español";
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
+    <div className="min-h-screen bg-background">
+      {/* Minimal nav */}
+      <header className="sticky top-0 z-10 bg-background/90 backdrop-blur border-b border-border">
+        <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
+          <Link
+            href="/"
+            className="font-bold text-sm tracking-wider uppercase text-foreground hover:text-[var(--color-teal)] transition-colors"
+          >
+            Outdoor Patagonia
+          </Link>
+          {altLangHref && (
+            <Link
+              href={altLangHref}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {altLangLabel}
+            </Link>
+          )}
+        </div>
+      </header>
+
+      <div className="max-w-3xl mx-auto px-4 py-10">
       <article>
           {/* Category badge */}
           {article.category && (
@@ -98,6 +128,7 @@ export function ArticleLayout({ article }: { article: Article }) {
             </div>
           )}
       </article>
+      </div>
     </div>
   );
 }

@@ -17,6 +17,18 @@ async function getArticle(slug: string) {
   return data;
 }
 
+async function hasAltLang(slug: string, lang: string) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("articles")
+    .select("slug")
+    .eq("slug", slug)
+    .eq("language", lang)
+    .eq("status", "published")
+    .maybeSingle();
+  return !!data;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -26,12 +38,16 @@ export async function generateMetadata({
   const article = await getArticle(slug);
   if (!article) return {};
 
+  const esExists = await hasAltLang(slug, "es");
+
   return {
     title: article.seo_title || article.title,
     description: article.seo_description || article.excerpt || undefined,
     alternates: {
       canonical: `https://outdoorpatagonia.com/en/${slug}`,
-      languages: { es: `https://outdoorpatagonia.com/${slug}` },
+      ...(esExists && {
+        languages: { es: `https://outdoorpatagonia.com/${slug}` },
+      }),
     },
     openGraph: {
       title: article.seo_title || article.title,
@@ -50,8 +66,16 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = await getArticle(slug);
+  const [article, esExists] = await Promise.all([
+    getArticle(slug),
+    hasAltLang(slug, "es"),
+  ]);
   if (!article) notFound();
 
-  return <ArticleLayout article={article} />;
+  return (
+    <ArticleLayout
+      article={article}
+      altLangHref={esExists ? `/${slug}` : null}
+    />
+  );
 }
