@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Calendar, Clock, Hash } from "lucide-react";
+import { fixWpLazyLoad } from "@/lib/utils";
 
 interface Article {
   title: string;
@@ -105,7 +106,7 @@ export function ArticleLayout({
           {/* Body */}
           <div
             className="article-body overflow-x-hidden"
-            dangerouslySetInnerHTML={{ __html: article.content ?? "" }}
+            dangerouslySetInnerHTML={{ __html: fixWpLazyLoad(article.content ?? "") }}
           />
 
           {/* Tags */}

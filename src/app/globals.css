@@ -197,6 +197,21 @@
   figure {
     @apply my-6;
   }
+  /* Responsive video embeds (WordPress wp-block-embed iframes) */
+  .wp-block-embed__wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+  }
+  .wp-block-embed__wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+  }
   figcaption {
     @apply text-sm text-muted-foreground mt-2 text-center;
   }

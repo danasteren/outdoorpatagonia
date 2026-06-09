@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { Clock, Calendar } from "lucide-react";
 
+function categoryHref(category: string, language: string) {
+  const slug = category.toLowerCase().replace(/ /g, "-");
+  return language === "en" ? `/en/category/${slug}` : `/categoria/${slug}`;
+}
+
 interface ArticleCardProps {
   title: string;
   excerpt: string | null;
@@ -55,9 +60,13 @@ export function ArticleCard({
 
       <div className="p-5">
         {category && (
-          <span className="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded bg-[var(--color-terracotta)] text-white mb-3">
+          <Link
+            href={categoryHref(category, language)}
+            onClick={(e) => e.stopPropagation()}
+            className="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded bg-[var(--color-terracotta)] text-white mb-3 hover:opacity-80 transition-opacity"
+          >
             {category}
-          </span>
+          </Link>
         )}
         <h2
           className={`font-bold leading-snug mb-2 group-hover:text-[var(--color-teal)] transition-colors ${

@@ -1,0 +1,83 @@
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { createClient } from "@/lib/supabase/server";
+import { ArticleCard } from "@/components/ArticleCard";
+
+async function getArticlesByCategory(cat: string) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("articles")
+    .select(
+      "title, excerpt, category, reading_time_min, published_at, cover_image_url, slug, language"
+    )
+    .eq("language", "en")
+    .eq("status", "published")
+    .ilike("category", cat.replace(/-/g, " "))
+    .order("published_at", { ascending: false });
+  return data ?? [];
+}
+
+export async function generateStaticParams() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("articles")
+    .select("category")
+    .eq("language", "en")
+    .eq("status", "published")
+    .not("category", "is", null);
+
+  const cats = [...new Set((data ?? []).map((r) => r.category as string))];
+  return cats.map((cat) => ({ cat: cat.toLowerCase().replace(/ /g, "-") }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ cat: string }>;
+}): Promise<Metadata> {
+  const { cat } = await params;
+  const label = cat.replace(/-/g, " ");
+  const title = label.charAt(0).toUpperCase() + label.slice(1);
+  return {
+    title: `${title} — Outdoor Patagonia`,
+    description: `Articles about ${label} on Outdoor Patagonia.`,
+    alternates: {
+      canonical: `https://outdoorpatagonia.com/en/category/${cat}`,
+      languages: { es: `https://outdoorpatagonia.com/categoria/${cat}` },
+    },
+  };
+}
+
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ cat: string }>;
+}) {
+  const { cat } = await params;
+  const articles = await getArticlesByCategory(cat);
+
+  if (articles.length === 0) notFound();
+
+  const label = cat.replace(/-/g, " ");
+  const title = label.charAt(0).toUpperCase() + label.slice(1);
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-terracotta)] mb-2">
+        Category
+      </p>
+      <h1
+        className="text-3xl md:text-5xl font-bold text-foreground leading-tight mb-10"
+        style={{ fontFamily: "var(--font-playfair)" }}
+      >
+        {title}
+      </h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {articles.map((article) => (
+          <ArticleCard key={article.slug} {...article} />
+        ))}
+      </div>
+    </div>
+  );
+}
