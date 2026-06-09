@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createBuildClient } from "@supabase/supabase-js";
 import { ArticleCard } from "@/components/ArticleCard";
 
 async function getArticlesByCategory(cat: string) {
@@ -18,7 +19,10 @@ async function getArticlesByCategory(cat: string) {
 }
 
 export async function generateStaticParams() {
-  const supabase = await createClient();
+  const supabase = createBuildClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
   const { data } = await supabase
     .from("articles")
     .select("category")
