@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Clock, Calendar } from "lucide-react";
+import { toCategorySlug } from "@/lib/category";
 
 function categoryHref(category: string, language: string) {
-  const slug = category.toLowerCase().replace(/ /g, "-");
+  const slug = toCategorySlug(category);
   return language === "en" ? `/en/category/${slug}` : `/categoria/${slug}`;
 }
 
@@ -29,6 +33,7 @@ export function ArticleCard({
   language,
   featured = false,
 }: ArticleCardProps) {
+  const router = useRouter();
   const href = language === "en" ? `/en/${slug}` : `/${slug}`;
 
   const date = published_at
@@ -40,9 +45,9 @@ export function ArticleCard({
     : null;
 
   return (
-    <Link
-      href={href}
-      className="group block rounded-2xl border border-border bg-card overflow-hidden hover:border-[var(--color-teal)] hover:shadow-xl transition-all duration-200"
+    <div
+      onClick={() => router.push(href)}
+      className="group block rounded-2xl border border-border bg-card overflow-hidden hover:border-[var(--color-teal)] hover:shadow-xl transition-all duration-200 cursor-pointer"
     >
       <div
         className={`overflow-hidden bg-gradient-to-br from-[var(--color-forest)] to-[var(--color-teal)] ${
@@ -96,6 +101,6 @@ export function ArticleCard({
           )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

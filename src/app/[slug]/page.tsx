@@ -1,7 +1,21 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createBuildClient } from "@supabase/supabase-js";
 import { ArticleLayout } from "@/components/ArticleLayout";
+
+export async function generateStaticParams() {
+  const supabase = createBuildClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+  const { data } = await supabase
+    .from("articles")
+    .select("slug")
+    .eq("language", "es")
+    .eq("status", "published");
+  return (data ?? []).map((a) => ({ slug: a.slug }));
+}
 
 async function getArticle(slug: string) {
   const supabase = await createClient();
@@ -72,10 +86,33 @@ export default async function ArticlePage({
   ]);
   if (!article) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.excerpt ?? undefined,
+    image: article.cover_image_url ?? undefined,
+    datePublished: article.published_at ?? undefined,
+    inLanguage: "es",
+    author: { "@type": "Organization", name: "Outdoor Patagonia" },
+    publisher: {
+      "@type": "Organization",
+      name: "Outdoor Patagonia",
+      url: "https://outdoorpatagonia.com",
+    },
+    url: `https://outdoorpatagonia.com/${slug}`,
+  };
+
   return (
-    <ArticleLayout
-      article={article}
-      altLangHref={enExists ? `/en/${slug}` : null}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ArticleLayout
+        article={article}
+        altLangHref={enExists ? `/en/${slug}` : null}
+      />
+    </>
   );
 }

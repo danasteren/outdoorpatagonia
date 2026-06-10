@@ -58,9 +58,16 @@ export function ArticleLayout({
       <article>
           {/* Category badge */}
           {article.category && (
-            <span className="inline-block text-xs font-semibold uppercase tracking-widest px-2.5 py-1 rounded-sm bg-[var(--color-terracotta)] text-white mb-6">
+            <Link
+              href={
+                article.language === "en"
+                  ? `/en/category/${article.category.toLowerCase().replace(/\s+/g, "-")}`
+                  : `/categoria/${article.category.toLowerCase().replace(/\s+/g, "-")}`
+              }
+              className="inline-block text-xs font-semibold uppercase tracking-widest px-2.5 py-1 rounded-sm bg-[var(--color-terracotta)] text-white mb-6 hover:opacity-80 transition-opacity"
+            >
               {article.category}
-            </span>
+            </Link>
           )}
 
           {/* Title */}

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -11,7 +11,7 @@ export function Footer() {
               <img
                 src="/brand/op_03.svg"
                 alt="Outdoor Patagonia"
-                className="h-12 w-auto brightness-0 invert"
+                className="h-12 w-auto"
               />
             </Link>
             <p className="text-sm leading-relaxed text-[var(--color-cream)]/60">
@@ -26,9 +26,12 @@ export function Footer() {
                 Explorar
               </span>
               <nav className="flex flex-col gap-2.5 text-sm text-[var(--color-cream)]/60">
-                <Link href="/" className="hover:text-[var(--color-cream)] transition-colors">Artículos</Link>
-                <Link href="/" className="hover:text-[var(--color-cream)] transition-colors">Categorías</Link>
-                <Link href="/" className="hover:text-[var(--color-cream)] transition-colors">Mapa</Link>
+                <Link href="/" className="hover:text-[var(--color-cream)] transition-colors">
+                  Artículos
+                </Link>
+                <Link href="/contacto" className="hover:text-[var(--color-cream)] transition-colors">
+                  Contacto
+                </Link>
               </nav>
             </div>
             <div className="flex flex-col gap-3">
@@ -36,9 +39,12 @@ export function Footer() {
                 Proyecto
               </span>
               <nav className="flex flex-col gap-2.5 text-sm text-[var(--color-cream)]/60">
-                <Link href="/" className="hover:text-[var(--color-cream)] transition-colors">Nosotros</Link>
-                <Link href="/" className="hover:text-[var(--color-cream)] transition-colors">Newsletter</Link>
-                <Link href="/" className="hover:text-[var(--color-cream)] transition-colors">Contacto</Link>
+                <Link href="/privacidad" className="hover:text-[var(--color-cream)] transition-colors">
+                  Privacidad
+                </Link>
+                <Link href="/terminos" className="hover:text-[var(--color-cream)] transition-colors">
+                  Términos
+                </Link>
               </nav>
             </div>
           </div>
@@ -48,11 +54,15 @@ export function Footer() {
         <div className="mt-10 pt-6 border-t border-[var(--color-cream)]/10 flex flex-col sm:flex-row justify-between gap-2 text-xs text-[var(--color-cream)]/35">
           <span>© {new Date().getFullYear()} Outdoor Patagonia. Todos los derechos reservados.</span>
           <div className="flex gap-4">
-            <Link href="/" className="hover:text-[var(--color-cream)]/60 transition-colors">Privacidad</Link>
-            <Link href="/" className="hover:text-[var(--color-cream)]/60 transition-colors">Términos</Link>
+            <Link href="/privacidad" className="hover:text-[var(--color-cream)]/60 transition-colors">
+              Privacidad
+            </Link>
+            <Link href="/terminos" className="hover:text-[var(--color-cream)]/60 transition-colors">
+              Términos
+            </Link>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }
