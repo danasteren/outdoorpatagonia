@@ -1,40 +1,45 @@
-'use client'
-
-import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
-export function LangToggle() {
-  const pathname = usePathname()
-  const isEN = pathname.startsWith('/en')
-  const rawSlug = isEN
-    ? pathname.replace(/^\/en\/?/, '')
-    : pathname.replace(/^\//, '')
-  const esHref = rawSlug ? `/${rawSlug}` : '/'
-  const enHref = rawSlug ? `/en/${rawSlug}` : '/en'
-
+export function LangToggle({
+  esHref,
+  enHref,
+  currentLang,
+}: {
+  esHref: string | null
+  enHref: string | null
+  currentLang: 'es' | 'en'
+}) {
   return (
     <div className="flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase">
-      <Link
-        href={esHref}
-        className={
-          !isEN
-            ? 'text-foreground'
-            : 'text-foreground/40 hover:text-foreground/70 transition-colors'
-        }
-      >
-        ES
-      </Link>
+      {esHref ? (
+        <Link
+          href={esHref}
+          className={
+            currentLang === 'es'
+              ? 'text-foreground'
+              : 'text-foreground/40 hover:text-foreground/70 transition-colors'
+          }
+        >
+          ES
+        </Link>
+      ) : (
+        <span className="text-foreground/25">ES</span>
+      )}
       <span className="text-foreground/25">|</span>
-      <Link
-        href={enHref}
-        className={
-          isEN
-            ? 'text-foreground'
-            : 'text-foreground/40 hover:text-foreground/70 transition-colors'
-        }
-      >
-        EN
-      </Link>
+      {enHref ? (
+        <Link
+          href={enHref}
+          className={
+            currentLang === 'en'
+              ? 'text-foreground'
+              : 'text-foreground/40 hover:text-foreground/70 transition-colors'
+          }
+        >
+          EN
+        </Link>
+      ) : (
+        <span className="text-foreground/25">EN</span>
+      )}
     </div>
   )
 }
