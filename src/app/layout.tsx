@@ -36,6 +36,7 @@ export default async function RootLayout({
   const headersList = await headers();
   const pathname = headersList.get("x-pathname") ?? "";
   const lang = pathname.startsWith("/en") ? "en" : "es";
+  const isMapPage = pathname === "/mapa" || pathname === "/en/mapa";
 
   return (
     <html
@@ -55,8 +56,10 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <main className={`flex-1${isMapPage ? " overflow-hidden" : ""}`}>
+          {children}
+        </main>
+        {!isMapPage && <Footer />}
       </body>
     </html>
   );
