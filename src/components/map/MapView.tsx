@@ -7,11 +7,8 @@ import { LayerControls } from "./LayerControls";
 import { MapInfoPanel } from "./MapInfoPanel";
 import type { ActiveLayers, LayerId, MapFeature } from "./types";
 
-// Center of Argentine + Chilean Patagonia
 const CENTER: [number, number] = [-70.2, -45.5];
 const ZOOM = 5.5;
-
-// OpenFreeMap — free, no token, commercial use OK
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 
 export function MapView() {
@@ -25,13 +22,16 @@ export function MapView() {
     fauna: false,
     clima: false,
   });
-
-  const [selectedFeature, setSelectedFeature] = useState<MapFeature | null>(
-    null
-  );
+  const [selectedFeature, setSelectedFeature] = useState<MapFeature | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
 
   void mapLoaded;
+
+  useEffect(() => {
+    const onResize = () => mapRef.current?.resize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -80,7 +80,6 @@ export function MapView() {
     setSelectedFeature(feature);
     setPanelOpen(true);
   }, []);
-
   void openFeature;
 
   const closePanel = useCallback(() => {
@@ -89,16 +88,14 @@ export function MapView() {
   }, []);
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
-      {/* MapLibre canvas */}
+    // fixed below the sticky header (h-16 = 64px); z-40 keeps it under header's z-50
+    <div className="fixed inset-0 top-16 z-40 overflow-hidden">
       <div ref={containerRef} className="absolute inset-0" />
 
-      {/* Layer toggle — top-left, clear of nav controls */}
       <div className="absolute top-4 left-4 z-10">
         <LayerControls activeLayers={activeLayers} onToggle={toggleLayer} />
       </div>
 
-      {/* Info panel (side panel desktop / bottom sheet mobile) */}
       <MapInfoPanel
         feature={selectedFeature}
         open={panelOpen}

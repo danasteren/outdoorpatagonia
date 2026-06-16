@@ -47,7 +47,7 @@ export function Footer() {
                 Diccionario
               </Link>
               <Link
-                href="/mapa-patagonia"
+                href="/mapa"
                 className="hover:text-[var(--color-cream)] transition-colors"
               >
                 Mapa

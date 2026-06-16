@@ -13,35 +13,35 @@ export async function generateStaticParams() {
   const { data } = await supabase
     .from("articles")
     .select("slug, category")
-    .eq("language", "es")
+    .eq("language", "en")
     .eq("status", "published");
   return (data ?? []).map((a) => ({
-    category: toCategorySlug(a.category ?? "articulos"),
-    slug: a.slug,
+    slug: toCategorySlug(a.category ?? "articles"),
+    article: a.slug,
   }));
 }
 
-async function getArticle(slug: string) {
+async function getArticle(article: string) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("articles")
     .select(
       "title, excerpt, content, category, tags, reading_time_min, published_at, cover_image_url, language, slug, seo_title, seo_description"
     )
-    .eq("slug", slug)
-    .eq("language", "es")
+    .eq("slug", article)
+    .eq("language", "en")
     .eq("status", "published")
     .single();
   return data;
 }
 
-async function getAltLang(slug: string) {
+async function getAltLang(article: string) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("articles")
     .select("slug, category")
-    .eq("slug", slug)
-    .eq("language", "en")
+    .eq("slug", article)
+    .eq("language", "es")
     .eq("status", "published")
     .maybeSingle();
   return data;
@@ -50,33 +50,33 @@ async function getAltLang(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string; slug: string }>;
+  params: Promise<{ slug: string; article: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const article = await getArticle(slug);
-  if (!article) return {};
+  const { article } = await params;
+  const articleData = await getArticle(article);
+  if (!articleData) return {};
 
-  const catSlug = toCategorySlug(article.category ?? "");
-  const canonicalUrl = `https://outdoorpatagonia.com/${catSlug}/${slug}`;
-  const altLang = await getAltLang(slug);
+  const catSlug = toCategorySlug(articleData.category ?? "");
+  const canonicalUrl = `https://outdoorpatagonia.com/en/${catSlug}/${article}`;
+  const altLang = await getAltLang(article);
 
   return {
-    title: article.seo_title || article.title,
-    description: article.seo_description || article.excerpt || undefined,
+    title: articleData.seo_title || articleData.title,
+    description: articleData.seo_description || articleData.excerpt || undefined,
     alternates: {
       canonical: canonicalUrl,
       ...(altLang && {
         languages: {
-          en: `https://outdoorpatagonia.com/en/${toCategorySlug(altLang.category ?? "")}/${slug}`,
+          es: `https://outdoorpatagonia.com/${toCategorySlug(altLang.category ?? "")}/${article}`,
         },
       }),
     },
     openGraph: {
-      title: article.seo_title || article.title,
-      description: article.seo_description || article.excerpt || undefined,
+      title: articleData.seo_title || articleData.title,
+      description: articleData.seo_description || articleData.excerpt || undefined,
       url: canonicalUrl,
-      images: article.cover_image_url ? [article.cover_image_url] : [],
-      locale: "es_AR",
+      images: articleData.cover_image_url ? [articleData.cover_image_url] : [],
+      locale: "en_US",
       type: "article",
     },
   };
@@ -85,40 +85,40 @@ export async function generateMetadata({
 export default async function ArticlePage({
   params,
 }: {
-  params: Promise<{ category: string; slug: string }>;
+  params: Promise<{ slug: string; article: string }>;
 }) {
-  const { category, slug } = await params;
-  const [article, altLang] = await Promise.all([
-    getArticle(slug),
-    getAltLang(slug),
+  const { slug, article } = await params;
+  const [articleData, altLang] = await Promise.all([
+    getArticle(article),
+    getAltLang(article),
   ]);
 
-  if (!article) notFound();
+  if (!articleData) notFound();
 
-  const correctCategory = toCategorySlug(article.category ?? "");
-  if (category !== correctCategory) {
-    redirect(`/${correctCategory}/${slug}`);
+  const correctCategory = toCategorySlug(articleData.category ?? "");
+  if (slug !== correctCategory) {
+    redirect(`/en/${correctCategory}/${article}`);
   }
 
   const altLangHref = altLang
-    ? `/en/${toCategorySlug(altLang.category ?? "")}/${slug}`
+    ? `/${toCategorySlug(altLang.category ?? "")}/${article}`
     : null;
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: article.title,
-    description: article.excerpt ?? undefined,
-    image: article.cover_image_url ?? undefined,
-    datePublished: article.published_at ?? undefined,
-    inLanguage: "es",
+    headline: articleData.title,
+    description: articleData.excerpt ?? undefined,
+    image: articleData.cover_image_url ?? undefined,
+    datePublished: articleData.published_at ?? undefined,
+    inLanguage: "en",
     author: { "@type": "Organization", name: "Outdoor Patagonia" },
     publisher: {
       "@type": "Organization",
       name: "Outdoor Patagonia",
       url: "https://outdoorpatagonia.com",
     },
-    url: `https://outdoorpatagonia.com/${correctCategory}/${slug}`,
+    url: `https://outdoorpatagonia.com/en/${correctCategory}/${article}`,
   };
 
   return (
@@ -127,7 +127,7 @@ export default async function ArticlePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ArticleLayout article={article} altLangHref={altLangHref} />
+      <ArticleLayout article={articleData} altLangHref={altLangHref} />
     </>
   );
 }

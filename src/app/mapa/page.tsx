@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function MapaPage() {
-  return (
-    <div className="h-full overflow-hidden relative">
-      <MapPageClient />
-    </div>
-  );
+  return <MapPageClient />;
 }

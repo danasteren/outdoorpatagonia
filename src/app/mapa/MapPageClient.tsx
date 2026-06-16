@@ -7,7 +7,10 @@ const MapView = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="absolute inset-0 flex items-center justify-center bg-muted">
+      <div
+        className="w-full flex items-center justify-center bg-muted"
+        style={{ height: "70vh" }}
+      >
         <span className="text-sm text-muted-foreground animate-pulse">
           Cargando mapa…
         </span>
@@ -17,9 +20,5 @@ const MapView = dynamic(
 );
 
 export function MapPageClient() {
-  return (
-    <div className="relative h-full w-full">
-      <MapView />
-    </div>
-  );
+  return <MapView />;
 }
