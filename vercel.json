@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/en/:category/:slug/",
+      "destination": "/en/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/:category/:slug/",
+      "destination": "/:slug",
+      "permanent": true
+    }
+  ]
+}
