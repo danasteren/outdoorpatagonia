@@ -7,21 +7,20 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://outdoorpatagonia.com/novedades" },
 };
 
-const tipoBadge: Record<TipoCambio, { label: string; bg: string; text: string }> = {
+const tipoBadge: Record<TipoCambio, { label: string; className: string }> = {
   nuevo: {
     label: "NUEVO",
-    bg: "bg-[var(--color-teal)]",
-    text: "text-[var(--color-cream)]",
+    className:
+      "border border-[var(--color-teal)] text-[var(--color-teal)] bg-[var(--color-teal)]/10",
   },
   mejora: {
     label: "MEJORA",
-    bg: "bg-[var(--color-terracotta)]",
-    text: "text-[var(--color-cream)]",
+    className:
+      "border border-[var(--color-terracotta)] text-[var(--color-terracotta)] bg-[var(--color-terracotta)]/10",
   },
   correccion: {
     label: "CORRECCIÓN",
-    bg: "bg-[var(--color-charcoal)]",
-    text: "text-[var(--color-cream)]",
+    className: "border border-rose-400 text-rose-600 bg-rose-50 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-500",
   },
 };
 
@@ -37,9 +36,21 @@ export default function NovedadesPage() {
       >
         Novedades
       </h1>
-      <p className="text-muted-foreground mb-12 max-w-lg">
+      <p className="text-muted-foreground mb-8 max-w-lg">
         Todo lo que vamos sumando y mejorando en Outdoor Patagonia, versión a versión.
       </p>
+
+      {/* Legend */}
+      <div className="flex items-center gap-2 mb-10">
+        {(Object.values(tipoBadge)).map((badge) => (
+          <span
+            key={badge.label}
+            className={`text-[9px] font-bold px-2.5 py-1 rounded-full leading-5 tracking-wide ${badge.className}`}
+          >
+            {badge.label}
+          </span>
+        ))}
+      </div>
 
       <div className="space-y-4">
         {novedades.map((version) => (
@@ -59,7 +70,7 @@ export default function NovedadesPage() {
               </div>
               {version.esUltima && (
                 <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest bg-[var(--color-teal-light)]/15 text-[var(--color-teal)] px-3 py-1 rounded-full border border-[var(--color-teal)]/25">
-                  Última
+                  Última 🚀
                 </span>
               )}
             </div>
@@ -70,7 +81,7 @@ export default function NovedadesPage() {
                 return (
                   <div key={i} className="flex items-start gap-3">
                     <span
-                      className={`shrink-0 text-[9px] font-bold px-2 py-0.5 rounded-full mt-0.5 leading-5 ${badge.bg} ${badge.text}`}
+                      className={`shrink-0 text-[9px] font-bold px-2.5 py-0.5 rounded-full mt-0.5 leading-5 tracking-wide ${badge.className}`}
                     >
                       {badge.label}
                     </span>

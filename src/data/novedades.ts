@@ -15,10 +15,41 @@ export interface VersionNovedades {
 
 export const novedades: VersionNovedades[] = [
   {
+    numero: "1.1",
+    fecha: "Junio 2026",
+    titulo: "Mapa interactivo, clima en tiempo real y página Planear",
+    esUltima: true,
+    cambios: [
+      {
+        tipo: "nuevo",
+        texto: "Mapa interactivo — explorá los destinos de Patagonia en un mapa navegable con zoom y puntos de interés",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Status board en la homepage — clima actual e iNaturalist en tiempo real para saber qué está pasando en la Patagonia",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Página Planear — los primeros pasos para armar tu viaje a la Patagonia, en un solo lugar",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Página de novedades — changelog público con todo lo que vamos sumando y mejorando, versión a versión",
+      },
+      {
+        tipo: "mejora",
+        texto: "Header rediseñado con mejor navegación y acceso directo a la sección Planear",
+      },
+      {
+        tipo: "mejora",
+        texto: "Footer renovado con secciones organizadas y links rápidos a las principales áreas del sitio",
+      },
+    ],
+  },
+  {
     numero: "1.0",
     fecha: "Junio 2026",
     titulo: "Lanzamiento del nuevo outdoorpatagonia.com",
-    esUltima: true,
     cambios: [
       {
         tipo: "nuevo",
