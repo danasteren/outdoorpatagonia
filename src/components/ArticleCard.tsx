@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Clock, Calendar } from "lucide-react";
 import { toCategorySlug } from "@/lib/category";
 
+
 function categoryHref(category: string, language: string) {
   const slug = toCategorySlug(category);
   return language === "en" ? `/en/category/${slug}` : `/categoria/${slug}`;
@@ -34,7 +35,11 @@ export function ArticleCard({
   featured = false,
 }: ArticleCardProps) {
   const router = useRouter();
-  const href = language === "en" ? `/en/${slug}` : `/${slug}`;
+  const catSlug = category ? toCategorySlug(category) : "";
+  const href =
+    language === "en"
+      ? `/en/${catSlug}/${slug}`
+      : `/${catSlug}/${slug}`;
 
   const date = published_at
     ? new Intl.DateTimeFormat(language === "en" ? "en-US" : "es-AR", {

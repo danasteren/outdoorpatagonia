@@ -2,12 +2,12 @@
   "redirects": [
     {
       "source": "/en/:category/:slug/",
-      "destination": "/en/:slug",
+      "destination": "/en/:category/:slug",
       "permanent": true
     },
     {
       "source": "/:category/:slug/",
-      "destination": "/:slug",
+      "destination": "/:category/:slug",
       "permanent": true
     }
   ]

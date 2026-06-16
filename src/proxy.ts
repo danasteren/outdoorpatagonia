@@ -2,8 +2,10 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-pathname", request.nextUrl.pathname);
+  requestHeaders.set("x-pathname", pathname);
 
   let supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } });
 
@@ -19,7 +21,9 @@ export async function proxy(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
-          supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } });
+          supabaseResponse = NextResponse.next({
+            request: { headers: requestHeaders },
+          });
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           );
@@ -28,7 +32,6 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  // Refresh session on every request
   await supabase.auth.getUser();
 
   return supabaseResponse;
