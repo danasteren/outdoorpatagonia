@@ -8,8 +8,8 @@ const MapView = dynamic(
     ssr: false,
     loading: () => (
       <div
-        className="w-full flex items-center justify-center bg-muted"
-        style={{ height: "70vh" }}
+        className="fixed left-0 right-0 bottom-0 flex items-center justify-center bg-muted"
+        style={{ top: "4rem" }}
       >
         <span className="text-sm text-muted-foreground animate-pulse">
           Cargando mapa…

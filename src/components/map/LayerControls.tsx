@@ -1,6 +1,6 @@
 "use client";
 
-import { Mountain, RouteOff, Bird, Cloud } from "lucide-react";
+import { Mountain, Footprints, Bird, Cloud } from "lucide-react";
 import type { ActiveLayers, LayerId } from "./types";
 
 const LAYERS: {
@@ -9,7 +9,7 @@ const LAYERS: {
   icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
 }[] = [
   { id: "parques", label: "Parques", icon: Mountain },
-  { id: "senderos", label: "Senderos", icon: RouteOff },
+  { id: "senderos", label: "Senderos", icon: Footprints },
   { id: "fauna", label: "Fauna", icon: Bird },
   { id: "clima", label: "Clima", icon: Cloud },
 ];

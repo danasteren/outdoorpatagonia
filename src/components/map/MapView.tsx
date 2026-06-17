@@ -1,21 +1,39 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+import { useState, useCallback } from "react";
+import { MapContainer, TileLayer, CircleMarker, Tooltip, Polygon, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import { LayerControls } from "./LayerControls";
 import { MapInfoPanel } from "./MapInfoPanel";
 import type { ActiveLayers, LayerId, MapFeature } from "./types";
+import { PARQUES, SENDEROS, FAUNA, CLIMA, PATAGONIA_POLYGON, MALVINAS_POLYGON } from "./map-data";
 
-const CENTER: [number, number] = [-70.2, -45.5];
-const ZOOM = 5.5;
-const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
+const CENTER: [number, number] = [-45.5, -70.2];
+const ZOOM = 6;
+
+const LAYER_COLORS: Record<LayerId, string> = {
+  parques: "#2E6B4E",
+  senderos: "#C2762A",
+  fauna: "#6B3FA0",
+  clima: "#2A7EC2",
+};
+
+const LAYER_DATA: Record<LayerId, MapFeature[]> = {
+  parques: PARQUES,
+  senderos: SENDEROS,
+  fauna: FAUNA,
+  clima: CLIMA,
+};
+
+function ResizeHandler() {
+  const map = useMap();
+  if (typeof window !== "undefined") {
+    window.addEventListener("resize", () => map.invalidateSize(), { once: false });
+  }
+  return null;
+}
 
 export function MapView() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<maplibregl.Map | null>(null);
-  const [mapLoaded, setMapLoaded] = useState(false);
-
   const [activeLayers, setActiveLayers] = useState<ActiveLayers>({
     parques: true,
     senderos: false,
@@ -25,53 +43,6 @@ export function MapView() {
   const [selectedFeature, setSelectedFeature] = useState<MapFeature | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
 
-  void mapLoaded;
-
-  useEffect(() => {
-    const onResize = () => mapRef.current?.resize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
-
-    const map = new maplibregl.Map({
-      container: containerRef.current,
-      style: MAP_STYLE,
-      center: CENTER,
-      zoom: ZOOM,
-      minZoom: 3,
-      maxZoom: 16,
-      attributionControl: false,
-    });
-
-    map.addControl(
-      new maplibregl.AttributionControl({ compact: true }),
-      "bottom-right"
-    );
-    map.addControl(new maplibregl.NavigationControl(), "top-right");
-    map.addControl(
-      new maplibregl.GeolocateControl({
-        positionOptions: { enableHighAccuracy: true },
-        trackUserLocation: true,
-      }),
-      "top-right"
-    );
-    map.addControl(
-      new maplibregl.ScaleControl({ maxWidth: 100, unit: "metric" }),
-      "bottom-left"
-    );
-
-    map.on("load", () => setMapLoaded(true));
-
-    mapRef.current = map;
-    return () => {
-      map.remove();
-      mapRef.current = null;
-    };
-  }, []);
-
   const toggleLayer = useCallback((id: LayerId) => {
     setActiveLayers((prev) => ({ ...prev, [id]: !prev[id] }));
   }, []);
@@ -80,19 +51,91 @@ export function MapView() {
     setSelectedFeature(feature);
     setPanelOpen(true);
   }, []);
-  void openFeature;
 
   const closePanel = useCallback(() => {
     setPanelOpen(false);
     setSelectedFeature(null);
   }, []);
 
-  return (
-    // fixed below the sticky header (h-16 = 64px); z-40 keeps it under header's z-50
-    <div className="fixed inset-0 top-16 z-40 overflow-hidden">
-      <div ref={containerRef} className="absolute inset-0" />
+  const activeLayerIds = Object.entries(activeLayers)
+    .filter(([, v]) => v)
+    .map(([k]) => k as LayerId);
 
-      <div className="absolute top-4 left-4 z-10">
+  return (
+    <div
+      className="fixed left-0 right-0 bottom-0 z-40 overflow-hidden"
+      style={{ top: "4rem" }}
+    >
+      <MapContainer
+        center={CENTER}
+        zoom={ZOOM}
+        minZoom={3}
+        maxZoom={18}
+        style={{ height: "100%", width: "100%" }}
+        zoomControl={false}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          maxZoom={19}
+        />
+
+        {/* Patagonia + Malvinas region boundary */}
+        {[PATAGONIA_POLYGON, MALVINAS_POLYGON].map((polygon, i) => (
+          <Polygon
+            key={i}
+            positions={polygon}
+            pathOptions={{
+              color: "#2E6B4E",
+              weight: 2,
+              opacity: 0.5,
+              fillColor: "#2E6B4E",
+              fillOpacity: 0.06,
+              dashArray: "6 4",
+            }}
+          >
+            {i === 1 && (
+              <Tooltip permanent direction="center" opacity={1}>
+                <span style={{ fontSize: "11px", fontWeight: 600, color: "#2E6B4E" }}>
+                  Islas Malvinas<br />(Argentina)
+                </span>
+              </Tooltip>
+            )}
+          </Polygon>
+        ))}
+
+        {/* Active layer markers */}
+        {activeLayerIds.map((layerId) =>
+          LAYER_DATA[layerId].map((feature) => {
+            const [lng, lat] = feature.coordinates;
+            const color = LAYER_COLORS[layerId];
+            return (
+              <CircleMarker
+                key={`${layerId}-${feature.title}`}
+                center={[lat, lng]}
+                radius={7}
+                pathOptions={{
+                  color,
+                  weight: 2,
+                  fillColor: color,
+                  fillOpacity: 0.85,
+                }}
+                eventHandlers={{
+                  click: () => openFeature(feature),
+                }}
+              >
+                <Tooltip direction="top" offset={[0, -8]} opacity={0.95}>
+                  <span className="text-xs font-medium">{feature.title}</span>
+                </Tooltip>
+              </CircleMarker>
+            );
+          })
+        )}
+
+        <ResizeHandler />
+      </MapContainer>
+
+      <div className="absolute top-4 left-4 z-[1000]">
         <LayerControls activeLayers={activeLayers} onToggle={toggleLayer} />
       </div>
 
