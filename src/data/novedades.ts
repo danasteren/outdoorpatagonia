@@ -15,10 +15,29 @@ export interface VersionNovedades {
 
 export const novedades: VersionNovedades[] = [
   {
+    numero: "1.2",
+    fecha: "Junio 2026",
+    titulo: "Fauna, parques nacionales y senderos",
+    esUltima: true,
+    cambios: [
+      {
+        tipo: "nuevo",
+        texto: "Sección Fauna — 48 especies patagónicas con avistamientos recientes en mapa interactivo, histograma mensual para saber cuándo verlas y datos en tiempo real de iNaturalist",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Sección Parques Nacionales — 16 parques con descripción, highlights, fauna que habita cada uno, senderos y cómo llegar",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Sección Senderos — 10 rutas con distancia, duración, dificultad, fauna para ver en el camino y equipo recomendado",
+      },
+    ],
+  },
+  {
     numero: "1.1",
     fecha: "Junio 2026",
     titulo: "Mapa interactivo, clima en tiempo real y página Planear",
-    esUltima: true,
     cambios: [
       {
         tipo: "nuevo",
