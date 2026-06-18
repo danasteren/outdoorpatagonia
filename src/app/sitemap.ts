@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
 import { toCategorySlug } from "@/lib/category";
+import { FAUNA_CATALOG } from "@/lib/fauna/catalog";
+import { PARQUES_CATALOG } from "@/lib/parques/catalog";
+import { SENDEROS_CATALOG } from "@/lib/senderos/catalog";
 
 const BASE = "https://outdoorpatagonia.com";
 
@@ -58,12 +61,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ];
 
+  const faunaUrls: MetadataRoute.Sitemap = FAUNA_CATALOG.map((e) => ({
+    url: `${BASE}/fauna/${e.slug}`,
+    changeFrequency: "daily" as const,
+    priority: 0.8,
+  }));
+
+  const parquesUrls: MetadataRoute.Sitemap = PARQUES_CATALOG.map((p) => ({
+    url: `${BASE}/parques/${p.slug}`,
+    changeFrequency: "daily" as const,
+    priority: 0.85,
+  }));
+
+  const senderosUrls: MetadataRoute.Sitemap = SENDEROS_CATALOG.map((s) => ({
+    url: `${BASE}/senderos/${s.slug}`,
+    changeFrequency: "weekly" as const,
+    priority: 0.8,
+  }));
+
   return [
     { url: BASE, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/en`, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/mapa`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/planear`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/novedades`, changeFrequency: "weekly", priority: 0.5 },
+    ...parquesUrls,
+    ...senderosUrls,
+    ...faunaUrls,
     ...categoryUrls,
     ...articleUrls,
   ];
