@@ -1,6 +1,7 @@
 "use client";
 
-import { X, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { X, ExternalLink, ArrowRight } from "lucide-react";
 import type { MapFeature } from "./types";
 
 interface MapInfoPanelProps {
@@ -89,17 +90,28 @@ function PanelContent({
           )}
       </div>
 
-      {feature.affiliateLink && (
-        <div className="p-4 border-t border-border">
-          <a
-            href={feature.affiliateLink.url}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
-          >
-            {feature.affiliateLink.label}
-            <ExternalLink size={14} strokeWidth={1.5} />
-          </a>
+      {(feature.pageUrl ?? feature.affiliateLink) && (
+        <div className="p-4 border-t border-border flex flex-col gap-2">
+          {feature.pageUrl && (
+            <Link
+              href={feature.pageUrl}
+              className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-[var(--color-forest)] text-[var(--color-cream)] rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+            >
+              Ver página completa
+              <ArrowRight size={14} strokeWidth={1.5} />
+            </Link>
+          )}
+          {feature.affiliateLink && (
+            <a
+              href={feature.affiliateLink.url}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+            >
+              {feature.affiliateLink.label}
+              <ExternalLink size={14} strokeWidth={1.5} />
+            </a>
+          )}
         </div>
       )}
     </div>

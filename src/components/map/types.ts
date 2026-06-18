@@ -8,6 +8,7 @@ export interface MapFeature {
   description?: string;
   coordinates: [number, number];
   properties?: Record<string, unknown>;
+  pageUrl?: string;
   affiliateLink?: {
     label: string;
     url: string;
