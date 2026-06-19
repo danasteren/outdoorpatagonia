@@ -14,7 +14,7 @@ export type FaunaEntry = {
 export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "guanaco",
-    taxonId: 42459,
+    taxonId: 42240,
     gbifKey: 2441886,
     scientificName: "Lama guanicoe",
     commonNameEs: "Guanaco",
@@ -29,7 +29,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "puma",
-    taxonId: 42538,
+    taxonId: 42007,
     gbifKey: 2435099,
     scientificName: "Puma concolor",
     commonNameEs: "Puma",
@@ -43,7 +43,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "condor-andino",
-    taxonId: 4786,
+    taxonId: 4747,
     gbifKey: 2481584,
     scientificName: "Vultur gryphus",
     commonNameEs: "Cóndor andino",
@@ -58,7 +58,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "huemul",
-    taxonId: 42489,
+    taxonId: 42180,
     gbifKey: 2441925,
     scientificName: "Hippocamelus bisulcus",
     commonNameEs: "Huemul",
@@ -72,7 +72,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "pinguino-de-magallanes",
-    taxonId: 4862,
+    taxonId: 3812,
     gbifKey: 2481908,
     scientificName: "Spheniscus magellanicus",
     commonNameEs: "Pingüino de Magallanes",
@@ -86,7 +86,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "choique",
-    taxonId: 5121,
+    taxonId: 73338,
     gbifKey: 2474637,
     scientificName: "Rhea pennata",
     commonNameEs: "Choique",
@@ -100,7 +100,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "flamenco-austral",
-    taxonId: 4822,
+    taxonId: 4258,
     gbifKey: 2481841,
     scientificName: "Phoenicopterus chilensis",
     commonNameEs: "Flamenco austral",
@@ -113,7 +113,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "zorro-gris",
-    taxonId: 42408,
+    taxonId: 332338,
     gbifKey: 2435047,
     scientificName: "Lycalopex griseus",
     commonNameEs: "Zorro gris patagónico",
@@ -127,7 +127,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "coipo",
-    taxonId: 43706,
+    taxonId: 43997,
     scientificName: "Myocastor coypus",
     commonNameEs: "Coipo",
     commonNameEn: "Coypu",
@@ -139,7 +139,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "cauquen-comun",
-    taxonId: 4813,
+    taxonId: 7117,
     scientificName: "Chloephaga picta",
     commonNameEs: "Cauquén común",
     commonNameEn: "Upland Goose",
@@ -151,7 +151,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "lobo-marino-del-sur",
-    taxonId: 41668,
+    taxonId: 41761,
     gbifKey: 2433392,
     scientificName: "Otaria flavescens",
     commonNameEs: "Lobo marino del sur",
@@ -164,7 +164,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   },
   {
     slug: "elefante-marino-del-sur",
-    taxonId: 41712,
+    taxonId: 41729,
     gbifKey: 2433404,
     scientificName: "Mirounga leonina",
     commonNameEs: "Elefante marino del sur",
