@@ -7,12 +7,15 @@ import {
   Menu, X, Map, Compass, Globe, ChevronDown, Users, Search,
   Lightbulb, Landmark, Tent, PawPrint, Leaf, ChefHat,
   BookOpen, Sprout, Recycle, MapPin, Mountain, Download,
+  User, LogOut,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { LangToggle } from './LangToggle'
+import { createClient } from '@/lib/supabase/client'
 
 type CategoryItem = { label: string; href: string }
 type LangHrefs = { esHref: string | null; enHref: string | null; currentLang: 'es' | 'en' }
+export type AuthUser = { name: string; email: string; avatarUrl: string | null } | null
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   consejos: Lightbulb,
@@ -34,20 +37,36 @@ function getCatIcon(label: string): React.ElementType {
   return CATEGORY_ICONS[label.toLowerCase()] ?? MapPin
 }
 
+function UserAvatar({ user, size = 7 }: { user: AuthUser & object; size?: number }) {
+  const cls = `w-${size} h-${size} rounded-full object-cover`
+  if (user.avatarUrl) {
+    return <img src={user.avatarUrl} alt={user.name} className={cls} />
+  }
+  return (
+    <div className={`w-${size} h-${size} rounded-full bg-muted flex items-center justify-center text-xs font-semibold text-muted-foreground shrink-0`}>
+      {user.name[0]?.toUpperCase()}
+    </div>
+  )
+}
+
 export function HeaderShell({
   categories,
   langHrefs,
   lang,
+  user,
 }: {
   categories: CategoryItem[]
   langHrefs: LangHrefs
   lang: string
+  user: AuthUser
 }) {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
   const [exploreOpen, setExploreOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const exploreRef = useRef<HTMLDivElement>(null)
+  const userMenuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -65,8 +84,18 @@ export function HeaderShell({
   }, [exploreOpen])
 
   useEffect(() => {
+    if (!userMenuOpen) return
+    const onClickOutside = (e: MouseEvent) => {
+      if (!userMenuRef.current?.contains(e.target as Node)) setUserMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [userMenuOpen])
+
+  useEffect(() => {
     setMenuOpen(false)
     setExploreOpen(false)
+    setUserMenuOpen(false)
   }, [pathname])
 
   useEffect(() => {
@@ -81,6 +110,16 @@ export function HeaderShell({
   const isActivePlanear = pathname === '/planear'
   const isActiveOperadores = pathname.startsWith('/operadores')
 
+  async function handleSignIn() {
+    const supabase = createClient()
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+  }
+
   return (
     <>
       <header
@@ -90,8 +129,7 @@ export function HeaderShell({
 
           {/* Logo */}
           <Link href={lang === 'en' ? '/en' : '/'} className="flex items-center shrink-0 mr-3">
-            <img src="/brand/op_02.svg" alt="Outdoor Patagonia" className="h-9 w-auto dark:hidden" />
-            <img src="/brand/op_02_dark.svg" alt="Outdoor Patagonia" className="h-9 w-auto hidden dark:block" />
+            <img src="/brand/op_02.svg" alt="Outdoor Patagonia" className="h-9 w-auto" />
           </Link>
 
           {/* Desktop nav */}
@@ -205,6 +243,64 @@ export function HeaderShell({
             </Link>
             <div className="w-px h-3.5 bg-border" />
             <LangToggle {...langHrefs} />
+            <div className="w-px h-3.5 bg-border" />
+
+            {/* Auth */}
+            {user ? (
+              <div ref={userMenuRef} className="relative">
+                <button
+                  onClick={() => setUserMenuOpen((v) => !v)}
+                  aria-label="Menú de usuario"
+                  className="flex items-center justify-center w-8 h-8 rounded-full overflow-hidden ring-2 ring-transparent hover:ring-border transition-all"
+                >
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-muted flex items-center justify-center text-xs font-semibold text-muted-foreground">
+                      {user.name[0]?.toUpperCase()}
+                    </div>
+                  )}
+                </button>
+                <div
+                  className={`absolute top-full right-0 mt-2 w-48 bg-popover border border-border rounded-xl shadow-modal p-1.5 z-50 transition-[opacity,transform] duration-150 origin-top-right${
+                    userMenuOpen
+                      ? ' opacity-100 scale-100 pointer-events-auto'
+                      : ' opacity-0 scale-95 pointer-events-none'
+                  }`}
+                >
+                  <div className="px-3 py-2 mb-1">
+                    <p className="text-xs font-medium truncate">{user.name}</p>
+                    <p className="text-[11px] text-muted-foreground truncate">{user.email}</p>
+                  </div>
+                  <div className="h-px bg-border mx-1 mb-1" />
+                  <Link
+                    href="/perfil"
+                    onClick={() => setUserMenuOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  >
+                    <User size={13} strokeWidth={1.75} />
+                    Mi perfil
+                  </Link>
+                  <form action="/auth/signout" method="POST">
+                    <button
+                      type="submit"
+                      className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors text-left"
+                    >
+                      <LogOut size={13} strokeWidth={1.75} />
+                      Cerrar sesión
+                    </button>
+                  </form>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={handleSignIn}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Iniciar sesión
+              </button>
+            )}
+
             <div className="w-px h-3.5 bg-border" />
             <DarkModeToggle />
           </div>
@@ -322,8 +418,44 @@ export function HeaderShell({
           </div>
 
           {/* Bottom */}
-          <div className="px-5 py-4 border-t border-border shrink-0">
-            <LangToggle {...langHrefs} />
+          <div className="px-4 py-4 border-t border-border shrink-0 space-y-1">
+            {user ? (
+              <>
+                <Link
+                  href="/perfil"
+                  className="flex items-center gap-3 px-2 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt={user.name} className="w-6 h-6 rounded-full object-cover shrink-0" />
+                  ) : (
+                    <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-[10px] font-semibold text-muted-foreground shrink-0">
+                      {user.name[0]?.toUpperCase()}
+                    </div>
+                  )}
+                  <span className="truncate">{user.name}</span>
+                </Link>
+                <form action="/auth/signout" method="POST">
+                  <button
+                    type="submit"
+                    className="w-full flex items-center gap-3 px-2 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  >
+                    <LogOut size={15} strokeWidth={1.75} className="shrink-0" />
+                    Cerrar sesión
+                  </button>
+                </form>
+              </>
+            ) : (
+              <button
+                onClick={handleSignIn}
+                className="w-full flex items-center gap-3 px-2 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              >
+                <User size={15} strokeWidth={1.75} className="shrink-0" />
+                Iniciar sesión
+              </button>
+            )}
+            <div className="pt-2">
+              <LangToggle {...langHrefs} />
+            </div>
           </div>
         </div>
       </div>

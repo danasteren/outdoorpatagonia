@@ -1,7 +1,8 @@
 import { headers } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
+import { createClient as createServerClient } from "@/lib/supabase/server";
 import { toCategorySlug } from "@/lib/category";
-import { HeaderShell } from "./HeaderShell";
+import { HeaderShell, type AuthUser } from "./HeaderShell";
 
 function makeSupabase() {
   return createClient(
@@ -81,6 +82,15 @@ export async function Header() {
   const pathname = headersList.get("x-pathname") ?? "";
   const lang = pathname.startsWith("/en") ? "en" : "es";
 
+  const supabase = await createServerClient();
+  const { data: { user: rawUser } } = await supabase.auth.getUser();
+
+  const authUser: AuthUser = rawUser ? {
+    name: (rawUser.user_metadata?.full_name as string | undefined) ?? rawUser.email ?? 'Usuario',
+    email: rawUser.email ?? '',
+    avatarUrl: (rawUser.user_metadata?.avatar_url as string | undefined) ?? null,
+  } : null;
+
   const [rawCategories, langHrefs] = await Promise.all([
     getCategories(lang),
     getLangHrefs(pathname),
@@ -93,5 +103,5 @@ export async function Header() {
       : `/categoria/${toCategorySlug(cat)}`,
   }));
 
-  return <HeaderShell categories={categories} langHrefs={langHrefs} lang={lang} />;
+  return <HeaderShell categories={categories} langHrefs={langHrefs} lang={lang} user={authUser} />;
 }

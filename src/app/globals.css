@@ -120,26 +120,26 @@
 
 .dark {
   /* ── Surface ──────────────────────────────────────────────────── */
-  --background: oklch(0.18 0.03 150);   /* forest */
-  --foreground: oklch(0.96 0.01 90);    /* cream */
-  --card: oklch(0.21 0.04 152);         /* slightly lighter forest for cards */
-  --card-foreground: oklch(0.96 0.01 90);
-  --popover: oklch(0.21 0.04 152);
-  --popover-foreground: oklch(0.96 0.01 90);
+  --background: oklch(0.26 0.018 165);   /* dark medio con tinte teal */
+  --foreground: oklch(0.94 0.010 88);    /* blanco cálido */
+  --card: oklch(0.29 0.020 165);         /* superficie elevada */
+  --card-foreground: oklch(0.94 0.010 88);
+  --popover: oklch(0.30 0.022 165);
+  --popover-foreground: oklch(0.94 0.010 88);
 
-  /* ── Brand-primary → teal (unchanged in dark) ─────────────────── */
+  /* ── Brand-primary → teal (sin cambios en dark) ───────────────── */
   --primary: #4b9492;
   --primary-foreground: #f5f0e8;
 
-  /* ── Secondary → forest variant ───────────────────────────────── */
-  --secondary: oklch(0.23 0.042 152);
-  --secondary-foreground: oklch(0.96 0.01 90);
+  /* ── Secondary ────────────────────────────────────────────────── */
+  --secondary: oklch(0.32 0.022 165);
+  --secondary-foreground: oklch(0.94 0.010 88);
 
-  /* ── Muted → dark forest ──────────────────────────────────────── */
-  --muted: oklch(0.22 0.038 152);
-  --muted-foreground: oklch(0.66 0.018 90);
+  /* ── Muted ────────────────────────────────────────────────────── */
+  --muted: oklch(0.32 0.020 165);
+  --muted-foreground: oklch(0.64 0.016 88);
 
-  /* ── Accent → teal-light (unchanged in dark) ──────────────────── */
+  /* ── Accent → teal-light (sin cambios en dark) ────────────────── */
   --accent: #87cabf;
   --accent-foreground: #1a3a2a;
 
@@ -147,8 +147,8 @@
   --destructive: oklch(0.704 0.191 22.216);
 
   /* ── Borders & focus ──────────────────────────────────────────── */
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+  --border: oklch(1 0 0 / 11%);
+  --input: oklch(1 0 0 / 16%);
   --ring: #4b9492;
 
   /* ── Charts ───────────────────────────────────────────────────── */
@@ -159,20 +159,20 @@
   --chart-5: oklch(0.269 0 0);
 
   /* ── Sidebar ──────────────────────────────────────────────────── */
-  --sidebar: oklch(0.20 0.038 152);
-  --sidebar-foreground: oklch(0.96 0.01 90);
+  --sidebar: oklch(0.27 0.019 165);
+  --sidebar-foreground: oklch(0.94 0.010 88);
   --sidebar-primary: #4b9492;
   --sidebar-primary-foreground: #f5f0e8;
-  --sidebar-accent: oklch(0.23 0.042 152);
-  --sidebar-accent-foreground: oklch(0.96 0.01 90);
-  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-accent: oklch(0.33 0.022 165);
+  --sidebar-accent-foreground: oklch(0.94 0.010 88);
+  --sidebar-border: oklch(1 0 0 / 11%);
   --sidebar-ring: #4b9492;
 
-  /* ── Shadow tokens (stronger shadows on dark) ─────────────────── */
-  --shadow-sm: 0 1px 3px oklch(0.05 0.02 150 / 0.25);
-  --shadow-card: 0 4px 12px oklch(0.05 0.02 150 / 0.45), 0 1px 3px oklch(0.05 0.02 150 / 0.25);
-  --shadow-hover: 0 8px 24px oklch(0.05 0.02 150 / 0.60), 0 2px 6px oklch(0.05 0.02 150 / 0.35);
-  --shadow-modal: 0 20px 60px oklch(0.05 0.02 150 / 0.70), 0 4px 16px oklch(0.05 0.02 150 / 0.45);
+  /* ── Shadow tokens ────────────────────────────────────────────── */
+  --shadow-sm: 0 1px 3px oklch(0.04 0.01 165 / 0.35);
+  --shadow-card: 0 4px 12px oklch(0.04 0.01 165 / 0.55), 0 1px 3px oklch(0.04 0.01 165 / 0.30);
+  --shadow-hover: 0 8px 24px oklch(0.04 0.01 165 / 0.70), 0 2px 6px oklch(0.04 0.01 165 / 0.40);
+  --shadow-modal: 0 20px 60px oklch(0.04 0.01 165 / 0.80), 0 4px 16px oklch(0.04 0.01 165 / 0.55);
 }
 
 @layer base {
