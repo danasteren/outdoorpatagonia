@@ -62,6 +62,12 @@ export function Footer() {
                 Sobre nosotros
               </Link>
               <Link
+                href="/operadores"
+                className="hover:text-[var(--color-cream)] transition-colors"
+              >
+                Operadores
+              </Link>
+              <Link
                 href="/contacto"
                 className="hover:text-[var(--color-cream)] transition-colors"
               >
