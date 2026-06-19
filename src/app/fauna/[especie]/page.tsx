@@ -9,9 +9,11 @@ import {
 } from "@/lib/fauna/catalog"
 import {
   fetchSpeciesDetail,
+  fetchSpeciesByName,
   fetchSpeciesSightingsPatagonia,
   fetchSpeciesMonthlyHistogram,
 } from "@/lib/apis/inaturalist"
+import { fetchGbifSpecies, fetchGbifByScientificName } from "@/lib/apis/gbif"
 import { FaunaSightingsMapClient } from "@/components/data/FaunaSightingsMapClient"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
@@ -88,10 +90,10 @@ export default async function FaunaEspeciePage({
   const { especie } = await params
   const entry = getFaunaEntry(especie)
 
-  // Fetch species detail (use catalog taxonId if known, else slug as search query)
+  // Fetch species detail: by taxonId from catalog, or by name search for on-demand slugs
   const detail = entry
     ? await fetchSpeciesDetail(entry.taxonId)
-    : null
+    : await fetchSpeciesByName(especie.replace(/-/g, " "))
 
   if (!detail && !entry) notFound()
 
@@ -102,18 +104,27 @@ export default async function FaunaEspeciePage({
     resolvedDetail?.scientificName ?? entry?.scientificName ?? especie
   const taxonId = resolvedDetail?.taxonId ?? entry?.taxonId
 
-  // Parallel data fetches — sightings and histogram
-  const [sightings, histogram] = await Promise.all([
+  // Parallel data fetches — sightings, histogram, and GBIF taxonomy
+  const [sightings, histogram, gbif] = await Promise.all([
     taxonId ? fetchSpeciesSightingsPatagonia(taxonId, 20) : Promise.resolve([]),
     taxonId ? fetchSpeciesMonthlyHistogram(taxonId) : Promise.resolve({} as Record<string, number>),
+    entry?.gbifKey
+      ? fetchGbifSpecies(entry.gbifKey)
+      : fetchGbifByScientificName(scientificName),
   ])
 
   const heroImage = resolvedDetail?.largeImageUrl ?? resolvedDetail?.imageUrl
   const categoryLabel = entry
     ? CATEGORY_LABELS[entry.category]
     : null
-  const conservation = resolvedDetail?.conservationStatusCode
-    ? CONSERVATION_LABELS[resolvedDetail.conservationStatusCode.toLowerCase()]
+
+  // IUCN: prefer iNaturalist (more granular), fall back to GBIF
+  const conservationCode =
+    resolvedDetail?.conservationStatusCode ??
+    gbif?.iucnRedListCategory?.toLowerCase() ??
+    null
+  const conservation = conservationCode
+    ? CONSERVATION_LABELS[conservationCode]
     : null
 
   // Month histogram data (1-12 keys)
@@ -216,6 +227,36 @@ export default async function FaunaEspeciePage({
               </section>
             )}
 
+            {/* Taxonomy from GBIF */}
+            {gbif && (gbif.order ?? gbif.family ?? gbif.class) && (
+              <section>
+                <h2 className="text-xl font-bold mb-3">Clasificación</h2>
+                <dl className="space-y-1.5 text-sm">
+                  {gbif.class && (
+                    <div className="flex gap-2">
+                      <dt className="text-muted-foreground w-20 shrink-0">Clase</dt>
+                      <dd className="font-medium italic">{gbif.class}</dd>
+                    </div>
+                  )}
+                  {gbif.order && (
+                    <div className="flex gap-2">
+                      <dt className="text-muted-foreground w-20 shrink-0">Orden</dt>
+                      <dd className="font-medium italic">{gbif.order}</dd>
+                    </div>
+                  )}
+                  {gbif.family && (
+                    <div className="flex gap-2">
+                      <dt className="text-muted-foreground w-20 shrink-0">Familia</dt>
+                      <dd className="font-medium italic">{gbif.family}</dd>
+                    </div>
+                  )}
+                </dl>
+                <p className="text-[10px] text-muted-foreground mt-2">
+                  Fuente: GBIF · usageKey {gbif.usageKey}
+                </p>
+              </section>
+            )}
+
             {/* Parks */}
             {entry && entry.parquesRelacionados.length > 0 && (
               <section>
@@ -253,9 +294,9 @@ export default async function FaunaEspeciePage({
                     <ExternalLink className="w-3.5 h-3.5" />
                     iNaturalist — observaciones globales
                   </a>
-                  {entry?.gbifKey && (
+                  {(entry?.gbifKey ?? gbif?.usageKey) && (
                     <a
-                      href={`https://www.gbif.org/species/${entry.gbifKey}`}
+                      href={`https://www.gbif.org/species/${entry?.gbifKey ?? gbif?.usageKey}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
