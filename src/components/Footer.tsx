@@ -62,12 +62,6 @@ export function Footer() {
                 Sobre nosotros
               </Link>
               <Link
-                href="/proyecto-patagonia#apoyar"
-                className="hover:text-[var(--color-cream)] transition-colors"
-              >
-                Apoyar el proyecto
-              </Link>
-              <Link
                 href="/contacto"
                 className="hover:text-[var(--color-cream)] transition-colors"
               >

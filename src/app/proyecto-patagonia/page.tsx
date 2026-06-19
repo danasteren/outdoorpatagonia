@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Heart } from "lucide-react";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Apoya Outdoor Patagonia",
+  title: "Sobre Outdoor Patagonia",
   description:
-    "Outdoor Patagonia es una plataforma independiente que explora la cultura, naturaleza, gastronomía, flora y fauna de la Patagonia. Con tu aporte seguimos creciendo.",
+    "Outdoor Patagonia es una plataforma independiente que explora la cultura, naturaleza, gastronomía, flora y fauna de la Patagonia argentina y chilena.",
   alternates: {
     canonical: "https://outdoorpatagonia.com/proyecto-patagonia",
     languages: { en: "https://outdoorpatagonia.com/en/patagonia-project" },
@@ -21,7 +21,7 @@ export default function ProyectoPage() {
         className="text-3xl md:text-4xl font-bold text-foreground leading-tight mb-6"
         style={{ fontFamily: "var(--font-playfair)" }}
       >
-        Apoya Outdoor Patagonia
+        Sobre Outdoor Patagonia
       </h1>
 
       <div className="prose prose-neutral dark:prose-invert max-w-none text-sm leading-relaxed space-y-8">
@@ -43,47 +43,21 @@ export default function ProyectoPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold mb-4">Con tu aporte, fortalecemos Outdoor Patagonia</h2>
+          <h2 className="text-xl font-semibold mb-4">¿Sos operador turístico?</h2>
           <p>
-            Outdoor Patagonia ha crecido como una plataforma independiente y sin patrocinadores,
-            compartiendo la belleza y diversidad de la Patagonia de manera libre y accesible. Con tu
-            donación, podemos seguir:
-          </p>
-          <ul className="list-disc pl-5 space-y-2 mt-3">
-            <li>
-              <strong>Recorriendo más lugares</strong> para documentar su cultura y paisaje.
-            </li>
-            <li>
-              <strong>Produciendo contenido detallado</strong> y de alta calidad para que más gente
-              descubra la Patagonia.
-            </li>
-            <li>
-              <strong>Promoviendo el respeto por la naturaleza</strong> y la preservación de
-              ecosistemas frágiles.
-            </li>
-            <li>
-              <strong>Impulsando proyectos comunitarios</strong> que apoyen el desarrollo local y la
-              divulgación de conocimientos.
-            </li>
-          </ul>
-          <p className="mt-4">
-            Cada aporte, por pequeño que sea, hace una gran diferencia: nos ayuda a costear viajes
-            de investigación, equipo para fotografías y videos, y tiempo de redacción y edición. De
-            esta manera, podemos mantener el contenido a disposición de todos los amantes de la
-            naturaleza y aventureros de corazón.
+            Si ofrecés servicios en la Patagonia — trekking, kayak, cabalgatas, excursiones, alojamiento u
+            otras experiencias — podés sumar tu empresa al directorio de Outdoor Patagonia y llegar a
+            viajeros que ya están planeando su viaje.
           </p>
         </section>
 
         <div className="flex justify-center pt-4">
-          <a
-            href="https://ko-fi.com/outdoorpatagonia"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/operadores"
             className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-[var(--color-terracotta)] text-white font-semibold hover:opacity-90 transition-opacity"
           >
-            <Heart size={20} />
-            Apoyar el proyecto
-          </a>
+            Ver directorio de operadores
+          </Link>
         </div>
       </div>
     </div>
