@@ -79,12 +79,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const { data: operatorsData } = await supabase
+    .from("operators")
+    .select("slug");
+
+  const operatorUrls: MetadataRoute.Sitemap = (operatorsData ?? []).map((op) => ({
+    url: `${BASE}/operadores/${op.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
   return [
     { url: BASE, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/en`, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/mapa`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/planear`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE}/operadores`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/novedades`, changeFrequency: "weekly", priority: 0.5 },
+    ...operatorUrls,
     ...parquesUrls,
     ...senderosUrls,
     ...faunaUrls,
