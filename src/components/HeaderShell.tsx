@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import {
-  Menu, X, Map, Compass, Globe, ChevronDown,
+  Menu, X, Map, Compass, Globe, ChevronDown, Users,
   Lightbulb, Landmark, Tent, PawPrint, Leaf, ChefHat,
   BookOpen, Sprout, Recycle, MapPin, Mountain, Download,
 } from 'lucide-react'
@@ -76,8 +76,10 @@ export function HeaderShell({
 
   const mapaHref = lang === 'en' ? '/en/mapa' : '/mapa'
   const planearHref = '/planear'
+  const operadoresHref = '/operadores'
   const isActiveMapa = pathname === '/mapa' || pathname === '/en/mapa'
   const isActivePlanear = pathname === '/planear'
+  const isActiveOperadores = pathname.startsWith('/operadores')
 
   return (
     <>
@@ -151,6 +153,19 @@ export function HeaderShell({
             >
               <Map size={15} strokeWidth={1.75} />
               Mapa
+            </Link>
+
+            {/* Operadores */}
+            <Link
+              href={operadoresHref}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                isActiveOperadores
+                  ? 'text-foreground bg-muted'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+              }`}
+            >
+              <Users size={15} strokeWidth={1.75} />
+              Operadores
             </Link>
 
             {/* Planear — terracotta CTA */}
@@ -237,6 +252,13 @@ export function HeaderShell({
             >
               <Compass size={16} strokeWidth={1.75} className="shrink-0" />
               Planeá tu viaje
+            </Link>
+            <Link
+              href={operadoresHref}
+              className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <Users size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+              Operadores
             </Link>
           </div>
 
