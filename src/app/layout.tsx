@@ -27,6 +27,14 @@ export const metadata: Metadata = {
   title: "Outdoor Patagonia — Naturaleza, cultura e historias del sur",
   description:
     "Guía definitiva de la Patagonia: trekking, flora, fauna, gastronomía y herramientas para explorar el sur de Argentina y Chile.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default async function RootLayout({
