@@ -41,12 +41,6 @@ export function Footer() {
                 Recursos de viaje
               </Link>
               <Link
-                href="/diccionario-patagonia"
-                className="hover:text-[var(--color-cream)] transition-colors"
-              >
-                Diccionario
-              </Link>
-              <Link
                 href="/mapa"
                 className="hover:text-[var(--color-cream)] transition-colors"
               >
