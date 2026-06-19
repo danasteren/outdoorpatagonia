@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import {
-  Menu, X, Map, Compass, Globe, ChevronDown, Users,
+  Menu, X, Map, Compass, Globe, ChevronDown, Users, Search,
   Lightbulb, Landmark, Tent, PawPrint, Leaf, ChefHat,
   BookOpen, Sprout, Recycle, MapPin, Mountain, Download,
 } from 'lucide-react'
@@ -77,9 +77,11 @@ export function HeaderShell({
   const mapaHref = lang === 'en' ? '/en/mapa' : '/mapa'
   const planearHref = '/planear'
   const operadoresHref = '/operadores'
+  const faunaHref = '/fauna'
   const isActiveMapa = pathname === '/mapa' || pathname === '/en/mapa'
   const isActivePlanear = pathname === '/planear'
   const isActiveOperadores = pathname.startsWith('/operadores')
+  const isActiveFauna = pathname.startsWith('/fauna')
 
   return (
     <>
@@ -155,6 +157,19 @@ export function HeaderShell({
               Mapa
             </Link>
 
+            {/* Fauna */}
+            <Link
+              href={faunaHref}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                isActiveFauna
+                  ? 'text-foreground bg-muted'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+              }`}
+            >
+              <PawPrint size={15} strokeWidth={1.75} />
+              Fauna
+            </Link>
+
             {/* Operadores */}
             <Link
               href={operadoresHref}
@@ -184,6 +199,14 @@ export function HeaderShell({
 
           {/* Desktop utilities */}
           <div className="hidden md:flex items-center gap-3 ml-auto shrink-0">
+            <Link
+              href="/buscar"
+              aria-label="Buscar"
+              className="flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <Search size={16} strokeWidth={1.75} />
+            </Link>
+            <div className="w-px h-3.5 bg-border" />
             <LangToggle {...langHrefs} />
             <div className="w-px h-3.5 bg-border" />
             <DarkModeToggle />
@@ -254,11 +277,25 @@ export function HeaderShell({
               Planeá tu viaje
             </Link>
             <Link
+              href={faunaHref}
+              className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <PawPrint size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+              Fauna patagónica
+            </Link>
+            <Link
               href={operadoresHref}
               className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <Users size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
               Operadores
+            </Link>
+            <Link
+              href="/buscar"
+              className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <Search size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+              Buscar
             </Link>
           </div>
 
