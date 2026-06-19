@@ -19,5 +19,8 @@ export default async function ArticleRedirect({
 
   if (!data) notFound();
 
-  permanentRedirect(`/en/${toCategorySlug(data.category ?? "")}/${slug}`);
+  const catSlug = toCategorySlug(data.category ?? "");
+  if (catSlug === "recursos-descargables") permanentRedirect("/");
+
+  permanentRedirect(`/en/${catSlug}/${slug}`);
 }

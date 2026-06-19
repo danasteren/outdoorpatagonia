@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createBuildClient } from "@supabase/supabase-js";
@@ -15,10 +15,12 @@ export async function generateStaticParams() {
     .select("slug, category")
     .eq("language", "en")
     .eq("status", "published");
-  return (data ?? []).map((a) => ({
-    slug: toCategorySlug(a.category ?? "articles"),
-    article: a.slug,
-  }));
+  return (data ?? [])
+    .filter((a) => toCategorySlug(a.category ?? "") !== "recursos-descargables")
+    .map((a) => ({
+      slug: toCategorySlug(a.category ?? "articles"),
+      article: a.slug,
+    }));
 }
 
 async function getArticle(article: string) {
@@ -96,6 +98,7 @@ export default async function ArticlePage({
   if (!articleData) notFound();
 
   const correctCategory = toCategorySlug(articleData.category ?? "");
+  if (correctCategory === "recursos-descargables") permanentRedirect("/");
   if (slug !== correctCategory) {
     redirect(`/en/${correctCategory}/${article}`);
   }

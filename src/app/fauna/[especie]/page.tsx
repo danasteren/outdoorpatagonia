@@ -2,6 +2,8 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ExternalLink, MapPin, Calendar, Eye } from "lucide-react"
+import { cache } from "react"
+import { createClient as createBuildClient } from "@supabase/supabase-js"
 import {
   FAUNA_CATALOG,
   getFaunaEntry,
@@ -17,15 +19,64 @@ import { fetchGbifSpecies, fetchGbifByScientificName } from "@/lib/apis/gbif"
 import { FaunaSightingsMapClient } from "@/components/data/FaunaSightingsMapClient"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
+import { ArticleLayout } from "@/components/ArticleLayout"
+import { toCategorySlug } from "@/lib/category"
 
 export const revalidate = 3600
 // On-demand rendering for species not pre-built
 export const dynamicParams = true
 
-// ─── generateStaticParams: pre-build known species ───────────────────────────
+// ─── Fauna article helpers ────────────────────────────────────────────────────
 
-export function generateStaticParams() {
-  return FAUNA_CATALOG.map((e) => ({ especie: e.slug }))
+function buildClient() {
+  return createBuildClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
+
+const getFaunaArticle = cache(async (slug: string) => {
+  const { data } = await buildClient()
+    .from("articles")
+    .select(
+      "title, excerpt, content, category, tags, reading_time_min, published_at, cover_image_url, language, slug, seo_title, seo_description"
+    )
+    .eq("slug", slug)
+    .eq("language", "es")
+    .eq("status", "published")
+    .maybeSingle()
+  if (!data || toCategorySlug(data.category ?? "") !== "fauna") return null
+  return data
+})
+
+async function getAltLangFaunaArticle(slug: string) {
+  const { data } = await buildClient()
+    .from("articles")
+    .select("slug, category")
+    .eq("slug", slug)
+    .eq("language", "en")
+    .eq("status", "published")
+    .maybeSingle()
+  return data
+}
+
+// ─── generateStaticParams: pre-build known species + fauna articles ───────────
+
+export async function generateStaticParams() {
+  const { data } = await buildClient()
+    .from("articles")
+    .select("slug, category")
+    .eq("language", "es")
+    .eq("status", "published")
+
+  const faunaArticleSlugs = (data ?? [])
+    .filter((a) => toCategorySlug(a.category ?? "") === "fauna")
+    .map((a) => ({ especie: a.slug }))
+
+  return [
+    ...FAUNA_CATALOG.map((e) => ({ especie: e.slug })),
+    ...faunaArticleSlugs,
+  ]
 }
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
@@ -36,6 +87,25 @@ export async function generateMetadata({
   params: Promise<{ especie: string }>
 }): Promise<Metadata> {
   const { especie } = await params
+
+  const faunaArticle = await getFaunaArticle(especie)
+  if (faunaArticle) {
+    const canonicalUrl = `https://outdoorpatagonia.com/fauna/${especie}`
+    return {
+      title: faunaArticle.seo_title || faunaArticle.title,
+      description: faunaArticle.seo_description || faunaArticle.excerpt || undefined,
+      alternates: { canonical: canonicalUrl },
+      openGraph: {
+        title: faunaArticle.seo_title || faunaArticle.title,
+        description: faunaArticle.seo_description || faunaArticle.excerpt || undefined,
+        url: canonicalUrl,
+        images: faunaArticle.cover_image_url ? [faunaArticle.cover_image_url] : [],
+        locale: "es_AR",
+        type: "article",
+      },
+    }
+  }
+
   const entry = getFaunaEntry(especie)
   const name = entry?.commonNameEs ?? especie.replace(/-/g, " ")
   const sci = entry?.scientificName ?? ""
@@ -88,6 +158,34 @@ export default async function FaunaEspeciePage({
   params: Promise<{ especie: string }>
 }) {
   const { especie } = await params
+
+  // If the slug matches a Supabase fauna article, render it instead of the species page
+  const faunaArticle = await getFaunaArticle(especie)
+  if (faunaArticle) {
+    const altLang = await getAltLangFaunaArticle(especie)
+    const altLangHref = altLang
+      ? `/en/${toCategorySlug(altLang.category ?? "")}/${especie}`
+      : null
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: faunaArticle.title,
+      description: faunaArticle.excerpt ?? undefined,
+      image: faunaArticle.cover_image_url ?? undefined,
+      datePublished: faunaArticle.published_at ?? undefined,
+      inLanguage: "es",
+      author: { "@type": "Organization", name: "Outdoor Patagonia" },
+      publisher: { "@type": "Organization", name: "Outdoor Patagonia", url: "https://outdoorpatagonia.com" },
+      url: `https://outdoorpatagonia.com/fauna/${especie}`,
+    }
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <ArticleLayout article={faunaArticle} altLangHref={altLangHref} />
+      </>
+    )
+  }
+
   const entry = getFaunaEntry(especie)
 
   // Fetch species detail: by taxonId from catalog, or by name search for on-demand slugs
