@@ -191,7 +191,7 @@ export function HeaderShell({
 
       {/* Mobile overlay + drawer */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-200${
+        className={`fixed inset-0 z-[1001] md:hidden transition-opacity duration-200${
           menuOpen ? ' opacity-100 pointer-events-auto' : ' opacity-0 pointer-events-none'
         }`}
       >
