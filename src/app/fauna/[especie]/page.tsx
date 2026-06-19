@@ -369,7 +369,7 @@ export default async function FaunaEspeciePage({
               <h2 className="text-xl font-bold mb-3">
                 Avistamientos recientes
               </h2>
-              <div className="h-72 rounded-xl overflow-hidden border border-border">
+              <div className="h-72 rounded-xl overflow-hidden border border-border isolate">
                 <FaunaSightingsMapClient sightings={sightings} />
               </div>
               <p className="text-xs text-muted-foreground mt-2">
@@ -381,7 +381,7 @@ export default async function FaunaEspeciePage({
             {sightings.length > 0 ? (
               <section>
                 <h2 className="text-xl font-bold mb-3">Últimas observaciones</h2>
-                <div className="space-y-3">
+                <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1">
                   {sightings.slice(0, 8).map((s) => (
                     <Card key={s.id} variant="default">
                       <CardBody className="p-3 flex gap-3 items-start">
@@ -397,7 +397,7 @@ export default async function FaunaEspeciePage({
                           <div className="flex items-start justify-between gap-2">
                             <div>
                               {s.placeGuess && (
-                                <p className="text-sm font-medium leading-snug truncate">
+                                <p className="text-sm font-medium leading-snug">
                                   {s.placeGuess}
                                 </p>
                               )}
