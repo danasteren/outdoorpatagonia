@@ -210,9 +210,10 @@ export default async function FaunaEspeciePage({
                 <h2 className="text-xl font-bold mb-3">
                   Sobre el {commonName.toLowerCase()}
                 </h2>
-                <p className="text-muted-foreground leading-relaxed text-sm">
-                  {resolvedDetail.description}
-                </p>
+                <p
+                  className="text-muted-foreground leading-relaxed text-sm"
+                  dangerouslySetInnerHTML={{ __html: resolvedDetail.description }}
+                />
                 {resolvedDetail.wikipediaUrl && (
                   <a
                     href={resolvedDetail.wikipediaUrl}
