@@ -43,6 +43,16 @@ export default function PrivacidadPage() {
         </section>
 
         <section>
+          <h2 className="text-lg font-semibold mb-3">Inicio de sesión con Google</h2>
+          <p>
+            Si iniciás sesión con Google, recibimos únicamente tu nombre, correo electrónico y foto
+            de perfil. No accedemos a ningún otro dato de tu cuenta de Google. La autenticación está
+            gestionada por <strong>Supabase</strong> y <strong>Google OAuth 2.0</strong>, sujetos a
+            sus propias políticas de privacidad.
+          </p>
+        </section>
+
+        <section>
           <h2 className="text-lg font-semibold mb-3">Protección de tu información</h2>
           <p>
             Implementamos medidas de seguridad para proteger tus datos personales contra acceso no
