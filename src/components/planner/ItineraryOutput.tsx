@@ -14,6 +14,7 @@ import {
 import type { ItineraryResult, TripFormData } from "@/lib/planner/types";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/primitives";
 import { Button } from "@/components/primitives";
+import { SaveItineraryButton } from "./SaveItineraryButton";
 
 const ItineraryMapInner = dynamic(
   () =>
@@ -78,6 +79,11 @@ export function ItineraryOutput({ result, form, onReset }: ItineraryOutputProps)
             <Chip key={i}>{INTEREST_LABELS[i]}</Chip>
           ))}
           <Chip>{BUDGET_LABELS[form.budget]}</Chip>
+        </div>
+
+        {/* Guardar */}
+        <div className="flex justify-center pt-2">
+          <SaveItineraryButton form={form} result={result} />
         </div>
       </div>
 

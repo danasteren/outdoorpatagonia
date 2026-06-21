@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Calendar, Clock, Hash } from "lucide-react";
 import { fixWpLazyLoad } from "@/lib/utils";
+import { FavoriteButton } from "@/components/FavoriteButton";
 
 interface Article {
   title: string;
@@ -99,6 +100,9 @@ export function ArticleLayout({
                 {article.reading_time_min} min
               </span>
             )}
+            <span className="ml-auto">
+              <FavoriteButton slug={article.slug} title={article.title} category={article.category} />
+            </span>
           </div>
 
           {/* Cover image */}
