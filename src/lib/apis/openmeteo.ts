@@ -37,6 +37,33 @@ function wmoToCondition(code: number): string {
   return "Tormenta"
 }
 
+export async function fetchWeatherForLocation(
+  lat: number,
+  lon: number,
+  name: string
+): Promise<WeatherData | null> {
+  try {
+    const url =
+      `https://api.open-meteo.com/v1/forecast` +
+      `?latitude=${lat}&longitude=${lon}` +
+      `&current=temperature_2m,weather_code,wind_speed_10m` +
+      `&timezone=auto&forecast_days=1`
+    const res = await fetch(url, { next: { revalidate: 3600 } })
+    if (!res.ok) return null
+    const data: OpenMeteoResponse = await res.json()
+    return {
+      location: name,
+      region: lon < -68 ? "AR" : "CL",
+      temperature: Math.round(data.current.temperature_2m),
+      weatherCode: data.current.weather_code,
+      windSpeed: Math.round(data.current.wind_speed_10m),
+      condition: wmoToCondition(data.current.weather_code),
+    }
+  } catch {
+    return null
+  }
+}
+
 export async function fetchWeather(): Promise<WeatherData[]> {
   const results = await Promise.allSettled(
     LOCATIONS.map(async ({ name, lat, lon, region }) => {
