@@ -144,11 +144,10 @@ export function HeaderShell({
             <div ref={exploreRef} className="relative">
               <button
                 onClick={() => setExploreOpen((v) => !v)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  exploreOpen
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${exploreOpen
                     ? 'text-foreground bg-muted'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-                }`}
+                  }`}
               >
                 <Globe size={15} strokeWidth={1.75} />
                 Explorar
@@ -160,25 +159,28 @@ export function HeaderShell({
               </button>
 
               <div
-                className={`absolute top-full left-0 mt-2 w-[460px] bg-popover border border-border rounded-xl shadow-modal p-3 z-50 transition-[opacity,transform] duration-150 origin-top-left${
-                  exploreOpen
+                className={`absolute top-full left-0 mt-2 w-[460px] bg-popover border border-border rounded-xl shadow-modal p-3 z-50 transition-[opacity,transform] duration-150 origin-top-left${exploreOpen
                     ? ' opacity-100 scale-100 pointer-events-auto'
                     : ' opacity-0 scale-95 pointer-events-none'
-                }`}
+                  }`}
               >
-                {/* Directorios de datos */}
-                <Link
-                  href="/fauna"
-                  onClick={() => setExploreOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors mb-1"
-                >
-                  <PawPrint size={14} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-                  <span className="font-medium">Fauna patagónica</span>
-                  <span className="ml-auto text-[10px] uppercase tracking-widest opacity-40">Directorio</span>
-                </Link>
-                <div className="h-px bg-border mx-1 mb-2" />
-                {/* Artículos por categoría */}
                 <div className="grid grid-cols-3 gap-0.5">
+                  <Link
+                    href="/fauna"
+                    onClick={() => setExploreOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  >
+                    <PawPrint size={14} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+                    <span className="truncate font-medium">Fauna</span>
+                  </Link>
+                  <Link
+                    href="/parques"
+                    onClick={() => setExploreOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  >
+                    <Mountain size={14} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+                    <span className="truncate font-medium">Parques</span>
+                  </Link>
                   {categories.map((cat) => {
                     const Icon = getCatIcon(cat.label)
                     return (
@@ -200,11 +202,10 @@ export function HeaderShell({
             {/* Mapa */}
             <Link
               href={mapaHref}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                isActiveMapa
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActiveMapa
                   ? 'text-foreground bg-muted'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-              }`}
+                }`}
             >
               <Map size={15} strokeWidth={1.75} />
               Mapa
@@ -213,11 +214,10 @@ export function HeaderShell({
             {/* Operadores */}
             <Link
               href={operadoresHref}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                isActiveOperadores
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActiveOperadores
                   ? 'text-foreground bg-muted'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-              }`}
+                }`}
             >
               <Users size={15} strokeWidth={1.75} />
               Operadores
@@ -226,11 +226,10 @@ export function HeaderShell({
             {/* Planear — terracotta CTA */}
             <Link
               href={planearHref}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                isActivePlanear
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActivePlanear
                   ? 'text-[var(--color-terracotta)] bg-[var(--color-terracotta)]/10'
                   : 'text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)]/8'
-              }`}
+                }`}
             >
               <Compass size={15} strokeWidth={1.75} />
               Planear
@@ -267,11 +266,10 @@ export function HeaderShell({
                   )}
                 </button>
                 <div
-                  className={`absolute top-full right-0 mt-2 w-48 bg-popover border border-border rounded-xl shadow-modal p-1.5 z-50 transition-[opacity,transform] duration-150 origin-top-right${
-                    userMenuOpen
+                  className={`absolute top-full right-0 mt-2 w-48 bg-popover border border-border rounded-xl shadow-modal p-1.5 z-50 transition-[opacity,transform] duration-150 origin-top-right${userMenuOpen
                       ? ' opacity-100 scale-100 pointer-events-auto'
                       : ' opacity-0 scale-95 pointer-events-none'
-                  }`}
+                    }`}
                 >
                   <div className="px-3 py-2 mb-1">
                     <p className="text-xs font-medium truncate">{user.name}</p>
@@ -327,9 +325,8 @@ export function HeaderShell({
 
       {/* Mobile overlay + drawer */}
       <div
-        className={`fixed inset-0 z-[1001] md:hidden transition-opacity duration-200${
-          menuOpen ? ' opacity-100 pointer-events-auto' : ' opacity-0 pointer-events-none'
-        }`}
+        className={`fixed inset-0 z-[1001] md:hidden transition-opacity duration-200${menuOpen ? ' opacity-100 pointer-events-auto' : ' opacity-0 pointer-events-none'
+          }`}
       >
         <div
           className="absolute inset-0 bg-foreground/20 backdrop-blur-sm"
@@ -338,9 +335,8 @@ export function HeaderShell({
         />
 
         <div
-          className={`absolute right-0 top-0 bottom-0 w-[280px] bg-background border-l border-border flex flex-col shadow-modal transition-transform duration-300 ease-out${
-            menuOpen ? ' translate-x-0' : ' translate-x-full'
-          }`}
+          className={`absolute right-0 top-0 bottom-0 w-[280px] bg-background border-l border-border flex flex-col shadow-modal transition-transform duration-300 ease-out${menuOpen ? ' translate-x-0' : ' translate-x-full'
+            }`}
         >
           {/* Drawer header */}
           <div className="h-16 flex items-center justify-between px-5 border-b border-border shrink-0">
@@ -397,16 +393,20 @@ export function HeaderShell({
             <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-2 mb-1.5">
               Explorar
             </p>
-            {/* Directorios de datos */}
             <Link
               href="/fauna"
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <PawPrint size={15} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-              Fauna patagónica
+              Fauna
             </Link>
-            <div className="mx-2 my-2 h-px bg-border" />
-            {/* Artículos por categoría */}
+            <Link
+              href="/parques"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <Mountain size={15} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+              Parques
+            </Link>
             {categories.map((cat) => {
               const Icon = getCatIcon(cat.label)
               return (

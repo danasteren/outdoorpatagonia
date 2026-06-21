@@ -19,7 +19,10 @@ async function getCategories(lang: string) {
     .eq("status", "published")
     .not("category", "is", null);
 
-  return [...new Set((data ?? []).map((a) => a.category as string))].sort();
+  const EXCLUDE = new Set(["fauna"])
+  return [...new Set((data ?? []).map((a) => a.category as string))]
+    .filter((c) => !EXCLUDE.has(c.toLowerCase()))
+    .sort()
 }
 
 async function getLangHrefs(pathname: string): Promise<{
