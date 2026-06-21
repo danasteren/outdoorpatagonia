@@ -1,5 +1,6 @@
 export type WeatherData = {
   location: string
+  region: "AR" | "CL"
   temperature: number
   weatherCode: number
   windSpeed: number
@@ -14,12 +15,14 @@ type OpenMeteoResponse = {
   }
 }
 
-const LOCATIONS = [
-  { name: "El Chaltén", lat: -49.3321, lon: -72.8856 },
-  { name: "Ushuaia", lat: -54.8019, lon: -68.303 },
-  { name: "Pto. Natales", lat: -51.7311, lon: -72.4868 },
-  { name: "Bariloche", lat: -41.1335, lon: -71.3103 },
-] as const
+const LOCATIONS: { name: string; lat: number; lon: number; region: "AR" | "CL" }[] = [
+  { name: "El Chaltén", lat: -49.3321, lon: -72.8856, region: "AR" },
+  { name: "Ushuaia", lat: -54.8019, lon: -68.303, region: "AR" },
+  { name: "Bariloche", lat: -41.1335, lon: -71.3103, region: "AR" },
+  { name: "Pto. Natales", lat: -51.7311, lon: -72.4868, region: "CL" },
+  { name: "Punta Arenas", lat: -53.1638, lon: -70.9171, region: "CL" },
+  { name: "Coyhaique", lat: -45.5712, lon: -72.0658, region: "CL" },
+]
 
 function wmoToCondition(code: number): string {
   if (code === 0) return "Despejado"
@@ -34,35 +37,9 @@ function wmoToCondition(code: number): string {
   return "Tormenta"
 }
 
-export async function fetchWeatherForLocation(
-  lat: number,
-  lon: number,
-  name: string
-): Promise<WeatherData | null> {
-  const url =
-    `https://api.open-meteo.com/v1/forecast` +
-    `?latitude=${lat}&longitude=${lon}` +
-    `&current=temperature_2m,weather_code,wind_speed_10m` +
-    `&timezone=auto&forecast_days=1`
-  try {
-    const res = await fetch(url, { next: { revalidate: 3600 } })
-    if (!res.ok) return null
-    const data: OpenMeteoResponse = await res.json()
-    return {
-      location: name,
-      temperature: Math.round(data.current.temperature_2m),
-      weatherCode: data.current.weather_code,
-      windSpeed: Math.round(data.current.wind_speed_10m),
-      condition: wmoToCondition(data.current.weather_code),
-    }
-  } catch {
-    return null
-  }
-}
-
 export async function fetchWeather(): Promise<WeatherData[]> {
   const results = await Promise.allSettled(
-    LOCATIONS.map(async ({ name, lat, lon }) => {
+    LOCATIONS.map(async ({ name, lat, lon, region }) => {
       const url =
         `https://api.open-meteo.com/v1/forecast` +
         `?latitude=${lat}&longitude=${lon}` +
@@ -73,6 +50,7 @@ export async function fetchWeather(): Promise<WeatherData[]> {
       const data: OpenMeteoResponse = await res.json()
       const result: WeatherData = {
         location: name,
+        region,
         temperature: Math.round(data.current.temperature_2m),
         weatherCode: data.current.weather_code,
         windSpeed: Math.round(data.current.wind_speed_10m),
