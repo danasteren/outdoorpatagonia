@@ -101,25 +101,23 @@ const PATAGONIA_BBOX = {
   nelng: "-62",
 }
 
-// ─── Status board: recent fauna sightings ────────────────────────────────────
+// ─── Status board: observation types ─────────────────────────────────────────
 
-export async function fetchPatagoniaFauna(): Promise<Sighting[]> {
-  const params = new URLSearchParams({
-    ...PATAGONIA_BBOX,
-    quality_grade: "research",
-    per_page: "6",
-    order: "desc",
-    order_by: "created_at",
-    d1: daysAgo(7),
-    photos: "true",
-    locale: "es",
-  })
-  const url = `https://api.inaturalist.org/v1/observations?${params}`
-  const res = await fetch(url, { next: { revalidate: 3600 } })
-  if (!res.ok) throw new Error("iNaturalist fetch failed")
-  const data: INatResponse = await res.json()
+type IconicTaxa = "Animalia" | "Plantae" | "Fungi"
 
-  return data.results.map((obs) => ({
+export type PhotoSighting = {
+  id: number
+  speciesName: string
+  commonName: string | null
+  photoUrl: string
+  placeGuess: string | null
+  uri: string
+}
+
+// ─── Status board: parameterized iNaturalist observations ─────────────────────
+
+function mapToSighting(obs: INatObservation): Sighting {
+  return {
     id: obs.id,
     speciesName: obs.taxon?.name ?? obs.species_guess ?? "Especie desconocida",
     commonName: obs.taxon?.preferred_common_name ?? null,
@@ -128,7 +126,72 @@ export async function fetchPatagoniaFauna(): Promise<Sighting[]> {
     observedOn: obs.observed_on,
     observerLogin: obs.user.login,
     uri: obs.uri,
-  }))
+  }
+}
+
+async function fetchPatagoniaObservations(
+  iconicTaxa: IconicTaxa,
+  perPage = 6,
+  daysBack = 14,
+): Promise<Sighting[]> {
+  const params = new URLSearchParams({
+    ...PATAGONIA_BBOX,
+    iconic_taxa: iconicTaxa,
+    quality_grade: "research",
+    per_page: String(perPage),
+    order: "desc",
+    order_by: "created_at",
+    d1: daysAgo(daysBack),
+    photos: "true",
+    locale: "es",
+  })
+  const url = `https://api.inaturalist.org/v1/observations?${params}`
+  const res = await fetch(url, { next: { revalidate: 3600 } })
+  if (!res.ok) throw new Error(`iNaturalist ${iconicTaxa} fetch failed`)
+  const data: INatResponse = await res.json()
+  return data.results.map(mapToSighting)
+}
+
+export async function fetchPatagoniaFauna(): Promise<Sighting[]> {
+  return fetchPatagoniaObservations("Animalia")
+}
+
+export async function fetchPatagoniaFlora(): Promise<Sighting[]> {
+  return fetchPatagoniaObservations("Plantae")
+}
+
+export async function fetchPatagoniaFungi(): Promise<Sighting[]> {
+  return fetchPatagoniaObservations("Fungi")
+}
+
+// ─── Status board: photo grid ─────────────────────────────────────────────────
+
+export async function fetchPatagoniaPhotos(perPage = 9): Promise<PhotoSighting[]> {
+  const params = new URLSearchParams({
+    ...PATAGONIA_BBOX,
+    quality_grade: "research",
+    per_page: String(perPage),
+    order: "desc",
+    order_by: "created_at",
+    d1: daysAgo(7),
+    photos: "true",
+    locale: "es",
+  })
+  const url = `https://api.inaturalist.org/v1/observations?${params}`
+  const res = await fetch(url, { next: { revalidate: 3600 } })
+  if (!res.ok) throw new Error("iNaturalist photos fetch failed")
+  const data: INatResponse = await res.json()
+
+  return data.results
+    .filter((obs) => obs.photos && obs.photos.length > 0)
+    .map((obs) => ({
+      id: obs.id,
+      speciesName: obs.taxon?.name ?? obs.species_guess ?? "Especie desconocida",
+      commonName: obs.taxon?.preferred_common_name ?? null,
+      photoUrl: obs.photos![0].url.replace(/\/square\b/, "/small"),
+      placeGuess: obs.place_guess,
+      uri: obs.uri,
+    }))
 }
 
 // ─── Species pages: taxon detail ─────────────────────────────────────────────
