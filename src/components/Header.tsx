@@ -1,7 +1,6 @@
 import { headers } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
 import { createClient as createServerClient } from "@/lib/supabase/server";
-import { toCategorySlug } from "@/lib/category";
 import { HeaderShell, type AuthUser } from "./HeaderShell";
 
 function makeSupabase() {
@@ -9,20 +8,6 @@ function makeSupabase() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
-}
-
-async function getCategories(lang: string) {
-  const { data } = await makeSupabase()
-    .from("articles")
-    .select("category")
-    .eq("language", lang)
-    .eq("status", "published")
-    .not("category", "is", null);
-
-  const EXCLUDE = new Set(["fauna"])
-  return [...new Set((data ?? []).map((a) => a.category as string))]
-    .filter((c) => !EXCLUDE.has(c.toLowerCase()))
-    .sort()
 }
 
 async function getLangHrefs(pathname: string): Promise<{
@@ -94,17 +79,7 @@ export async function Header() {
     avatarUrl: (rawUser.user_metadata?.avatar_url as string | undefined) ?? null,
   } : null;
 
-  const [rawCategories, langHrefs] = await Promise.all([
-    getCategories(lang),
-    getLangHrefs(pathname),
-  ]);
+  const langHrefs = await getLangHrefs(pathname);
 
-  const categories = rawCategories.map((cat) => ({
-    label: cat,
-    href: lang === "en"
-      ? `/en/category/${toCategorySlug(cat)}`
-      : `/categoria/${toCategorySlug(cat)}`,
-  }));
-
-  return <HeaderShell categories={categories} langHrefs={langHrefs} lang={lang} user={authUser} />;
+  return <HeaderShell langHrefs={langHrefs} lang={lang} user={authUser} />;
 }

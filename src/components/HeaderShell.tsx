@@ -4,38 +4,17 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import {
-  Menu, X, Map, Compass, Globe, ChevronDown, Users, Search,
-  Lightbulb, Landmark, Tent, PawPrint, Leaf, ChefHat,
-  BookOpen, Sprout, Recycle, MapPin, Mountain, Download,
+  Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
+  PawPrint, Leaf, MapPin, Mountain,
   User, LogOut,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { LangToggle } from './LangToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
 
-type CategoryItem = { label: string; href: string }
 type LangHrefs = { esHref: string | null; enHref: string | null; currentLang: 'es' | 'en' }
 export type AuthUser = { name: string; email: string; avatarUrl: string | null } | null
 
-const CATEGORY_ICONS: Record<string, React.ElementType> = {
-  consejos: Lightbulb,
-  cultura: Landmark,
-  domo: Tent,
-  fauna: PawPrint,
-  flora: Leaf,
-  gastronomía: ChefHat,
-  gastronomia: ChefHat,
-  historia: BookOpen,
-  hongo: Sprout,
-  'impacto ambiental': Recycle,
-  lugares: MapPin,
-  paisajes: Mountain,
-  'recursos descargables': Download,
-}
-
-function getCatIcon(label: string): React.ElementType {
-  return CATEGORY_ICONS[label.toLowerCase()] ?? MapPin
-}
 
 function UserAvatar({ user, size = 7 }: { user: AuthUser & object; size?: number }) {
   const cls = `w-${size} h-${size} rounded-full object-cover`
@@ -50,12 +29,10 @@ function UserAvatar({ user, size = 7 }: { user: AuthUser & object; size?: number
 }
 
 export function HeaderShell({
-  categories,
   langHrefs,
   lang,
   user,
 }: {
-  categories: CategoryItem[]
   langHrefs: LangHrefs
   lang: string
   user: AuthUser
@@ -164,37 +141,23 @@ export function HeaderShell({
                     : ' opacity-0 scale-95 pointer-events-none'
                   }`}
               >
-                <div className="grid grid-cols-3 gap-0.5">
-                  <Link
-                    href="/fauna"
-                    onClick={() => setExploreOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                  >
-                    <PawPrint size={14} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-                    <span className="truncate font-medium">Fauna</span>
-                  </Link>
-                  <Link
-                    href="/parques"
-                    onClick={() => setExploreOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                  >
-                    <Mountain size={14} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-                    <span className="truncate font-medium">Parques</span>
-                  </Link>
-                  {categories.map((cat) => {
-                    const Icon = getCatIcon(cat.label)
-                    return (
-                      <Link
-                        key={cat.href}
-                        href={cat.href}
-                        onClick={() => setExploreOpen(false)}
-                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                      >
-                        <Icon size={14} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-                        <span className="truncate font-medium">{cat.label}</span>
-                      </Link>
-                    )
-                  })}
+                <div className="grid grid-cols-2 gap-0.5">
+                  {[
+                    { href: '/fauna', label: 'Fauna', Icon: PawPrint },
+                    { href: '/flora', label: 'Flora', Icon: Leaf },
+                    { href: '/parques', label: 'Parques', Icon: Mountain },
+                    { href: '/senderos', label: 'Senderos', Icon: MapPin },
+                  ].map(({ href, label, Icon }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      onClick={() => setExploreOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    >
+                      <Icon size={14} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+                      <span className="truncate font-medium">{label}</span>
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
@@ -393,33 +356,21 @@ export function HeaderShell({
             <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-2 mb-1.5">
               Explorar
             </p>
-            <Link
-              href="/fauna"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            >
-              <PawPrint size={15} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-              Fauna
-            </Link>
-            <Link
-              href="/parques"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            >
-              <Mountain size={15} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-              Parques
-            </Link>
-            {categories.map((cat) => {
-              const Icon = getCatIcon(cat.label)
-              return (
-                <Link
-                  key={cat.href}
-                  href={cat.href}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                >
-                  <Icon size={15} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-                  {cat.label}
-                </Link>
-              )
-            })}
+            {[
+              { href: '/fauna', label: 'Fauna', Icon: PawPrint },
+              { href: '/flora', label: 'Flora', Icon: Leaf },
+              { href: '/parques', label: 'Parques', Icon: Mountain },
+              { href: '/senderos', label: 'Senderos', Icon: MapPin },
+            ].map(({ href, label, Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              >
+                <Icon size={15} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+                {label}
+              </Link>
+            ))}
           </div>
 
           {/* Bottom */}
