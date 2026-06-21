@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { LangToggle } from './LangToggle'
-import { createClient } from '@/lib/supabase/client'
+import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
 
 type CategoryItem = { label: string; href: string }
 type LangHrefs = { esHref: string | null; enHref: string | null; currentLang: 'es' | 'en' }
@@ -111,13 +111,18 @@ export function HeaderShell({
   const isActiveOperadores = pathname.startsWith('/operadores')
 
   async function handleSignIn() {
-    const supabase = createClient()
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
+    const codeVerifier = generateRandomBase64url(32)
+    const codeChallenge = await generateCodeChallenge(codeVerifier)
+    document.cookie = `oauth_cv=${codeVerifier}; path=/; SameSite=Lax; Max-Age=300`
+    const params = new URLSearchParams({
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+      redirect_uri: `${window.location.origin}/auth/callback`,
+      response_type: 'code',
+      scope: 'openid email profile',
+      code_challenge: codeChallenge,
+      code_challenge_method: 'S256',
     })
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params}`
   }
 
   return (
