@@ -3,12 +3,12 @@ import { StatusBoard } from "@/components/status/StatusBoard";
 import { Section } from "@/components/layout";
 import { PageShell } from "@/components/layout";
 import {
-  Bird,
+  PawPrint,
   Leaf,
-  UtensilsCrossed,
-  Footprints,
-  TreePine,
-  BookOpen,
+  Mountain,
+  MapPin,
+  Pickaxe,
+  Activity,
   ChevronRight,
 } from "lucide-react";
 
@@ -16,44 +16,44 @@ const CATEGORIES = [
   {
     label: "Fauna",
     href: "/fauna",
-    icon: Bird,
+    icon: PawPrint,
     description: "Aves, mamíferos y vida silvestre",
     color: "from-[var(--color-forest)] to-[var(--color-teal)]",
   },
   {
     label: "Flora",
-    href: "/categoria/flora",
+    href: "/flora",
     icon: Leaf,
     description: "Plantas nativas y ecosistemas",
     color: "from-[var(--color-teal)] to-[var(--color-teal-light)]",
   },
   {
-    label: "Gastronomía",
-    href: "/categoria/gastronomia",
-    icon: UtensilsCrossed,
-    description: "Cocina y productos regionales",
-    color: "from-[var(--color-terracotta)] to-[#e09b5a]",
-  },
-  {
-    label: "Senderos",
-    href: "/senderos",
-    icon: Footprints,
-    description: "Trekking y caminatas",
-    color: "from-[#3a5a2a] to-[var(--color-forest)]",
-  },
-  {
     label: "Parques",
     href: "/parques",
-    icon: TreePine,
+    icon: Mountain,
     description: "Áreas protegidas y reservas",
     color: "from-[var(--color-charcoal)] to-[var(--color-forest)]",
   },
   {
-    label: "Cultura",
-    href: "/categoria/cultura",
-    icon: BookOpen,
-    description: "Historia, pueblos y tradiciones",
-    color: "from-[#7a5c3a] to-[var(--color-charcoal)]",
+    label: "Senderos",
+    href: "/senderos",
+    icon: MapPin,
+    description: "Trekking y caminatas",
+    color: "from-[#3a5a2a] to-[var(--color-forest)]",
+  },
+  {
+    label: "Escalada",
+    href: "/escalada",
+    icon: Pickaxe,
+    description: "Sectores y vías de escalada",
+    color: "from-[#5a4a3a] to-[var(--color-charcoal)]",
+  },
+  {
+    label: "Estado",
+    href: "/estado",
+    icon: Activity,
+    description: "Clima, incendios y condiciones",
+    color: "from-[var(--color-teal)] to-[#1a6a8a]",
   },
 ];
 
