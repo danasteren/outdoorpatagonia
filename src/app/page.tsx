@@ -135,6 +135,21 @@ export default function Home() {
 
       {/* Estado en tiempo real */}
       <StatusBoard />
+
+      {/* CTA hacia /estado */}
+      <Section spacing="sm">
+        <PageShell>
+          <div className="flex justify-center">
+            <Link
+              href="/estado"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:border-[var(--color-teal)] transition-colors"
+            >
+              Ver estado completo
+              <ChevronRight size={14} />
+            </Link>
+          </div>
+        </PageShell>
+      </Section>
     </div>
   );
 }
