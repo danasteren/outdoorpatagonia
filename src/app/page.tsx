@@ -9,6 +9,7 @@ import {
   MapPin,
   Pickaxe,
   Activity,
+  Telescope,
   ChevronRight,
 } from "lucide-react";
 
@@ -54,6 +55,13 @@ const CATEGORIES = [
     icon: Activity,
     description: "Clima, incendios y condiciones",
     color: "from-[var(--color-teal)] to-[#1a6a8a]",
+  },
+  {
+    label: "Astronomía",
+    href: "/astronomia",
+    icon: Telescope,
+    description: "Cielos oscuros, luna y meteoros",
+    color: "from-[#0f1d2e] to-[#1a2a4a]",
   },
 ];
 

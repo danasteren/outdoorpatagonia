@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import {
   Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
-  PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe,
+  PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe, Telescope,
   User, LogOut,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
@@ -145,6 +145,7 @@ export function HeaderShell({
                     { href: '/senderos', label: 'Senderos', Icon: MapPin },
                     { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
                     { href: '/estado', label: 'Estado', Icon: Activity },
+                    { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
                   ].map(({ href, label, Icon }) => (
                     <Link
                       key={href}
@@ -359,6 +360,7 @@ export function HeaderShell({
               { href: '/senderos', label: 'Senderos', Icon: MapPin },
               { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
               { href: '/estado', label: 'Estado', Icon: Activity },
+              { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
             ].map(({ href, label, Icon }) => (
               <Link
                 key={href}
