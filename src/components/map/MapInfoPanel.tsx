@@ -1,8 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { X, ExternalLink, ArrowRight } from "lucide-react";
+import { X, ExternalLink, ArrowRight, Flame } from "lucide-react";
 import type { MapFeature } from "./types";
+
+const TYPE_LABELS: Record<string, string> = {
+  parques:   "Parque Nacional",
+  senderos:  "Sendero",
+  fauna:     "Fauna",
+  escalada:  "Escalada",
+  glaciares: "Glaciar",
+  incendios: "Foco activo",
+  clima:     "Clima",
+  punto:     "Punto de interés",
+};
 
 interface MapInfoPanelProps {
   feature: MapFeature | null;
@@ -18,7 +29,7 @@ export function MapInfoPanel({ feature, open, onClose }: MapInfoPanelProps) {
       {/* Desktop: side panel */}
       <div
         className={[
-          "hidden md:flex flex-col absolute top-4 right-14 bottom-4 z-10",
+          "hidden md:flex flex-col absolute top-4 right-14 bottom-4 z-[800]",
           "w-80 bg-card border border-border rounded-xl shadow-modal",
           "transition-all duration-300 ease-out",
           open
@@ -32,7 +43,7 @@ export function MapInfoPanel({ feature, open, onClose }: MapInfoPanelProps) {
       {/* Mobile: bottom drawer */}
       <div
         className={[
-          "md:hidden absolute inset-x-0 bottom-0 z-10",
+          "md:hidden absolute inset-x-0 bottom-0 z-[800]",
           "bg-card border-t border-border rounded-t-2xl shadow-modal",
           "transition-transform duration-300 ease-out",
           open ? "translate-y-0" : "translate-y-full",
@@ -58,12 +69,28 @@ function PanelContent({
   feature: MapFeature;
   onClose: () => void;
 }) {
+  const isFireAlert = feature.type === "incendios";
+
   return (
     <div className="flex flex-col h-full">
+      {/* Header */}
       <div className="flex items-start justify-between gap-2 p-4 border-b border-border">
-        <h2 className="font-heading text-lg font-semibold text-foreground leading-tight">
-          {feature.title}
-        </h2>
+        <div className="flex flex-col gap-0.5 min-w-0">
+          {feature.type && (
+            <span
+              className={[
+                "text-[10px] font-semibold uppercase tracking-wider",
+                isFireAlert ? "text-red-500" : "text-muted-foreground",
+              ].join(" ")}
+            >
+              {isFireAlert && <Flame size={10} className="inline mr-1" />}
+              {TYPE_LABELS[feature.type] ?? feature.type}
+            </span>
+          )}
+          <h2 className="font-heading text-lg font-semibold text-foreground leading-tight truncate">
+            {feature.title}
+          </h2>
+        </div>
         <button
           onClick={onClose}
           className="shrink-0 p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
@@ -73,6 +100,7 @@ function PanelContent({
         </button>
       </div>
 
+      {/* Body */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {feature.description && (
           <p className="text-sm text-muted-foreground leading-relaxed">
@@ -82,14 +110,15 @@ function PanelContent({
         {feature.properties &&
           Object.entries(feature.properties).map(([k, v]) =>
             v ? (
-              <div key={k} className="text-xs text-muted-foreground">
-                <span className="font-medium capitalize">{k}:</span>{" "}
-                {String(v)}
+              <div key={k} className="flex gap-2 text-xs">
+                <span className="text-muted-foreground font-medium whitespace-nowrap">{k}:</span>
+                <span className="text-foreground">{String(v)}</span>
               </div>
             ) : null
           )}
       </div>
 
+      {/* CTA */}
       {(feature.pageUrl ?? feature.affiliateLink) && (
         <div className="p-4 border-t border-border flex flex-col gap-2">
           {feature.pageUrl && (

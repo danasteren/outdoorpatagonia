@@ -1,4 +1,5 @@
 import type { MapFeature } from "./types";
+import { ESCALADA_CATALOG } from "@/lib/escalada/catalog";
 
 export const PARQUES: MapFeature[] = [
   { type: "parques", title: "Nahuel Huapi", coordinates: [-71.32, -41.17], pageUrl: "/parques/nahuel-huapi", description: "El parque nacional más antiguo de Argentina. Lagos, volcanes y bosques andino-patagónicos.", properties: { País: "Argentina", Provincia: "Neuquén / Río Negro", Superficie: "717.261 ha" } },
@@ -38,6 +39,85 @@ export const FAUNA: MapFeature[] = [
   { type: "fauna", title: "Parque Patagonia — Guanacos y Pumas", coordinates: [-72.27, -47.57], pageUrl: "/fauna/guanaco", description: "El proyecto de rewilding más ambicioso de América. Guanacos, ñandúes y avistamiento de pumas.", properties: { Especies: "Guanaco, puma, ñandú, huemul", Temporada: "Todo el año" } },
 ];
 
+export const ESCALADA: MapFeature[] = ESCALADA_CATALOG.map((s) => ({
+  type: "escalada" as const,
+  title: s.nombre,
+  coordinates: [s.lon, s.lat] as [number, number],
+  description: s.descripcion.length > 220 ? s.descripcion.slice(0, 220) + "…" : s.descripcion,
+  pageUrl: `/escalada/${s.slug}`,
+  properties: {
+    País: s.pais === "AR" ? "Argentina" : "Chile",
+    Región: s.region,
+    "Tipo de roca": s.tipoRoca.join(", "),
+    Estilos: s.estilos.join(", "),
+    Grados: `${s.gradosMin} – ${s.gradosMax}`,
+    Temporada: s.temporada.join(", "),
+    Altitud: `${s.altitud} m`,
+  },
+}));
+
+export const GLACIARES: MapFeature[] = [
+  {
+    type: "glaciares",
+    title: "Glaciar Perito Moreno",
+    coordinates: [-73.05, -50.50],
+    pageUrl: "/parques/los-glaciares",
+    description: "El glaciar más famoso de la Patagonia. 257 km² de hielo en constante movimiento, con un frente de 70 m de altura sobre el Lago Argentino.",
+    properties: { País: "Argentina", Superficie: "257 km²", Avance: "~2 m/día", "Estado": "Estable (singular en la región)", Acceso: "El Calafate" },
+  },
+  {
+    type: "glaciares",
+    title: "Glaciar Upsala",
+    coordinates: [-73.3, -50.1],
+    description: "El glaciar de montaña más grande de América del Sur. Se accede en navegación desde El Calafate, cruzando el lago Argentino.",
+    properties: { País: "Argentina", Superficie: "904 km²", Longitud: "60 km", Retroceso: "~7 km desde 1990", Acceso: "Navegación desde El Calafate" },
+  },
+  {
+    type: "glaciares",
+    title: "Glaciar Viedma",
+    coordinates: [-73.15, -49.5],
+    description: "El segundo glaciar más grande de los Campos de Hielo Sur. Accesible desde El Chaltén con trekking sobre el hielo.",
+    properties: { País: "Argentina", Superficie: "978 km²", Acceso: "El Chaltén (trekking sobre hielo disponible)" },
+  },
+  {
+    type: "glaciares",
+    title: "Glaciar Grey",
+    coordinates: [-73.1, -51.0],
+    pageUrl: "/parques/torres-del-paine",
+    description: "Parte del Campo de Hielo Sur chileno. Se puede ver desde el Circuito W y navegar en kayak hasta su frente.",
+    properties: { País: "Chile", Superficie: "270 km²", Longitud: "28 km", Acceso: "Torres del Paine — Circuito W" },
+  },
+  {
+    type: "glaciares",
+    title: "Glaciar Tyndall",
+    coordinates: [-73.6, -51.2],
+    description: "Tercer glaciar en tamaño del Campo de Hielo Sur. Solo accesible completando el Circuito O en Torres del Paine.",
+    properties: { País: "Chile", Superficie: "331 km²", Acceso: "Circuito O completo (8–10 días)" },
+  },
+  {
+    type: "glaciares",
+    title: "San Rafael — Campo de Hielo Norte",
+    coordinates: [-73.9, -46.6],
+    description: "El glaciar de aguas cálidas más accesible del mundo. Se navega directamente al frente por los canales patagónicos chilenos.",
+    properties: { País: "Chile", Longitud: "30 km", "Origen": "3.910 m s.n.m.", Acceso: "Coyhaique o Puerto Montt en ferry" },
+  },
+  {
+    type: "glaciares",
+    title: "Ventisquero Queulat",
+    coordinates: [-72.68, -44.34],
+    pageUrl: "/parques/queulat",
+    description: "El famoso 'glaciar colgante' del Parque Queulat. Se contempla desde un mirador directo sobre la Carretera Austral.",
+    properties: { País: "Chile", Tipo: "Glaciar colgante", Acceso: "Carretera Austral km 175 (mirador a 30 min)" },
+  },
+  {
+    type: "glaciares",
+    title: "Campo de Hielo Patagónico Norte",
+    coordinates: [-73.5, -46.5],
+    description: "Uno de los mayores campos de hielo fuera de las regiones polares. Alimenta los glaciares San Rafael, San Quintín y otros 30 glaciares.",
+    properties: { País: "Chile", Superficie: "4.200 km²", Estado: "Retroceso acelerado desde 1980" },
+  },
+];
+
 export const CLIMA: MapFeature[] = [
   { type: "clima", title: "Patagonia Andina — Bariloche", coordinates: [-71.3, -41.1], description: "Clima templado frío con 4 estaciones marcadas. Nieve en invierno (jun–ago). Precipitaciones moderadas a altas.", properties: { Temperatura: "-2°C a 22°C", Lluvias: "800–1500 mm/año", Viento: "Moderado", "Mejor época": "Dic–Mar" } },
   { type: "clima", title: "Patagonia Meseta — Comodoro Rivadavia", coordinates: [-67.5, -45.8], description: "Clima árido y muy ventoso. El viento patagónico supera los 100 km/h con frecuencia. Precipitaciones muy bajas.", properties: { Temperatura: "-5°C a 25°C", Lluvias: "200–300 mm/año", Viento: "Fuerte y constante", "Mejor época": "Nov–Abr" } },
@@ -64,28 +144,20 @@ export const MALVINAS_POLYGON: [number, number][] = [
 // Simplified polygon for the Patagonia region
 // Northern boundary: ~38°S in Argentina, ~39°S in Chile
 export const PATAGONIA_POLYGON: [number, number][] = [
-  // Northern border, Pacific coast (Chile, ~39°S)
   [-39.0, -73.5],
-  // North, across the Andes
   [-38.5, -71.0],
-  // North Argentina, Colorado River mouth (Atlantic)
   [-38.5, -62.2],
-  // Atlantic coast going south
   [-41.0, -62.5],
   [-43.5, -65.0],
   [-46.0, -65.5],
   [-49.0, -67.5],
   [-51.0, -68.8],
   [-52.5, -69.0],
-  // Strait of Magellan
   [-52.5, -70.5],
   [-53.8, -70.5],
-  // NE Tierra del Fuego (Argentina)
   [-54.0, -67.5],
   [-54.9, -65.5],
-  // South tip
   [-55.9, -67.5],
-  // Up Pacific coast
   [-55.0, -71.5],
   [-53.5, -72.5],
   [-51.5, -74.5],
