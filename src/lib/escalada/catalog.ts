@@ -342,7 +342,7 @@ export function getSectorEntry(slug: string): Sector | null {
 }
 
 export const ESTILO_LABELS: Record<ClimbingStyle, string> = {
-  deporte: "Deporte",
+  deporte: "Deportiva",
   trad: "Trad",
   "big wall": "Big Wall",
   bouldering: "Bouldering",
