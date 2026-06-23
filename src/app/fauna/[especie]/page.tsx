@@ -17,8 +17,8 @@ import {
 } from "@/lib/apis/inaturalist"
 import { fetchGbifSpecies, fetchGbifByScientificName } from "@/lib/apis/gbif"
 import { FaunaSightingsMapClient } from "@/components/data/FaunaSightingsMapClient"
+import { FaunaSightingsClient } from "@/components/data/FaunaSightingsClient"
 import { Badge } from "@/components/primitives/Badge"
-import { Card, CardBody } from "@/components/primitives/Card"
 import { ArticleLayout } from "@/components/ArticleLayout"
 import { toCategorySlug } from "@/lib/category"
 
@@ -159,8 +159,11 @@ export default async function FaunaEspeciePage({
 }) {
   const { especie } = await params
 
-  // If the slug matches a Supabase fauna article, render it instead of the species page
-  const faunaArticle = await getFaunaArticle(especie)
+  // Catalog species always get the live data page — never fall back to old articles
+  const isCatalogSpecies = !!getFaunaEntry(especie)
+
+  // Only check for a Supabase article when the slug is NOT a known catalog entry
+  const faunaArticle = isCatalogSpecies ? null : await getFaunaArticle(especie)
   if (faunaArticle) {
     const altLang = await getAltLangFaunaArticle(especie)
     const altLangHref = altLang
@@ -476,75 +479,7 @@ export default async function FaunaEspeciePage({
             </section>
 
             {/* Sightings list */}
-            {sightings.length > 0 ? (
-              <section>
-                <h2 className="text-xl font-bold mb-3">Últimas observaciones</h2>
-                <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1">
-                  {sightings.slice(0, 8).map((s) => (
-                    <Card key={s.id} variant="default">
-                      <CardBody className="p-3 flex gap-3 items-start">
-                        {s.imageUrl && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={s.imageUrl}
-                            alt={s.commonName ?? s.speciesName}
-                            className="w-14 h-14 object-cover rounded-lg shrink-0"
-                          />
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              {s.placeGuess && (
-                                <p className="text-sm font-medium leading-snug">
-                                  {s.placeGuess}
-                                </p>
-                              )}
-                              <p className="text-xs text-muted-foreground mt-0.5">
-                                {formatDate(s.observedOn)} · @{s.observerLogin}
-                              </p>
-                            </div>
-                            <a
-                              href={s.uri}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="shrink-0 text-muted-foreground hover:text-foreground"
-                              aria-label="Ver en iNaturalist"
-                            >
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  ))}
-                </div>
-                {taxonId && (
-                  <a
-                    href={`https://www.inaturalist.org/observations?taxon_id=${taxonId}&place_id=7161`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 mt-4 text-sm text-[var(--color-teal)] hover:underline"
-                  >
-                    Ver todas las observaciones en Patagonia
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                )}
-              </section>
-            ) : (
-              <div className="text-center py-10 text-muted-foreground text-sm">
-                <p>No hay avistamientos recientes registrados en la Patagonia.</p>
-                {taxonId && (
-                  <a
-                    href={`https://www.inaturalist.org/taxa/${taxonId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[var(--color-teal)] hover:underline mt-2 inline-block"
-                  >
-                    Ver en iNaturalist
-                  </a>
-                )}
-              </div>
-            )}
+            <FaunaSightingsClient sightings={sightings} taxonId={taxonId} />
           </div>
         </div>
       </div>
