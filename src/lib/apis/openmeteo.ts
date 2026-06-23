@@ -5,6 +5,7 @@ export type WeatherData = {
   weatherCode: number
   windSpeed: number
   condition: string
+  uvIndex: number
 }
 
 type OpenMeteoResponse = {
@@ -12,6 +13,7 @@ type OpenMeteoResponse = {
     temperature_2m: number
     weather_code: number
     wind_speed_10m: number
+    uv_index: number
   }
 }
 
@@ -102,7 +104,7 @@ export async function fetchWeatherForLocation(
     const url =
       `https://api.open-meteo.com/v1/forecast` +
       `?latitude=${lat}&longitude=${lon}` +
-      `&current=temperature_2m,weather_code,wind_speed_10m` +
+      `&current=temperature_2m,weather_code,wind_speed_10m,uv_index` +
       `&timezone=auto&forecast_days=1`
     const res = await fetch(url, { next: { revalidate: 3600 } })
     if (!res.ok) return null
@@ -114,6 +116,7 @@ export async function fetchWeatherForLocation(
       weatherCode: data.current.weather_code,
       windSpeed: Math.round(data.current.wind_speed_10m),
       condition: wmoToCondition(data.current.weather_code),
+      uvIndex: Math.round(data.current.uv_index * 10) / 10,
     }
   } catch {
     return null
@@ -126,7 +129,7 @@ export async function fetchWeather(): Promise<WeatherData[]> {
       const url =
         `https://api.open-meteo.com/v1/forecast` +
         `?latitude=${lat}&longitude=${lon}` +
-        `&current=temperature_2m,weather_code,wind_speed_10m` +
+        `&current=temperature_2m,weather_code,wind_speed_10m,uv_index` +
         `&timezone=auto&forecast_days=1`
       const res = await fetch(url, { next: { revalidate: 3600 } })
       if (!res.ok) throw new Error(`Open-Meteo error: ${name}`)
@@ -138,6 +141,7 @@ export async function fetchWeather(): Promise<WeatherData[]> {
         weatherCode: data.current.weather_code,
         windSpeed: Math.round(data.current.wind_speed_10m),
         condition: wmoToCondition(data.current.weather_code),
+        uvIndex: Math.round(data.current.uv_index * 10) / 10,
       }
       return result
     })

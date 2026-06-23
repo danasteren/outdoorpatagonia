@@ -31,6 +31,14 @@ function WeatherIcon({
   return <CloudLightning {...props} />
 }
 
+function uvColor(uv: number): string {
+  if (uv <= 2) return "text-green-500"
+  if (uv <= 5) return "text-yellow-500"
+  if (uv <= 7) return "text-orange-500"
+  if (uv <= 10) return "text-red-500"
+  return "text-violet-500"
+}
+
 function WeatherCard({ data }: { data: WeatherData }) {
   return (
     <Card variant="elevated" className="p-4">
@@ -46,9 +54,15 @@ function WeatherCard({ data }: { data: WeatherData }) {
         </span>
         <span className="text-xs text-muted-foreground pb-0.5">{data.condition}</span>
       </div>
-      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-        <Wind size={11} strokeWidth={1.5} />
-        <span>{data.windSpeed} km/h</span>
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <span className="flex items-center gap-1">
+          <Wind size={11} strokeWidth={1.5} />
+          {data.windSpeed} km/h
+        </span>
+        <span className={`flex items-center gap-1 font-medium ${uvColor(data.uvIndex)}`}>
+          <Sun size={11} strokeWidth={1.75} />
+          UV {data.uvIndex}
+        </span>
       </div>
     </Card>
   )
