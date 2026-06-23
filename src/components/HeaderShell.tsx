@@ -5,14 +5,12 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import {
   Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
-  PawPrint, Leaf, MapPin, Mountain,
+  PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe,
   User, LogOut,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
-import { LangToggle } from './LangToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
 
-type LangHrefs = { esHref: string | null; enHref: string | null; currentLang: 'es' | 'en' }
 export type AuthUser = { name: string; email: string; avatarUrl: string | null } | null
 
 
@@ -29,11 +27,9 @@ function UserAvatar({ user, size = 7 }: { user: AuthUser & object; size?: number
 }
 
 export function HeaderShell({
-  langHrefs,
   lang,
   user,
 }: {
-  langHrefs: LangHrefs
   lang: string
   user: AuthUser
 }) {
@@ -147,6 +143,8 @@ export function HeaderShell({
                     { href: '/flora', label: 'Flora', Icon: Leaf },
                     { href: '/parques', label: 'Parques', Icon: Mountain },
                     { href: '/senderos', label: 'Senderos', Icon: MapPin },
+                    { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
+                    { href: '/estado', label: 'Estado', Icon: Activity },
                   ].map(({ href, label, Icon }) => (
                     <Link
                       key={href}
@@ -208,8 +206,6 @@ export function HeaderShell({
             >
               <Search size={16} strokeWidth={1.75} />
             </Link>
-            <div className="w-px h-3.5 bg-border" />
-            <LangToggle {...langHrefs} />
             <div className="w-px h-3.5 bg-border" />
 
             {/* Auth */}
@@ -361,6 +357,8 @@ export function HeaderShell({
               { href: '/flora', label: 'Flora', Icon: Leaf },
               { href: '/parques', label: 'Parques', Icon: Mountain },
               { href: '/senderos', label: 'Senderos', Icon: MapPin },
+              { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
+              { href: '/estado', label: 'Estado', Icon: Activity },
             ].map(({ href, label, Icon }) => (
               <Link
                 key={href}
@@ -409,9 +407,6 @@ export function HeaderShell({
                 Iniciar sesión
               </button>
             )}
-            <div className="pt-2">
-              <LangToggle {...langHrefs} />
-            </div>
           </div>
         </div>
       </div>
