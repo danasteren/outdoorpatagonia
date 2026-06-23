@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getAllOperators } from "@/lib/operators/queries";
 import { OperadoresClient } from "./OperadoresClient";
+import { OperadorForm } from "@/components/OperadorForm";
 
 export const metadata: Metadata = {
   title: "Directorio de Operadores — Outdoor Patagonia",
@@ -38,27 +39,24 @@ export default async function OperadoresPage() {
       <OperadoresClient operators={operators} />
 
       {/* CTA para operadores */}
-      <div className="mt-16 border border-dashed border-border rounded-2xl p-8 text-center">
-        <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-terracotta)] mb-2">
-          ¿Sos operador?
-        </p>
-        <h2
-          className="text-xl font-bold mb-3"
-          style={{ fontFamily: "var(--font-playfair)" }}
-        >
-          Sumá tu empresa al directorio
-        </h2>
-        <p className="text-muted-foreground text-sm mb-5 max-w-md mx-auto">
-          Listing básico gratuito. Posición destacada con badge visual desde
-          $50/mes. Llegás a viajeros que ya están planificando su viaje a
-          Patagonia.
-        </p>
-        <a
-          href="mailto:hola@outdoorpatagonia.com?subject=Quiero sumar mi operadora al directorio"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-teal)] text-[var(--color-cream)] text-sm font-semibold hover:opacity-90 transition-opacity"
-        >
-          Contactanos
-        </a>
+      <div className="mt-16 border border-dashed border-border rounded-2xl p-8 md:p-12">
+        <div className="max-w-2xl mx-auto">
+          <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-terracotta)] mb-2">
+            ¿Sos operador?
+          </p>
+          <h2
+            className="text-2xl font-bold mb-3"
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            Sumá tu empresa al directorio
+          </h2>
+          <p className="text-muted-foreground text-sm mb-8 max-w-md">
+            Llegás a viajeros que ya están planificando su viaje a Patagonia.
+            Completá el formulario y te contactamos.
+          </p>
+
+          <OperadorForm />
+        </div>
       </div>
     </div>
   );

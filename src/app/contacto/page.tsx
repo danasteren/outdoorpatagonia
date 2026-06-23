@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mail } from "lucide-react";
+import { ContactForm } from "@/components/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contacto — Outdoor Patagonia",
@@ -21,20 +21,11 @@ export default function ContactoPage() {
         Nos interesa tu opinión
       </h1>
       <p className="text-muted-foreground mb-10 leading-relaxed">
-        ¿Tenés una consulta, sugerencia o propuesta de colaboración? Mandanos un mensaje y te
-        respondemos a la brevedad.
+        ¿Tenés una consulta, sugerencia o propuesta de colaboración? Mandanos un
+        mensaje y te respondemos a la brevedad.
       </p>
 
-      <a
-        href="mailto:info@outdoorpatagonia.com"
-        className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl border border-border hover:border-[var(--color-teal)] hover:shadow-lg transition-all duration-200 group"
-      >
-        <Mail
-          size={20}
-          className="text-[var(--color-teal)] group-hover:scale-110 transition-transform"
-        />
-        <span className="font-medium text-foreground">info@outdoorpatagonia.com</span>
-      </a>
+      <ContactForm />
     </div>
   );
 }
