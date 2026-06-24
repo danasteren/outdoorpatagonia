@@ -31,7 +31,7 @@ export function Footer() {
               Explorar
             </span>
             <nav className="flex flex-col gap-2.5 text-sm text-[var(--color-cream)]/60">
-              <Link href="/" className="hover:text-[var(--color-cream)] transition-colors">
+              <Link href="/articulos" className="hover:text-[var(--color-cream)] transition-colors">
                 Artículos
               </Link>
               <Link
