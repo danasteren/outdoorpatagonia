@@ -417,6 +417,21 @@ export default function AstronomiaPage() {
   const { upcoming: meteorsProximos, past: meteorsPasados } = splitByDate(METEOROS, todayISO)
   const { upcoming: eventosProximos, past: eventosPasados } = splitByDate(EVENTOS, todayISO)
 
+  // Phase guide
+  const PHASE_DAYS_CANONICAL = [0.5, 3.7, 7.38, 11.0, 14.77, 18.4, 22.15, 25.9] as const
+  const PHASE_NAMES_SHORT = ["Nueva", "Crec.", "¼ Crec.", "Gibosa", "Llena", "Gibosa", "¼ Men.", "Meng."] as const
+
+  // Event-based visual effects
+  const daysToNextMeteor = meteorsProximos[0]
+    ? Math.ceil((new Date(meteorsProximos[0].fechaISO).getTime() - Date.now()) / 86_400_000)
+    : Infinity
+  const nearestMeteor = isFinite(daysToNextMeteor) && daysToNextMeteor <= 45 ? meteorsProximos[0] : null
+  const nextEventTipo = eventosProximos[0]?.tipo
+  const daysToNextAstroEvent = eventosProximos[0]
+    ? Math.ceil((new Date(eventosProximos[0].fechaISO).getTime() - Date.now()) / 86_400_000)
+    : Infinity
+  const nearestEclipse = nextEventTipo === "eclipse" && daysToNextAstroEvent <= 60 ? eventosProximos[0] : null
+
   return (
     <div>
       {/* Hero — dinámico según hora en Patagonia */}
@@ -672,67 +687,92 @@ export default function AstronomiaPage() {
                   </svg>
 
                   {/* Luna SVG centrada */}
-                  <div className="relative flex flex-col items-center py-7 pb-5">
+                  <div className="relative flex flex-col items-center py-6 pb-4">
+                    {/* Corona de eclipse — solo si hay eclipse próximo */}
+                    {nearestEclipse && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ top: "8px" }}>
+                        <svg width="200" height="200" viewBox="0 0 200 200" style={{ overflow: "visible" }}>
+                          <circle cx="100" cy="100" r="76" fill="none" stroke="rgba(255,210,100,0.12)" strokeWidth="2.5">
+                            <animate attributeName="r" values="76;84;76" dur="3.5s" repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.12;0.04;0.12" dur="3.5s" repeatCount="indefinite" />
+                          </circle>
+                          <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(255,190,60,0.07)" strokeWidth="1.5">
+                            <animate attributeName="r" values="86;96;86" dur="5s" repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.07;0.02;0.07" dur="5s" repeatCount="indefinite" />
+                          </circle>
+                        </svg>
+                      </div>
+                    )}
+
                     <svg
-                      width="116"
-                      height="116"
+                      width="130"
+                      height="130"
                       viewBox="0 0 110 110"
                       role="img"
                       aria-label={moon.phaseName}
                     >
                       <defs>
-                        <radialGradient id="moon-surf" cx="36%" cy="28%" r="72%">
-                          <stop offset="0%" stopColor="#fef6e0" />
-                          <stop offset="38%" stopColor="#eacd84" />
-                          <stop offset="100%" stopColor="#a87616" />
+                        {/* Superficie — plateada/azul-blanca */}
+                        <radialGradient id="moon-surf" cx="38%" cy="30%" r="70%">
+                          <stop offset="0%" stopColor="#eef2ff" />
+                          <stop offset="45%" stopColor="#c4d0ee" />
+                          <stop offset="100%" stopColor="#6070a0" />
                         </radialGradient>
                         <radialGradient id="moon-shad" cx="50%" cy="50%" r="50%">
-                          <stop offset="0%" stopColor="#07101e" />
-                          <stop offset="100%" stopColor="#030810" />
+                          <stop offset="0%" stopColor="#060a18" />
+                          <stop offset="100%" stopColor="#030710" />
                         </radialGradient>
                         <radialGradient id="moon-glow-r" cx="50%" cy="50%" r="50%">
                           <stop offset="52%" stopColor="transparent" />
-                          <stop offset="100%" stopColor="#c8a040" stopOpacity="0.28" />
+                          <stop offset="100%" stopColor={nearestEclipse ? "#c08818" : "#3858b0"} stopOpacity="0.22" />
                         </radialGradient>
-                        <radialGradient id="moon-lit" cx="28%" cy="22%" r="68%">
-                          <stop offset="0%" stopColor="rgba(255,248,220,0.18)" />
+                        {/* Earthshine — brillo de la Tierra en el lado oscuro */}
+                        <radialGradient id="moon-earthshine" cx="64%" cy="68%" r="55%">
+                          <stop offset="0%" stopColor="rgba(40,80,180,0.18)" />
                           <stop offset="100%" stopColor="transparent" />
                         </radialGradient>
                         <clipPath id="moon-cp">
                           <circle cx="55" cy="55" r={R} />
                         </clipPath>
                       </defs>
-                      {/* Glow exterior animado */}
+
+                      {/* Glow exterior */}
                       <circle cx="55" cy="55" r="54" fill="url(#moon-glow-r)">
-                        <animate attributeName="r" values="54;60;54" dur="4s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="1;0.55;1" dur="4s" repeatCount="indefinite" />
+                        <animate attributeName="r" values="54;61;54" dur="5s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="1;0.45;1" dur="5s" repeatCount="indefinite" />
                       </circle>
-                      {/* Halo secundario */}
-                      <circle cx="55" cy="55" r="49" fill="none" stroke="#d4a840" strokeWidth="0.5" opacity="0.18">
-                        <animate attributeName="r" values="49;56;49" dur="6.5s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.18;0.04;0.18" dur="6.5s" repeatCount="indefinite" />
-                      </circle>
-                      {/* Superficie lunar */}
+
+                      {/* Superficie lunar plateada */}
                       <circle cx="55" cy="55" r={R} fill="url(#moon-surf)" />
-                      {/* Cráteres */}
-                      <g clipPath="url(#moon-cp)" fill="none">
-                        <circle cx="46" cy="47" r="6.5" stroke="#9a7828" strokeWidth="1.5" opacity="0.2" />
-                        <circle cx="65" cy="61" r="4.5" stroke="#9a7828" strokeWidth="1.2" opacity="0.16" />
-                        <circle cx="50" cy="67" r="3.5" stroke="#9a7828" strokeWidth="1" opacity="0.14" />
-                        <circle cx="71" cy="41" r="2.8" stroke="#9a7828" strokeWidth="0.9" opacity="0.14" />
-                        <circle cx="38" cy="63" r="2.2" stroke="#9a7828" strokeWidth="0.8" opacity="0.11" />
-                        <circle cx="73" cy="71" r="1.8" stroke="#9a7828" strokeWidth="0.7" opacity="0.1" />
+
+                      {/* Cráteres tenues */}
+                      <g clipPath="url(#moon-cp)" fill="none" opacity="0.17">
+                        <circle cx="48" cy="46" r="7" stroke="#7888b8" strokeWidth="1.5" />
+                        <circle cx="67" cy="62" r="5" stroke="#7888b8" strokeWidth="1.2" />
+                        <circle cx="43" cy="67" r="3.5" stroke="#7888b8" strokeWidth="1" />
+                        <circle cx="72" cy="42" r="2.8" stroke="#7888b8" strokeWidth="0.9" />
+                        <circle cx="60" cy="72" r="2.2" stroke="#7888b8" strokeWidth="0.8" />
+                        <circle cx="35" cy="55" r="1.8" stroke="#7888b8" strokeWidth="0.7" />
                       </g>
-                      {/* Luz solar (highlight tenue) */}
-                      <circle cx="55" cy="55" r={R} fill="url(#moon-lit)" clipPath="url(#moon-cp)" />
+
                       {/* Sombra de fase */}
                       {moon.illumination < 99 && (
-                        <path d={moonShadowPath} fill="url(#moon-shad)" clipPath="url(#moon-cp)" opacity="0.94" />
+                        <path d={moonShadowPath} fill="url(#moon-shad)" clipPath="url(#moon-cp)" opacity="0.96" />
                       )}
+
+                      {/* Earthshine en cuartos creciente/menguante muy fino */}
+                      {moon.illumination < 22 && (
+                        <circle cx="55" cy="55" r={R} fill="url(#moon-earthshine)" clipPath="url(#moon-cp)" />
+                      )}
+
+                      {/* Rim de atmósfera */}
+                      <circle cx="55" cy="55" r={R} fill="none" stroke="rgba(120,155,255,0.26)" strokeWidth="3" clipPath="url(#moon-cp)" />
+
                       {/* Limbo */}
-                      <circle cx="55" cy="55" r={R} fill="none" stroke="rgba(255,255,255,0.11)" strokeWidth="1" />
+                      <circle cx="55" cy="55" r={R} fill="none" stroke="rgba(255,255,255,0.09)" strokeWidth="1" />
+
                       {/* Satélite orbitando */}
-                      <circle cx="55" cy="2" r="1.3" fill="rgba(170,215,255,0.65)">
+                      <circle cx="55" cy="2" r="1.3" fill="rgba(160,200,255,0.7)">
                         <animateTransform
                           attributeName="transform"
                           type="rotate"
@@ -745,32 +785,65 @@ export default function AstronomiaPage() {
                     </svg>
 
                     {/* Nombre de fase */}
-                    <p className="text-white/50 text-[11px] font-medium mt-2 tracking-wider uppercase">
+                    <p className="text-white/60 text-[11px] font-medium mt-2 tracking-wider uppercase">
                       {moon.phaseName}
                     </p>
 
-                    {/* Indicador de fase — 8 puntos */}
-                    <div className="flex items-center gap-2 mt-3">
-                      {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-                        <div
-                          key={i}
-                          className="rounded-full transition-all duration-300"
-                          style={
-                            i === moonPhaseIndex
-                              ? {
-                                  width: 10,
-                                  height: 10,
-                                  background: "#e8cc82",
-                                  boxShadow: "0 0 8px 3px rgba(232,204,130,0.55)",
-                                }
-                              : {
-                                  width: 5,
-                                  height: 5,
-                                  background: "rgba(255,255,255,0.18)",
-                                }
-                          }
-                        />
-                      ))}
+                    {/* Badge evento próximo */}
+                    {nearestMeteor && (
+                      <p className="text-[9px] text-amber-300/75 mt-1 font-medium tracking-wide">
+                        ✦ Lluvia en {daysToNextMeteor}d — {nearestMeteor.nombre}
+                      </p>
+                    )}
+                    {nearestEclipse && (
+                      <p className="text-[9px] text-amber-300/75 mt-1 font-medium tracking-wide">
+                        ◎ Eclipse en {daysToNextAstroEvent}d
+                      </p>
+                    )}
+
+                    {/* Guía de 8 fases */}
+                    <div className="flex items-end justify-center gap-1.5 mt-4 px-2">
+                      {PHASE_DAYS_CANONICAL.map((days, i) => {
+                        const isActive = i === moonPhaseIndex
+                        const pAngle = (days / LUNATION) * 2 * Math.PI
+                        const pCosP = Math.cos(pAngle)
+                        const pTermRx = Math.abs(pCosP) * 8
+                        const pWaxing = days < LUNATION / 2
+                        const pSweep = pWaxing ? (pCosP >= 0 ? 0 : 1) : (pCosP >= 0 ? 1 : 0)
+                        const pArc = pWaxing ? `A 8 8 0 0 0 10 18` : `A 8 8 0 0 1 10 18`
+                        const pShadow = `M 10 2 ${pArc} A ${pTermRx.toFixed(2)} 8 0 0 ${pSweep} 10 2 Z`
+                        const pIllum = Math.round(((1 - Math.cos(pAngle)) / 2) * 100)
+                        const sz = isActive ? 24 : 16
+
+                        return (
+                          <div key={i} className="flex flex-col items-center gap-0.5">
+                            <svg width={sz} height={sz} viewBox="0 0 20 20">
+                              <clipPath id={`mcp-${i}`}><circle cx="10" cy="10" r="8" /></clipPath>
+                              {/* Base */}
+                              <circle cx="10" cy="10" r="8" fill={isActive ? "#b8c8e8" : "#3a4a6a"} opacity={isActive ? 1 : 0.65} />
+                              {/* Shadow */}
+                              {pIllum < 1 && (
+                                <circle cx="10" cy="10" r="8" fill="#050a18" clipPath={`url(#mcp-${i})`} />
+                              )}
+                              {pIllum >= 1 && pIllum < 99 && (
+                                <path d={pShadow} fill="#050a18" clipPath={`url(#mcp-${i})`} />
+                              )}
+                              {/* Rim */}
+                              <circle cx="10" cy="10" r="8" fill="none" stroke={isActive ? "rgba(180,210,255,0.55)" : "rgba(255,255,255,0.08)"} strokeWidth={isActive ? "1" : "0.6"} />
+                              {/* Active pulse ring */}
+                              {isActive && (
+                                <circle cx="10" cy="10" r="9.5" fill="none" stroke="rgba(150,190,255,0.45)" strokeWidth="0.8">
+                                  <animate attributeName="r" values="9.5;11.5;9.5" dur="2.5s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.45;0.1;0.45" dur="2.5s" repeatCount="indefinite" />
+                                </circle>
+                              )}
+                            </svg>
+                            <span className={`text-center leading-none ${isActive ? "text-[8px] text-white/65 font-medium" : "text-[6.5px] text-white/22"}`}>
+                              {PHASE_NAMES_SHORT[i]}
+                            </span>
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
                 </div>
