@@ -274,6 +274,83 @@ const MILKYWAY = [
   { mes: "Dic", calidad: "fuera" },
 ] as const
 
+// ─── Sky moment (hero dinámico) ───────────────────────────────────────────────
+
+type SkyPeriod = "noche" | "amanecer" | "dia" | "atardecer"
+
+type SkyConfig = {
+  period: SkyPeriod
+  gradient: string
+  textColor: string
+  labelColor: string
+  label: string
+  hasStars: boolean
+  hasClouds: boolean
+}
+
+// Salida/puesta del sol en Esquel, Chubut (-42.9°, UTC-3, sin horario de verano)
+const ESQUEL_SUN: Record<number, { rise: number; set: number }> = {
+  1:  { rise: 5.7,  set: 20.9 },
+  2:  { rise: 6.2,  set: 20.5 },
+  3:  { rise: 7.0,  set: 19.3 },
+  4:  { rise: 7.5,  set: 18.2 },
+  5:  { rise: 8.3,  set: 17.3 },
+  6:  { rise: 8.8,  set: 17.0 },
+  7:  { rise: 8.7,  set: 17.2 },
+  8:  { rise: 7.8,  set: 17.8 },
+  9:  { rise: 7.0,  set: 18.5 },
+  10: { rise: 6.0,  set: 19.3 },
+  11: { rise: 5.3,  set: 20.2 },
+  12: { rise: 5.2,  set: 20.8 },
+}
+
+function getSkyConfig(hora: number, mes: number): SkyConfig {
+  const { rise, set } = ESQUEL_SUN[mes] ?? { rise: 7.0, set: 19.0 }
+
+  if (hora < rise - 0.75 || hora >= set + 1.25) {
+    return {
+      period: "noche",
+      gradient: "linear-gradient(to bottom, #010408 0%, #050d18 40%, #0a1520 100%)",
+      textColor: "var(--color-cream)",
+      labelColor: "var(--color-teal-light)",
+      label: "CIELOS OSCUROS",
+      hasStars: true,
+      hasClouds: false,
+    }
+  }
+  if (hora < rise + 1.25) {
+    return {
+      period: "amanecer",
+      gradient: "linear-gradient(to bottom, #0c0b1c 0%, #3a1558 30%, #a84228 65%, #e8924a 100%)",
+      textColor: "var(--color-cream)",
+      labelColor: "#f9d794",
+      label: "AMANECER EN PATAGONIA",
+      hasStars: false,
+      hasClouds: false,
+    }
+  }
+  if (hora < set - 1.25) {
+    return {
+      period: "dia",
+      gradient: "linear-gradient(to bottom, #1a5f8a 0%, #3d8fbd 45%, #72b8d8 80%, #a0d0e8 100%)",
+      textColor: "#0b2a3d",
+      labelColor: "#0b5070",
+      label: "BAJO EL CIELO PATAGÓNICO",
+      hasStars: false,
+      hasClouds: true,
+    }
+  }
+  return {
+    period: "atardecer",
+    gradient: "linear-gradient(to bottom, #08060f 0%, #221030 20%, #892010 55%, #d44e0a 82%, #f0a028 100%)",
+    textColor: "var(--color-cream)",
+    labelColor: "#f9c06b",
+    label: "ATARDECER EN PATAGONIA",
+    hasStars: false,
+    hasClouds: false,
+  }
+}
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const PAST_MIN = 1 // show "Anteriores" section when at least this many past items exist
@@ -311,7 +388,12 @@ const EVENTO_ICONS: Record<AstroEvent["tipo"], React.FC<{ size: number; strokeWi
 export default function AstronomiaPage() {
   const moon = getMoonData()
   const qualityColor = QUALITY_COLORS[moon.stargazingQuality]
-  const todayISO = new Date().toISOString().slice(0, 10)
+  const nowUTC = new Date()
+  const todayISO = nowUTC.toISOString().slice(0, 10)
+  // Hora local en Patagonia: Esquel, Chubut (UTC-3, sin horario de verano)
+  const horaPatagonia = ((nowUTC.getUTCHours() + nowUTC.getUTCMinutes() / 60) - 3 + 24) % 24
+  const mesPatagonia = nowUTC.getUTCMonth() + 1
+  const sky = getSkyConfig(horaPatagonia, mesPatagonia)
 
   // SVG moon phase geometry — shadow path computed from ageDays (110×110 viewBox, cx=cy=55, R=42)
   const LUNATION = 29.530588853
@@ -337,23 +419,103 @@ export default function AstronomiaPage() {
 
   return (
     <div>
-      {/* Hero */}
+      {/* Hero — dinámico según hora en Patagonia */}
       <Section
         spacing="lg"
-        className="bg-gradient-to-br from-[#0d1117] via-[#0f1d2e] to-[#111827] text-[var(--color-cream)]"
+        className="relative overflow-hidden"
+        style={{ background: sky.gradient }}
       >
+        {/* Campo de estrellas — solo de noche */}
+        {sky.hasStars && (
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            aria-hidden="true"
+            viewBox="0 0 1400 350"
+            preserveAspectRatio="xMidYMid slice"
+          >
+            <ellipse cx="420" cy="130" rx="200" ry="100" fill="#0f2248" opacity="0.15" />
+            <ellipse cx="980" cy="80" rx="160" ry="80" fill="#0a1a38" opacity="0.12" />
+            <circle cx="45" cy="14" r="0.8" fill="white" opacity="0.7"><animate attributeName="opacity" values="0.7;0.12;0.7" dur="2.3s" repeatCount="indefinite"/></circle>
+            <circle cx="128" cy="22" r="0.5" fill="white" opacity="0.5"><animate attributeName="opacity" values="0.5;0.08;0.5" dur="3.4s" repeatCount="indefinite"/></circle>
+            <circle cx="210" cy="8" r="0.6" fill="white" opacity="0.6"/>
+            <circle cx="315" cy="31" r="0.4" fill="white" opacity="0.45"><animate attributeName="opacity" values="0.45;0.08;0.45" dur="4.1s" repeatCount="indefinite"/></circle>
+            <circle cx="398" cy="18" r="0.7" fill="white" opacity="0.65"><animate attributeName="opacity" values="0.65;0.12;0.65" dur="1.9s" repeatCount="indefinite"/></circle>
+            <circle cx="520" cy="42" r="0.5" fill="white" opacity="0.5"/>
+            <circle cx="612" cy="12" r="0.8" fill="white" opacity="0.75"><animate attributeName="opacity" values="0.75;0.15;0.75" dur="2.1s" repeatCount="indefinite"/></circle>
+            <circle cx="698" cy="35" r="0.6" fill="white" opacity="0.55"><animate attributeName="opacity" values="0.55;0.1;0.55" dur="2.7s" repeatCount="indefinite"/></circle>
+            <circle cx="780" cy="20" r="0.5" fill="white" opacity="0.6"/>
+            <circle cx="865" cy="48" r="0.7" fill="white" opacity="0.7"><animate attributeName="opacity" values="0.7;0.15;0.7" dur="1.8s" repeatCount="indefinite"/></circle>
+            <circle cx="950" cy="15" r="0.55" fill="white" opacity="0.5"><animate attributeName="opacity" values="0.5;0.08;0.5" dur="3.8s" repeatCount="indefinite"/></circle>
+            <circle cx="1040" cy="38" r="0.6" fill="white" opacity="0.6"/>
+            <circle cx="1120" cy="24" r="0.8" fill="white" opacity="0.75"><animate attributeName="opacity" values="0.75;0.18;0.75" dur="2.0s" repeatCount="indefinite"/></circle>
+            <circle cx="1210" cy="55" r="0.5" fill="white" opacity="0.5"><animate attributeName="opacity" values="0.5;0.08;0.5" dur="4.2s" repeatCount="indefinite"/></circle>
+            <circle cx="1340" cy="18" r="0.65" fill="white" opacity="0.6"><animate attributeName="opacity" values="0.6;0.12;0.6" dur="2.6s" repeatCount="indefinite"/></circle>
+            <circle cx="78" cy="92" r="0.6" fill="white" opacity="0.55"><animate attributeName="opacity" values="0.55;0.1;0.55" dur="3.2s" repeatCount="indefinite"/></circle>
+            <circle cx="180" cy="115" r="0.5" fill="white" opacity="0.45"/>
+            <circle cx="285" cy="88" r="0.7" fill="white" opacity="0.65"><animate attributeName="opacity" values="0.65;0.12;0.65" dur="2.0s" repeatCount="indefinite"/></circle>
+            <circle cx="425" cy="130" r="0.55" fill="white" opacity="0.5"><animate attributeName="opacity" values="0.5;0.08;0.5" dur="3.7s" repeatCount="indefinite"/></circle>
+            <circle cx="558" cy="105" r="0.8" fill="white" opacity="0.7"><animate attributeName="opacity" values="0.7;0.15;0.7" dur="1.7s" repeatCount="indefinite"/></circle>
+            <circle cx="645" cy="145" r="0.5" fill="white" opacity="0.45"/>
+            <circle cx="730" cy="92" r="0.65" fill="white" opacity="0.6"><animate attributeName="opacity" values="0.6;0.1;0.6" dur="2.9s" repeatCount="indefinite"/></circle>
+            <circle cx="820" cy="122" r="0.6" fill="white" opacity="0.55"><animate attributeName="opacity" values="0.55;0.1;0.55" dur="3.3s" repeatCount="indefinite"/></circle>
+            <circle cx="915" cy="88" r="0.5" fill="white" opacity="0.5"/>
+            <circle cx="1000" cy="140" r="0.7" fill="white" opacity="0.65"><animate attributeName="opacity" values="0.65;0.12;0.65" dur="2.2s" repeatCount="indefinite"/></circle>
+            <circle cx="1090" cy="100" r="0.55" fill="white" opacity="0.5"><animate attributeName="opacity" values="0.5;0.08;0.5" dur="3.6s" repeatCount="indefinite"/></circle>
+            <circle cx="1180" cy="125" r="0.8" fill="white" opacity="0.72"><animate attributeName="opacity" values="0.72;0.15;0.72" dur="1.9s" repeatCount="indefinite"/></circle>
+            <circle cx="1290" cy="90" r="0.5" fill="white" opacity="0.48"/>
+            <circle cx="1375" cy="110" r="0.6" fill="white" opacity="0.55"><animate attributeName="opacity" values="0.55;0.1;0.55" dur="2.5s" repeatCount="indefinite"/></circle>
+            <circle cx="35" cy="165" r="0.7" fill="white" opacity="0.6"><animate attributeName="opacity" values="0.6;0.12;0.6" dur="2.8s" repeatCount="indefinite"/></circle>
+            <circle cx="155" cy="195" r="0.5" fill="white" opacity="0.45"/>
+            <circle cx="320" cy="175" r="0.6" fill="white" opacity="0.55"><animate attributeName="opacity" values="0.55;0.1;0.55" dur="2.3s" repeatCount="indefinite"/></circle>
+            <circle cx="490" cy="210" r="0.55" fill="white" opacity="0.5"><animate attributeName="opacity" values="0.5;0.08;0.5" dur="4.4s" repeatCount="indefinite"/></circle>
+            <circle cx="630" cy="185" r="0.4" fill="white" opacity="0.4"/>
+            <circle cx="760" cy="230" r="0.65" fill="white" opacity="0.58"><animate attributeName="opacity" values="0.58;0.1;0.58" dur="2.6s" repeatCount="indefinite"/></circle>
+            <circle cx="900" cy="175" r="0.5" fill="white" opacity="0.48"/>
+            <circle cx="1050" cy="200" r="0.7" fill="white" opacity="0.65"><animate attributeName="opacity" values="0.65;0.12;0.65" dur="2.1s" repeatCount="indefinite"/></circle>
+            <circle cx="1220" cy="190" r="0.55" fill="white" opacity="0.5"><animate attributeName="opacity" values="0.5;0.08;0.5" dur="3.5s" repeatCount="indefinite"/></circle>
+            <circle cx="1360" cy="220" r="0.6" fill="white" opacity="0.55"><animate attributeName="opacity" values="0.55;0.1;0.55" dur="2.9s" repeatCount="indefinite"/></circle>
+          </svg>
+        )}
+
+        {/* Nubes — solo de día */}
+        {sky.hasClouds && (
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            aria-hidden="true"
+            viewBox="0 0 1400 350"
+            preserveAspectRatio="xMidYMid slice"
+          >
+            <ellipse cx="160" cy="65" rx="100" ry="35" fill="white" opacity="0.18"/>
+            <ellipse cx="120" cy="52" rx="55" ry="24" fill="white" opacity="0.15"/>
+            <ellipse cx="200" cy="50" rx="60" ry="22" fill="white" opacity="0.13"/>
+            <ellipse cx="1080" cy="90" rx="130" ry="42" fill="white" opacity="0.14"/>
+            <ellipse cx="1030" cy="75" rx="70" ry="28" fill="white" opacity="0.12"/>
+            <ellipse cx="1140" cy="72" rx="85" ry="26" fill="white" opacity="0.1"/>
+            <ellipse cx="580" cy="240" rx="110" ry="38" fill="white" opacity="0.1"/>
+            <ellipse cx="540" cy="225" rx="65" ry="26" fill="white" opacity="0.08"/>
+            <ellipse cx="820" cy="55" rx="75" ry="26" fill="white" opacity="0.12"/>
+            <ellipse cx="860" cy="42" rx="50" ry="18" fill="white" opacity="0.1"/>
+          </svg>
+        )}
+
         <PageShell>
-          <div className="max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-teal-light)] mb-4">
-              Cielos oscuros
+          <div className="relative z-10 max-w-2xl">
+            <p
+              className="text-xs font-bold uppercase tracking-widest mb-4"
+              style={{ color: sky.labelColor }}
+            >
+              {sky.label}
             </p>
             <h1
               className="text-3xl md:text-5xl font-bold leading-tight mb-4"
-              style={{ fontFamily: "var(--font-playfair)" }}
+              style={{ fontFamily: "var(--font-playfair)", color: sky.textColor }}
             >
               Astronomía en la Patagonia
             </h1>
-            <p className="text-base md:text-lg text-[var(--color-cream)] opacity-80 leading-relaxed">
+            <p
+              className="text-base md:text-lg leading-relaxed opacity-80"
+              style={{ color: sky.textColor }}
+            >
               Patagonia tiene algunos de los cielos más oscuros del mundo. Sin contaminación lumínica,
               atmósfera seca y latitud austral: condiciones únicas para ver la Vía Láctea, las Nubes de Magallanes
               y lluvias de meteoros invisibles desde el norte.
@@ -389,6 +551,11 @@ export default function AstronomiaPage() {
                     viewBox="0 0 300 180"
                     preserveAspectRatio="xMidYMid slice"
                   >
+                    <defs>
+                      <filter id="aurora-glow" x="-50%" y="-100%" width="200%" height="300%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
+                      </filter>
+                    </defs>
                     <circle cx="14" cy="19" r="0.8" fill="white" opacity="0.75">
                       <animate attributeName="opacity" values="0.75;0.15;0.75" dur="2.3s" repeatCount="indefinite" />
                     </circle>
@@ -461,6 +628,47 @@ export default function AstronomiaPage() {
                     <circle cx="175" cy="162" r="0.65" fill="white" opacity="0.6">
                       <animate attributeName="opacity" values="0.6;0.12;0.6" dur="2.6s" repeatCount="indefinite" />
                     </circle>
+                    {/* Aurora australis */}
+                    <g filter="url(#aurora-glow)">
+                      <ellipse cx="85" cy="162" rx="90" ry="16" fill="#00e87a">
+                        <animate attributeName="opacity" values="0;0;0.22;0.12;0.28;0.08;0" keyTimes="0;0.05;0.2;0.4;0.65;0.85;1" dur="14s" begin="2s" repeatCount="indefinite" />
+                        <animate attributeName="ry" values="16;20;14;18;16" dur="14s" begin="2s" repeatCount="indefinite" />
+                        <animate attributeName="cy" values="162;158;165;160;162" dur="14s" begin="2s" repeatCount="indefinite" />
+                      </ellipse>
+                      <ellipse cx="200" cy="160" rx="75" ry="13" fill="#00aaff">
+                        <animate attributeName="opacity" values="0;0;0.15;0.25;0.1;0.2;0" keyTimes="0;0.1;0.3;0.55;0.7;0.85;1" dur="18s" begin="6s" repeatCount="indefinite" />
+                        <animate attributeName="ry" values="13;17;11;15;13" dur="18s" begin="6s" repeatCount="indefinite" />
+                        <animate attributeName="cy" values="160;156;163;159;160" dur="18s" begin="6s" repeatCount="indefinite" />
+                      </ellipse>
+                      <ellipse cx="250" cy="165" rx="60" ry="12" fill="#66aaff">
+                        <animate attributeName="opacity" values="0;0.18;0.08;0.22;0;0" keyTimes="0;0.15;0.4;0.65;0.9;1" dur="20s" begin="11s" repeatCount="indefinite" />
+                        <animate attributeName="ry" values="12;15;9;14;12" dur="20s" begin="11s" repeatCount="indefinite" />
+                      </ellipse>
+                    </g>
+                    {/* Estrella fugaz 1 — arriba derecha, baja izquierda */}
+                    <line x1="258" y1="18" x2="270" y2="12" stroke="white" strokeWidth="1.3" strokeLinecap="round">
+                      <animate attributeName="x1" values="258;178;178" keyTimes="0;0.075;1" dur="16s" begin="3s" repeatCount="indefinite" />
+                      <animate attributeName="y1" values="18;56;56" keyTimes="0;0.075;1" dur="16s" begin="3s" repeatCount="indefinite" />
+                      <animate attributeName="x2" values="270;190;190" keyTimes="0;0.075;1" dur="16s" begin="3s" repeatCount="indefinite" />
+                      <animate attributeName="y2" values="12;50;50" keyTimes="0;0.075;1" dur="16s" begin="3s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0;0;0.95;0.5;0;0" keyTimes="0;0.01;0.04;0.065;0.075;1" dur="16s" begin="3s" repeatCount="indefinite" />
+                    </line>
+                    {/* Estrella fugaz 2 — izquierda, baja derecha */}
+                    <line x1="48" y1="35" x2="60" y2="29" stroke="white" strokeWidth="1.1" strokeLinecap="round">
+                      <animate attributeName="x1" values="48;118;118" keyTimes="0;0.068;1" dur="22s" begin="9s" repeatCount="indefinite" />
+                      <animate attributeName="y1" values="35;68;68" keyTimes="0;0.068;1" dur="22s" begin="9s" repeatCount="indefinite" />
+                      <animate attributeName="x2" values="60;130;130" keyTimes="0;0.068;1" dur="22s" begin="9s" repeatCount="indefinite" />
+                      <animate attributeName="y2" values="29;62;62" keyTimes="0;0.068;1" dur="22s" begin="9s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0;0;0.9;0.4;0;0" keyTimes="0;0.008;0.035;0.06;0.068;1" dur="22s" begin="9s" repeatCount="indefinite" />
+                    </line>
+                    {/* Estrella fugaz 3 — centro superior, la más brillante */}
+                    <line x1="195" y1="9" x2="207" y2="4" stroke="white" strokeWidth="1.5" strokeLinecap="round">
+                      <animate attributeName="x1" values="195;128;128" keyTimes="0;0.055;1" dur="28s" begin="16s" repeatCount="indefinite" />
+                      <animate attributeName="y1" values="9;43;43" keyTimes="0;0.055;1" dur="28s" begin="16s" repeatCount="indefinite" />
+                      <animate attributeName="x2" values="207;140;140" keyTimes="0;0.055;1" dur="28s" begin="16s" repeatCount="indefinite" />
+                      <animate attributeName="y2" values="4;38;38" keyTimes="0;0.055;1" dur="28s" begin="16s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0;0;1.0;0.6;0;0" keyTimes="0;0.005;0.03;0.05;0.055;1" dur="28s" begin="16s" repeatCount="indefinite" />
+                    </line>
                   </svg>
 
                   {/* Luna SVG centrada */}
@@ -523,6 +731,17 @@ export default function AstronomiaPage() {
                       )}
                       {/* Limbo */}
                       <circle cx="55" cy="55" r={R} fill="none" stroke="rgba(255,255,255,0.11)" strokeWidth="1" />
+                      {/* Satélite orbitando */}
+                      <circle cx="55" cy="2" r="1.3" fill="rgba(170,215,255,0.65)">
+                        <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          from="0 55 55"
+                          to="360 55 55"
+                          dur="32s"
+                          repeatCount="indefinite"
+                        />
+                      </circle>
                     </svg>
 
                     {/* Nombre de fase */}
@@ -607,9 +826,9 @@ export default function AstronomiaPage() {
               </p>
               <Card variant="elevated" className="p-5 h-full">
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                  El centro galáctico es visible desde el hemisferio sur entre marzo y septiembre.
-                  Los mejores meses son junio y julio, cuando las noches son más largas y el núcleo
-                  de la galaxia queda alto en el cielo.
+                  El núcleo galáctico se ve mejor de marzo a septiembre — junio y julio son el pico,
+                  con noches largas y el centro de la galaxia bien alto. Pero el cielo patagónico
+                  es oscuro e increíble todo el año.
                 </p>
                 <div className="grid grid-cols-6 gap-1.5">
                   {MILKYWAY.map(({ mes, calidad }) => (
@@ -622,10 +841,10 @@ export default function AstronomiaPage() {
                               ? "bg-sky-500/20 text-sky-400"
                               : calidad === "regular"
                                 ? "bg-amber-500/15 text-amber-500/70"
-                                : "bg-muted/50 text-muted-foreground/40"
+                                : "bg-violet-500/10 text-violet-400/50"
                         }`}
                       >
-                        {calidad === "excelente" ? "★" : calidad === "buena" ? "◐" : "·"}
+                        {calidad === "excelente" ? "★" : calidad === "buena" ? "◐" : calidad === "regular" ? "·" : "◆"}
                       </div>
                       <span className="text-[9px] text-muted-foreground">{mes}</span>
                     </div>
@@ -638,9 +857,34 @@ export default function AstronomiaPage() {
                   <span className="flex items-center gap-1 text-[10px] text-sky-400">
                     <span>◐</span> Buena
                   </span>
-                  <span className="flex items-center gap-1 text-[10px] text-muted-foreground/50">
-                    <span>·</span> Fuera de temporada
+                  <span className="flex items-center gap-1 text-[10px] text-violet-400/50">
+                    <span>◆</span> Sin núcleo galáctico
                   </span>
+                </div>
+                <div className="mt-5 pt-4 border-t border-border/30">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-3">
+                    Visible todo el año
+                  </p>
+                  <div className="space-y-2.5">
+                    <div className="flex items-start gap-2">
+                      <span className="text-emerald-400 text-[10px] mt-0.5 shrink-0">★</span>
+                      <p className="text-[11px] text-muted-foreground leading-snug">
+                        <span className="text-foreground/80 font-medium">Cruz del Sur</span> — circumpolar desde Patagonia, nunca se pone
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-emerald-400 text-[10px] mt-0.5 shrink-0">★</span>
+                      <p className="text-[11px] text-muted-foreground leading-snug">
+                        <span className="text-foreground/80 font-medium">Nubes de Magallanes</span> — galaxias satélite de la Vía Láctea, a simple vista
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-sky-400 text-[10px] mt-0.5 shrink-0">◐</span>
+                      <p className="text-[11px] text-muted-foreground leading-snug">
+                        <span className="text-foreground/80 font-medium">Alpha Centauri</span> — el sistema estelar más cercano al Sol, a 4,4 años luz
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </Card>
             </div>

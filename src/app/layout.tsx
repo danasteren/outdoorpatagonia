@@ -53,12 +53,12 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
       <head>
-        {/* Inline script: sets dark class before first paint, respects system preference */}
+        {/* Inline script: sets dark class before first paint, defaults to light */}
         <script
           type={typeof window === "undefined" ? "text/javascript" : "text/plain"}
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}})()`,
+            __html: `(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}})()`,
           }}
         />
       </head>
