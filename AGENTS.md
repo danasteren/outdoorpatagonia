@@ -93,7 +93,7 @@ export const metadata: Metadata = {
     title: "...",
     description: "...",
     url: "https://outdoorpatagonia.com/ruta",
-    images: [{ url: "/og-default.jpg", width: 1200, height: 630, alt: "descripción de la imagen" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "descripción de la imagen" }],
   },
   twitter: { card: "summary_large_image" },
   alternates: { canonical: "https://outdoorpatagonia.com/ruta" },
@@ -104,7 +104,7 @@ Reglas irrompibles:
 - `title`: único por página, incluir "Patagonia" + keyword principal
 - `description`: frase directa que responde who/what/where — nunca empiece con "En este artículo..."
 - `canonical`: **obligatorio** — previene contenido duplicado por query params; en rutas dinámicas, generarlo por entrada
-- Si la página tiene imagen destacada, usarla en `openGraph.images`; si no, usar `/og-default.jpg`
+- Si la página tiene imagen destacada, usarla en `openGraph.images`; si no, Next.js usa automáticamente `src/app/opengraph-image.tsx` como fallback (logo de marca sobre fondo teal)
 
 ### 2. Estructura HTML
 
