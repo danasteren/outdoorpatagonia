@@ -75,3 +75,82 @@ Patrón para agregar una nueva sección:
 - **SERNAGEOMIN volcanes** — `https://rnvv.sernageomin.cl/api/` — alertas volcánicas Chile
 - **SHOA mareas** — para Ushuaia y Pto. Madryn
 <!-- END:statusboard-pattern -->
+
+<!-- BEGIN:seo-geo -->
+## SEO & GEO — obligatorio en cada página nueva
+
+Toda página nueva debe cumplir este checklist antes de darse por terminada.
+
+### 1. `metadata` mínimo
+
+El `layout.tsx` ya define `metadataBase`, title template (`%s | Outdoor Patagonia`) y openGraph/twitter globales como fallback. Cada `page.tsx` solo sobreescribe lo que cambia:
+
+```typescript
+export const metadata: Metadata = {
+  title: "Keyword principal + Patagonia (50-60 chars)",
+  description: "Responde qué, dónde y por qué en 150-160 chars. Los AI overviews citan estas descripciones literalmente.",
+  openGraph: {
+    title: "...",
+    description: "...",
+    url: "https://outdoorpatagonia.com/ruta",
+    images: [{ url: "/og-default.jpg", width: 1200, height: 630, alt: "descripción de la imagen" }],
+  },
+  twitter: { card: "summary_large_image" },
+  alternates: { canonical: "https://outdoorpatagonia.com/ruta" },
+}
+```
+
+Reglas irrompibles:
+- `title`: único por página, incluir "Patagonia" + keyword principal
+- `description`: frase directa que responde who/what/where — nunca empiece con "En este artículo..."
+- `canonical`: **obligatorio** — previene contenido duplicado por query params; en rutas dinámicas, generarlo por entrada
+- Si la página tiene imagen destacada, usarla en `openGraph.images`; si no, usar `/og-default.jpg`
+
+### 2. Estructura HTML
+
+- **Un `<h1>` por página** — keyword principal + "Patagonia" cuando tiene sentido
+- Jerarquía `h2 → h3` sin saltos; nunca usar headings solo por estilo visual
+- Toda `<Image>` / `<img>` con `alt` descriptivo (nunca vacío, nunca "imagen de X")
+- **Agregar la nueva ruta estática a `src/app/sitemap.ts`** — si no aparece en el sitemap, Google la indexa más lento
+
+### 3. JSON-LD structured data (GEO)
+
+Agregar `<script type="application/ld+json">` en el JSX. Tipo según contexto:
+
+| Tipo de página | Schema recomendado |
+|---|---|
+| Artículo / post | `Article` con `author`, `datePublished`, `image`, `publisher` |
+| Parque / sendero / lugar | `TouristDestination` con `geo` (lat/lng) |
+| Especie fauna / flora | `Article` con `about: { "@type": "Thing", name: nombre científico }` |
+| Página de categoría / índice | `CollectionPage` |
+| Preguntas frecuentes | `FAQPage` — máximo impacto en AI overviews |
+
+Patrón para lugares (parques, senderos):
+
+```typescript
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "TouristDestination",
+  name: "Nombre del lugar",
+  description: "...",
+  url: "https://outdoorpatagonia.com/parques/...",
+  geo: { "@type": "GeoCoordinates", latitude: -50.0, longitude: -73.0 },
+  touristType: { "@type": "Audience", audienceType: "outdoor enthusiasts" },
+  containedInPlace: { "@type": "Country", name: "Argentina" },
+}
+// en el JSX:
+// <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+```
+
+### 4. GEO — optimizar para AI overviews (Perplexity, Google AI, ChatGPT Search)
+
+Los motores de IA priorizan páginas que:
+- Responden la pregunta directamente en los **primeros 100 palabras** de cada sección
+- Usan datos concretos: altitud, distancia, temperatura media, temporada, precio
+- Nombran entidades específicas: nombre científico, coordenadas, nombre de parque oficial
+- Tienen `FAQPage` schema con preguntas reales que la gente busca
+
+Al escribir contenido o descripciones, estructurar así:
+- ✅ "El Parque Nacional Los Glaciares tiene 726.927 ha y alberga el Perito Moreno, uno de los pocos glaciares en crecimiento del mundo."
+- ❌ "En este artículo vamos a explorar todo lo que necesitás saber sobre los glaciares patagónicos."
+<!-- END:seo-geo -->

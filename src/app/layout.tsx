@@ -24,9 +24,29 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Outdoor Patagonia — Naturaleza, cultura e historias del sur",
+  metadataBase: new URL("https://outdoorpatagonia.com"),
+  title: {
+    default: "Outdoor Patagonia — Naturaleza, cultura e historias del sur",
+    template: "%s | Outdoor Patagonia",
+  },
   description:
     "Guía definitiva de la Patagonia: trekking, flora, fauna, gastronomía y herramientas para explorar el sur de Argentina y Chile.",
+  openGraph: {
+    siteName: "Outdoor Patagonia",
+    locale: "es_AR",
+    type: "website",
+    images: [
+      {
+        url: "/og-default.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Outdoor Patagonia — el sur como nunca lo viste",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32" },

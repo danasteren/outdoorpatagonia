@@ -139,6 +139,14 @@ const EVENTOS: AstroEvent[] = [
     fechaISO: "2027-06-21",
   },
   {
+    nombre: "Eclipse solar anular",
+    fecha: "6 de febrero, 2027",
+    tipo: "eclipse",
+    descripcion:
+      "El anillo de fuego cruza el sur de Sudamérica. Desde Patagonia y Tierra del Fuego se observa como eclipse anular o parcial de alta cobertura — uno de los eventos astronómicos más accesibles desde la región en décadas.",
+    fechaISO: "2027-02-06",
+  },
+  {
     nombre: "Eclipse solar total",
     fecha: "2 de agosto, 2027",
     tipo: "eclipse",
