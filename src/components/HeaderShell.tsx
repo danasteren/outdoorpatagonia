@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import {
   Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
   PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe, Telescope,
-  User, LogOut,
+  User, LogOut, Backpack,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
@@ -157,6 +157,27 @@ export function HeaderShell({
                       <span className="truncate font-medium">{label}</span>
                     </Link>
                   ))}
+                </div>
+                <div className="mt-2 pt-2 border-t border-border">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-3 mb-1">
+                    Planear
+                  </p>
+                  <div className="grid grid-cols-2 gap-0.5">
+                    {[
+                      { href: '/planear', label: 'Itinerario', Icon: Compass },
+                      { href: '/planear/que-llevar', label: 'Qué llevar', Icon: Backpack },
+                    ].map(({ href, label, Icon }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        onClick={() => setExploreOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                      >
+                        <Icon size={14} strokeWidth={1.75} className="text-[var(--color-terracotta)] shrink-0" />
+                        <span className="truncate font-medium">{label}</span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -371,6 +392,24 @@ export function HeaderShell({
                 {label}
               </Link>
             ))}
+            <div className="mt-3 pt-3 border-t border-border">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-2 mb-1.5">
+                Planear
+              </p>
+              {[
+                { href: '/planear', label: 'Itinerario', Icon: Compass },
+                { href: '/planear/que-llevar', label: 'Qué llevar', Icon: Backpack },
+              ].map(({ href, label, Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  <Icon size={15} strokeWidth={1.75} className="text-[var(--color-terracotta)] shrink-0" />
+                  {label}
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* Bottom */}
