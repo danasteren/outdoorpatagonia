@@ -139,13 +139,13 @@ export function HeaderShell({
               >
                 <div className="grid grid-cols-2 gap-0.5">
                   {[
+                    { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
+                    { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
+                    { href: '/estado', label: 'Estado', Icon: Activity },
                     { href: '/fauna', label: 'Fauna', Icon: PawPrint },
                     { href: '/flora', label: 'Flora', Icon: Leaf },
                     { href: '/parques', label: 'Parques', Icon: Mountain },
                     { href: '/senderos', label: 'Senderos', Icon: MapPin },
-                    { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
-                    { href: '/estado', label: 'Estado', Icon: Activity },
-                    { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
                   ].map(({ href, label, Icon }) => (
                     <Link
                       key={href}
@@ -375,13 +375,13 @@ export function HeaderShell({
               Explorar
             </p>
             {[
+              { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
+              { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
+              { href: '/estado', label: 'Estado', Icon: Activity },
               { href: '/fauna', label: 'Fauna', Icon: PawPrint },
               { href: '/flora', label: 'Flora', Icon: Leaf },
               { href: '/parques', label: 'Parques', Icon: Mountain },
               { href: '/senderos', label: 'Senderos', Icon: MapPin },
-              { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
-              { href: '/estado', label: 'Estado', Icon: Activity },
-              { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
             ].map(({ href, label, Icon }) => (
               <Link
                 key={href}
