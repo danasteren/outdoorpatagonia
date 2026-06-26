@@ -23,26 +23,18 @@ const tipoBadge: Record<TipoCambio, { label: string; className: string }> = {
 };
 
 export default function NovedadesAccordion() {
-  const [openVersions, setOpenVersions] = useState<Set<string>>(
-    () => new Set(novedades.filter((v) => v.esUltima).map((v) => v.numero))
+  const [openVersion, setOpenVersion] = useState<string | null>(
+    () => novedades.find((v) => v.esUltima)?.numero ?? null
   );
 
   function toggle(numero: string) {
-    setOpenVersions((prev) => {
-      const next = new Set(prev);
-      if (next.has(numero)) {
-        next.delete(numero);
-      } else {
-        next.add(numero);
-      }
-      return next;
-    });
+    setOpenVersion((prev) => (prev === numero ? null : numero));
   }
 
   return (
     <div className="space-y-3">
       {novedades.map((version) => {
-        const isOpen = openVersions.has(version.numero);
+        const isOpen = openVersion === version.numero;
         return (
           <div
             key={version.numero}
