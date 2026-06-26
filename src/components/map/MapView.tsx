@@ -121,7 +121,7 @@ export function MapView() {
 
   return (
     <div
-      className="fixed left-0 right-0 bottom-0 z-40 overflow-hidden"
+      className="fixed left-0 right-0 bottom-0 z-40"
       style={{ top: "4rem" }}
     >
       <MapContainer

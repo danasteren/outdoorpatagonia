@@ -22,8 +22,6 @@ interface MapInfoPanelProps {
 }
 
 export function MapInfoPanel({ feature, open, onClose }: MapInfoPanelProps) {
-  if (!feature) return null;
-
   return (
     <>
       {/* Desktop: side panel */}
@@ -32,13 +30,23 @@ export function MapInfoPanel({ feature, open, onClose }: MapInfoPanelProps) {
           "hidden md:flex flex-col absolute top-4 right-14 bottom-4 z-[800]",
           "w-80 bg-card border border-border rounded-xl shadow-modal",
           "transition-all duration-300 ease-out",
-          open
+          open && feature
             ? "translate-x-0 opacity-100"
             : "translate-x-4 opacity-0 pointer-events-none",
         ].join(" ")}
       >
-        <PanelContent feature={feature} onClose={onClose} />
+        {feature && <PanelContent feature={feature} onClose={onClose} />}
       </div>
+
+      {/* Mobile: backdrop */}
+      <div
+        className={[
+          "md:hidden absolute inset-0 z-[799] bg-black/40 backdrop-blur-[1px]",
+          "transition-opacity duration-300",
+          open && feature ? "opacity-100" : "opacity-0 pointer-events-none",
+        ].join(" ")}
+        onClick={onClose}
+      />
 
       {/* Mobile: bottom drawer */}
       <div
@@ -46,16 +54,16 @@ export function MapInfoPanel({ feature, open, onClose }: MapInfoPanelProps) {
           "md:hidden absolute inset-x-0 bottom-0 z-[800]",
           "bg-card border-t border-border rounded-t-2xl shadow-modal",
           "transition-transform duration-300 ease-out",
-          open ? "translate-y-0" : "translate-y-full",
+          open && feature ? "translate-y-0" : "translate-y-full",
         ].join(" ")}
-        style={{ maxHeight: "60svh" }}
+        style={{ maxHeight: "70svh" }}
       >
-        <div className="w-10 h-1 bg-border rounded-full mx-auto mt-3 mb-1" />
+        <div className="w-12 h-1.5 bg-muted-foreground/30 rounded-full mx-auto mt-3 mb-1" />
         <div
-          className="overflow-y-auto"
-          style={{ maxHeight: "calc(60svh - 20px)" }}
+          className="overflow-y-auto overscroll-contain"
+          style={{ maxHeight: "calc(70svh - 24px)", paddingBottom: "env(safe-area-inset-bottom, 16px)" }}
         >
-          <PanelContent feature={feature} onClose={onClose} />
+          {feature && <PanelContent feature={feature} onClose={onClose} />}
         </div>
       </div>
     </>
