@@ -9,12 +9,14 @@ import {
   fetchPatagoniaPhotos,
 } from "@/lib/apis/inaturalist"
 import { fetchPatagoniaFires } from "@/lib/apis/nasa-firms"
+import { fetchImpactoData } from "@/lib/apis/openaq"
 import { getMoonData } from "@/lib/astronomy"
 import { WeatherSection } from "./WeatherSection"
 import { GlacierSection } from "./GlacierSection"
 import { SightingList } from "./SightingList"
 import { MoonSection } from "./MoonSection"
 import { FireSection } from "./FireSection"
+import { ImpactoSection } from "./ImpactoSection"
 import { PhotoGrid } from "./PhotoGrid"
 
 function SightingPanel({
@@ -43,6 +45,7 @@ export async function StatusBoard() {
     fungiResult,
     photosResult,
     fireResult,
+    impactoResult,
   ] = await Promise.allSettled([
     fetchWeather(),
     fetchGlacierData(),
@@ -51,6 +54,7 @@ export async function StatusBoard() {
     fetchPatagoniaFungi(),
     fetchPatagoniaPhotos(),
     fetchPatagoniaFires(),
+    fetchImpactoData(),
   ])
 
   const weather = weatherResult.status === "fulfilled" ? weatherResult.value : []
@@ -60,6 +64,7 @@ export async function StatusBoard() {
   const fungi = fungiResult.status === "fulfilled" ? fungiResult.value : []
   const photos = photosResult.status === "fulfilled" ? photosResult.value : []
   const fires = fireResult.status === "fulfilled" ? fireResult.value : { count: 0, hotspots: [], lastDate: "" }
+  const impacto = impactoResult.status === "fulfilled" ? impactoResult.value : { readings: [], lastDate: "" }
 
   const moon = getMoonData()
 
@@ -120,6 +125,9 @@ export async function StatusBoard() {
 
           {/* Incendios — solo cuando hay datos */}
           <FireSection data={fires} />
+
+          {/* Impacto industrial — solo cuando hay datos */}
+          <ImpactoSection data={impacto} />
         </div>
       </PageShell>
     </Section>
