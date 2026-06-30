@@ -81,9 +81,7 @@ export function HeaderShell({
   const mapaHref = lang === 'en' ? '/en/mapa' : '/mapa'
   const planearHref = '/planear'
   const operadoresHref = '/operadores'
-  const isActiveMapa = pathname === '/mapa' || pathname === '/en/mapa'
   const isActivePlanear = pathname === '/planear'
-  const isActiveOperadores = pathname.startsWith('/operadores')
 
   async function handleSignIn() {
     const codeVerifier = generateRandomBase64url(32)
@@ -162,6 +160,27 @@ export function HeaderShell({
                 </div>
                 <div className="mt-2 pt-2 border-t border-border">
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-3 mb-1">
+                    Herramientas
+                  </p>
+                  <div className="grid grid-cols-2 gap-0.5">
+                    {[
+                      { href: mapaHref, label: 'Mapa', Icon: Map },
+                      { href: operadoresHref, label: 'Operadores', Icon: Users },
+                    ].map(({ href, label, Icon }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        onClick={() => setExploreOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                      >
+                        <Icon size={14} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+                        <span className="truncate font-medium">{label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-2 pt-2 border-t border-border">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-3 mb-1">
                     Planear
                   </p>
                   <div className="grid grid-cols-2 gap-0.5">
@@ -183,30 +202,6 @@ export function HeaderShell({
                 </div>
               </div>
             </div>
-
-            {/* Mapa */}
-            <Link
-              href={mapaHref}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActiveMapa
-                  ? 'text-foreground bg-muted'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-                }`}
-            >
-              <Map size={15} strokeWidth={1.75} />
-              Mapa
-            </Link>
-
-            {/* Operadores */}
-            <Link
-              href={operadoresHref}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActiveOperadores
-                  ? 'text-foreground bg-muted'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-                }`}
-            >
-              <Users size={15} strokeWidth={1.75} />
-              Operadores
-            </Link>
 
             {/* Planear — terracotta CTA */}
             <Link
@@ -350,13 +345,6 @@ export function HeaderShell({
               Herramientas
             </p>
             <Link
-              href={mapaHref}
-              className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            >
-              <Map size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-              Mapa interactivo
-            </Link>
-            <Link
               href={planearHref}
               className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)]/8 transition-colors"
             >
@@ -364,18 +352,25 @@ export function HeaderShell({
               Planeá tu viaje
             </Link>
             <Link
-              href={operadoresHref}
-              className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            >
-              <Users size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-              Operadores
-            </Link>
-            <Link
               href="/buscar"
               className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <Search size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
               Buscar
+            </Link>
+            <Link
+              href={mapaHref}
+              className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <Map size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+              Mapa interactivo
+            </Link>
+            <Link
+              href={operadoresHref}
+              className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <Users size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
+              Operadores
             </Link>
           </div>
 
