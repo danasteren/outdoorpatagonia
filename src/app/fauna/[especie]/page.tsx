@@ -427,34 +427,36 @@ export default async function FaunaEspeciePage({
                 <p className="text-xs text-muted-foreground mb-3">
                   Observaciones registradas en la Patagonia por mes
                 </p>
-                <div className="flex items-end gap-1 h-16">
+                <div className="flex items-end gap-1.5 h-20 bg-[var(--color-cream)] rounded-md px-2 pt-3">
                   {monthBars.map(({ label, count }) => {
                     const heightPct = Math.round((count / maxCount) * 100)
                     return (
                       <div
                         key={label}
-                        className="flex flex-col items-center flex-1 gap-1"
+                        className="flex-1 h-full flex flex-col justify-end"
+                        title={`${label}: ${count} avistamientos`}
                       >
                         <div
                           className="w-full rounded-t-sm transition-all duration-300"
                           style={{
-                            height: `${Math.max(heightPct, 4)}%`,
-                            backgroundColor:
-                              heightPct > 60
-                                ? "var(--color-teal)"
-                                : heightPct > 30
-                                  ? "var(--color-forest)"
-                                  : "var(--color-forest, #2d5a3d)",
-                            opacity: Math.max(0.3, heightPct / 100),
+                            height: `${Math.max(heightPct, count > 0 ? 6 : 2)}%`,
+                            backgroundColor: "var(--color-teal)",
+                            opacity: count > 0 ? Math.max(0.35, heightPct / 100) : 0.15,
                           }}
-                          title={`${label}: ${count} avistamientos`}
                         />
-                        <span className="text-[9px] text-muted-foreground">
-                          {label}
-                        </span>
                       </div>
                     )
                   })}
+                </div>
+                <div className="flex gap-1.5 px-2 mt-1">
+                  {monthBars.map(({ label }) => (
+                    <span
+                      key={label}
+                      className="flex-1 text-center text-[9px] text-muted-foreground"
+                    >
+                      {label}
+                    </span>
+                  ))}
                 </div>
               </section>
             )}
