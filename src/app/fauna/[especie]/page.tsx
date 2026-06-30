@@ -394,9 +394,9 @@ export default async function FaunaEspeciePage({
                     <ExternalLink className="w-3.5 h-3.5" />
                     iNaturalist — observaciones globales
                   </a>
-                  {(entry?.gbifKey ?? gbif?.usageKey) && (
+                  {gbif?.usageKey && (
                     <a
-                      href={`https://www.gbif.org/species/${entry?.gbifKey ?? gbif?.usageKey}`}
+                      href={`https://www.gbif.org/species/${gbif.usageKey}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
