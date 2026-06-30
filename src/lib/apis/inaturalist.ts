@@ -112,6 +112,7 @@ export type PhotoSighting = {
   photoUrl: string
   placeGuess: string | null
   uri: string
+  observerLogin: string
 }
 
 // ─── Status board: parameterized iNaturalist observations ─────────────────────
@@ -191,6 +192,7 @@ export async function fetchPatagoniaPhotos(perPage = 9): Promise<PhotoSighting[]
       photoUrl: obs.photos![0].url.replace(/\/square\b/, "/small"),
       placeGuess: obs.place_guess,
       uri: obs.uri,
+      observerLogin: obs.user.login,
     }))
 }
 

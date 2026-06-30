@@ -8,7 +8,6 @@ import {
   fetchPatagoniaFungi,
   fetchPatagoniaPhotos,
 } from "@/lib/apis/inaturalist"
-import { fetchPatagoniaFires } from "@/lib/apis/nasa-firms"
 import { fetchImpactoData } from "@/lib/apis/openaq"
 import { getMoonData } from "@/lib/astronomy"
 import { WeatherSection } from "./WeatherSection"
@@ -16,7 +15,6 @@ import { OzoneSection } from "./OzoneSection"
 import { GlacierSection } from "./GlacierSection"
 import { SightingList } from "./SightingList"
 import { MoonSection } from "./MoonSection"
-import { FireSection } from "./FireSection"
 import { ImpactoSection } from "./ImpactoSection"
 import { PhotoGrid } from "./PhotoGrid"
 
@@ -45,7 +43,6 @@ export async function StatusBoard() {
     floraResult,
     fungiResult,
     photosResult,
-    fireResult,
     impactoResult,
   ] = await Promise.allSettled([
     fetchWeather(),
@@ -54,7 +51,6 @@ export async function StatusBoard() {
     fetchPatagoniaFlora(),
     fetchPatagoniaFungi(),
     fetchPatagoniaPhotos(),
-    fetchPatagoniaFires(),
     fetchImpactoData(),
   ])
 
@@ -64,7 +60,6 @@ export async function StatusBoard() {
   const flora = floraResult.status === "fulfilled" ? floraResult.value : []
   const fungi = fungiResult.status === "fulfilled" ? fungiResult.value : []
   const photos = photosResult.status === "fulfilled" ? photosResult.value : []
-  const fires = fireResult.status === "fulfilled" ? fireResult.value : { count: 0, hotspots: [], lastDate: "" }
   const impacto = impactoResult.status === "fulfilled" ? impactoResult.value : { readings: [], lastDate: "" }
 
   const moon = getMoonData()
@@ -124,9 +119,6 @@ export async function StatusBoard() {
 
           {/* Fotografía */}
           {photos.length > 0 && <PhotoGrid photos={photos} />}
-
-          {/* Incendios — solo cuando hay datos */}
-          <FireSection data={fires} />
 
           {/* Impacto industrial — solo cuando hay datos */}
           <ImpactoSection data={impacto} />

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { StatusBoard } from "@/components/status/StatusBoard";
+import { EstadoCTA } from "@/components/status/EstadoCTA";
 import { Section } from "@/components/layout";
 import { PageShell } from "@/components/layout";
 import { Hero } from "@/components/home/Hero";
@@ -11,7 +12,6 @@ import {
   Pickaxe,
   Activity,
   Telescope,
-  ChevronRight,
 } from "lucide-react";
 
 export const revalidate = 3600;
@@ -74,7 +74,7 @@ export default function Home() {
       <Hero />
 
       {/* Categorías */}
-      <Section spacing="lg">
+      <Section id="categorias" spacing="lg" className="scroll-mt-20">
         <PageShell>
           <h2
             className="text-2xl font-bold mb-6"
@@ -110,21 +110,7 @@ export default function Home() {
 
       {/* Estado en tiempo real */}
       <StatusBoard />
-
-      {/* CTA hacia /estado */}
-      <Section spacing="sm">
-        <PageShell>
-          <div className="flex justify-center">
-            <Link
-              href="/estado"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:border-[var(--color-teal)] transition-colors"
-            >
-              Ver estado completo
-              <ChevronRight size={14} />
-            </Link>
-          </div>
-        </PageShell>
-      </Section>
+      <EstadoCTA />
     </div>
   );
 }

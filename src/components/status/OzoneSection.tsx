@@ -71,47 +71,50 @@ export function OzoneSection() {
           las nubes no bloquean el UV-B como uno espera.
         </p>
 
-        {/* Mapa de alcance */}
-        <div className="rounded-xl overflow-hidden border border-border mb-4" style={{ height: 320 }}>
-          <OzoneMapClient />
-        </div>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-4 text-[11.5px] text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-500/40 border border-red-500" />
-            Alcance típico (Tierra del Fuego y Santa Cruz)
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-amber-500/20 border border-amber-500 border-dashed" />
-            Alcance en eventos extremos (hasta sur de Chubut)
-          </span>
-        </div>
-
-        {/* Gráfico estacional */}
-        <div className="bg-background/50 rounded-lg p-3">
-          <div className="flex items-end justify-between gap-1 h-20">
-            {MONTHS.map((m) => (
-              <div key={m.label} className="flex-1 flex flex-col items-center justify-end h-full">
-                <div
-                  className={`w-full rounded-t-sm transition-all ${barColor(m.risk)}`}
-                  style={{ height: `${Math.max(m.risk, 4)}%` }}
-                />
-              </div>
-            ))}
-          </div>
-          <div className="flex items-center justify-between gap-1 mt-1.5">
-            {MONTHS.map((m) => (
-              <span
-                key={m.label}
-                className="flex-1 text-center text-[10.5px] text-muted-foreground"
-              >
-                {m.label}
+        {/* Mapa de alcance + gráfico estacional */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+          <div>
+            <div className="relative isolate rounded-xl overflow-hidden border border-border" style={{ height: 320 }}>
+              <OzoneMapClient />
+            </div>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-[11.5px] text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-500/40 border border-red-500" />
+                Alcance típico (Tierra del Fuego y Santa Cruz)
               </span>
-            ))}
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block w-2.5 h-2.5 rounded-full bg-amber-500/20 border border-amber-500 border-dashed" />
+                Alcance en eventos extremos (hasta sur de Chubut)
+              </span>
+            </div>
           </div>
-          <p className="text-[11.5px] text-muted-foreground mt-2">
-            Probabilidad relativa de que el agujero de ozono afecte el sur de la Patagonia, por mes (patrón histórico,
-            no una medición en vivo). Pico habitual: septiembre-octubre.
-          </p>
+
+          <div className="bg-background/50 rounded-lg p-3 h-full flex flex-col">
+            <div className="flex-1 flex items-end justify-between gap-1 min-h-20">
+              {MONTHS.map((m) => (
+                <div key={m.label} className="flex-1 flex flex-col items-center justify-end h-full">
+                  <div
+                    className={`w-full rounded-t-sm transition-all ${barColor(m.risk)}`}
+                    style={{ height: `${Math.max(m.risk, 4)}%` }}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center justify-between gap-1 mt-1.5">
+              {MONTHS.map((m) => (
+                <span
+                  key={m.label}
+                  className="flex-1 text-center text-[10.5px] text-muted-foreground"
+                >
+                  {m.label}
+                </span>
+              ))}
+            </div>
+            <p className="text-[11.5px] text-muted-foreground mt-2">
+              Probabilidad relativa de que el agujero de ozono afecte el sur de la Patagonia, por mes (patrón
+              histórico, no una medición en vivo). Pico habitual: septiembre-octubre.
+            </p>
+          </div>
         </div>
 
         <div className="flex items-start gap-1.5 mt-3 p-2.5 rounded-lg bg-amber-500/10 text-sm text-foreground">

@@ -1,8 +1,25 @@
 import Link from "next/link"
-import { ChevronRight, ChevronDown } from "lucide-react"
+import { ChevronRight, ChevronDown, Camera } from "lucide-react"
 import { PageShell } from "@/components/layout"
 import { getMoonData } from "@/lib/astronomy"
-import { getDailyFact, getTimeOfDay, getTodayLabel, type TimeOfDay } from "@/lib/dailyContent"
+import { getDailyHighlight, getDayOfYear, getTimeOfDay, getTodayLabel, type TimeOfDay } from "@/lib/dailyContent"
+import { fetchPatagoniaPhotos, type PhotoSighting } from "@/lib/apis/inaturalist"
+
+// Real, recent Patagonia wildlife photo as the hero backdrop — rotates daily.
+// Falls back to null (gradient-only hero) if iNaturalist is unreachable.
+async function getHeroPhoto(): Promise<PhotoSighting | null> {
+  try {
+    const photos = await fetchPatagoniaPhotos(8)
+    if (photos.length === 0) return null
+    return photos[getDayOfYear(new Date()) % photos.length]
+  } catch {
+    return null
+  }
+}
+
+function largeUrl(url: string): string {
+  return url.replace(/\/small\b/, "/large")
+}
 
 const TIME_STYLES: Record<
   TimeOfDay,
@@ -45,17 +62,37 @@ const PARTICLES = [
   { left: "92%", size: 2, delay: "0.8s", duration: "8s" },
 ] as const
 
-export function Hero() {
+export async function Hero() {
   const timeOfDay = getTimeOfDay()
   const { gradient, particles, mountains } = TIME_STYLES[timeOfDay]
   const moon = getMoonData()
-  const fact = getDailyFact()
+  const highlight = getDailyHighlight()
   const today = getTodayLabel()
+  const photo = await getHeroPhoto()
 
   return (
     <section
-      className={`relative isolate overflow-hidden bg-gradient-to-br ${gradient} bg-[length:200%_200%] animate-hero-pan text-[var(--color-cream)] min-h-[92svh] sm:min-h-[88vh] flex flex-col`}
+      className={`relative isolate overflow-hidden text-[var(--color-cream)] min-h-[92svh] sm:min-h-[88vh] flex flex-col ${
+        photo ? "bg-[var(--color-forest)]" : `bg-gradient-to-br ${gradient} bg-[length:200%_200%] animate-hero-pan`
+      }`}
     >
+      {/* Real Patagonia photo backdrop (iNaturalist), rotates daily */}
+      {photo && (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={largeUrl(photo.photoUrl)}
+            alt=""
+            fetchPriority="high"
+            className="absolute inset-0 w-full h-full object-cover brightness-[0.55] saturate-[1.1]"
+          />
+          <div
+            className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-60 bg-[length:200%_200%] animate-hero-pan mix-blend-multiply`}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)] via-transparent to-black/20" />
+        </>
+      )}
+
       {/* Particle field */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {PARTICLES.map((p, i) => (
@@ -141,23 +178,47 @@ export function Hero() {
             </Link>
           </div>
 
-          <div className="inline-flex items-start gap-2.5 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 px-4 py-3 max-w-md">
+          <Link
+            href={highlight.href}
+            className="group inline-flex items-start gap-2.5 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 px-4 py-3 max-w-md hover:bg-white/15 hover:border-white/25 transition-colors"
+          >
             <span className="text-lg leading-none mt-0.5">{moon.phaseEmoji}</span>
-            <p className="text-sm text-[var(--color-cream)] opacity-90 leading-snug">
-              <span className="font-semibold">Dato del día: </span>
-              {fact}
-            </p>
-          </div>
+            <span className="text-sm text-[var(--color-cream)] opacity-90 leading-snug">
+              <span className="font-semibold">Dato del día · {highlight.source}: </span>
+              {highlight.text}
+              <ChevronRight
+                size={13}
+                className="inline-block ml-1 -mb-0.5 opacity-70 transition-transform group-hover:translate-x-0.5"
+              />
+            </span>
+          </Link>
         </div>
       </PageShell>
 
+      {/* Photo credit */}
+      {photo && (
+        <a
+          href={photo.uri}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative z-10 hidden sm:inline-flex items-center gap-1.5 self-end mr-4 mb-2 text-[10px] text-[var(--color-cream)] opacity-50 hover:opacity-90 transition-opacity"
+        >
+          <Camera size={11} strokeWidth={1.5} />
+          {photo.commonName ?? photo.speciesName} por @{photo.observerLogin} · iNaturalist
+        </a>
+      )}
+
       {/* Scroll cue */}
-      <div className="relative z-10 hidden sm:flex justify-center pb-6 animate-bounce-soft">
-        <div className="flex flex-col items-center gap-1 text-[var(--color-cream)] opacity-70">
+      <a
+        href="#categorias"
+        className="relative z-10 hidden sm:flex justify-center pb-6 animate-bounce-soft"
+        aria-label="Bajar a la sección de categorías"
+      >
+        <div className="flex flex-col items-center gap-1 text-[var(--color-cream)] opacity-70 hover:opacity-100 transition-opacity">
           <span className="text-[11px] font-medium uppercase tracking-widest">Descubrí más</span>
           <ChevronDown size={18} />
         </div>
-      </div>
+      </a>
     </section>
   )
 }

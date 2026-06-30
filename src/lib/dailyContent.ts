@@ -2,28 +2,54 @@
 // no client JS or DB needed, just date math. Paired with `revalidate`
 // on the page so it refreshes in production.
 
-const PATAGONIA_FACTS = [
-  "El glaciar Perito Moreno es uno de los pocos del mundo que sigue creciendo.",
-  "El cóndor andino puede vivir más de 50 años y volar sin apenas batir las alas.",
-  "Ushuaia es la ciudad más austral del mundo, a 3.000 km de la Antártida.",
-  "El Parque Nacional Los Glaciares protege 726.927 hectáreas de hielo y bosque.",
-  "Los vientos patagónicos pueden superar los 100 km/h en primavera.",
-  "El huemul, símbolo del escudo argentino, está en peligro de extinción.",
-  "La Torre Sur del Fitz Roy se eleva 3.405 metros sobre el valle.",
-  "El bosque de lengas cambia de verde a rojo fuego entre marzo y abril.",
-  "Bajo cielos sin contaminación lumínica, la Vía Láctea se ve a simple vista.",
-  "El delfín austral solo habita las costas frías del extremo sur de Sudamérica.",
-] as const
+import { PARQUES_CATALOG } from "@/lib/parques/catalog"
+import { SENDEROS_CATALOG } from "@/lib/senderos/catalog"
 
-function getDayOfYear(date: Date): number {
+export function getDayOfYear(date: Date): number {
   const start = Date.UTC(date.getUTCFullYear(), 0, 0)
   const diff = date.getTime() - start
   return Math.floor(diff / 86_400_000)
 }
 
-export function getDailyFact(): string {
+// Leading excerpt of a longer description, cut at the last full sentence
+// within the budget — keeps the hero card punchy without duplicating the
+// full editorial copy on the target page. The `(?!\d)` guard stops it from
+// treating a decimal/thousands separator (e.g. "3.405 m") as a sentence end.
+function leadingExcerpt(text: string, maxLength = 190): string {
+  const trimmed = text.trim()
+  if (trimmed.length <= maxLength) return trimmed
+  const window = trimmed.slice(0, maxLength)
+  const sentenceMatch = window.match(/^.*[.!?](?!\d)(?=\s)/)
+  if (sentenceMatch && sentenceMatch[0].length > 40) return sentenceMatch[0].trim()
+  const lastSpace = window.lastIndexOf(" ")
+  return `${window.slice(0, lastSpace > 0 ? lastSpace : maxLength)}…`
+}
+
+export type DailyHighlight = {
+  text: string
+  href: string
+  source: string
+}
+
+// Pulled straight from the real parque/sendero catalogs (same data that
+// powers /parques and /senderos) so the link always lands on a real,
+// already-published page — never an invented fact.
+const HIGHLIGHTS: DailyHighlight[] = [
+  ...PARQUES_CATALOG.map((p) => ({
+    text: leadingExcerpt(p.description),
+    href: `/parques/${p.slug}`,
+    source: p.name,
+  })),
+  ...SENDEROS_CATALOG.map((s) => ({
+    text: leadingExcerpt(s.description),
+    href: `/senderos/${s.slug}`,
+    source: s.title,
+  })),
+]
+
+export function getDailyHighlight(): DailyHighlight {
   const dayOfYear = getDayOfYear(new Date())
-  return PATAGONIA_FACTS[dayOfYear % PATAGONIA_FACTS.length]
+  return HIGHLIGHTS[dayOfYear % HIGHLIGHTS.length]
 }
 
 export type TimeOfDay = "amanecer" | "dia" | "atardecer" | "noche"
