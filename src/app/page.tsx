@@ -2,6 +2,7 @@ import Link from "next/link";
 import { StatusBoard } from "@/components/status/StatusBoard";
 import { Section } from "@/components/layout";
 import { PageShell } from "@/components/layout";
+import { Hero } from "@/components/home/Hero";
 import {
   PawPrint,
   Leaf,
@@ -12,6 +13,8 @@ import {
   Telescope,
   ChevronRight,
 } from "lucide-react";
+
+export const revalidate = 3600;
 
 const CATEGORIES = [
   {
@@ -68,43 +71,7 @@ const CATEGORIES = [
 export default function Home() {
   return (
     <div>
-      {/* Hero */}
-      <Section
-        spacing="xl"
-        className="bg-gradient-to-br from-[var(--color-forest)] via-[#1e4a38] to-[var(--color-teal)] text-[var(--color-cream)]"
-      >
-        <PageShell>
-          <div className="max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-teal-light)] mb-4">
-              Patagonia
-            </p>
-            <h1
-              className="text-4xl md:text-6xl font-bold leading-tight mb-6"
-              style={{ fontFamily: "var(--font-playfair)" }}
-            >
-              Naturaleza, cultura e historias del sur del mundo.
-            </h1>
-            <p className="text-lg text-[var(--color-cream)] opacity-80 mb-8 leading-relaxed">
-              Datos en tiempo real, guías de campo y herramientas para explorar la Patagonia.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/mapa"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--color-teal)] text-white font-semibold text-sm hover:opacity-90 transition-opacity"
-              >
-                Ver el mapa
-                <ChevronRight size={15} />
-              </Link>
-              <Link
-                href="/planear"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[var(--color-cream)] border-opacity-40 text-[var(--color-cream)] font-semibold text-sm hover:bg-white/10 transition-colors"
-              >
-                Planear un viaje
-              </Link>
-            </div>
-          </div>
-        </PageShell>
-      </Section>
+      <Hero />
 
       {/* Categorías */}
       <Section spacing="lg">

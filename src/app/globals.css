@@ -56,6 +56,15 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ── Hero animations ─────────────────────────────────────────── */
+  --animate-hero-pan: hero-pan 18s ease-in-out infinite;
+  --animate-drift: drift 22s ease-in-out infinite;
+  --animate-drift-slow: drift 34s ease-in-out infinite reverse;
+  --animate-float-up: float-up linear infinite;
+  --animate-twinkle: twinkle ease-in-out infinite;
+  --animate-bounce-soft: bounce-soft 2.4s ease-in-out infinite;
+  --animate-fade-in-up: fade-in-up 0.8s ease-out both;
 }
 
 :root {
@@ -192,6 +201,46 @@
   .shadow-hover { box-shadow: var(--shadow-hover); }
   .shadow-modal { box-shadow: var(--shadow-modal); }
   .font-heading { font-family: var(--font-playfair); }
+}
+
+/* ── Hero keyframes ──────────────────────────────────────────────── */
+@keyframes hero-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes drift {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-2%) translateY(-4px); }
+}
+@keyframes float-up {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.4; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+@keyframes bounce-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-pan,
+  .animate-drift,
+  .animate-drift-slow,
+  .animate-float-up,
+  .animate-twinkle,
+  .animate-bounce-soft,
+  .animate-fade-in-up {
+    animation: none !important;
+  }
 }
 
 /* Article body — WordPress HTML content */
