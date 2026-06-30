@@ -6,6 +6,7 @@ import type {
   Tour,
   GearItem,
 } from "./types";
+import { gygSearchUrl } from "../affiliates/getyourguide";
 
 export interface Destination {
   id: string;
@@ -376,7 +377,7 @@ export const ALL_TOURS: Tour[] = [
     location: "El Calafate",
     duration: "4 horas",
     description: "Caminata equipada con crampones sobre el glaciar. Incluye equipamiento y guía.",
-    url: "https://www.getyourguide.com/s/?q=perito+moreno+ice+trekking",
+    url: gygSearchUrl("perito moreno ice trekking"),
     interests: ["trekking", "naturaleza", "fotografia"],
   },
   {
@@ -384,7 +385,7 @@ export const ALL_TOURS: Tour[] = [
     location: "El Calafate",
     duration: "3 horas",
     description: "Navegación entre glaciares Upsala, Spegazzini y Onelli desde el lago.",
-    url: "https://www.getyourguide.com/s/?q=lago+argentino+safari",
+    url: gygSearchUrl("lago argentino safari"),
     interests: ["naturaleza", "fotografia"],
   },
   {
@@ -392,7 +393,7 @@ export const ALL_TOURS: Tour[] = [
     location: "Ushuaia",
     duration: "5 horas",
     description: "Barco por el Canal Beagle con parada en Isla Martillo para caminar entre pingüinos.",
-    url: "https://www.getyourguide.com/s/?q=ushuaia+canal+beagle+penguins",
+    url: gygSearchUrl("ushuaia canal beagle penguins"),
     interests: ["fauna", "naturaleza", "fotografia"],
   },
   {
@@ -400,7 +401,7 @@ export const ALL_TOURS: Tour[] = [
     location: "Torres del Paine",
     duration: "5 días",
     description: "Recorrido guiado por el circuito W. Refugios y comidas incluidos.",
-    url: "https://www.getyourguide.com/s/?q=torres+del+paine+W+trek",
+    url: gygSearchUrl("torres del paine W trek"),
     interests: ["trekking", "naturaleza", "fotografia"],
   },
   {
@@ -408,7 +409,7 @@ export const ALL_TOURS: Tour[] = [
     location: "El Chaltén",
     duration: "6 horas",
     description: "Guía fotográfico hasta Laguna de los Tres para capturar el amanecer en el Fitz Roy.",
-    url: "https://www.getyourguide.com/s/?q=fitz+roy+photography+tour",
+    url: gygSearchUrl("fitz roy photography tour"),
     interests: ["fotografia", "trekking"],
   },
   {
@@ -416,7 +417,7 @@ export const ALL_TOURS: Tour[] = [
     location: "Puerto Madryn",
     duration: "4 horas",
     description: "Barco zodiac entre ballenas jorobadas y sus crías en el Golfo Nuevo.",
-    url: "https://www.getyourguide.com/s/?q=peninsula+valdes+whale+watching",
+    url: gygSearchUrl("peninsula valdes whale watching"),
     interests: ["fauna", "naturaleza", "fotografia"],
   },
   {
@@ -424,7 +425,7 @@ export const ALL_TOURS: Tour[] = [
     location: "Bariloche",
     duration: "Día completo",
     description: "El mayor centro de ski de Sudamérica: 60 pistas, vistas al lago Nahuel Huapi.",
-    url: "https://www.getyourguide.com/s/?q=cerro+catedral+bariloche+ski",
+    url: gygSearchUrl("cerro catedral bariloche ski"),
     interests: ["naturaleza", "trekking"],
   },
   {
@@ -432,7 +433,7 @@ export const ALL_TOURS: Tour[] = [
     location: "El Chaltén",
     duration: "3 horas",
     description: "Salida nocturna al río con guía. Las estrellas de la Patagonia sin contaminación lumínica.",
-    url: "https://www.getyourguide.com/s/?q=chalten+night+trekking",
+    url: gygSearchUrl("chalten night trekking"),
     interests: ["trekking", "fotografia", "naturaleza"],
   },
   {
@@ -440,7 +441,7 @@ export const ALL_TOURS: Tour[] = [
     location: "Bariloche",
     duration: "3 horas",
     description: "Recorrido guiado por chocolaterías, microcervecerías y mercados gourmet locales.",
-    url: "https://www.getyourguide.com/s/?q=bariloche+chocolate+beer+tour",
+    url: gygSearchUrl("bariloche chocolate beer tour"),
     interests: ["gastronomia"],
   },
   {
@@ -448,7 +449,7 @@ export const ALL_TOURS: Tour[] = [
     location: "Puerto Madryn",
     duration: "Día completo",
     description: "Vehículo 4x4 a Punta Norte (Península Valdés) en temporada de orcas varadas (Sep-Oct).",
-    url: "https://www.getyourguide.com/s/?q=peninsula+valdes+orca+tour",
+    url: gygSearchUrl("peninsula valdes orca tour"),
     interests: ["fauna", "fotografia"],
   },
   {
@@ -456,7 +457,7 @@ export const ALL_TOURS: Tour[] = [
     location: "Torres del Paine",
     duration: "4 horas",
     description: "Kayak entre témpanos del Glaciar Grey. Incluye equipamiento y guía acuático.",
-    url: "https://www.getyourguide.com/s/?q=glacier+grey+kayak+patagonia",
+    url: gygSearchUrl("glacier grey kayak patagonia"),
     interests: ["naturaleza", "trekking", "fotografia"],
   },
 ];
