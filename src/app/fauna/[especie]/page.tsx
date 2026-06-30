@@ -15,7 +15,7 @@ import {
   fetchSpeciesSightingsPatagonia,
   fetchSpeciesMonthlyHistogram,
 } from "@/lib/apis/inaturalist"
-import { fetchGbifSpecies, fetchGbifByScientificName } from "@/lib/apis/gbif"
+import { fetchGbifByScientificName } from "@/lib/apis/gbif"
 import { FaunaSightingsMapClient } from "@/components/data/FaunaSightingsMapClient"
 import { FaunaSightingsClient } from "@/components/data/FaunaSightingsClient"
 import { Badge } from "@/components/primitives/Badge"
@@ -209,9 +209,7 @@ export default async function FaunaEspeciePage({
   const [sightings, histogram, gbif] = await Promise.all([
     taxonId ? fetchSpeciesSightingsPatagonia(taxonId, 20) : Promise.resolve([]),
     taxonId ? fetchSpeciesMonthlyHistogram(taxonId) : Promise.resolve({} as Record<string, number>),
-    entry?.gbifKey
-      ? fetchGbifSpecies(entry.gbifKey)
-      : fetchGbifByScientificName(scientificName),
+    fetchGbifByScientificName(scientificName),
   ])
 
   const heroImage = resolvedDetail?.largeImageUrl ?? resolvedDetail?.imageUrl

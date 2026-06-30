@@ -3,7 +3,6 @@ export type FaunaCategory = "mamifero" | "ave" | "reptil" | "anfibio" | "pez"
 export type FaunaEntry = {
   slug: string
   taxonId: number
-  gbifKey?: number
   scientificName: string
   commonNameEs: string
   commonNameEn: string
@@ -15,7 +14,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "guanaco",
     taxonId: 42240,
-    gbifKey: 2441886,
     scientificName: "Lama guanicoe",
     commonNameEs: "Guanaco",
     commonNameEn: "Guanaco",
@@ -30,7 +28,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "puma",
     taxonId: 42007,
-    gbifKey: 2435099,
     scientificName: "Puma concolor",
     commonNameEs: "Puma",
     commonNameEn: "Mountain Lion",
@@ -44,7 +41,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "condor-andino",
     taxonId: 4747,
-    gbifKey: 2481584,
     scientificName: "Vultur gryphus",
     commonNameEs: "Cóndor andino",
     commonNameEn: "Andean Condor",
@@ -59,7 +55,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "huemul",
     taxonId: 42180,
-    gbifKey: 2441925,
     scientificName: "Hippocamelus bisulcus",
     commonNameEs: "Huemul",
     commonNameEn: "South Andean Deer",
@@ -73,7 +68,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "pinguino-de-magallanes",
     taxonId: 3812,
-    gbifKey: 2481908,
     scientificName: "Spheniscus magellanicus",
     commonNameEs: "Pingüino de Magallanes",
     commonNameEn: "Magellanic Penguin",
@@ -87,7 +81,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "choique",
     taxonId: 73338,
-    gbifKey: 2474637,
     scientificName: "Rhea pennata",
     commonNameEs: "Choique",
     commonNameEn: "Lesser Rhea",
@@ -101,7 +94,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "flamenco-austral",
     taxonId: 4258,
-    gbifKey: 2481841,
     scientificName: "Phoenicopterus chilensis",
     commonNameEs: "Flamenco austral",
     commonNameEn: "Chilean Flamingo",
@@ -114,7 +106,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "zorro-gris",
     taxonId: 332338,
-    gbifKey: 2435047,
     scientificName: "Lycalopex griseus",
     commonNameEs: "Zorro gris patagónico",
     commonNameEn: "South American Gray Fox",
@@ -152,7 +143,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "lobo-marino-del-sur",
     taxonId: 41761,
-    gbifKey: 2433392,
     scientificName: "Otaria flavescens",
     commonNameEs: "Lobo marino del sur",
     commonNameEn: "South American Sea Lion",
@@ -165,7 +155,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "ballena-franca-austral",
     taxonId: 41571,
-    gbifKey: 2440489,
     scientificName: "Eubalaena australis",
     commonNameEs: "Ballena franca austral",
     commonNameEn: "Southern Right Whale",
@@ -178,7 +167,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "orca",
     taxonId: 41521,
-    gbifKey: 2440010,
     scientificName: "Orcinus orca",
     commonNameEs: "Orca",
     commonNameEn: "Orca",
@@ -190,8 +178,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "delfin-austral",
     taxonId: 1672273,
-    gbifKey: 2440718,
-    scientificName: "Cephalorhynchus australis",
+    scientificName: "Lagenorhynchus australis",
     commonNameEs: "Delfín austral",
     commonNameEn: "Peale's Dolphin",
     category: "mamifero",
@@ -203,7 +190,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "tonina-overa",
     taxonId: 41514,
-    gbifKey: 2440705,
     scientificName: "Cephalorhynchus commersonii",
     commonNameEs: "Tonina overa",
     commonNameEn: "Commerson's Dolphin",
@@ -216,7 +202,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "ballena-jorobada",
     taxonId: 41566,
-    gbifKey: 2440508,
     scientificName: "Megaptera novaeangliae",
     commonNameEs: "Ballena jorobada",
     commonNameEn: "Humpback Whale",
@@ -228,7 +213,6 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "elefante-marino-del-sur",
     taxonId: 41729,
-    gbifKey: 2433404,
     scientificName: "Mirounga leonina",
     commonNameEs: "Elefante marino del sur",
     commonNameEn: "Southern Elephant Seal",
