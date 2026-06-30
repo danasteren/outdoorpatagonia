@@ -75,3 +75,14 @@ export function getTodayLabel(): string {
     month: "long",
   }).format(new Date())
 }
+
+// Patagonia local time (hour:minute), shown alongside the date so visitors
+// browsing from other time zones know this isn't their own local time.
+export function getCurrentTimeLabel(): string {
+  return new Intl.DateTimeFormat("es-AR", {
+    timeZone: "America/Argentina/Buenos_Aires",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(new Date())
+}

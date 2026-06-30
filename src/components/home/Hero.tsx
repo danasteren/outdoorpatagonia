@@ -2,7 +2,14 @@ import Link from "next/link"
 import { ChevronRight, ChevronDown, Camera } from "lucide-react"
 import { PageShell } from "@/components/layout"
 import { getMoonData } from "@/lib/astronomy"
-import { getDailyHighlight, getDayOfYear, getTimeOfDay, getTodayLabel, type TimeOfDay } from "@/lib/dailyContent"
+import {
+  getCurrentTimeLabel,
+  getDailyHighlight,
+  getDayOfYear,
+  getTimeOfDay,
+  getTodayLabel,
+  type TimeOfDay,
+} from "@/lib/dailyContent"
 import { fetchPatagoniaPhotos, type PhotoSighting } from "@/lib/apis/inaturalist"
 
 // Real, recent Patagonia wildlife photo as the hero backdrop — rotates daily.
@@ -68,6 +75,7 @@ export async function Hero() {
   const moon = getMoonData()
   const highlight = getDailyHighlight()
   const today = getTodayLabel()
+  const time = getCurrentTimeLabel()
   const photo = await getHeroPhoto()
 
   return (
@@ -147,7 +155,7 @@ export async function Hero() {
               <span className="relative inline-flex size-2 rounded-full bg-[var(--color-teal-light)]" />
             </span>
             <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-teal-light)]">
-              Patagonia · Hoy {today}
+              Patagonia · Hoy {today} · {time} hs ARG/CHI
             </p>
           </div>
 
