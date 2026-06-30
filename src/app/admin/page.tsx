@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { ReplyBox } from "@/components/admin/ReplyBox";
 import {
   Users,
   UserCheck,
@@ -9,9 +10,39 @@ import {
   TrendingUp,
   ShieldCheck,
   LogIn,
+  Mail,
+  Building2,
+  Bookmark,
+  Map as MapIcon,
+  BadgeCheck,
+  BadgeX,
 } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
+type ContactMessage = {
+  id: string;
+  created_at: string;
+  nombre: string;
+  email: string;
+  asunto: string;
+  mensaje: string;
+  replied_at: string | null;
+};
+
+type OperatorApplication = {
+  id: string;
+  created_at: string;
+  empresa: string;
+  contacto: string;
+  email: string;
+  telefono: string | null;
+  sitio_web: string | null;
+  pais: string;
+  especialidades: string[] | null;
+  descripcion: string | null;
+  replied_at: string | null;
+};
 
 export const metadata: Metadata = {
   title: "Admin — Outdoor Patagonia",
@@ -76,6 +107,43 @@ export default async function AdminPage() {
   const admin = createAdminClient();
   const { data: usersData } = await admin.auth.admin.listUsers({ perPage: 1000 });
   const users = usersData?.users ?? [];
+
+  const [
+    { data: contactMessagesData },
+    { data: operatorApplicationsData },
+    { count: savedArticlesCount },
+    { count: savedItinerariesCount },
+    { data: topArticlesData },
+  ] = await Promise.all([
+    admin
+      .from("contact_messages")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .returns<ContactMessage[]>(),
+    admin
+      .from("operator_applications")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .returns<OperatorApplication[]>(),
+    admin.from("saved_articles").select("*", { count: "exact", head: true }),
+    admin.from("saved_itineraries").select("*", { count: "exact", head: true }),
+    admin.from("saved_articles").select("slug, title"),
+  ]);
+
+  const contactMessages = contactMessagesData ?? [];
+  const operatorApplications = operatorApplicationsData ?? [];
+
+  const articleCounts = new Map<string, { title: string; count: number }>();
+  for (const row of topArticlesData ?? []) {
+    const existing = articleCounts.get(row.slug);
+    articleCounts.set(row.slug, {
+      title: row.title,
+      count: (existing?.count ?? 0) + 1,
+    });
+  }
+  const topArticles = [...articleCounts.entries()]
+    .sort((a, b) => b[1].count - a[1].count)
+    .slice(0, 5);
 
   const now = Date.now();
   const ms30d = 30 * 24 * 60 * 60 * 1000;
@@ -165,6 +233,9 @@ export default async function AdminPage() {
                   Proveedor
                 </th>
                 <th className="px-4 py-2 text-muted-foreground font-medium">
+                  Email
+                </th>
+                <th className="px-4 py-2 text-muted-foreground font-medium">
                   Registrado
                 </th>
                 <th className="px-4 py-2 text-muted-foreground font-medium">
@@ -228,6 +299,19 @@ export default async function AdminPage() {
                         {provider === "google" ? "Google" : "Email"}
                       </span>
                     </td>
+                    <td className="px-4 py-3">
+                      {u.email_confirmed_at ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-teal">
+                          <BadgeCheck className="w-3.5 h-3.5" />
+                          Confirmado
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                          <BadgeX className="w-3.5 h-3.5" />
+                          Sin confirmar
+                        </span>
+                      )}
+                    </td>
                     <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                       <span title={formatDate(u.created_at)}>
                         {timeAgo(u.created_at)}
@@ -247,6 +331,152 @@ export default async function AdminPage() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Contenido guardado */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-10">
+        <StatCard
+          icon={<Bookmark className="w-5 h-5" />}
+          label="Artículos guardados"
+          value={savedArticlesCount ?? 0}
+        />
+        <StatCard
+          icon={<MapIcon className="w-5 h-5" />}
+          label="Itinerarios guardados"
+          value={savedItinerariesCount ?? 0}
+        />
+      </div>
+
+      {topArticles.length > 0 && (
+        <div className="rounded-xl border border-border overflow-hidden mb-10">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
+            <Bookmark className="w-4 h-4 text-muted-foreground" />
+            <h2 className="font-medium text-sm">Artículos más guardados</h2>
+          </div>
+          <ul className="divide-y divide-border">
+            {topArticles.map(([slug, { title, count }]) => (
+              <li
+                key={slug}
+                className="flex items-center justify-between px-4 py-2.5 text-sm"
+              >
+                <span className="truncate">{title}</span>
+                <span className="text-muted-foreground tabular-nums shrink-0 ml-3">
+                  {count}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Mensajes de contacto */}
+      <div className="rounded-xl border border-border overflow-hidden mb-10">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
+          <Mail className="w-4 h-4 text-muted-foreground" />
+          <h2 className="font-medium text-sm">
+            Mensajes de contacto ({contactMessages.length})
+          </h2>
+        </div>
+        {contactMessages.length === 0 ? (
+          <p className="px-4 py-6 text-sm text-muted-foreground">
+            No hay mensajes todavía.
+          </p>
+        ) : (
+          <ul className="divide-y divide-border">
+            {contactMessages.map((m) => (
+              <li key={m.id} className="px-4 py-3">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate">{m.asunto}</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {m.nombre} · {m.email} ·{" "}
+                      <span title={formatDate(m.created_at)}>
+                        {timeAgo(m.created_at)}
+                      </span>
+                    </p>
+                    <p className="text-sm mt-1.5 whitespace-pre-wrap">
+                      {m.mensaje}
+                    </p>
+                  </div>
+                  <div className="shrink-0">
+                    <ReplyBox
+                      source="contact"
+                      id={m.id}
+                      to={m.email}
+                      defaultSubject={`Re: ${m.asunto}`}
+                      alreadyReplied={!!m.replied_at}
+                    />
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* Solicitudes de operadores */}
+      <div className="rounded-xl border border-border overflow-hidden mb-10">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
+          <Building2 className="w-4 h-4 text-muted-foreground" />
+          <h2 className="font-medium text-sm">
+            Solicitudes de operadores ({operatorApplications.length})
+          </h2>
+        </div>
+        {operatorApplications.length === 0 ? (
+          <p className="px-4 py-6 text-sm text-muted-foreground">
+            No hay solicitudes todavía.
+          </p>
+        ) : (
+          <ul className="divide-y divide-border">
+            {operatorApplications.map((a) => (
+              <li key={a.id} className="px-4 py-3">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate">
+                      {a.empresa} · {a.pais}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {a.contacto} · {a.email}
+                      {a.telefono ? ` · ${a.telefono}` : ""} ·{" "}
+                      <span title={formatDate(a.created_at)}>
+                        {timeAgo(a.created_at)}
+                      </span>
+                    </p>
+                    {a.sitio_web && (
+                      <a
+                        href={a.sitio_web}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-teal hover:underline"
+                      >
+                        {a.sitio_web} ↗
+                      </a>
+                    )}
+                    {a.especialidades && a.especialidades.length > 0 && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {a.especialidades.join(", ")}
+                      </p>
+                    )}
+                    {a.descripcion && (
+                      <p className="text-sm mt-1.5 whitespace-pre-wrap">
+                        {a.descripcion}
+                      </p>
+                    )}
+                  </div>
+                  <div className="shrink-0">
+                    <ReplyBox
+                      source="operator"
+                      id={a.id}
+                      to={a.email}
+                      defaultSubject={`Re: solicitud de ${a.empresa} — Outdoor Patagonia`}
+                      alreadyReplied={!!a.replied_at}
+                    />
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
