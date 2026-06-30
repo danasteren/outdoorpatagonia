@@ -6,12 +6,14 @@ import { useState, useEffect, useRef } from 'react'
 import {
   Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
   PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe, Telescope,
-  User, LogOut, Backpack,
+  User, LogOut, Backpack, ShieldCheck,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
 
 export type AuthUser = { name: string; email: string; avatarUrl: string | null } | null
+
+const ADMIN_EMAIL = 'danasteren@gmail.com'
 
 
 function UserAvatar({ user, size = 7 }: { user: AuthUser & object; size?: number }) {
@@ -265,6 +267,16 @@ export function HeaderShell({
                     <User size={13} strokeWidth={1.75} />
                     Mi perfil
                   </Link>
+                  {user.email === ADMIN_EMAIL && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    >
+                      <ShieldCheck size={13} strokeWidth={1.75} />
+                      Admin
+                    </Link>
+                  )}
                   <form action="/auth/signout" method="POST">
                     <button
                       type="submit"
@@ -429,6 +441,15 @@ export function HeaderShell({
                   )}
                   <span className="truncate">{user.name}</span>
                 </Link>
+                {user.email === ADMIN_EMAIL && (
+                  <Link
+                    href="/admin"
+                    className="flex items-center gap-3 px-2 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  >
+                    <ShieldCheck size={15} strokeWidth={1.75} className="shrink-0" />
+                    Admin
+                  </Link>
+                )}
                 <form action="/auth/signout" method="POST">
                   <button
                     type="submit"
