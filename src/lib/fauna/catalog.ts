@@ -178,7 +178,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
   {
     slug: "delfin-austral",
     taxonId: 1672273,
-    scientificName: "Lagenorhynchus australis",
+    scientificName: "Cephalorhynchus australis",
     commonNameEs: "Delfín austral",
     commonNameEn: "Peale's Dolphin",
     category: "mamifero",

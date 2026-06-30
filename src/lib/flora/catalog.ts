@@ -7,7 +7,6 @@ export type FloraEntry = {
   commonNameEn: string
   category: FloraCategory
   taxonId?: number
-  gbifKey?: number
   parquesRelacionados: Array<{ nombre: string; slug: string }>
 }
 
