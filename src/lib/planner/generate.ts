@@ -1,6 +1,5 @@
 import {
   DESTINATIONS,
-  ALL_ACCOMMODATIONS,
   ALL_TOURS,
   ALL_GEAR,
   type Destination,
@@ -264,12 +263,6 @@ export function generateItinerary(form: TripFormData): ItineraryResult {
   const blocks = distributeDays(destinations, form.days);
   const itineraryDays = buildDays(blocks, form.interests);
 
-  const accommodations = ALL_ACCOMMODATIONS.filter(
-    (a) =>
-      a.budget === form.budget &&
-      destinations.some((d) => d.name === a.location)
-  ).slice(0, 3);
-
   const relevantTours = ALL_TOURS.filter(
     (t) =>
       t.interests.some((i) => form.interests.includes(i)) &&
@@ -301,7 +294,6 @@ export function generateItinerary(form: TripFormData): ItineraryResult {
     subtitle,
     season,
     days: itineraryDays,
-    accommodations,
     tours: relevantTours,
     gear: relevantGear,
     mapCenter,

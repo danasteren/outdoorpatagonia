@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import {
   MapPin,
   Calendar,
-  Bed,
   Compass,
   ShoppingBag,
   Lightbulb,
@@ -133,42 +132,6 @@ export function ItineraryOutput({ result, form, onReset }: ItineraryOutputProps)
               </li>
             ))}
           </ul>
-        </Section>
-      )}
-
-      {/* Alojamientos */}
-      {result.accommodations.length > 0 && (
-        <Section icon={<Bed size={18} />} title="Dónde alojarse">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {result.accommodations.map((acc, i) => (
-              <Card key={i} variant="elevated">
-                <CardBody className="p-4 space-y-1.5">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="font-semibold text-sm text-foreground leading-tight">
-                      {acc.name}
-                    </p>
-                    <span className="text-xs text-muted-foreground flex-shrink-0">
-                      {acc.priceRange}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <MapPin size={10} strokeWidth={1.5} />
-                    {acc.location} · {acc.type}
-                  </div>
-                  <p className="text-xs text-muted-foreground">{acc.description}</p>
-                  <a
-                    href={acc.bookingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-teal)] hover:underline mt-1"
-                  >
-                    Ver en Booking.com
-                    <ExternalLink size={11} />
-                  </a>
-                </CardBody>
-              </Card>
-            ))}
-          </div>
         </Section>
       )}
 

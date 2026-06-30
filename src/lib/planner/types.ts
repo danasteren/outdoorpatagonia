@@ -26,16 +26,6 @@ export interface ItineraryDay {
   activities: string[];
 }
 
-export interface Accommodation {
-  name: string;
-  location: string;
-  type: string;
-  priceRange: string;
-  description: string;
-  bookingUrl: string;
-  budget: Budget;
-}
-
 export interface Tour {
   name: string;
   location: string;
@@ -58,7 +48,6 @@ export interface ItineraryResult {
   subtitle: string;
   season: Season;
   days: ItineraryDay[];
-  accommodations: Accommodation[];
   tours: Tour[];
   gear: GearItem[];
   mapCenter: [number, number];

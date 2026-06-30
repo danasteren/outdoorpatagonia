@@ -9,13 +9,12 @@ import {
   ExternalLink,
   Footprints,
   Bird,
-  Bed,
   Compass,
 } from "lucide-react"
 import { PARQUES_CATALOG, getParqueEntry } from "@/lib/parques/catalog"
 import { SENDEROS_CATALOG } from "@/lib/senderos/catalog"
 import { FAUNA_CATALOG } from "@/lib/fauna/catalog"
-import { ALL_ACCOMMODATIONS, ALL_TOURS } from "@/lib/planner/data"
+import { ALL_TOURS } from "@/lib/planner/data"
 import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
@@ -95,10 +94,6 @@ export default async function ParqueNacionalPage({
   const faunaDelParque = entry.faunaEspecies
     .map((slug) => FAUNA_CATALOG.find((f) => f.slug === slug))
     .filter(Boolean)
-
-  const alojamientos = entry.plannerLocation
-    ? ALL_ACCOMMODATIONS.filter((a) => a.location === entry.plannerLocation).slice(0, 3)
-    : []
 
   const tours = entry.plannerLocation
     ? ALL_TOURS.filter((t) => t.location === entry.plannerLocation).slice(0, 4)
@@ -394,46 +389,6 @@ export default async function ParqueNacionalPage({
                     )
                   })}
                 </div>
-              </section>
-            )}
-
-            {/* Accommodations */}
-            {alojamientos.length > 0 && (
-              <section>
-                <div className="flex items-center gap-2 mb-3">
-                  <Bed className="w-4 h-4 text-[var(--color-teal)]" />
-                  <h2 className="text-lg font-bold">Dónde quedarse</h2>
-                </div>
-                <div className="space-y-3">
-                  {alojamientos.map((a) => (
-                    <a
-                      key={a.name}
-                      href={a.bookingUrl}
-                      target="_blank"
-                      rel="noopener noreferrer sponsored"
-                      className="block group"
-                    >
-                      <Card variant="default" className="hover:border-[var(--color-teal)] transition-colors">
-                        <CardBody className="p-3">
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              <p className="text-sm font-medium group-hover:text-[var(--color-teal)] transition-colors">
-                                {a.name}
-                              </p>
-                              <p className="text-xs text-muted-foreground mt-0.5">
-                                {a.type} · {a.priceRange}
-                              </p>
-                            </div>
-                            <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5" />
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </a>
-                  ))}
-                </div>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Links de afiliado Booking.com — precio final en el sitio
-                </p>
               </section>
             )}
 
