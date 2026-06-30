@@ -120,9 +120,11 @@ export function OzoneSection() {
         <div className="flex items-start gap-1.5 mt-3 p-2.5 rounded-lg bg-amber-500/10 text-sm text-foreground">
           <ShieldAlert size={14} strokeWidth={1.5} className="flex-shrink-0 mt-0.5 text-amber-500" />
           <span>
-            <strong className="font-semibold">Sí, hace falta protector solar SPF 30+ todo el año</strong> en el sur de
-            la Patagonia, y es no negociable entre agosto y diciembre. El UV-B atraviesa nubosidad, así que un día
-            gris no es un día seguro.
+            <strong className="font-semibold">Con protector solar SPF 30+ estás cubierto.</strong> Reaplicado cada
+            2-3 horas, podés caminar, hacer trekking y estar al aire libre sin problema — eso sí, es no negociable
+            entre agosto y diciembre, y también con cielo nublado, porque el UV-B atraviesa las nubes. Sin protector,
+            la piel se quema mucho más rápido de lo normal para esta latitud, sobre todo en los picos de primavera.
+            No es motivo para cambiar de planes: es el mismo hábito de playa, aplicado todo el año.
           </span>
         </div>
 
