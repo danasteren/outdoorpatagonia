@@ -16,8 +16,10 @@ import { SENDEROS_CATALOG } from "@/lib/senderos/catalog"
 import { FAUNA_CATALOG } from "@/lib/fauna/catalog"
 import { ALL_TOURS } from "@/lib/planner/data"
 import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
+import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
+import { Breadcrumb } from "@/components/primitives/Breadcrumb"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -84,7 +86,16 @@ export default async function ParqueNacionalPage({
   const [lng, lat] = entry.coordinates
 
   // Parallel fetches
-  const weather = await fetchWeatherForLocation(lat, lng, entry.name)
+  const [weather, wikipediaImage] = await Promise.all([
+    fetchWeatherForLocation(lat, lng, entry.name),
+    entry.heroImageUrl ? Promise.resolve(null) : fetchWikipediaLeadImage(entry.wikipediaTitle ?? `Parque nacional ${entry.name}`),
+  ])
+
+  const heroPhoto = entry.heroImageUrl
+    ? { url: entry.heroImageUrl, credit: "Wikimedia Commons", creditUrl: entry.heroImageUrl }
+    : wikipediaImage
+      ? { url: wikipediaImage.url, credit: "Wikipedia", creditUrl: wikipediaImage.pageUrl }
+      : null
 
   // Cross-reference data from existing structures — no API needed
   const senderosDelParque = SENDEROS_CATALOG.filter(
@@ -105,24 +116,47 @@ export default async function ParqueNacionalPage({
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <div
-        className="relative h-72 md:h-96 flex flex-col justify-end"
-        style={{
-          background:
-            entry.country === "ar"
-              ? "linear-gradient(135deg, var(--color-forest) 0%, #1a3a2a 60%, #0d2218 100%)"
-              : "linear-gradient(135deg, #1a2a4a 0%, #0d1f3c 60%, #071529 100%)",
-        }}
-      >
-        {/* Topographic pattern overlay */}
-        <div className="absolute inset-0 opacity-10"
+      <div className="relative h-72 md:h-96 flex flex-col justify-end overflow-hidden">
+        {heroPhoto && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={heroPhoto.url}
+            alt={entry.name}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
+        <div
+          className="absolute inset-0"
           style={{
-            backgroundImage:
-              "repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(255,255,255,0.08) 30px, rgba(255,255,255,0.08) 31px), repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(255,255,255,0.04) 30px, rgba(255,255,255,0.04) 31px)",
+            background: heroPhoto
+              ? entry.country === "ar"
+                ? "linear-gradient(135deg, rgba(13,34,24,0.55) 0%, rgba(26,58,42,0.5) 60%, rgba(13,34,24,0.75) 100%)"
+                : "linear-gradient(135deg, rgba(7,21,41,0.55) 0%, rgba(13,31,60,0.5) 60%, rgba(7,21,41,0.75) 100%)"
+              : entry.country === "ar"
+                ? "linear-gradient(135deg, var(--color-forest) 0%, #1a3a2a 60%, #0d2218 100%)"
+                : "linear-gradient(135deg, #1a2a4a 0%, #0d1f3c 60%, #071529 100%)",
           }}
         />
+        {/* Topographic pattern overlay — only when there's no real photo */}
+        {!heroPhoto && (
+          <div
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(255,255,255,0.08) 30px, rgba(255,255,255,0.08) 31px), repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(255,255,255,0.04) 30px, rgba(255,255,255,0.04) 31px)",
+            }}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         <div className="relative px-6 md:px-10 pb-8">
           <div className="max-w-6xl mx-auto">
+            <Breadcrumb
+              items={[
+                { label: "Inicio", href: "/" },
+                { label: "Parques", href: "/parques" },
+                { label: entry.name },
+              ]}
+            />
             <div className="flex flex-wrap items-center gap-2 mb-3">
               <Badge variant="outline" size="sm" className="border-white/30 text-white/80">
                 Parque Nacional
@@ -142,6 +176,16 @@ export default async function ParqueNacionalPage({
             </p>
           </div>
         </div>
+        {heroPhoto && (
+          <a
+            href={heroPhoto.creditUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute bottom-2 right-3 text-[10px] text-white/50 hover:text-white/90 transition-colors"
+          >
+            Foto: {heroPhoto.credit}
+          </a>
+        )}
       </div>
 
       {/* Weather strip */}

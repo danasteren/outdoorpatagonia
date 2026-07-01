@@ -19,6 +19,7 @@ import { fetchGbifByScientificName } from "@/lib/apis/gbif"
 import { FaunaSightingsMapClient } from "@/components/data/FaunaSightingsMapClient"
 import { FaunaSightingsClient } from "@/components/data/FaunaSightingsClient"
 import { Badge } from "@/components/primitives/Badge"
+import { Breadcrumb } from "@/components/primitives/Breadcrumb"
 import { ArticleLayout } from "@/components/ArticleLayout"
 import { toCategorySlug } from "@/lib/category"
 
@@ -253,6 +254,13 @@ export default async function FaunaEspeciePage({
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
           <div className="max-w-6xl mx-auto">
+            <Breadcrumb
+              items={[
+                { label: "Inicio", href: "/" },
+                { label: "Fauna", href: "/fauna" },
+                { label: commonName },
+              ]}
+            />
             <div className="flex flex-wrap items-center gap-2 mb-3">
               {categoryLabel && (
                 <Badge variant="category" size="sm">

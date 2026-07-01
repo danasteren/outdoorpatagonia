@@ -196,6 +196,43 @@ export async function fetchPatagoniaPhotos(perPage = 9): Promise<PhotoSighting[]
     }))
 }
 
+// ─── Park pages: photos near a location ───────────────────────────────────────
+
+export async function fetchPlacePhotos(
+  lat: number,
+  lng: number,
+  radiusKm = 15,
+  perPage = 5,
+): Promise<PhotoSighting[]> {
+  const params = new URLSearchParams({
+    lat: String(lat),
+    lng: String(lng),
+    radius: String(radiusKm),
+    quality_grade: "research",
+    per_page: String(perPage),
+    order: "desc",
+    order_by: "votes",
+    photos: "true",
+    locale: "es",
+  })
+  const url = `https://api.inaturalist.org/v1/observations?${params}`
+  const res = await fetch(url, { next: { revalidate: 3600 } })
+  if (!res.ok) return []
+  const data: INatResponse = await res.json()
+
+  return data.results
+    .filter((obs) => obs.photos && obs.photos.length > 0)
+    .map((obs) => ({
+      id: obs.id,
+      speciesName: obs.taxon?.name ?? obs.species_guess ?? "Especie desconocida",
+      commonName: obs.taxon?.preferred_common_name ?? null,
+      photoUrl: obs.photos![0].url.replace(/\/square\b/, "/large"),
+      placeGuess: obs.place_guess,
+      uri: obs.uri,
+      observerLogin: obs.user.login,
+    }))
+}
+
 // ─── Species pages: taxon detail ─────────────────────────────────────────────
 
 export async function fetchSpeciesDetail(

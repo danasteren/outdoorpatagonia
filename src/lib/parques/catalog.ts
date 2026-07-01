@@ -15,6 +15,13 @@ export type ParqueEntry = {
   entryFee: string
   bestMonths: string[]
   website?: string
+  // Manual override for the hero photo — used when the auto-fetched
+  // Wikipedia lead image is missing or doesn't represent the park well.
+  heroImageUrl?: string
+  // Override the Wikipedia article title used for the hero image lookup.
+  // Default: "Parque nacional ${name}" — set this when the auto-title
+  // resolves to the wrong article (e.g. name collision between AR/CL).
+  wikipediaTitle?: string
   // cross-references to existing data
   plannerDestinationId?: string          // key in DESTINATIONS from planner/data.ts
   faunaEspecies: string[]                // slugs in FAUNA_CATALOG
@@ -138,6 +145,10 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     entryFee: "Gratuito o arancel bajo (verificar en temporada)",
     bestMonths: ["Nov", "Dic", "Ene", "Feb"],
     website: "https://www.argentina.gob.ar/parques-nacionales/peritomoreno",
+    // Wikipedia's lead image for this article is a generic lenga forest
+    // shot, not representative — using a real Lago Belgrano photo instead.
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/c/c4/%C3%81rea_protegida-Parque_Nacional_Perito_Moreno.jpg",
     faunaEspecies: ["huemul", "guanaco"],
     senderosEnElParque: [],
   },
@@ -352,6 +363,338 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     bestMonths: ["Nov", "Dic", "Ene", "Feb"],
     website: "https://www.conaf.cl/parques/parque-nacional-bernardo-ohiggins/",
     faunaEspecies: ["condor-andino", "huemul"],
+    senderosEnElParque: [],
+  },
+
+  // ─── Argentina — parques faltantes ───────────────────────────────────────────
+
+  {
+    slug: "patagonia-sc",
+    name: "Patagonia",
+    country: "ar",
+    province: "Santa Cruz",
+    surface: "467.533 ha",
+    coordinates: [-72.27, -47.57],
+    wikipediaTitle: "Parque nacional Patagonia (Argentina)",
+    description:
+      "Creado en 2014 a partir de la donación de Tompkins Conservation y la Administración de Parques Nacionales, es el proyecto de rewilding más ambicioso de Argentina. Las estepas de la meseta patagónica se mezclan con cañadones y bosques de lenga en una zona donde el puma, el huemul y el guanaco conviven con paisajes volcánicos únicos.",
+    highlights: [
+      "Estepas abiertas — avistamiento de pumas y guanacos en extensiones sin barreras",
+      "Cañadón Pinturas — acceso al circuito de la Cueva de las Manos (9.000 años de antigüedad)",
+      "Trekking por la meseta patagónica — sin masificación turística",
+      "Cielos sin contaminación lumínica — astronomía de primer nivel",
+    ],
+    howToGet:
+      "Vuelo a Perito Moreno, Santa Cruz (PMQ). Desde allí, auto por RN40 aprox. 80 km hasta el parque. Se requiere vehículo propio; sin transporte público regular al interior.",
+    entryFee: "Gratuito",
+    bestMonths: ["Nov", "Dic", "Ene", "Feb"],
+    website: "https://www.argentina.gob.ar/parques-nacionales/patagonia",
+    faunaEspecies: ["guanaco", "puma", "huemul", "condor-andino", "choique"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "bosques-petrificados-de-jaramillo",
+    name: "Bosques Petrificados de Jaramillo",
+    country: "ar",
+    province: "Santa Cruz",
+    surface: "60.369 ha",
+    coordinates: [-68.0, -47.78],
+    description:
+      "El bosque petrificado más grande del hemisferio sur: troncos de araucarias silicificadas de hasta 35 metros de largo y 150 millones de años de antigüedad yacen sobre la estepa patagónica. Fue Monumento Natural desde 1954 y ascendido a Parque Nacional en 2012. La distancia lo mantiene prácticamente sin visitantes.",
+    highlights: [
+      "Troncos petrificados de hasta 35 m — araucarias del período Jurásico",
+      "Formaciones de toba volcánica y mesetas — paisaje de otra época geológica",
+      "Silencio total y cielos oscuros — uno de los mejores sitios de astronomía de la Patagonia",
+      "Centro de interpretación en el ingreso — sin alojamiento en el parque",
+    ],
+    howToGet:
+      "Vuelo a Comodoro Rivadavia (CRD). Por RN3 sur hasta Caleta Olivia y luego RN12 oeste, aprox. 240 km en total. Se requiere vehículo propio; hay excursiones organizadas desde Puerto Deseado.",
+    entryFee: "Gratuito",
+    bestMonths: ["Oct", "Nov", "Dic", "Ene", "Feb", "Mar"],
+    website: "https://www.argentina.gob.ar/parques-nacionales/bosquespetrificados",
+    faunaEspecies: ["guanaco", "choique"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "laguna-blanca",
+    name: "Laguna Blanca",
+    country: "ar",
+    province: "Neuquén",
+    surface: "11.250 ha",
+    coordinates: [-70.33, -39.03],
+    description:
+      "El parque más pequeño de la Patagonia y uno de los más especiales: creado en 1940 para proteger la laguna Blanca, un humedal de aguas someras y alcalinas en la estepa volcánica neuquina. Es uno de los pocos lugares del mundo donde el flamenco austral nidifica a 1.200 metros de altitud.",
+    highlights: [
+      "Laguna Blanca — colonia reproductora de flamencos australes, la más importante de Neuquén",
+      "Cisnes de cuello negro — nidifican en los juncales de la laguna (Oct–Feb)",
+      "Estepa volcánica y basaltos — paisaje de lava solidificada del volcán Tromen",
+      "Aves acuáticas — pato puna, coscoroba, macá grande",
+    ],
+    howToGet:
+      "Vuelo a Neuquén (NQN) o Bariloche (BRC). Desde Zapala por RN40 norte aprox. 30 km hasta el acceso. Hay colectivos desde Neuquén a Zapala; desde Zapala se necesita remís o auto propio.",
+    entryFee: "Gratuito",
+    bestMonths: ["Oct", "Nov", "Dic", "Ene", "Feb", "Mar"],
+    website: "https://www.argentina.gob.ar/parques-nacionales/lagunablanca",
+    faunaEspecies: ["flamenco-austral", "condor-andino"],
+    senderosEnElParque: [],
+  },
+
+  // ─── Chile — parques faltantes ────────────────────────────────────────────────
+
+  {
+    slug: "alerce-andino",
+    name: "Alerce Andino",
+    country: "cl",
+    region: "Los Lagos",
+    surface: "39.255 ha",
+    coordinates: [-72.5, -41.6],
+    description:
+      "Creado en 1982 para proteger los bosques de alerce patagónico (Fitzroya cupressoides), árbol declarado Monumento Natural en Chile. Los alerces de este parque pueden superar los 3.600 años de edad, convirtiéndolos en los organismos vivos más antiguos del hemisferio sur. Cubre un ambiente húmedo de fiordos y valles andinos entre Puerto Montt y Hornopirén.",
+    highlights: [
+      "Alerces de hasta 3.600 años de antigüedad — los árboles más viejos del hemisferio sur",
+      "Lago Chapo — el mayor lago del parque, kayak y pesca",
+      "Sendero Laguna Sargazo — trekking entre alerces centenarios",
+      "Vistas al volcán Calbuco — desde los senderos de altura",
+    ],
+    howToGet:
+      "Vuelo a Puerto Montt (PMC). Desde Puerto Montt al sector Correntoso aprox. 35 km sureste (1 h en auto). Acceso alternativo desde Lenca por la carretera a Cochamó.",
+    entryFee: "CLP 3.000–5.000 por persona (verificar en CONAF)",
+    bestMonths: ["Nov", "Dic", "Ene", "Feb"],
+    website: "https://www.conaf.cl/parques/parque-nacional-alerce-andino/",
+    faunaEspecies: ["condor-andino", "puma"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "hornopiren",
+    name: "Hornopirén",
+    country: "cl",
+    region: "Los Lagos",
+    surface: "48.232 ha",
+    coordinates: [-72.43, -41.87],
+    description:
+      "Uno de los parques menos visitados de Chile, Hornopirén protege volcanes activos (Hornopirén 1.572 m, Yate 2.111 m), termas naturales y bosques de coihue y alerce en el inicio de la Patagonia de fiordos. Es la puerta de entrada a la Carretera Austral para quienes vienen en ferry desde Puerto Montt.",
+    highlights: [
+      "Volcán Hornopirén (1.572 m) — ascenso técnico con vistas al fiordo de Comau",
+      "Termas de Porcelana — fuentes termales en selva valdiviana, solo accesibles en bote",
+      "Fiordo de Comau — avistamiento de delfines australes y ballenas jorobadas",
+      "Bosques de alerce en sectores altos del parque",
+    ],
+    howToGet:
+      "Ferry desde Puerto Montt a Hornopirén (2 h + espera). El pueblo de Hornopirén es el acceso al parque. También hay ruta terrestre por Cochamó desde Puerto Montt (4-5 h).",
+    entryFee: "Gratuito o arancel simbólico (verificar en CONAF)",
+    bestMonths: ["Dic", "Ene", "Feb"],
+    website: "https://www.conaf.cl/parques/parque-nacional-hornopiren/",
+    faunaEspecies: ["delfin-austral", "condor-andino"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "pumalin-douglas-tompkins",
+    name: "Pumalín Douglas Tompkins",
+    country: "cl",
+    region: "Los Lagos",
+    surface: "402.191 ha",
+    coordinates: [-72.65, -42.8],
+    description:
+      "El legado más visible de Douglas Tompkins en Sudamérica: 402.000 hectáreas de selva valdiviana prístina, bosques de alerce milenarios y volcanes activos donados al Estado chileno en 2018. El volcán Chaitén, que entró en erupción en 2008, convive con naturaleza en plena recuperación. La Carretera Austral atraviesa el parque.",
+    highlights: [
+      "Volcán Chaitén — caldera accesible y bosque en regeneración post-erupción 2008",
+      "Alerces costeros de hasta 4.000 años — en sectores del Alerce Costero",
+      "Cascada Escondida y Sendero de los Alerces — trekking emblemático del parque",
+      "Caleta González — fiordo remoto con fauna marina y ecoturismo de bajo impacto",
+    ],
+    howToGet:
+      "Ferry desde Puerto Montt a Chaitén (3.5 h) o desde Hornopirén a Caleta González (4 h de navegación). También avioneta a Chaitén desde Puerto Montt (20 min). La Carretera Austral atraviesa el parque.",
+    entryFee: "Gratuito",
+    bestMonths: ["Nov", "Dic", "Ene", "Feb"],
+    website: "https://www.conaf.cl/parques/parque-nacional-pumalin-douglas-tompkins/",
+    faunaEspecies: ["puma", "condor-andino"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "corcovado",
+    name: "Corcovado",
+    country: "cl",
+    region: "Los Lagos",
+    surface: "294.903 ha",
+    coordinates: [-72.8, -43.55],
+    // "Parque nacional Corcovado" could clash with Corcovado in Brazil
+    wikipediaTitle: "Parque nacional Corcovado (Chile)",
+    description:
+      "Uno de los parques más remotos de Chile, Corcovado protege la transición entre la selva valdiviana y la Patagonia de fiordos. El golfo Corcovado concentra entre enero y marzo una de las mayores densidades de ballenas azules del planeta, que vienen a alimentarse en sus aguas ricas en krill.",
+    highlights: [
+      "Golfo Corcovado — área de alimentación de ballenas azules (Ene–Mar)",
+      "Volcán Corcovado (2.300 m) — ascenso técnico con vistas al Pacífico y fiordos",
+      "Bosques templados lluviosos sin intervención — entre los más prístinos de Chile",
+      "Avistamiento en kayak desde Chaitén — excursiones de varios días",
+    ],
+    howToGet:
+      "Muy remoto. Acceso desde Chaitén en bote o kayak (varias horas). Excursiones organizadas desde Futaleufú o Puerto Cisnes.",
+    entryFee: "Sin información — consultar CONAF Aysén",
+    bestMonths: ["Ene", "Feb", "Mar"],
+    website: "https://www.conaf.cl/parques/parque-nacional-corcovado/",
+    faunaEspecies: ["ballena-jorobada", "lobo-marino-del-sur", "delfin-austral", "condor-andino"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "isla-magdalena",
+    name: "Isla Magdalena",
+    country: "cl",
+    region: "Aysén",
+    surface: "157.616 ha",
+    coordinates: [-72.85, -44.6],
+    description:
+      "Parque de fiordos y canales en Aysén creado en 1981 para proteger la biodiversidad marina y terrestre de las islas patagónicas. Sus ecosistemas de bosque siempreverde, turberas y aguas de fiordo albergan poblaciones de lobo marino, nutria de mar y numerosas aves marinas. Sin acceso terrestre ni infraestructura turística.",
+    highlights: [
+      "Canales y fiordos intactos — ecosistemas marinos sin intervención",
+      "Nutria de mar (chungungo) — una de las poblaciones más estables de la Patagonia chilena",
+      "Aves marinas — cormorán imperial, pato quetru no volador, pilpilén austral",
+      "Selva siempreverde costera — solo accesible en embarcación",
+    ],
+    howToGet:
+      "Desde Coyhaique o Puerto Cisnes en embarcación. No hay acceso terrestre. Excursiones organizadas desde Puerto Aysén o por la Carretera Austral.",
+    entryFee: "Sin información — consultar CONAF Aysén",
+    bestMonths: ["Nov", "Dic", "Ene", "Feb"],
+    website: "https://www.conaf.cl/parques/parque-nacional-isla-magdalena/",
+    faunaEspecies: ["lobo-marino-del-sur", "delfin-austral"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "laguna-san-rafael",
+    name: "Laguna San Rafael",
+    country: "cl",
+    region: "Aysén",
+    surface: "1.742.000 ha",
+    coordinates: [-73.9, -46.6],
+    description:
+      "Uno de los parques más grandes de Chile, protege el Campo de Hielo Patagónico Norte y el glaciar San Rafael — considerado el glaciar de latitudes templadas más accesible del mundo. Se puede llegar en zodiac o lancha directamente al frente glaciar, cruzando una laguna plagada de témpanos de color azul intenso.",
+    highlights: [
+      "Glaciar San Rafael — frente de 70 m de altura, accesible en navegación directa",
+      "Campo de Hielo Patagónico Norte — 4.200 km² de hielo, tercero más grande fuera de los polos",
+      "Témpanos de color azul intenso — fragmentos de hielo milenario en la laguna",
+      "Ferry desde Puerto Montt — navegación de 2 días por canales y fiordos prístinos",
+    ],
+    howToGet:
+      "Vuelo a Balmaceda (BBA) + avioneta a la laguna (1 h), o ferry desde Puerto Montt (2 días). Las excursiones al glaciar salen de Puerto Montt o Coyhaique.",
+    entryFee: "Incluido en el costo del ferry o tour (verificar tarifa independiente)",
+    bestMonths: ["Nov", "Dic", "Ene", "Feb"],
+    website: "https://www.conaf.cl/parques/parque-nacional-laguna-san-rafael/",
+    faunaEspecies: ["lobo-marino-del-sur", "delfin-austral", "condor-andino"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "cerro-castillo",
+    name: "Cerro Castillo",
+    country: "cl",
+    region: "Aysén",
+    surface: "179.550 ha",
+    coordinates: [-72.14, -46.11],
+    description:
+      "Ascendido a Parque Nacional en 2018 como parte del legado Tompkins, Cerro Castillo protege el pico de basalto negro que da nombre al parque (2.675 m), rodeado de glaciares colgantes y valles de lenga. El trekking de cuatro días alrededor del cerro es uno de los mejores de la Patagonia chilena — menos masificado que Torres del Paine e igualmente espectacular.",
+    highlights: [
+      "Circuito Cerro Castillo (4 días) — trekking de categoría internacional sin masas de turistas",
+      "Glaciares colgantes en paredes de basalto negro — paisaje único en la Patagonia",
+      "Laguna Cerro Castillo — reflejo del pico en agua color turquesa",
+      "Pinturas rupestres en el Valle Ibáñez — arte de cazadores-recolectores del Pleistoceno",
+    ],
+    howToGet:
+      "Vuelo a Balmaceda (BBA) o Coyhaique. Desde Coyhaique, Carretera Austral sur aprox. 75 km hasta Villa Cerro Castillo. Hay buses desde Coyhaique.",
+    entryFee: "CLP 5.000–10.000 por persona (verificar en CONAF)",
+    bestMonths: ["Nov", "Dic", "Ene", "Feb", "Mar"],
+    website: "https://www.conaf.cl/parques/parque-nacional-cerro-castillo/",
+    faunaEspecies: ["huemul", "puma", "condor-andino"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "patagonia-cl",
+    name: "Patagonia",
+    country: "cl",
+    region: "Aysén",
+    surface: "301.920 ha",
+    coordinates: [-72.5, -47.5],
+    wikipediaTitle: "Parque nacional Patagonia",
+    description:
+      "El proyecto de conservación más influyente de América Latina: Tompkins Conservation donó más de 200.000 hectáreas privadas que, unidas a tierras fiscales, crearon un parque de más de 300.000 ha en el corazón de la estepa patagónica chilena. La restauración de praderas sobreexplotadas por la ganadería ha permitido la recuperación del huemul, el puma y el guanaco.",
+    highlights: [
+      "Valle Chacabuco — antiguo fundo ovejero convertido en reserva de huemul y guanaco",
+      "Avistamiento de huemul — una de las mejores oportunidades del continente para ver el ciervo andino",
+      "Sendero Valle del Lago Cochrane — trekking de altura con vistas al lago General Carrera",
+      "Centro de visitantes de referencia — interpretación del rewilding patagónico",
+    ],
+    howToGet:
+      "Vuelo a Balmaceda (BBA) o Coyhaique. Desde Coyhaique, Carretera Austral sur hasta Cochrane (340 km, 5-6 h). El parque rodea Cochrane. Hay buses desde Coyhaique.",
+    entryFee: "Gratuito",
+    bestMonths: ["Nov", "Dic", "Ene", "Feb", "Mar"],
+    website: "https://www.conaf.cl/parques/parque-nacional-patagonia/",
+    faunaEspecies: ["huemul", "puma", "guanaco", "condor-andino", "choique", "flamenco-austral"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "kawesqar",
+    name: "Kawésqar",
+    country: "cl",
+    region: "Magallanes y Antártica Chilena",
+    surface: "7.023.542 ha",
+    coordinates: [-75.0, -51.5],
+    description:
+      "El parque terrestre más grande de Chile y uno de los más grandes del mundo, creado en 2019 para proteger los canales y fiordos que fueron hogar del pueblo kawésqar durante milenios. Abarca desde el Campo de Hielo Sur hasta el archipiélago de los canales de Magallanes, con glaciares, fiordos y bosques subantárticos prácticamente inaccesibles.",
+    highlights: [
+      "Canales de Magallanes — miles de islas y fiordos sin nombre ni visitantes",
+      "Campo de Hielo Sur — el tercer mayor manto de hielo continental del planeta",
+      "Patrimonio cultural kawésqar — vestigios de la civilización canoera más austral del mundo",
+      "Avistamiento de ballenas — jorobadas, minke y sei en los canales interiores",
+    ],
+    howToGet:
+      "Solo en embarcación desde Puerto Natales o Punta Arenas. No existe acceso terrestre. Cruceros de expedición (Australis, Ponant) o veleros particulares son los únicos visitantes.",
+    entryFee: "Sin información — consultar CONAF Magallanes",
+    bestMonths: ["Nov", "Dic", "Ene", "Feb"],
+    website: "https://www.conaf.cl/parques/parque-nacional-kawesqar/",
+    faunaEspecies: ["ballena-jorobada", "lobo-marino-del-sur", "delfin-austral", "condor-andino"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "alberto-de-agostini",
+    name: "Alberto de Agostini",
+    country: "cl",
+    region: "Magallanes y Antártica Chilena",
+    surface: "1.460.000 ha",
+    coordinates: [-69.5, -54.4],
+    description:
+      "Nombrado en homenaje al sacerdote salesiano que mapeó los fiordos de Tierra del Fuego, este parque abarca el Canal Beagle, fiordos glaciares y la Cordillera Darwin, con los glaciares más australes del planeta fuera de la Antártida. Solo accesible por mar.",
+    highlights: [
+      "Canal Beagle — navegación con glaciares que caen directamente al mar",
+      "Glaciar Garibaldi — uno de los accesos glaciares más dramáticos del extremo sur",
+      "Cordillera Darwin — campos de hielo vírgenes en el fin del continente",
+      "Fauna del fin del mundo — lobo marino, delfines, pingüinos de Magallanes y papúa",
+    ],
+    howToGet:
+      "Desde Punta Arenas o Ushuaia (Argentina) en embarcación. Cruceros de expedición o catamaranes desde Punta Arenas. No existe acceso terrestre.",
+    entryFee: "Gratuito (el acceso en barco tiene costo según operador)",
+    bestMonths: ["Nov", "Dic", "Ene", "Feb"],
+    website: "https://www.conaf.cl/parques/parque-nacional-alberto-de-agostini/",
+    faunaEspecies: ["lobo-marino-del-sur", "delfin-austral", "pinguino-de-magallanes", "condor-andino"],
+    senderosEnElParque: [],
+  },
+  {
+    slug: "cabo-de-hornos",
+    name: "Cabo de Hornos",
+    country: "cl",
+    region: "Magallanes y Antártica Chilena",
+    surface: "63.093 ha",
+    coordinates: [-67.27, -55.97],
+    description:
+      "El parque más austral de América y Reserva de Biosfera UNESCO (2005). El Cabo de Hornos (55°58' Sur) es el punto donde se unen el Pacífico y el Atlántico, uno de los cabos más temidos de la historia marítima. Una sola familia de guardaparques habita permanentemente la pequeña estación meteorológica del cabo.",
+    highlights: [
+      "Cabo de Hornos — el punto más austral de América continental, hito geográfico mundial",
+      "Faro y Monumento al Albatros — escultura icónica en el extremo del mundo",
+      "Turberas y lenga enana — ecosistemas únicos del clima subantártico",
+      "Albatros de ceja negra y errante — los mayores planeadores del planeta",
+    ],
+    howToGet:
+      "En embarcación desde Puerto Williams (el asentamiento más austral del mundo) o en crucero desde Ushuaia. Vuelos a Puerto Williams desde Punta Arenas (1 h).",
+    entryFee: "Gratuito (el acceso en barco tiene costo según operador)",
+    bestMonths: ["Nov", "Dic", "Ene", "Feb"],
+    website: "https://www.conaf.cl/parques/parque-nacional-cabo-de-hornos/",
+    faunaEspecies: ["lobo-marino-del-sur", "delfin-austral", "pinguino-de-magallanes"],
     senderosEnElParque: [],
   },
 ]

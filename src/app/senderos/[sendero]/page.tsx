@@ -16,6 +16,7 @@ import { FAUNA_CATALOG } from "@/lib/fauna/catalog"
 import { ALL_GEAR } from "@/lib/planner/data"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
+import { Breadcrumb } from "@/components/primitives/Breadcrumb"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -105,6 +106,13 @@ export default async function SenderoPage({
           }}
         />
         <div className="relative px-6 md:px-10 pb-8 max-w-6xl mx-auto w-full">
+          <Breadcrumb
+            items={[
+              { label: "Inicio", href: "/" },
+              { label: "Senderos", href: "/senderos" },
+              { label: entry.title },
+            ]}
+          />
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <Badge variant="outline" size="sm" className="border-white/30 text-white/80">
               Sendero

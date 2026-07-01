@@ -17,6 +17,7 @@ import { ESCALADA_CATALOG, getSectorEntry, ESTILO_LABELS, PAIS_LABELS } from "@/
 import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
+import { Breadcrumb } from "@/components/primitives/Breadcrumb"
 import { SectorMapClient } from "./SectorMapClient"
 
 export const revalidate = 3600
@@ -86,6 +87,13 @@ export default async function SectorPage({
           }}
         />
         <div className="relative px-6 md:px-10 pb-8 max-w-6xl mx-auto w-full">
+          <Breadcrumb
+            items={[
+              { label: "Inicio", href: "/" },
+              { label: "Escalada", href: "/escalada" },
+              { label: entry.nombre },
+            ]}
+          />
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <Badge variant="outline" size="sm" className="border-white/30 text-white/80">
               Escalada
