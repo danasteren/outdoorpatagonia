@@ -15,10 +15,57 @@ export interface VersionNovedades {
 
 export const novedades: VersionNovedades[] = [
   {
+    numero: "1.3",
+    fecha: "Julio 2026",
+    titulo: "Astronomía, Qué llevar y mejoras en la home",
+    esUltima: true,
+    cambios: [
+      {
+        tipo: "nuevo",
+        texto: "Página Astronomía — cielos oscuros, lluvia de meteoros, eclipse anular de febrero 2027 y próximos eventos celestes visibles desde la Patagonia",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Herramienta \"Qué llevar\" en Planear — lista de equipo personalizada según destino y mes del viaje",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Sección Ozono en /estado — explicación del agujero de ozono con mapa de alcance sobre la Patagonia y recomendaciones prácticas",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Sección Impacto en /estado — calidad del aire en tiempo real en zonas extractivas de la región",
+      },
+      {
+        tipo: "mejora",
+        texto: "Hero de la home renovado — foto real, hora local de Patagonia y dato del día clickeable que lleva directo a /estado",
+      },
+      {
+        tipo: "mejora",
+        texto: "Tarjetas y navegación rediseñadas — nueva sección \"Explorar\" en el menú y tarjetas más visuales en la home",
+      },
+      {
+        tipo: "mejora",
+        texto: "Catálogo de parques con fotos reales — cobertura completa de Patagonia Argentina y Chile",
+      },
+      {
+        tipo: "mejora",
+        texto: "Astronomía ampliada — card de luna rediseñada, mejor sección de Vía Láctea y eclipse anular de febrero 2027",
+      },
+      {
+        tipo: "correccion",
+        texto: "Gráfico de temporada de avistamiento en fauna — ya se ve correctamente en todos los dispositivos",
+      },
+      {
+        tipo: "correccion",
+        texto: "Panel de información del mapa — funciona bien en celulares",
+      },
+    ],
+  },
+  {
     numero: "1.2",
     fecha: "Junio 2026",
     titulo: "Fauna, parques nacionales y senderos",
-    esUltima: true,
     cambios: [
       {
         tipo: "nuevo",
