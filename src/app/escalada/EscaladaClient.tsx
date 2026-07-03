@@ -2,12 +2,23 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { type Sector, type ClimbingStyle, ESTILO_LABELS, PAIS_LABELS } from "@/lib/escalada/catalog"
-import { Badge } from "@/components/primitives/Badge"
+import {
+  type Sector,
+  type ClimbingStyle,
+  ESTILO_LABELS,
+  PAIS_LABELS,
+  totalVias,
+} from "@/lib/escalada/catalog"
 
-const ALL_ESTILOS: ClimbingStyle[] = ["deporte", "trad", "big wall", "bouldering", "alpinismo"]
+const ALL_ESTILOS: ClimbingStyle[] = ["deportiva", "alpinismo", "boulder"]
 
-function FilterBtn({
+const ESTILO_ACCENT: Record<ClimbingStyle, string> = {
+  deportiva: "from-[var(--color-teal)] to-sky-400",
+  alpinismo: "from-[var(--color-forest)] to-[var(--color-teal)]",
+  boulder: "from-[var(--color-terracotta)] to-amber-500",
+}
+
+function FilterChip({
   active,
   onClick,
   children,
@@ -19,14 +30,93 @@ function FilterBtn({
   return (
     <button
       onClick={onClick}
-      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+      className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
         active
-          ? "bg-[var(--color-teal)] text-white"
-          : "bg-muted text-muted-foreground hover:text-foreground"
+          ? "bg-[var(--color-teal)] text-white shadow-sm"
+          : "bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80"
       }`}
     >
       {children}
     </button>
+  )
+}
+
+function PaisBadge({ pais }: { pais: "AR" | "CL" }) {
+  return (
+    <span
+      className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${
+        pais === "AR"
+          ? "bg-sky-500/10 text-sky-600"
+          : "bg-red-500/10 text-red-600"
+      }`}
+    >
+      {PAIS_LABELS[pais]}
+    </span>
+  )
+}
+
+function SectorCard({ s }: { s: Sector }) {
+  const vias = totalVias(s)
+  const primaryEstilo = s.estilos[0]
+
+  return (
+    <Link
+      href={`/escalada/${s.slug}`}
+      className="group flex flex-col rounded-2xl overflow-hidden border border-border bg-background hover:border-[var(--color-teal)] hover:shadow-lg transition-all duration-200"
+    >
+      {/* Accent stripe */}
+      <div className={`h-1.5 bg-gradient-to-r ${ESTILO_ACCENT[primaryEstilo]} shrink-0`} />
+
+      <div className="flex flex-col flex-1 p-5 gap-3">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <h3
+              className="font-bold text-lg leading-snug group-hover:text-[var(--color-teal)] transition-colors"
+              style={{ fontFamily: "var(--font-playfair)" }}
+            >
+              {s.nombre}
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5">{s.region}</p>
+          </div>
+          <PaisBadge pais={s.pais} />
+        </div>
+
+        {/* Description */}
+        <p className="text-xs text-muted-foreground line-clamp-3 flex-1">
+          {s.descripcion}
+        </p>
+
+        {/* Stats */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm pt-1 border-t border-border/50">
+          <span className="font-bold font-mono text-[var(--color-teal)]">
+            {s.gradosMin}–{s.gradosMax}
+          </span>
+          <span className="text-muted-foreground">·</span>
+          <span className="text-muted-foreground text-xs">{s.altitud.toLocaleString("es-AR")} msnm</span>
+          {vias > 0 && (
+            <>
+              <span className="text-muted-foreground">·</span>
+              <span className="text-xs font-semibold text-foreground/70">
+                {vias}{s.totalViasEstimado ? "+" : ""} vías
+              </span>
+            </>
+          )}
+        </div>
+
+        {/* Estilos */}
+        <div className="flex flex-wrap gap-1.5">
+          {s.estilos.map((e) => (
+            <span
+              key={e}
+              className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[var(--color-teal)]/10 text-[var(--color-teal)]"
+            >
+              {ESTILO_LABELS[e]}
+            </span>
+          ))}
+        </div>
+      </div>
+    </Link>
   )
 }
 
@@ -51,47 +141,49 @@ export function EscaladaClient({ catalog }: { catalog: Sector[] }) {
   return (
     <div>
       {/* Filtros */}
-      <div className="border-b border-border bg-background sticky top-16 z-10">
+      <div className="border-b border-border bg-background/95 backdrop-blur sticky top-16 z-10">
         <div className="max-w-6xl mx-auto px-4 md:px-10 py-3 flex flex-wrap gap-2 items-center">
-          <span className="text-xs text-muted-foreground uppercase tracking-widest mr-1 shrink-0">
+          <span className="text-[10px] text-muted-foreground uppercase tracking-widest mr-1 shrink-0 font-semibold">
             País
           </span>
           {(["AR", "CL"] as const).map((p) => (
-            <FilterBtn
+            <FilterChip
               key={p}
               active={filterPais === p}
               onClick={() => setFilterPais((v) => (v === p ? null : p))}
             >
               {PAIS_LABELS[p]}
-            </FilterBtn>
+            </FilterChip>
           ))}
 
-          <div className="w-px h-4 bg-border mx-1 shrink-0" />
+          <div className="w-px h-4 bg-border mx-2 shrink-0" />
 
-          <span className="text-xs text-muted-foreground uppercase tracking-widest mr-1 shrink-0">
+          <span className="text-[10px] text-muted-foreground uppercase tracking-widest mr-1 shrink-0 font-semibold">
             Estilo
           </span>
           {ALL_ESTILOS.map((e) => (
-            <FilterBtn
+            <FilterChip
               key={e}
               active={filterEstilos.includes(e)}
               onClick={() => toggleEstilo(e)}
             >
               {ESTILO_LABELS[e]}
-            </FilterBtn>
+            </FilterChip>
           ))}
 
-          {hasFilters && (
-            <button
-              onClick={() => {
-                setFilterPais(null)
-                setFilterEstilos([])
-              }}
-              className="ml-auto text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Limpiar filtros
-            </button>
-          )}
+          <div className="ml-auto flex items-center gap-3">
+            <span className="text-xs text-muted-foreground hidden sm:block">
+              {visible.length} sector{visible.length !== 1 ? "es" : ""}
+            </span>
+            {hasFilters && (
+              <button
+                onClick={() => { setFilterPais(null); setFilterEstilos([]) }}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Limpiar
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -104,51 +196,7 @@ export function EscaladaClient({ catalog }: { catalog: Sector[] }) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {visible.map((s) => (
-              <Link
-                key={s.slug}
-                href={`/escalada/${s.slug}`}
-                className="group block border border-border rounded-xl p-5 hover:border-[var(--color-teal)] hover:shadow-sm transition-all"
-              >
-                {/* Header */}
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div>
-                    <h3 className="font-semibold text-foreground group-hover:text-[var(--color-teal)] transition-colors leading-snug">
-                      {s.nombre}
-                    </h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">{s.region}</p>
-                  </div>
-                  <span
-                    className={`shrink-0 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${
-                      s.pais === "AR"
-                        ? "bg-sky-500/10 text-sky-600"
-                        : "bg-red-500/10 text-red-600"
-                    }`}
-                  >
-                    {s.pais}
-                  </span>
-                </div>
-
-                {/* Descripción */}
-                <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
-                  {s.descripcion}
-                </p>
-
-                {/* Meta */}
-                <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground mb-3">
-                  <span>{s.gradosMin}–{s.gradosMax}</span>
-                  <span>{s.altitud.toLocaleString("es-AR")} msnm</span>
-                  <span>{s.temporada.join(", ")}</span>
-                </div>
-
-                {/* Estilos */}
-                <div className="flex flex-wrap gap-1">
-                  {s.estilos.map((e) => (
-                    <Badge key={e} size="sm" className="text-[var(--color-teal)]">
-                      {ESTILO_LABELS[e]}
-                    </Badge>
-                  ))}
-                </div>
-              </Link>
+              <SectorCard key={s.slug} s={s} />
             ))}
           </div>
         )}

@@ -11,25 +11,31 @@ import {
   Flag,
   Clock,
   Layers,
-  Info,
 } from "lucide-react"
-import { ESCALADA_CATALOG, getSectorEntry, ESTILO_LABELS, PAIS_LABELS } from "@/lib/escalada/catalog"
+import {
+  ESCALADA_CATALOG,
+  getSectorEntry,
+  ESTILO_LABELS,
+  PAIS_LABELS,
+  totalVias,
+} from "@/lib/escalada/catalog"
 import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { Breadcrumb } from "@/components/primitives/Breadcrumb"
 import { SectorMapClient } from "./SectorMapClient"
+import { RoutesTable } from "./RoutesTable"
 
 export const revalidate = 3600
 export const dynamicParams = true
 
-// ─── generateStaticParams ────────────────────────────────────────────────────
+// ─── Static params ────────────────────────────────────────────────────────────
 
 export function generateStaticParams() {
   return ESCALADA_CATALOG.map((s) => ({ sector: s.slug }))
 }
 
-// ─── Metadata ────────────────────────────────────────────────────────────────
+// ─── Metadata ─────────────────────────────────────────────────────────────────
 
 export async function generateMetadata({
   params,
@@ -40,21 +46,135 @@ export async function generateMetadata({
   const entry = getSectorEntry(sector)
   if (!entry) return {}
 
+  const vias = totalVias(entry)
+  const estilosStr = entry.estilos.map((e) => ESTILO_LABELS[e]).join(", ")
+  const title = `Escalada ${entry.nombre} — rutas, grados y temporada | Outdoor Patagonia`
+  const description = `${entry.nombre} (${entry.region}): ${estilosStr}${vias > 0 ? `, ${vias}+ vías` : ""}. Grados ${entry.gradosMin}–${entry.gradosMax}, ${entry.altitud} msnm. Cómo llegar, permisos y condiciones en vivo.`
+
   return {
-    title: `Escalada ${entry.nombre} — rutas, grados y condiciones | Outdoor Patagonia`,
-    description: `${entry.nombre} (${entry.region}): ${entry.estilos.map((e) => ESTILO_LABELS[e]).join(", ")}. Grados ${entry.gradosMin}–${entry.gradosMax}, ${entry.altitud} msnm. ${entry.descripcion.slice(0, 100)}`,
+    title,
+    description,
     alternates: {
       canonical: `https://outdoorpatagonia.com/escalada/${sector}`,
     },
     openGraph: {
       title: `${entry.nombre} — Escalada en Patagonia`,
       description: entry.descripcion.slice(0, 155),
+      url: `https://outdoorpatagonia.com/escalada/${sector}`,
       type: "article",
     },
+    twitter: { card: "summary_large_image" },
   }
 }
 
-// ─── Page ────────────────────────────────────────────────────────────────────
+// ─── JSON-LD helpers ──────────────────────────────────────────────────────────
+
+function buildJsonLd(entry: Awaited<ReturnType<typeof getSectorEntry>>) {
+  if (!entry) return null
+  const url = `https://outdoorpatagonia.com/escalada/${entry.slug}`
+  const vias = totalVias(entry)
+
+  const location = {
+    "@context": "https://schema.org",
+    "@type": "SportsActivityLocation",
+    name: `Escalada ${entry.nombre}`,
+    description: entry.descripcion,
+    url,
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: entry.lat,
+      longitude: entry.lon,
+      elevation: entry.altitud,
+    },
+    sport: "Rock Climbing",
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: entry.pais === "AR" ? "AR" : "CL",
+      addressRegion: entry.region,
+    },
+    containedInPlace: {
+      "@type": "Country",
+      name: entry.pais === "AR" ? "Argentina" : "Chile",
+    },
+  }
+
+  const meses: Record<string, string> = {
+    ene: "enero", feb: "febrero", mar: "marzo", abr: "abril",
+    may: "mayo", jun: "junio", jul: "julio", ago: "agosto",
+    sep: "septiembre", oct: "octubre", nov: "noviembre", dic: "diciembre",
+  }
+  const temporadaStr = entry.temporada.map((m) => meses[m] ?? m).join(", ")
+  const estilosStr = entry.estilos.map((e) => ESTILO_LABELS[e]).join(", ")
+
+  const faq = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `¿Cuándo es la temporada de escalada en ${entry.nombre}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `La temporada recomendada para escalar en ${entry.nombre} es ${temporadaStr}. Las condiciones climáticas en la Patagonia pueden cambiar rápidamente; verificar el pronóstico local antes de salir.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `¿Qué nivel se necesita para escalar en ${entry.nombre}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${entry.nombre} tiene vías desde grado ${entry.gradosMin} hasta ${entry.gradosMax} (escala francesa). Los estilos disponibles son: ${estilosStr}. ${entry.estilos.includes("alpinismo") ? "Las rutas de alpinismo requieren experiencia en glaciar y técnica en hielo o mixta." : "Hay opciones para escaladores de todos los niveles."}`,
+        },
+      },
+      ...(entry.permisos
+        ? [
+            {
+              "@type": "Question",
+              name: `¿Se necesitan permisos para escalar en ${entry.nombre}?`,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: entry.permisos,
+              },
+            },
+          ]
+        : []),
+      {
+        "@type": "Question",
+        name: `¿Cómo llegar a ${entry.nombre}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: entry.acceso,
+        },
+      },
+      ...(vias > 0
+        ? [
+            {
+              "@type": "Question",
+              name: `¿Cuántas rutas hay en ${entry.nombre}?`,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: `${entry.nombre} cuenta con más de ${vias} vías documentadas en grados ${entry.gradosMin}–${entry.gradosMax}. El tipo de roca es ${entry.tipoRoca.join(" y ")}.`,
+              },
+            },
+          ]
+        : []),
+    ],
+  }
+
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: "https://outdoorpatagonia.com" },
+      { "@type": "ListItem", position: 2, name: "Escalada", item: "https://outdoorpatagonia.com/escalada" },
+      { "@type": "ListItem", position: 3, name: entry.nombre, item: url },
+    ],
+  }
+
+  return [location, faq, breadcrumb]
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function SectorPage({
   params,
@@ -66,26 +186,30 @@ export default async function SectorPage({
   if (!entry) notFound()
 
   const weather = await fetchWeatherForLocation(entry.lat, entry.lon, entry.nombre)
-
   const windAlert = weather && weather.windSpeed > 50
+  const vias = totalVias(entry)
+  const hasFullRoutes = entry.subareas.length > 0 && entry.subareas.some((s) => s.rutas.length > 0)
+  const jsonLd = buildJsonLd(entry)
 
   return (
     <div className="min-h-screen">
       {/* Hero */}
       <div
-        className="relative h-56 md:h-72 flex flex-col justify-end"
+        className="relative min-h-[240px] md:min-h-[300px] flex flex-col justify-end"
         style={{
           background:
-            "linear-gradient(135deg, #2d4a3e 0%, #1a3028 60%, #0d1f1a 100%)",
+            "linear-gradient(135deg, #1a3028 0%, #0d1f1a 50%, #162419 100%)",
         }}
       >
+        {/* Texture overlay */}
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-[0.07]"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.05) 20px, rgba(255,255,255,0.05) 21px)",
+              "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
           }}
         />
+
         <div className="relative px-6 md:px-10 pb-8 max-w-6xl mx-auto w-full">
           <Breadcrumb
             items={[
@@ -94,12 +218,13 @@ export default async function SectorPage({
               { label: entry.nombre },
             ]}
           />
-          <div className="flex flex-wrap items-center gap-2 mb-3">
+
+          <div className="flex flex-wrap items-center gap-2 mb-3 mt-2">
             <Badge variant="outline" size="sm" className="border-white/30 text-white/80">
               Escalada
             </Badge>
             <span
-              className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${
+              className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${
                 entry.pais === "AR"
                   ? "bg-sky-400/20 text-sky-300"
                   : "bg-red-400/20 text-red-300"
@@ -108,6 +233,7 @@ export default async function SectorPage({
               {PAIS_LABELS[entry.pais]}
             </span>
           </div>
+
           <h1
             className="text-3xl md:text-5xl font-bold text-white leading-tight"
             style={{ fontFamily: "var(--font-playfair)" }}
@@ -120,25 +246,30 @@ export default async function SectorPage({
 
       {/* Stats strip */}
       <div className="bg-[var(--color-forest)] text-[var(--color-cream)]">
-        <div className="max-w-6xl mx-auto px-4 md:px-10 py-4 flex flex-wrap gap-6 text-sm">
+        <div className="max-w-6xl mx-auto px-4 md:px-10 py-4 flex flex-wrap gap-5 text-sm">
           <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 opacity-60" />
-            <span className="opacity-60">Roca:</span>
-            <span className="font-bold">{entry.tipoRoca.join(", ")}</span>
+            <Layers className="w-4 h-4 opacity-50" />
+            <span className="opacity-60 text-xs">Roca</span>
+            <span className="font-bold capitalize">{entry.tipoRoca.join(", ")}</span>
           </div>
           <div className="flex items-center gap-2">
-            <Mountain className="w-4 h-4 opacity-60" />
-            <span className="opacity-60">Grados:</span>
-            <span className="font-bold">{entry.gradosMin}–{entry.gradosMax}</span>
+            <Mountain className="w-4 h-4 opacity-50" />
+            <span className="opacity-60 text-xs">Grados</span>
+            <span className="font-bold font-mono">{entry.gradosMin}–{entry.gradosMax}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="opacity-60">Altitud:</span>
+            <span className="opacity-60 text-xs">Altitud</span>
             <span className="font-bold">{entry.altitud.toLocaleString("es-AR")} msnm</span>
           </div>
-          {weather && (
+          {vias > 0 && (
             <div className="flex items-center gap-2">
-              <Thermometer className="w-4 h-4 opacity-60" />
-              <span className="opacity-60">Ahora:</span>
+              <span className="opacity-60 text-xs">Vías</span>
+              <span className="font-bold">{vias}{entry.totalViasEstimado ? "+" : ""}</span>
+            </div>
+          )}
+          {weather && (
+            <div className="flex items-center gap-2 ml-auto">
+              <Thermometer className="w-4 h-4 opacity-50" />
               <span className="font-bold">
                 {weather.temperature}°C · {weather.condition}
               </span>
@@ -177,7 +308,7 @@ export default async function SectorPage({
                         Viento extremo: {weather.windSpeed} km/h
                       </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        Condiciones peligrosas para escalada. Verificar pronóstico antes de acceder.
+                        Condiciones peligrosas para escalar. Verificar pronóstico antes de acceder.
                       </p>
                     </div>
                   </div>
@@ -202,43 +333,66 @@ export default async function SectorPage({
               </section>
             )}
 
-            {/* Rutas destacadas */}
+            {/* Rutas */}
             <section>
-              <h2 className="text-xl font-bold mb-4">Rutas destacadas</h2>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm border-collapse">
-                  <thead>
-                    <tr className="border-b border-border">
-                      <th className="text-left py-2 pr-4 text-xs text-muted-foreground font-medium uppercase tracking-widest">
-                        Ruta
-                      </th>
-                      <th className="text-left py-2 pr-4 text-xs text-muted-foreground font-medium uppercase tracking-widest">
-                        Grado
-                      </th>
-                      <th className="text-left py-2 pr-4 text-xs text-muted-foreground font-medium uppercase tracking-widest">
-                        Largo
-                      </th>
-                      <th className="text-left py-2 text-xs text-muted-foreground font-medium uppercase tracking-widest">
-                        Estilo
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {entry.rutasDestacadas.map((r, i) => (
-                      <tr key={i} className="border-b border-border/50 hover:bg-muted/40 transition-colors">
-                        <td className="py-2.5 pr-4 font-medium">{r.nombre}</td>
-                        <td className="py-2.5 pr-4 font-mono text-[var(--color-teal)]">{r.grado}</td>
-                        <td className="py-2.5 pr-4 text-muted-foreground">{r.largo}</td>
-                        <td className="py-2.5">
-                          <Badge size="sm" className="text-[var(--color-teal)]">
-                            {ESTILO_LABELS[r.estilo]}
-                          </Badge>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="flex items-center justify-between gap-4 mb-5">
+                <h2 className="text-xl font-bold">
+                  {hasFullRoutes ? "Vías" : "Rutas destacadas"}
+                </h2>
+                {vias > 0 && (
+                  <span className="text-sm text-muted-foreground">
+                    {vias}{entry.totalViasEstimado ? "+" : ""} vías · grados {entry.gradosMin}–{entry.gradosMax}
+                  </span>
+                )}
               </div>
+
+              {hasFullRoutes ? (
+                <RoutesTable subareas={entry.subareas} />
+              ) : (
+                <>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm border-collapse">
+                      <thead>
+                        <tr className="border-b border-border">
+                          <th className="text-left py-2 pr-4 text-xs text-muted-foreground font-semibold uppercase tracking-widest">
+                            Ruta
+                          </th>
+                          <th className="text-left py-2 pr-4 text-xs text-muted-foreground font-semibold uppercase tracking-widest">
+                            Grado
+                          </th>
+                          <th className="text-left py-2 text-xs text-muted-foreground font-semibold uppercase tracking-widest">
+                            Estilo
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {entry.rutasIconicas.map((r, i) => (
+                          <tr
+                            key={i}
+                            className="border-b border-border/50 hover:bg-muted/40 transition-colors"
+                          >
+                            <td className="py-2.5 pr-4 font-medium">{r.nombre}</td>
+                            <td className="py-2.5 pr-4 font-mono font-bold text-[var(--color-teal)]">
+                              {r.grado}
+                            </td>
+                            <td className="py-2.5">
+                              <Badge size="sm" className="text-[var(--color-teal)]">
+                                {ESTILO_LABELS[r.estilo]}
+                              </Badge>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  {entry.totalViasEstimado && (
+                    <p className="text-xs text-muted-foreground mt-4">
+                      Este sector tiene aproximadamente {entry.totalViasEstimado}+ vías documentadas.
+                      El catálogo completo estará disponible próximamente.
+                    </p>
+                  )}
+                </>
+              )}
             </section>
 
             {/* Cómo llegar */}
@@ -247,7 +401,7 @@ export default async function SectorPage({
                 <MapPin className="w-4 h-4 text-[var(--color-terracotta)]" />
                 <h2 className="text-xl font-bold">Cómo llegar</h2>
               </div>
-              <p className="text-sm leading-relaxed text-muted-foreground">{entry.comoLlegar}</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{entry.acceso}</p>
             </section>
 
             {/* Permisos + Camping */}
@@ -280,7 +434,7 @@ export default async function SectorPage({
             <Card variant="elevated">
               <CardBody className="p-5 space-y-4">
                 <div>
-                  <span className="text-xs text-muted-foreground uppercase tracking-widest">
+                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
                     País / Región
                   </span>
                   <p className="font-medium mt-0.5 text-sm">
@@ -288,7 +442,7 @@ export default async function SectorPage({
                   </p>
                 </div>
                 <div>
-                  <span className="text-xs text-muted-foreground uppercase tracking-widest">
+                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
                     Tipo de roca
                   </span>
                   <p className="font-medium mt-0.5 text-sm capitalize">
@@ -296,14 +450,14 @@ export default async function SectorPage({
                   </p>
                 </div>
                 <div>
-                  <span className="text-xs text-muted-foreground uppercase tracking-widest">
+                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
                     Estilos
                   </span>
                   <div className="flex flex-wrap gap-1 mt-1.5">
                     {entry.estilos.map((e) => (
                       <span
                         key={e}
-                        className="text-xs px-2 py-0.5 rounded bg-[var(--color-teal)]/15 text-[var(--color-teal)] font-medium"
+                        className="text-xs px-2.5 py-0.5 rounded-full bg-[var(--color-teal)]/15 text-[var(--color-teal)] font-medium"
                       >
                         {ESTILO_LABELS[e]}
                       </span>
@@ -311,37 +465,47 @@ export default async function SectorPage({
                   </div>
                 </div>
                 <div>
-                  <span className="text-xs text-muted-foreground uppercase tracking-widest">
+                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
                     Temporada
                   </span>
                   <div className="flex flex-wrap gap-1 mt-1.5">
                     {entry.temporada.map((m) => (
                       <span
                         key={m}
-                        className="text-xs px-2 py-0.5 rounded bg-[var(--color-teal)]/15 text-[var(--color-teal)] font-medium capitalize"
+                        className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground font-medium capitalize"
                       >
                         {m}
                       </span>
                     ))}
                   </div>
                 </div>
-                <div className="pt-1 border-t border-border grid grid-cols-2 gap-3 text-sm">
+                <div className="pt-2 border-t border-border grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <span className="text-xs text-muted-foreground block">Grado mínimo</span>
-                    <span className="font-bold font-mono">{entry.gradosMin}</span>
+                    <span className="text-[10px] text-muted-foreground block font-semibold uppercase tracking-widest">
+                      Grado mín.
+                    </span>
+                    <span className="font-bold font-mono text-[var(--color-teal)]">{entry.gradosMin}</span>
                   </div>
                   <div>
-                    <span className="text-xs text-muted-foreground block">Grado máximo</span>
-                    <span className="font-bold font-mono">{entry.gradosMax}</span>
+                    <span className="text-[10px] text-muted-foreground block font-semibold uppercase tracking-widest">
+                      Grado máx.
+                    </span>
+                    <span className="font-bold font-mono text-[var(--color-teal)]">{entry.gradosMax}</span>
                   </div>
                   <div>
-                    <span className="text-xs text-muted-foreground block">Altitud sector</span>
+                    <span className="text-[10px] text-muted-foreground block font-semibold uppercase tracking-widest">
+                      Altitud
+                    </span>
                     <span className="font-bold">{entry.altitud.toLocaleString("es-AR")} m</span>
                   </div>
-                  <div>
-                    <span className="text-xs text-muted-foreground block">Rutas</span>
-                    <span className="font-bold">{entry.rutasDestacadas.length} destacadas</span>
-                  </div>
+                  {vias > 0 && (
+                    <div>
+                      <span className="text-[10px] text-muted-foreground block font-semibold uppercase tracking-widest">
+                        Vías
+                      </span>
+                      <span className="font-bold">{vias}{entry.totalViasEstimado ? "+" : ""}</span>
+                    </div>
+                  )}
                 </div>
               </CardBody>
             </Card>
@@ -349,7 +513,7 @@ export default async function SectorPage({
             {/* Mapa */}
             <section>
               <div className="flex items-center gap-2 mb-3">
-                <Info className="w-4 h-4 text-muted-foreground" />
+                <MapPin className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm font-bold">Ubicación del sector</span>
               </div>
               <SectorMapClient lat={entry.lat} lon={entry.lon} nombre={entry.nombre} />
@@ -358,11 +522,11 @@ export default async function SectorPage({
               </p>
             </section>
 
-            {/* CTA planear */}
+            {/* CTA */}
             <div className="rounded-xl bg-[var(--color-forest)] text-[var(--color-cream)] p-5">
               <div className="flex items-center gap-2 mb-1">
                 <Clock className="w-4 h-4 opacity-70" />
-                <p className="font-bold">¿Planeando escalar acá?</p>
+                <p className="font-bold text-sm">¿Planeando escalar acá?</p>
               </div>
               <p className="text-sm opacity-70 mb-3">
                 Armá un itinerario con alojamiento, guías locales y gear recomendado.
@@ -379,20 +543,13 @@ export default async function SectorPage({
       </div>
 
       {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Inicio", item: "https://outdoorpatagonia.com" },
-              { "@type": "ListItem", position: 2, name: "Escalada", item: "https://outdoorpatagonia.com/escalada" },
-              { "@type": "ListItem", position: 3, name: entry.nombre, item: `https://outdoorpatagonia.com/escalada/${sector}` },
-            ],
-          }),
-        }}
-      />
+      {jsonLd && jsonLd.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
     </div>
   )
 }
