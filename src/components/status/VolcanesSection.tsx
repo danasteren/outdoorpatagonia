@@ -84,9 +84,26 @@ function VolcanCard({ v }: { v: Volcan }) {
           <p className="text-[9px] text-muted-foreground mt-1.5">Comunicado: {fecha}</p>
         )}
 
-        {/* Link */}
-        <div className="mt-2 text-[9px] text-muted-foreground/50 group-hover:text-primary/60 transition-colors">
-          Ver detalle →
+        {/* Pie: link + miniatura */}
+        <div className="flex items-end justify-between mt-2">
+          <div className="text-[9px] text-muted-foreground/50 group-hover:text-primary/60 transition-colors">
+            Ver detalle →
+          </div>
+          {v.thumbnailUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={v.thumbnailUrl}
+              alt={v.nombre}
+              width={32}
+              height={32}
+              className="w-8 h-8 rounded-full object-cover ring-1 ring-border flex-shrink-0"
+            />
+          )}
+          {!v.thumbnailUrl && (
+            <div className="w-8 h-8 rounded-full bg-muted/40 ring-1 ring-border flex-shrink-0 flex items-center justify-center">
+              <Mountain size={14} strokeWidth={1.5} className="text-muted-foreground/40" />
+            </div>
+          )}
         </div>
       </Card>
     </Link>

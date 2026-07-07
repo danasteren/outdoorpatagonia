@@ -22,6 +22,7 @@ export type Volcan = {
   nivelVerificado: boolean
   fechaPost: string | null
   urlFuente: string
+  thumbnailUrl: string | null
 }
 
 // ─── WP API parser ────────────────────────────────────────────────────────────
@@ -40,7 +41,6 @@ function nivelDePost(titulo: string): NivelAlerta | null {
   return null
 }
 
-// Devuelve true si el título del post menciona este volcán
 function postMenciona(titulo: string, volcanNombre: string): boolean {
   const t = titulo.toLowerCase()
   return volcanNombre
@@ -50,8 +50,34 @@ function postMenciona(titulo: string, volcanNombre: string): boolean {
     .some((w) => t.includes(w))
 }
 
-function toVerdeDefault(base: { nombre: string; slug: string; pais: "CL" | "AR" | "CL/AR"; lat: number; lng: number; urlFuente: string }): Volcan {
-  return { ...base, nivel: "Verde", nivelVerificado: false, fechaPost: null }
+// ─── Wikipedia thumbnails (un solo fetch batch) ───────────────────────────────
+
+type WPMediaPage = { thumbnail?: { source: string }; title: string }
+type WPMediaResponse = { query: { pages: Record<string, WPMediaPage> } }
+
+async function fetchWikipediaThumbnails(
+  titles: string[]
+): Promise<Map<string, string>> {
+  const map = new Map<string, string>()
+  try {
+    const joined = titles.map((t) => encodeURIComponent(t)).join("|")
+    const url =
+      `https://es.wikipedia.org/w/api.php` +
+      `?action=query&titles=${joined}&prop=pageimages&pithumbsize=120` +
+      `&format=json&redirects=1&origin=*`
+    const res = await fetch(url, {
+      headers: { "User-Agent": "OutdoorPatagonia/1.0 (https://outdoorpatagonia.com)" },
+      next: { revalidate: 86400 },
+    })
+    if (!res.ok) return map
+    const data: WPMediaResponse = await res.json()
+    for (const page of Object.values(data.query?.pages ?? {})) {
+      if (page.thumbnail?.source) map.set(page.title, page.thumbnail.source)
+    }
+  } catch {
+    // thumbnails son decorativos — no bloquear si falla
+  }
+  return map
 }
 
 // ─── Fetch desde WP API de SERNAGEOMIN ───────────────────────────────────────
@@ -64,36 +90,66 @@ export async function fetchVolcanes(): Promise<Volcan[]> {
     lat: v.lat,
     lng: v.lng,
     urlFuente: v.urlFuente,
+    wikipediaTitle: v.wikipediaTitle ?? `Volcán ${v.nombre}`,
   }))
 
-  try {
-    const url =
+  const wpTitles = bases.map((b) => b.wikipediaTitle)
+
+  const [sernageominResult, thumbnailMap] = await Promise.allSettled([
+    fetch(
       "https://www.sernageomin.cl/wp-json/wp/v2/posts" +
-      "?search=alerta+volcan&per_page=100&_fields=title,date&orderby=date&order=desc"
+        "?search=alerta+volcan&per_page=100&_fields=title,date&orderby=date&order=desc",
+      { next: { revalidate: 86400 } }
+    ),
+    fetchWikipediaThumbnails(wpTitles),
+  ])
 
-    const res = await fetch(url, { next: { revalidate: 86400 } })
-    if (!res.ok) return bases.map(toVerdeDefault)
+  const thumbs: Map<string, string> =
+    thumbnailMap.status === "fulfilled" ? thumbnailMap.value : new Map()
 
-    const posts: WPPost[] = await res.json()
-    if (!Array.isArray(posts) || posts.length === 0)
-      return bases.map(toVerdeDefault)
+  const toDefault = (base: typeof bases[number]): Volcan => ({
+    nombre: base.nombre,
+    slug: base.slug,
+    pais: base.pais,
+    lat: base.lat,
+    lng: base.lng,
+    nivel: "Verde",
+    nivelVerificado: false,
+    fechaPost: null,
+    urlFuente: base.urlFuente,
+    thumbnailUrl: thumbs.get(base.wikipediaTitle) ?? null,
+  })
+
+  try {
+    if (sernageominResult.status !== "fulfilled" || !sernageominResult.value.ok)
+      return bases.map(toDefault)
+
+    const posts: WPPost[] = await sernageominResult.value.json()
+    if (!Array.isArray(posts) || posts.length === 0) return bases.map(toDefault)
 
     return bases.map((base) => {
+      const thumb = thumbs.get(base.wikipediaTitle) ?? null
       for (const post of posts) {
         const titulo = post.title?.rendered ?? ""
         if (!postMenciona(titulo, base.nombre)) continue
         const nivel = nivelDePost(titulo)
         if (!nivel) continue
         return {
-          ...base,
+          nombre: base.nombre,
+          slug: base.slug,
+          pais: base.pais,
+          lat: base.lat,
+          lng: base.lng,
           nivel,
           nivelVerificado: true,
           fechaPost: post.date?.slice(0, 10) ?? null,
+          urlFuente: base.urlFuente,
+          thumbnailUrl: thumb,
         }
       }
-      return toVerdeDefault(base)
+      return toDefault(base)
     })
   } catch {
-    return bases.map(toVerdeDefault)
+    return bases.map(toDefault)
   }
 }
