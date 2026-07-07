@@ -52,11 +52,11 @@ export async function generateMetadata({
 
 // ─── Nivel config ─────────────────────────────────────────────────────────────
 
-const NIVEL_CONFIG: Record<NivelAlerta, { label: string; color: string; bg: string; icon: typeof Mountain }> = {
-  Verde:    { label: "Verde",    color: "text-green-600",  bg: "bg-green-500/10 border-green-500/30",   icon: CheckCircle },
-  Amarillo: { label: "Amarillo", color: "text-yellow-600", bg: "bg-yellow-400/10 border-yellow-400/30", icon: CircleAlert },
-  Naranja:  { label: "Naranja",  color: "text-orange-500", bg: "bg-orange-500/10 border-orange-500/30", icon: TriangleAlert },
-  Rojo:     { label: "Rojo",     color: "text-red-500",    bg: "bg-red-500/10 border-red-500/30",       icon: TriangleAlert },
+const NIVEL_CONFIG: Record<NivelAlerta, { label: string; color: string; bg: string; dot: string; badge: string; icon: typeof Mountain }> = {
+  Verde:    { label: "Verde",    color: "text-green-600",  bg: "bg-green-500/10 border-green-500/30",   dot: "bg-green-500",  badge: "text-green-600 bg-green-500/10",   icon: CheckCircle },
+  Amarillo: { label: "Amarillo", color: "text-yellow-600", bg: "bg-yellow-400/10 border-yellow-400/30", dot: "bg-yellow-400", badge: "text-yellow-600 bg-yellow-400/10", icon: CircleAlert },
+  Naranja:  { label: "Naranja",  color: "text-orange-500", bg: "bg-orange-500/10 border-orange-500/30", dot: "bg-orange-500", badge: "text-orange-500 bg-orange-500/10", icon: TriangleAlert },
+  Rojo:     { label: "Rojo",     color: "text-red-500",    bg: "bg-red-500/10 border-red-500/30",       dot: "bg-red-500",    badge: "text-red-500 bg-red-500/10",       icon: TriangleAlert },
 }
 
 function nivelDescripcion(nivel: NivelAlerta, verificado: boolean): string {
@@ -350,15 +350,81 @@ export default async function VolcanPage({
           </div>
         </div>
 
-        {/* Volver */}
-        <div className="mt-10 pt-6 border-t border-border">
-          <Link
-            href="/volcanes"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ChevronLeft size={16} strokeWidth={1.5} />
-            Ver todos los volcanes patagónicos
-          </Link>
+        {/* Otros volcanes */}
+        <div className="mt-10 pt-8 border-t border-border">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-lg font-bold" style={{ fontFamily: "var(--font-playfair)" }}>
+              Más volcanes patagónicos
+            </h2>
+            <Link
+              href="/volcanes"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              Ver todos
+              <ChevronLeft size={12} strokeWidth={1.5} className="rotate-180" />
+            </Link>
+          </div>
+
+          {(() => {
+            const others = volcanes.filter((v) => v.slug !== slug)
+            const seed = slug.charCodeAt(0) + (slug.charCodeAt(slug.length - 1) ?? 0)
+            const shuffled = [...others].sort((a, b) => {
+              const ha = (seed * (a.slug.charCodeAt(0) + 7)) % 97
+              const hb = (seed * (b.slug.charCodeAt(0) + 7)) % 97
+              return ha - hb
+            })
+            const related = shuffled.slice(0, 4)
+
+            return (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {related.map((v) => {
+                  const cat = VOLCANES_CATALOG.find((c) => c.slug === v.slug)
+                  const nivelC = NIVEL_CONFIG[v.nivel]
+                  return (
+                    <Link key={v.slug} href={`/volcanes/${v.slug}`} className="group block">
+                      <Card variant="elevated" className="p-4 h-full transition-colors group-hover:border-primary/30">
+                        <div className="flex items-center gap-3">
+                          {v.thumbnailUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={v.thumbnailUrl}
+                              alt={v.nombre}
+                              width={44}
+                              height={44}
+                              className="w-11 h-11 rounded-full object-cover ring-1 ring-border flex-shrink-0"
+                            />
+                          ) : (
+                            <div className="w-11 h-11 rounded-full bg-muted/50 ring-1 ring-border flex-shrink-0 flex items-center justify-center">
+                              <Mountain size={18} strokeWidth={1.5} className="text-muted-foreground/40" />
+                            </div>
+                          )}
+                          <div className="min-w-0 flex-1">
+                            <p className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors leading-snug">
+                              {v.nombre}
+                            </p>
+                            <p className="text-[11px] text-muted-foreground mt-0.5">
+                              {v.pais === "CL/AR" ? "Chile · AR" : v.pais === "CL" ? "Chile" : "Argentina"}
+                              {cat ? ` · ${cat.elevacion.toLocaleString("es-AR")} m` : ""}
+                            </p>
+                          </div>
+                          <ChevronLeft size={14} strokeWidth={1.5} className="rotate-180 text-muted-foreground/30 group-hover:text-primary/60 flex-shrink-0 transition-colors" />
+                        </div>
+                        <div className="mt-3 flex items-center gap-1.5">
+                          <span className={`inline-block w-1.5 h-1.5 rounded-full flex-shrink-0 ${nivelC.dot} ${!v.nivelVerificado ? "opacity-40" : ""}`} />
+                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${nivelC.badge} ${!v.nivelVerificado ? "opacity-70" : ""}`}>
+                            {v.nivel}
+                          </span>
+                          {!v.nivelVerificado && (
+                            <span className="text-[10px] text-muted-foreground/50">sin alertas recientes</span>
+                          )}
+                        </div>
+                      </Card>
+                    </Link>
+                  )
+                })}
+              </div>
+            )
+          })()}
         </div>
       </div>
     </div>
