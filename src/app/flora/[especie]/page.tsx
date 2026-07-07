@@ -4,9 +4,11 @@ import Link from "next/link"
 import { ExternalLink, MapPin, Calendar, Eye } from "lucide-react"
 import {
   FLORA_CATALOG,
+  type FloraCategory,
   getFloraEntry,
   CATEGORY_LABELS,
 } from "@/lib/flora/catalog"
+import { RelatedContent } from "@/components/RelatedContent"
 import {
   fetchSpeciesDetail,
   fetchSpeciesByName,
@@ -48,6 +50,20 @@ export async function generateMetadata({
       type: "article",
     },
   }
+}
+
+const FLORA_CATEGORY_PLURAL: Record<FloraCategory, string> = {
+  arbol: "Árboles",
+  arbusto: "Arbustos",
+  "herbácea": "Herbáceas",
+  enredadera: "Enredaderas",
+}
+
+const FLORA_CATEGORY_ARTICLE: Record<FloraCategory, string> = {
+  arbol: "un árbol",
+  arbusto: "un arbusto",
+  "herbácea": "una herbácea",
+  enredadera: "una enredadera",
 }
 
 const MONTHS_ES = [
@@ -115,6 +131,35 @@ export default async function FloraEspeciePage({
 
   const lastSighting = sightings[0]?.observedOn ?? null
   const totalSightings = sightings.length
+
+  const faqItems: Array<{ question: string; answer: string }> = []
+  if (entry && entry.parquesRelacionados.length > 0) {
+    const parksText = entry.parquesRelacionados.map((p) => p.nombre).join(", ")
+    faqItems.push({
+      question: `¿Dónde encontrar ${commonName} en la Patagonia?`,
+      answer: `${commonName} se puede encontrar en ${parksText}.`,
+    })
+  }
+  faqItems.push({
+    question: `¿Cuál es el nombre científico de ${commonName}?`,
+    answer: `El nombre científico de ${commonName} es ${scientificName}.`,
+  })
+  if (entry && categoryLabel) {
+    faqItems.push({
+      question: `¿Qué tipo de planta es ${commonName}?`,
+      answer: `${commonName} es ${FLORA_CATEGORY_ARTICLE[entry.category]} nativo de la Patagonia.`,
+    })
+  }
+  if (conservation) {
+    faqItems.push({
+      question: `¿Está ${commonName} en peligro?`,
+      answer: `Según la Lista Roja de la UICN, ${commonName} (${scientificName}) está clasificado como "${conservation.label}".`,
+    })
+  }
+
+  const relatedEntries = entry
+    ? FLORA_CATALOG.filter((e) => e.slug !== especie && e.category === entry.category).slice(0, 6)
+    : []
 
   return (
     <div className="min-h-screen">
@@ -363,6 +408,40 @@ export default async function FloraEspeciePage({
         </div>
       </div>
 
+      {/* Related flora (same category) */}
+      {entry && relatedEntries.length > 0 && (
+        <RelatedContent
+          heading={`Más ${FLORA_CATEGORY_PLURAL[entry.category]} en la Patagonia`}
+          items={relatedEntries.map((e) => ({
+            name: e.commonNameEs,
+            scientificName: e.scientificName,
+            categoryLabel: CATEGORY_LABELS[e.category],
+            href: `/flora/${e.slug}`,
+          }))}
+          seeAllHref="/flora"
+          seeAllLabel="Ver toda la flora"
+        />
+      )}
+
+      {/* FAQPage JSON-LD */}
+      {faqItems.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: faqItems.map((faq) => ({
+                "@type": "Question",
+                name: faq.question,
+                acceptedAnswer: { "@type": "Answer", text: faq.answer },
+              })),
+            }),
+          }}
+        />
+      )}
+
+      {/* Breadcrumb JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

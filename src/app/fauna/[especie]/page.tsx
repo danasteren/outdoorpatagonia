@@ -6,9 +6,11 @@ import { cache } from "react"
 import { createClient as createBuildClient } from "@supabase/supabase-js"
 import {
   FAUNA_CATALOG,
+  type FaunaCategory,
   getFaunaEntry,
   CATEGORY_LABELS,
 } from "@/lib/fauna/catalog"
+import { RelatedContent } from "@/components/RelatedContent"
 import {
   fetchSpeciesDetail,
   fetchSpeciesByName,
@@ -127,6 +129,14 @@ export async function generateMetadata({
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
+const FAUNA_CATEGORY_PLURAL: Record<FaunaCategory, string> = {
+  mamifero: "Mamíferos",
+  ave: "Aves",
+  reptil: "Reptiles",
+  anfibio: "Anfibios",
+  pez: "Peces",
+}
+
 const MONTHS_ES = [
   "Ene", "Feb", "Mar", "Abr", "May", "Jun",
   "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
@@ -236,6 +246,36 @@ export default async function FaunaEspeciePage({
 
   const lastSighting = sightings[0]?.observedOn ?? null
   const totalSightings = sightings.length
+
+  // FAQ items — only fields from the catalog + conservation from APIs
+  const faqItems: Array<{ question: string; answer: string }> = []
+  if (entry && entry.parquesRelacionados.length > 0) {
+    const parksText = entry.parquesRelacionados.map((p) => p.nombre).join(", ")
+    faqItems.push({
+      question: `¿Dónde ver ${commonName} en la Patagonia?`,
+      answer: `${commonName} se puede avistar en ${parksText}. Estos parques nacionales son los mejores lugares para observarlo en estado silvestre.`,
+    })
+  }
+  faqItems.push({
+    question: `¿Cuál es el nombre científico de ${commonName}?`,
+    answer: `El nombre científico de ${commonName} es ${scientificName}.`,
+  })
+  if (categoryLabel) {
+    faqItems.push({
+      question: `¿Qué tipo de animal es ${commonName}?`,
+      answer: `${commonName} es un ${categoryLabel.toLowerCase()} nativo de la Patagonia argentina y chilena.`,
+    })
+  }
+  if (conservation) {
+    faqItems.push({
+      question: `¿Está ${commonName} en peligro de extinción?`,
+      answer: `Según la Lista Roja de la UICN, ${commonName} (${scientificName}) está clasificado como "${conservation.label}".`,
+    })
+  }
+
+  const relatedEntries = entry
+    ? FAUNA_CATALOG.filter((e) => e.slug !== especie && e.category === entry.category).slice(0, 6)
+    : []
 
   return (
     <div className="min-h-screen">
@@ -491,6 +531,39 @@ export default async function FaunaEspeciePage({
           </div>
         </div>
       </div>
+
+      {/* Related species (same category) */}
+      {entry && relatedEntries.length > 0 && (
+        <RelatedContent
+          heading={`Más ${FAUNA_CATEGORY_PLURAL[entry.category]} en la Patagonia`}
+          items={relatedEntries.map((e) => ({
+            name: e.commonNameEs,
+            scientificName: e.scientificName,
+            categoryLabel: CATEGORY_LABELS[e.category],
+            href: `/fauna/${e.slug}`,
+          }))}
+          seeAllHref="/fauna"
+          seeAllLabel="Ver toda la fauna"
+        />
+      )}
+
+      {/* FAQPage JSON-LD */}
+      {faqItems.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: faqItems.map((faq) => ({
+                "@type": "Question",
+                name: faq.question,
+                acceptedAnswer: { "@type": "Answer", text: faq.answer },
+              })),
+            }),
+          }}
+        />
+      )}
 
       {/* Breadcrumb JSON-LD */}
       <script
