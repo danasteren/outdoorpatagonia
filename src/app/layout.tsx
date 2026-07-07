@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import Script from "next/script";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -88,6 +89,7 @@ export default async function RootLayout({
         <Script id="ga4-init" strategy="afterInteractive">
           {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-0W9F62HBB7');`}
         </Script>
+        <ScrollToTop />
         <Header />
         <main className="flex-1">
           {children}

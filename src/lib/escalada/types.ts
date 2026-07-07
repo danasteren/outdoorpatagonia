@@ -1,4 +1,4 @@
-export type ClimbingStyle = "deportiva" | "alpinismo" | "boulder"
+export type ClimbingStyle = "deportiva" | "clasica" | "boulder"
 
 export type Equipment = "parabolt" | "spits" | "mixto" | "natural" | "hielo"
 
@@ -44,7 +44,7 @@ export type Sector = {
 
 export const ESTILO_LABELS: Record<ClimbingStyle, string> = {
   deportiva: "Deportiva",
-  alpinismo: "Alpinismo",
+  clasica: "Clásica",
   boulder: "Boulder",
 }
 

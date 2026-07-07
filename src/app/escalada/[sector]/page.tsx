@@ -126,7 +126,7 @@ function buildJsonLd(entry: Awaited<ReturnType<typeof getSectorEntry>>) {
         name: `¿Qué nivel se necesita para escalar en ${entry.nombre}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `${entry.nombre} tiene vías desde grado ${entry.gradosMin} hasta ${entry.gradosMax} (escala francesa). Los estilos disponibles son: ${estilosStr}. ${entry.estilos.includes("alpinismo") ? "Las rutas de alpinismo requieren experiencia en glaciar y técnica en hielo o mixta." : "Hay opciones para escaladores de todos los niveles."}`,
+          text: `${entry.nombre} tiene vías desde grado ${entry.gradosMin} hasta ${entry.gradosMax} (escala francesa). Los estilos disponibles son: ${estilosStr}. ${entry.estilos.includes("clasica") ? "Las rutas clásicas requieren experiencia en glaciar y técnica en hielo o mixta." : "Hay opciones para escaladores de todos los niveles."}`,
         },
       },
       ...(entry.permisos

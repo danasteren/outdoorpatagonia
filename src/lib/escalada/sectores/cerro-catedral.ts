@@ -23,8 +23,8 @@ export const cerroCatedral: Sector = {
   permisos: null,
   subareas: [],
   rutasIconicas: [
-    { nombre: "Aguja Frey — vía normal", grado: "5b", estilo: "alpinismo" },
-    { nombre: "Los Dedos — vía oeste", grado: "6b", estilo: "alpinismo" },
+    { nombre: "Aguja Frey — vía normal", grado: "5b", estilo: "clasica" },
+    { nombre: "Los Dedos — vía oeste", grado: "6b", estilo: "clasica" },
     { nombre: "Nunatak — pilar central", grado: "7a", estilo: "deportiva" },
     { nombre: "La Bonita", grado: "8a", estilo: "boulder" },
   ],

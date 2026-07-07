@@ -8,7 +8,7 @@ export const fitzRoy: Sector = {
   lat: -49.2713,
   lon: -72.9988,
   tipoRoca: ["granito"],
-  estilos: ["alpinismo"],
+  estilos: ["clasica"],
   gradosMin: "5a",
   gradosMax: "8b",
   temporada: ["nov", "dic", "ene", "feb", "mar"],
@@ -24,10 +24,10 @@ export const fitzRoy: Sector = {
     "Registro obligatorio en el PNGL (Parque Nacional Los Glaciares) antes de acceder a la pared. Sin costo adicional al ingreso del parque.",
   subareas: [],
   rutasIconicas: [
-    { nombre: "Supercanaleta", grado: "6a A2 M5", estilo: "alpinismo" },
-    { nombre: "Franco-Argentina", grado: "7a+", estilo: "alpinismo" },
-    { nombre: "Goretta Pillar", grado: "6b+", estilo: "alpinismo" },
-    { nombre: "Afanassieff", grado: "6c", estilo: "alpinismo" },
+    { nombre: "Supercanaleta", grado: "6a A2 M5", estilo: "clasica" },
+    { nombre: "Franco-Argentina", grado: "7a+", estilo: "clasica" },
+    { nombre: "Goretta Pillar", grado: "6b+", estilo: "clasica" },
+    { nombre: "Afanassieff", grado: "6c", estilo: "clasica" },
   ],
   imagenUrl: null,
 }

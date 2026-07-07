@@ -10,11 +10,11 @@ import {
   totalVias,
 } from "@/lib/escalada/catalog"
 
-const ALL_ESTILOS: ClimbingStyle[] = ["deportiva", "alpinismo", "boulder"]
+const ALL_ESTILOS: ClimbingStyle[] = ["deportiva", "clasica", "boulder"]
 
 const ESTILO_ACCENT: Record<ClimbingStyle, string> = {
   deportiva: "from-[var(--color-teal)] to-sky-400",
-  alpinismo: "from-[var(--color-forest)] to-[var(--color-teal)]",
+  clasica: "from-[var(--color-forest)] to-[var(--color-teal)]",
   boulder: "from-[var(--color-terracotta)] to-amber-500",
 }
 

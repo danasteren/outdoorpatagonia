@@ -8,7 +8,7 @@ export const torresDelPaine: Sector = {
   lat: -50.9423,
   lon: -73.4068,
   tipoRoca: ["granito"],
-  estilos: ["alpinismo"],
+  estilos: ["clasica"],
   gradosMin: "5a",
   gradosMax: "8a",
   temporada: ["nov", "dic", "ene", "feb"],
@@ -24,9 +24,9 @@ export const torresDelPaine: Sector = {
     "Permiso CONAF obligatorio para acceder al pie de las paredes. Requiere CV de escalada y equipo de rescate propio.",
   subareas: [],
   rutasIconicas: [
-    { nombre: "Torre Central — vía Bonington", grado: "7b A2", estilo: "alpinismo" },
-    { nombre: "Torre Sur — East Face", grado: "7a+", estilo: "alpinismo" },
-    { nombre: "Torre Norte — vía normal", grado: "6a", estilo: "alpinismo" },
+    { nombre: "Torre Central — vía Bonington", grado: "7b A2", estilo: "clasica" },
+    { nombre: "Torre Sur — East Face", grado: "7a+", estilo: "clasica" },
+    { nombre: "Torre Norte — vía normal", grado: "6a", estilo: "clasica" },
   ],
   imagenUrl: null,
 }

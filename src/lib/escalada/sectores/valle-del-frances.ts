@@ -8,7 +8,7 @@ export const valleDelFrances: Sector = {
   lat: -50.97,
   lon: -73.35,
   tipoRoca: ["mixto"],
-  estilos: ["alpinismo"],
+  estilos: ["clasica"],
   gradosMin: "5a",
   gradosMax: "7b",
   temporada: ["nov", "dic", "ene", "feb"],
@@ -24,9 +24,9 @@ export const valleDelFrances: Sector = {
     "Permiso CONAF para ingresar al parque. Para escalar sobre la línea de glaciares, autorización adicional.",
   subareas: [],
   rutasIconicas: [
-    { nombre: "Cuerno Principal — vía norte", grado: "6a M4", estilo: "alpinismo" },
-    { nombre: "La Hoja — cara oeste", grado: "5c AI3", estilo: "alpinismo" },
-    { nombre: "Espada — arista sur", grado: "6b", estilo: "alpinismo" },
+    { nombre: "Cuerno Principal — vía norte", grado: "6a M4", estilo: "clasica" },
+    { nombre: "La Hoja — cara oeste", grado: "5c AI3", estilo: "clasica" },
+    { nombre: "Espada — arista sur", grado: "6b", estilo: "clasica" },
   ],
   imagenUrl: null,
 }

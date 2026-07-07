@@ -8,7 +8,7 @@ export const cerroCastillo: Sector = {
   lat: -46.12,
   lon: -71.97,
   tipoRoca: ["basalto", "brecha"],
-  estilos: ["alpinismo"],
+  estilos: ["clasica"],
   gradosMin: "4a",
   gradosMax: "7b",
   temporada: ["dic", "ene", "feb", "mar"],
@@ -23,9 +23,9 @@ export const cerroCastillo: Sector = {
     "Zona CONAF — ingreso con pago de tarifa. Para escalar en las paredes norte, registrarse en la administración.",
   subareas: [],
   rutasIconicas: [
-    { nombre: "Cara Norte — vía de aproximación", grado: "4c", estilo: "alpinismo" },
-    { nombre: "La Aguja del Diablo", grado: "6b", estilo: "alpinismo" },
-    { nombre: "Columna Basáltica", grado: "5c", estilo: "alpinismo" },
+    { nombre: "Cara Norte — vía de aproximación", grado: "4c", estilo: "clasica" },
+    { nombre: "La Aguja del Diablo", grado: "6b", estilo: "clasica" },
+    { nombre: "Columna Basáltica", grado: "5c", estilo: "clasica" },
   ],
   imagenUrl: null,
 }

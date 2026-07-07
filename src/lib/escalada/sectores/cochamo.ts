@@ -8,7 +8,7 @@ export const cochamo: Sector = {
   lat: -41.55,
   lon: -72.28,
   tipoRoca: ["granito"],
-  estilos: ["alpinismo"],
+  estilos: ["clasica"],
   gradosMin: "5a",
   gradosMax: "8b",
   temporada: ["oct", "nov", "dic", "ene", "feb", "mar", "abr"],
@@ -23,9 +23,9 @@ export const cochamo: Sector = {
     "Acceso por campo privado — arancel de $5.000 CLP por persona. Sin permiso especial de escalada.",
   subareas: [],
   rutasIconicas: [
-    { nombre: "La Pared de Huinay", grado: "6b+", estilo: "alpinismo" },
-    { nombre: "Trinidad Wall — vía clásica", grado: "7a", estilo: "alpinismo" },
-    { nombre: "Manos al Cielo", grado: "7c", estilo: "alpinismo" },
+    { nombre: "La Pared de Huinay", grado: "6b+", estilo: "clasica" },
+    { nombre: "Trinidad Wall — vía clásica", grado: "7a", estilo: "clasica" },
+    { nombre: "Manos al Cielo", grado: "7c", estilo: "clasica" },
   ],
   imagenUrl: null,
 }

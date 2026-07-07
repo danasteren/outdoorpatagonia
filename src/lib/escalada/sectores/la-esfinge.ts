@@ -8,7 +8,7 @@ export const laEsfinge: Sector = {
   lat: -47.25,
   lon: -72.56,
   tipoRoca: ["granito"],
-  estilos: ["alpinismo"],
+  estilos: ["clasica"],
   gradosMin: "5b",
   gradosMax: "8a",
   temporada: ["nov", "dic", "ene", "feb", "mar"],
@@ -22,9 +22,9 @@ export const laEsfinge: Sector = {
   permisos: "Acceso por campo privado — consultar con operadores locales en Cochrane.",
   subareas: [],
   rutasIconicas: [
-    { nombre: "Vía de los Australes", grado: "6c+", estilo: "alpinismo" },
-    { nombre: "El Ojo de la Esfinge", grado: "7b", estilo: "alpinismo" },
-    { nombre: "Fisura Directa", grado: "5b", estilo: "alpinismo" },
+    { nombre: "Vía de los Australes", grado: "6c+", estilo: "clasica" },
+    { nombre: "El Ojo de la Esfinge", grado: "7b", estilo: "clasica" },
+    { nombre: "Fisura Directa", grado: "5b", estilo: "clasica" },
   ],
   imagenUrl: null,
 }

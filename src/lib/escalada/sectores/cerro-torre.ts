@@ -8,7 +8,7 @@ export const cerroTorre: Sector = {
   lat: -49.2936,
   lon: -73.0972,
   tipoRoca: ["granito"],
-  estilos: ["alpinismo"],
+  estilos: ["clasica"],
   gradosMin: "5a",
   gradosMax: "8b",
   temporada: ["nov", "dic", "ene", "feb"],
@@ -23,9 +23,9 @@ export const cerroTorre: Sector = {
     "Registro obligatorio en PNGL. La ascensión al Cerro Torre implica travesía glaciar — recomendada con guía certificado UIAGM.",
   subareas: [],
   rutasIconicas: [
-    { nombre: "Compressor Route (sin bolts)", grado: "8a M8 AI5", estilo: "alpinismo" },
-    { nombre: "El Arca de los Vientos", grado: "8b", estilo: "alpinismo" },
-    { nombre: "Directa de la Mentira", grado: "7c+", estilo: "alpinismo" },
+    { nombre: "Compressor Route (sin bolts)", grado: "8a M8 AI5", estilo: "clasica" },
+    { nombre: "El Arca de los Vientos", grado: "8b", estilo: "clasica" },
+    { nombre: "Directa de la Mentira", grado: "7c+", estilo: "clasica" },
   ],
   imagenUrl: null,
 }
