@@ -5,6 +5,7 @@ import { FAUNA_CATALOG } from "@/lib/fauna/catalog";
 import { PARQUES_CATALOG } from "@/lib/parques/catalog";
 import { SENDEROS_CATALOG } from "@/lib/senderos/catalog";
 import { VOLCANES_CATALOG } from "@/lib/volcanes/catalog";
+import { ARQUEOLOGIA_CATALOG } from "@/lib/arqueologia/catalog";
 
 const BASE = "https://outdoorpatagonia.com";
 
@@ -86,6 +87,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const arqueologiaUrls: MetadataRoute.Sitemap = ARQUEOLOGIA_CATALOG.map((e) => ({
+    url: `${BASE}/arqueologia/${e.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
   const { data: operatorsData } = await supabase
     .from("operators")
     .select("slug");
@@ -99,6 +106,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: BASE, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/en`, changeFrequency: "daily", priority: 1 },
+    { url: `${BASE}/arqueologia`, changeFrequency: "monthly", priority: 0.85 },
     { url: `${BASE}/volcanes`, changeFrequency: "daily", priority: 0.8 },
     { url: `${BASE}/mapa`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/planear`, changeFrequency: "monthly", priority: 0.7 },
@@ -109,6 +117,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...senderosUrls,
     ...volcanesUrls,
     ...faunaUrls,
+    ...arqueologiaUrls,
     ...categoryUrls,
     ...articleUrls,
   ];

@@ -47,6 +47,12 @@ export function Footer() {
                 Mapa
               </Link>
               <Link
+                href="/arqueologia"
+                className="hover:text-[var(--color-cream)] transition-colors"
+              >
+                Arqueología
+              </Link>
+              <Link
                 href="/astronomia"
                 className="hover:text-[var(--color-cream)] transition-colors"
               >

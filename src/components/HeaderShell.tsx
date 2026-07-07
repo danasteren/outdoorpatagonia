@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
   PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe, Telescope,
-  User, LogOut, Backpack, ShieldCheck, Flame,
+  User, LogOut, Backpack, ShieldCheck, Flame, Bone,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
@@ -143,6 +143,7 @@ export function HeaderShell({
               >
                 <div className="grid grid-cols-2 gap-0.5">
                   {[
+                    { href: '/arqueologia', label: 'Arqueología', Icon: Bone },
                     { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
                     { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
                     { href: '/estado', label: 'Estado', Icon: Activity },
@@ -382,6 +383,7 @@ export function HeaderShell({
               Explorar
             </p>
             {[
+              { href: '/arqueologia', label: 'Arqueología', Icon: Bone },
               { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
               { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
               { href: '/estado', label: 'Estado', Icon: Activity },
