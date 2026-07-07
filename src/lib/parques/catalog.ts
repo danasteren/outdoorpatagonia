@@ -28,6 +28,8 @@ export type ParqueEntry = {
   senderosEnElParque: string[]           // slugs in SENDEROS_CATALOG
   // planner location name for filtering ALL_ACCOMMODATIONS + ALL_TOURS
   plannerLocation?: string
+  // GetYourGuide search links — label shown to user, query sent to gygSearchUrl()
+  gygTours?: Array<{ label: string; query: string }>
 }
 
 export const PARQUES_CATALOG: ParqueEntry[] = [
@@ -55,6 +57,11 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     plannerLocation: "Bariloche",
     faunaEspecies: ["condor-andino", "huemul", "coipo"],
     senderosEnElParque: ["cerro-tronador", "sendero-de-los-cipreses"],
+    gygTours: [
+      { label: "Excursión Circuito Chico", query: "bariloche circuito chico tour" },
+      { label: "Navegación Isla Victoria", query: "bariloche isla victoria tour" },
+      { label: "Trekking Cerro Catedral", query: "bariloche cerro catedral trekking" },
+    ],
   },
   {
     slug: "lanin",
@@ -78,6 +85,10 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.argentina.gob.ar/parques-nacionales/lanin",
     faunaEspecies: ["condor-andino"],
     senderosEnElParque: ["volcan-lanin"],
+    gygTours: [
+      { label: "Ascenso Volcán Lanín", query: "volcan lanin trekking tour" },
+      { label: "Tour San Martín de los Andes", query: "san martin de los andes tour" },
+    ],
   },
   {
     slug: "los-alerces",
@@ -101,6 +112,10 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.argentina.gob.ar/parques-nacionales/losalerces",
     faunaEspecies: ["coipo"],
     senderosEnElParque: [],
+    gygTours: [
+      { label: "Navegación Lago Menéndez", query: "los alerces lake tour esquel" },
+      { label: "Tour Alerce El Abuelo", query: "los alerces ancient alerce tree tour" },
+    ],
   },
   {
     slug: "lago-puelo",
@@ -176,6 +191,11 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     plannerLocation: "El Calafate",
     faunaEspecies: ["guanaco", "condor-andino", "huemul", "coipo", "zorro-gris"],
     senderosEnElParque: ["laguna-de-los-tres", "huemul-circuit"],
+    gygTours: [
+      { label: "Tour Glaciar Perito Moreno", query: "perito moreno glacier tour el calafate" },
+      { label: "Trekking Fitz Roy — El Chaltén", query: "el chalten fitz roy trekking" },
+      { label: "Safari náutico Lago Argentino", query: "el calafate lago argentino boat tour" },
+    ],
   },
   {
     slug: "monte-leon",
@@ -224,6 +244,11 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     plannerLocation: "Ushuaia",
     faunaEspecies: ["pinguino-de-magallanes", "cauquen-comun", "zorro-gris"],
     senderosEnElParque: ["laguna-esmeralda"],
+    gygTours: [
+      { label: "Tour Parque Tierra del Fuego", query: "ushuaia tierra del fuego national park tour" },
+      { label: "Tren del Fin del Mundo", query: "ushuaia end of the world train" },
+      { label: "Navegación Canal Beagle", query: "ushuaia beagle channel tour" },
+    ],
   },
   {
     slug: "vicente-perez-rosales",
@@ -341,6 +366,11 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     plannerLocation: "Torres del Paine",
     faunaEspecies: ["guanaco", "puma", "condor-andino", "choique", "flamenco-austral", "zorro-gris"],
     senderosEnElParque: ["circuito-w"],
+    gygTours: [
+      { label: "Trek W — 5 días", query: "torres del paine W trek" },
+      { label: "Tour de día desde Puerto Natales", query: "torres del paine day tour" },
+      { label: "Kayak Glaciar Grey", query: "torres del paine kayak glacier grey" },
+    ],
   },
   {
     slug: "bernardo-ohiggins",
@@ -580,6 +610,10 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.conaf.cl/parques/parque-nacional-laguna-san-rafael/",
     faunaEspecies: ["lobo-marino-del-sur", "delfin-austral", "condor-andino"],
     senderosEnElParque: [],
+    gygTours: [
+      { label: "Glaciar San Rafael en zodiac", query: "laguna san rafael glacier tour" },
+      { label: "Ferry Puerto Montt — Campos de Hielo", query: "puerto montt san rafael glacier navigation" },
+    ],
   },
   {
     slug: "cerro-castillo",
@@ -603,6 +637,10 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.conaf.cl/parques/parque-nacional-cerro-castillo/",
     faunaEspecies: ["huemul", "puma", "condor-andino"],
     senderosEnElParque: [],
+    gygTours: [
+      { label: "Trekking Cerro Castillo (4 días)", query: "cerro castillo trekking patagonia" },
+      { label: "Tour desde Coyhaique", query: "coyhaique patagonia day tour" },
+    ],
   },
   {
     slug: "patagonia-cl",

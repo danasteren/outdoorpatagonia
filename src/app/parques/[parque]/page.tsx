@@ -10,8 +10,10 @@ import {
   Footprints,
   Bird,
   Compass,
+  Ticket,
 } from "lucide-react"
 import { PARQUES_CATALOG, getParqueEntry } from "@/lib/parques/catalog"
+import { gygSearchUrl } from "@/lib/affiliates/getyourguide"
 import { SENDEROS_CATALOG } from "@/lib/senderos/catalog"
 import { FAUNA_CATALOG } from "@/lib/fauna/catalog"
 import { ALL_TOURS } from "@/lib/planner/data"
@@ -112,6 +114,11 @@ export default async function ParqueNacionalPage({
 
   const countryLabel = entry.country === "ar" ? "Argentina" : "Chile"
   const locationLabel = entry.province ?? entry.region ?? countryLabel
+
+  const gygLinks = entry.gygTours ?? [
+    { label: `Tours en ${entry.name}`, query: `${entry.name} tour patagonia` },
+    { label: `Excursiones — ${entry.name}`, query: `${entry.name} excursion day trip` },
+  ]
 
   return (
     <div className="min-h-screen">
@@ -331,6 +338,37 @@ export default async function ParqueNacionalPage({
                 </div>
               </section>
             )}
+
+            {/* GetYourGuide tours */}
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <Ticket className="w-5 h-5 text-[var(--color-teal)]" />
+                <h2 className="text-xl font-bold">Tours disponibles</h2>
+              </div>
+              <div className="rounded-xl border border-border overflow-hidden">
+                {gygLinks.map((t, i) => (
+                  <a
+                    key={t.query}
+                    href={gygSearchUrl(t.query)}
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    className={[
+                      "flex items-center justify-between gap-3 px-4 py-3.5 group",
+                      "hover:bg-[var(--color-teal)]/8 transition-colors",
+                      i > 0 ? "border-t border-border" : "",
+                    ].join(" ")}
+                  >
+                    <span className="text-sm font-medium group-hover:text-[var(--color-teal)] transition-colors">
+                      {t.label}
+                    </span>
+                    <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                  </a>
+                ))}
+              </div>
+              <p className="text-[11px] text-muted-foreground mt-2 px-1">
+                Resultados en GetYourGuide · podemos recibir comisión por reservas
+              </p>
+            </section>
           </div>
 
           {/* Right col — 2/5 */}
