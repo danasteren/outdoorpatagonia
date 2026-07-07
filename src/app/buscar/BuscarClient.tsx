@@ -98,6 +98,18 @@ export function BuscarClient({ items, initialQ }: { items: SearchItem[]; initial
 
   const trimmed = query.trim()
 
+  useEffect(() => {
+    if (trimmed.length < 3) return
+    const timer = setTimeout(() => {
+      fetch('/api/search-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: trimmed, results_count: results.length }),
+      }).catch(() => {})
+    }, 800)
+    return () => clearTimeout(timer)
+  }, [trimmed, results.length])
+
   return (
     <div>
       {/* Input */}

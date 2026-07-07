@@ -16,6 +16,7 @@ import {
   Map as MapIcon,
   BadgeCheck,
   BadgeX,
+  Search,
 } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -108,12 +109,15 @@ export default async function AdminPage() {
   const { data: usersData } = await admin.auth.admin.listUsers({ perPage: 1000 });
   const users = usersData?.users ?? [];
 
+  type SearchQueryRow = { query: string; results_count: number };
+
   const [
     { data: contactMessagesData },
     { data: operatorApplicationsData },
     { count: savedArticlesCount },
     { count: savedItinerariesCount },
     { data: topArticlesData },
+    { data: searchQueriesData },
   ] = await Promise.all([
     admin
       .from("contact_messages")
@@ -128,6 +132,12 @@ export default async function AdminPage() {
     admin.from("saved_articles").select("*", { count: "exact", head: true }),
     admin.from("saved_itineraries").select("*", { count: "exact", head: true }),
     admin.from("saved_articles").select("slug, title"),
+    admin
+      .from("search_queries")
+      .select("query, results_count")
+      .order("created_at", { ascending: false })
+      .limit(1000)
+      .returns<SearchQueryRow[]>(),
   ]);
 
   const contactMessages = contactMessagesData ?? [];
@@ -144,6 +154,22 @@ export default async function AdminPage() {
   const topArticles = [...articleCounts.entries()]
     .sort((a, b) => b[1].count - a[1].count)
     .slice(0, 5);
+
+  const searchCountMap = new Map<string, { count: number; noResults: boolean }>();
+  for (const row of searchQueriesData ?? []) {
+    const existing = searchCountMap.get(row.query);
+    searchCountMap.set(row.query, {
+      count: (existing?.count ?? 0) + 1,
+      noResults: row.results_count === 0,
+    });
+  }
+  const topSearches = [...searchCountMap.entries()]
+    .sort((a, b) => b[1].count - a[1].count)
+    .slice(0, 15);
+  const zeroResultSearches = [...searchCountMap.entries()]
+    .filter(([, v]) => v.noResults)
+    .sort((a, b) => b[1].count - a[1].count)
+    .slice(0, 10);
 
   const now = Date.now();
   const ms30d = 30 * 24 * 60 * 60 * 1000;
@@ -412,6 +438,65 @@ export default async function AdminPage() {
             ))}
           </ul>
         )}
+      </div>
+
+      {/* Búsquedas */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <div className="rounded-xl border border-border overflow-hidden">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
+            <Search className="w-4 h-4 text-muted-foreground" />
+            <h2 className="font-medium text-sm">
+              Búsquedas más frecuentes ({searchCountMap.size} únicas)
+            </h2>
+          </div>
+          {topSearches.length === 0 ? (
+            <p className="px-4 py-6 text-sm text-muted-foreground">
+              Aún no hay búsquedas registradas.
+            </p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {topSearches.map(([q, { count }]) => (
+                <li
+                  key={q}
+                  className="flex items-center justify-between px-4 py-2.5 text-sm"
+                >
+                  <span className="truncate">{q}</span>
+                  <span className="text-muted-foreground tabular-nums shrink-0 ml-3">
+                    {count}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="rounded-xl border border-border overflow-hidden">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
+            <Search className="w-4 h-4 text-orange-400" />
+            <h2 className="font-medium text-sm text-orange-600 dark:text-orange-400">
+              Sin resultados — contenido que falta
+            </h2>
+          </div>
+          {zeroResultSearches.length === 0 ? (
+            <p className="px-4 py-6 text-sm text-muted-foreground">
+              Todo lo que buscaron tuvo resultados.
+            </p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {zeroResultSearches.map(([q, { count }]) => (
+                <li
+                  key={q}
+                  className="flex items-center justify-between px-4 py-2.5 text-sm"
+                >
+                  <span className="truncate text-orange-600 dark:text-orange-400">{q}</span>
+                  <span className="text-muted-foreground tabular-nums shrink-0 ml-3">
+                    {count}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
       {/* Solicitudes de operadores */}
