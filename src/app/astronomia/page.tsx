@@ -15,6 +15,8 @@ import { Section, PageShell } from "@/components/layout"
 import { Card } from "@/components/primitives"
 import { getMoonData } from "@/lib/astronomy"
 import type { StargazingQuality } from "@/lib/astronomy"
+import { MeteorTabs } from "@/components/MeteorTabs"
+import { EventoTabs } from "@/components/EventoTabs"
 
 export const metadata: Metadata = {
   title: "Astronomía en Patagonia — cielos oscuros y observación | Outdoor Patagonia",
@@ -861,7 +863,7 @@ export default function AstronomiaPage() {
                   {/* Iluminación */}
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs text-muted-foreground">Iluminación</span>
+                      <span className="text-sm text-muted-foreground">Iluminación</span>
                       <span className="text-sm font-bold tabular-nums">{moon.illumination}%</span>
                     </div>
                     <div className="h-1.5 bg-muted rounded-full overflow-hidden">
@@ -875,7 +877,7 @@ export default function AstronomiaPage() {
                     </div>
                   </div>
                   {/* Próxima luna llena */}
-                  <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Luna llena</span>
                     <span className="font-semibold">
                       {moon.nextFullDate}
@@ -889,10 +891,10 @@ export default function AstronomiaPage() {
                   {/* Calidad */}
                   <div className="flex items-center gap-2 pt-2 border-t border-border/40">
                     <Star size={12} strokeWidth={1.5} className={qualityColor} />
-                    <span className={`text-xs font-semibold capitalize ${qualityColor}`}>
+                    <span className={`text-sm font-semibold capitalize ${qualityColor}`}>
                       {moon.stargazingQuality}
                     </span>
-                    <span className="text-[11px] text-muted-foreground ml-auto text-right leading-tight">
+                    <span className="text-sm text-muted-foreground ml-auto text-right leading-tight">
                       {moon.stargazingNote}
                     </span>
                   </div>
@@ -906,7 +908,7 @@ export default function AstronomiaPage() {
                 Vía Láctea — temporada desde Patagonia
               </p>
               <Card variant="elevated" className="p-5 h-full">
-                <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                   El núcleo galáctico se ve mejor de marzo a septiembre — junio y julio son el pico,
                   con noches largas y el centro de la galaxia bien alto. Pero el cielo patagónico
                   es oscuro e increíble todo el año.
@@ -949,19 +951,19 @@ export default function AstronomiaPage() {
                   <div className="space-y-2.5">
                     <div className="flex items-start gap-2">
                       <span className="text-emerald-400 text-[10px] mt-0.5 shrink-0">★</span>
-                      <p className="text-[11px] text-muted-foreground leading-snug">
+                      <p className="text-sm text-muted-foreground leading-snug">
                         <span className="text-foreground/80 font-medium">Cruz del Sur</span> — circumpolar desde Patagonia, nunca se pone
                       </p>
                     </div>
                     <div className="flex items-start gap-2">
                       <span className="text-emerald-400 text-[10px] mt-0.5 shrink-0">★</span>
-                      <p className="text-[11px] text-muted-foreground leading-snug">
+                      <p className="text-sm text-muted-foreground leading-snug">
                         <span className="text-foreground/80 font-medium">Nubes de Magallanes</span> — galaxias satélite de la Vía Láctea, a simple vista
                       </p>
                     </div>
                     <div className="flex items-start gap-2">
                       <span className="text-sky-400 text-[10px] mt-0.5 shrink-0">◐</span>
-                      <p className="text-[11px] text-muted-foreground leading-snug">
+                      <p className="text-sm text-muted-foreground leading-snug">
                         <span className="text-foreground/80 font-medium">Alpha Centauri</span> — el sistema estelar más cercano al Sol, a 4,4 años luz
                       </p>
                     </div>
@@ -982,61 +984,7 @@ export default function AstronomiaPage() {
               Lluvias de meteoros 2026–2027
             </h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {meteorsProximos.map((m) => (
-              <Card key={`${m.nombre}-${m.pico}`} variant="elevated" className="p-4">
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <p className="text-sm font-semibold text-foreground">{m.nombre}</p>
-                  <span
-                    className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shrink-0 ${
-                      m.calidad === "excelente"
-                        ? "bg-emerald-500/15 text-emerald-500"
-                        : m.calidad === "buena"
-                          ? "bg-sky-500/15 text-sky-400"
-                          : "bg-amber-500/15 text-amber-500"
-                    }`}
-                  >
-                    {m.calidad}
-                  </span>
-                </div>
-                <p className="text-[11px] text-[var(--color-teal)] font-medium mb-1.5">
-                  Pico: {m.pico}
-                </p>
-                <p className="text-[11px] text-muted-foreground mb-2 leading-relaxed">{m.nota}</p>
-                <p className="text-[10px] text-muted-foreground/70">
-                  Hasta <span className="font-semibold text-foreground">{m.tasaMaxima}</span>{" "}
-                  meteoros/hr en condiciones ideales
-                </p>
-              </Card>
-            ))}
-          </div>
-          {meteorsPasados.length >= PAST_MIN && (
-            <div className="mt-8">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">
-                Anteriores
-              </p>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 opacity-50">
-                {meteorsPasados.map((m) => (
-                  <Card key={`${m.nombre}-${m.pico}`} variant="elevated" className="p-4">
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <p className="text-sm font-semibold text-foreground">{m.nombre}</p>
-                      <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shrink-0 bg-muted text-muted-foreground">
-                        {m.calidad}
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-muted-foreground font-medium mb-1.5">
-                      Pico: {m.pico}
-                    </p>
-                    <p className="text-[11px] text-muted-foreground mb-2 leading-relaxed">{m.nota}</p>
-                    <p className="text-[10px] text-muted-foreground/70">
-                      Hasta <span className="font-semibold">{m.tasaMaxima}</span>{" "}
-                      meteoros/hr en condiciones ideales
-                    </p>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
+          <MeteorTabs upcoming={meteorsProximos} past={meteorsPasados} />
         </PageShell>
       </Section>
 
@@ -1049,69 +997,7 @@ export default function AstronomiaPage() {
               Eventos astronómicos 2026–2027
             </h2>
           </div>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {eventosProximos.map((ev) => {
-              const Icon = EVENTO_ICONS[ev.tipo]
-              return (
-                <Card key={`${ev.nombre}-${ev.fechaISO}`} variant="elevated" className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="mt-0.5 flex-shrink-0">
-                      <Icon
-                        size={18}
-                        strokeWidth={1.5}
-                        className={
-                          ev.tipo === "eclipse"
-                            ? "text-amber-400"
-                            : ev.tipo === "solsticio"
-                              ? "text-[var(--color-teal)]"
-                              : "text-[var(--color-teal-light)]"
-                        }
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-foreground mb-0.5">{ev.nombre}</p>
-                      <p className="text-[11px] text-[var(--color-teal)] font-medium mb-1.5">
-                        {ev.fecha}
-                      </p>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        {ev.descripcion}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              )
-            })}
-          </div>
-          {eventosPasados.length >= PAST_MIN && (
-            <div className="mt-8">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">
-                Anteriores
-              </p>
-              <div className="grid sm:grid-cols-2 gap-3 opacity-50">
-                {eventosPasados.map((ev) => {
-                  const Icon = EVENTO_ICONS[ev.tipo]
-                  return (
-                    <Card key={`${ev.nombre}-${ev.fechaISO}`} variant="elevated" className="p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="mt-0.5 flex-shrink-0">
-                          <Icon size={18} strokeWidth={1.5} className="text-muted-foreground" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-semibold text-foreground mb-0.5">{ev.nombre}</p>
-                          <p className="text-[11px] text-muted-foreground font-medium mb-1.5">
-                            {ev.fecha}
-                          </p>
-                          <p className="text-[11px] text-muted-foreground leading-relaxed">
-                            {ev.descripcion}
-                          </p>
-                        </div>
-                      </div>
-                    </Card>
-                  )
-                })}
-              </div>
-            </div>
-          )}
+          <EventoTabs upcoming={eventosProximos} past={eventosPasados} />
         </PageShell>
       </Section>
 
@@ -1124,7 +1010,7 @@ export default function AstronomiaPage() {
               Mejores cielos oscuros de la Patagonia
             </h2>
           </div>
-          <p className="text-sm text-muted-foreground mb-6">
+          <p className="text-base text-muted-foreground mb-6">
             Patagonia no tiene reservas de cielo oscuro certificadas, pero sí tiene millones de
             hectáreas de parques nacionales sin electricidad. Estos son los puntos con menor
             contaminación lumínica.
@@ -1138,8 +1024,8 @@ export default function AstronomiaPage() {
                     {s.destacado}
                   </span>
                 </div>
-                <p className="text-[10px] text-muted-foreground/70 mb-2">{s.ubicacion}</p>
-                <p className="text-[11px] text-muted-foreground leading-relaxed">{s.descripcion}</p>
+                <p className="text-xs text-muted-foreground/70 mb-2">{s.ubicacion}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{s.descripcion}</p>
               </Card>
             ))}
           </div>
@@ -1155,7 +1041,7 @@ export default function AstronomiaPage() {
               Constelaciones del hemisferio sur
             </h2>
           </div>
-          <p className="text-sm text-muted-foreground mb-6">
+          <p className="text-base text-muted-foreground mb-6">
             Desde Patagonia se ven constelaciones y objetos imposibles de observar desde Europa o
             América del Norte. Una latitud de −45° a −55° abre el cielo austral completo.
           </p>
@@ -1170,11 +1056,11 @@ export default function AstronomiaPage() {
                     </span>
                   )}
                 </div>
-                <p className="text-[10px] text-[var(--color-teal)] font-medium mb-1.5">{c.estrella}</p>
-                <p className="text-[11px] text-muted-foreground leading-relaxed mb-2">
+                <p className="text-xs text-[var(--color-teal)] font-medium mb-1.5">{c.estrella}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-2">
                   {c.descripcion}
                 </p>
-                <p className="text-[10px] text-muted-foreground/60">
+                <p className="text-xs text-muted-foreground/60">
                   Mejor período:{" "}
                   <span className="text-foreground/70 font-medium">{c.mejorMes}</span>
                 </p>
