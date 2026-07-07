@@ -141,7 +141,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     scientificName: "Embothrium coccineum",
     commonNameEs: "Notro / Ciruelillo",
     commonNameEn: "Chilean firetree",
-    category: "arbusto",
+    category: "arbol",
     parquesRelacionados: [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },
@@ -154,7 +154,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     scientificName: "Ochetophila trinervis",
     commonNameEs: "Chacay hembra",
     commonNameEn: "Chacay hembra",
-    category: "arbusto",
+    category: "arbol",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Lanín", slug: "lanin" },
@@ -239,7 +239,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     scientificName: "Chusquea culeou",
     commonNameEs: "Colihue",
     commonNameEn: "Colihue bamboo",
-    category: "herbácea",
+    category: "arbusto",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Alerces", slug: "los-alerces" },
