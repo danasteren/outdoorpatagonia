@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { StatusBoard } from "@/components/status/StatusBoard";
 import { EstadoCTA } from "@/components/status/EstadoCTA";
+import { OzoneSection } from "@/components/status/OzoneSection";
 import { Section } from "@/components/layout";
 import { PageShell } from "@/components/layout";
 import { Hero } from "@/components/home/Hero";
@@ -151,6 +152,13 @@ export default function Home() {
       {/* Estado en tiempo real */}
       <StatusBoard />
       <EstadoCTA />
+
+      {/* Ozono */}
+      <Section spacing="lg">
+        <PageShell>
+          <OzoneSection />
+        </PageShell>
+      </Section>
     </div>
   );
 }

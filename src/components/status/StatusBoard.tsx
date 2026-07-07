@@ -11,7 +11,6 @@ import {
 import { fetchImpactoData } from "@/lib/apis/openaq"
 import { getMoonData } from "@/lib/astronomy"
 import { WeatherSection } from "./WeatherSection"
-import { OzoneSection } from "./OzoneSection"
 import { GlacierSection } from "./GlacierSection"
 import { SightingList } from "./SightingList"
 import { MoonSection } from "./MoonSection"
@@ -86,7 +85,6 @@ export async function StatusBoard() {
         <div className="space-y-8">
           {/* Clima */}
           <WeatherSection data={weather} />
-          {weather.length > 0 && <OzoneSection />}
 
           {/* Naturaleza — 3 columnas */}
           {(fauna.length > 0 || flora.length > 0 || fungi.length > 0) && (
