@@ -33,7 +33,8 @@ export async function generateMetadata({
   const entry = getArqueologiaEntry(slug)
   if (!entry) return {}
 
-  const description = `${CATEGORIA_LABELS[entry.categoria]} de la Patagonia. ${entry.era}${entry.edadAnios ? ` — ${entry.edadAnios}` : ""}. ${entry.descripcion[0].slice(0, 120)}...`
+  const firstSentence = entry.descripcion[0].split(". ")[0]
+  const description = `${firstSentence}. ${entry.provincia} (${entry.pais === "CL" ? "Chile" : entry.pais === "CL/AR" ? "Chile/Argentina" : "Argentina"}), ${entry.era}.`.slice(0, 160)
 
   return {
     title: `${entry.nombre} — ${CATEGORIA_LABELS[entry.categoria]} de la Patagonia`,
@@ -95,25 +96,36 @@ export default async function ArqueologiaDetailPage({
     entry.pais === "CL/AR" ? "Chile / Argentina" :
     entry.pais === "CL" ? "Chile" : "Argentina"
 
-  const jsonLd = entry.lat
-    ? {
-        "@context": "https://schema.org",
-        "@type": entry.categoria === "humano" || entry.categoria === "petroglifo"
-          ? "TouristDestination"
-          : "Article",
-        name: entry.nombre,
-        description: entry.descripcion[0],
-        url: `https://outdoorpatagonia.com/arqueologia/${slug}`,
-        ...(entry.lat && {
-          geo: { "@type": "GeoCoordinates", latitude: entry.lat, longitude: entry.lng },
-        }),
-        about: {
-          "@type": "Thing",
-          name: entry.nombreCientifico ?? entry.nombre,
-          description: `${CATEGORIA_LABELS[entry.categoria]} de la Patagonia — ${entry.era}`,
-        },
-      }
-    : null
+  const isTouristSite = entry.categoria === "humano" || entry.categoria === "petroglifo"
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": isTouristSite ? "TouristDestination" : "Article",
+    name: entry.nombre,
+    description: entry.descripcion[0],
+    url: `https://outdoorpatagonia.com/arqueologia/${slug}`,
+    ...(isTouristSite && {
+      geo: { "@type": "GeoCoordinates", latitude: entry.lat, longitude: entry.lng },
+      touristType: { "@type": "Audience", audienceType: "cultural tourism, paleontology" },
+      containedInPlace: {
+        "@type": "AdministrativeArea",
+        name: entry.provincia,
+        containedInPlace: { "@type": "Country", name: entry.pais === "CL" ? "Chile" : "Argentina" },
+      },
+    }),
+    ...(!isTouristSite && {
+      about: {
+        "@type": "Thing",
+        name: entry.nombreCientifico ?? entry.nombre,
+        description: `${CATEGORIA_LABELS[entry.categoria]} de la Patagonia — ${entry.era}`,
+      },
+      spatialCoverage: {
+        "@type": "Place",
+        name: entry.provincia,
+        geo: { "@type": "GeoCoordinates", latitude: entry.lat, longitude: entry.lng },
+      },
+    }),
+  }
 
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -131,9 +143,7 @@ export default async function ArqueologiaDetailPage({
 
   return (
     <div className="min-h-screen">
-      {jsonLd && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      )}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* Hero */}
