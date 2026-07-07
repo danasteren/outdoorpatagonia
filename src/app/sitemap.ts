@@ -4,6 +4,7 @@ import { toCategorySlug } from "@/lib/category";
 import { FAUNA_CATALOG } from "@/lib/fauna/catalog";
 import { PARQUES_CATALOG } from "@/lib/parques/catalog";
 import { SENDEROS_CATALOG } from "@/lib/senderos/catalog";
+import { VOLCANES_CATALOG } from "@/lib/volcanes/catalog";
 
 const BASE = "https://outdoorpatagonia.com";
 
@@ -79,6 +80,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const volcanesUrls: MetadataRoute.Sitemap = VOLCANES_CATALOG.map((v) => ({
+    url: `${BASE}/volcanes/${v.slug}`,
+    changeFrequency: "daily" as const,
+    priority: 0.8,
+  }));
+
   const { data: operatorsData } = await supabase
     .from("operators")
     .select("slug");
@@ -100,6 +107,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...operatorUrls,
     ...parquesUrls,
     ...senderosUrls,
+    ...volcanesUrls,
     ...faunaUrls,
     ...categoryUrls,
     ...articleUrls,

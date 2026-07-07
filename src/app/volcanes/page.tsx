@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Flame } from "lucide-react"
 import { fetchVolcanes } from "@/lib/apis/sernageomin"
 import { Section, PageShell } from "@/components/layout"
 import { VolcanesSection } from "@/components/status/VolcanesSection"
@@ -45,19 +46,30 @@ export default async function VolcanesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
+      {/* Hero */}
+      <div style={{ background: "linear-gradient(135deg, #3c0a00 0%, #6b1a05 60%, #8a2a0a 100%)" }} className="text-white">
+        <div className="max-w-6xl mx-auto px-4 md:px-10 py-14">
+          <div className="flex items-center gap-3 mb-4">
+            <Flame size={22} strokeWidth={1.5} className="opacity-60" />
+            <span className="text-sm uppercase tracking-widest opacity-60">
+              Monitoreo volcánico
+            </span>
+          </div>
+          <h1
+            className="text-4xl md:text-5xl font-bold leading-tight"
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            Volcanes de la Patagonia
+          </h1>
+          <p className="mt-3 text-white/70 max-w-xl text-base leading-relaxed">
+            Niveles de alerta en tiempo real para 12 volcanes patagónicos según SERNAGEOMIN.
+            De Verde (sin actividad anómala) a Rojo (erupción en curso).
+          </p>
+        </div>
+      </div>
+
       <Section spacing="lg">
         <PageShell>
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold font-heading mb-3">
-              Volcanes activos en Patagonia
-            </h1>
-            <p className="text-muted-foreground max-w-2xl">
-              Niveles de alerta en tiempo real para los principales volcanes patagónicos según la Red Nacional de
-              Vigilancia Volcánica (RNVV) de SERNAGEOMIN. Los niveles van de Verde (sin actividad anómala) a
-              Rojo (erupción en curso).
-            </p>
-          </div>
-
           <VolcanesSection data={volcanes} />
 
           {/* Contexto / GEO */}
