@@ -92,6 +92,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: BASE, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/en`, changeFrequency: "daily", priority: 1 },
+    { url: `${BASE}/volcanes`, changeFrequency: "daily", priority: 0.8 },
     { url: `${BASE}/mapa`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/planear`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/operadores`, changeFrequency: "weekly", priority: 0.7 },

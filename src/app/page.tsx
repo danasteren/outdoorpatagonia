@@ -18,6 +18,7 @@ import {
   Users,
   Compass,
   Backpack,
+  Flame,
 } from "lucide-react";
 
 export const revalidate = 3600;
@@ -99,6 +100,13 @@ const CATEGORIES = [
     icon: Backpack,
     description: "Equipo y checklist para tu viaje",
     color: "from-[#8a4d22] to-[var(--color-charcoal)]",
+  },
+  {
+    label: "Volcanes",
+    href: "/volcanes",
+    icon: Flame,
+    description: "Alertas volcánicas en tiempo real",
+    color: "from-[#8a2a0a] to-[var(--color-terracotta)]",
   },
 ];
 

@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import {
   Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
   PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe, Telescope,
-  User, LogOut, Backpack, ShieldCheck,
+  User, LogOut, Backpack, ShieldCheck, Flame,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
@@ -146,6 +146,7 @@ export function HeaderShell({
                     { href: '/flora', label: 'Flora', Icon: Leaf },
                     { href: '/parques', label: 'Parques', Icon: Mountain },
                     { href: '/senderos', label: 'Senderos', Icon: MapPin },
+                    { href: '/volcanes', label: 'Volcanes', Icon: Flame },
                   ].map(({ href, label, Icon }) => (
                     <Link
                       key={href}
@@ -389,6 +390,7 @@ export function HeaderShell({
               { href: '/flora', label: 'Flora', Icon: Leaf },
               { href: '/parques', label: 'Parques', Icon: Mountain },
               { href: '/senderos', label: 'Senderos', Icon: MapPin },
+              { href: '/volcanes', label: 'Volcanes', Icon: Flame },
             ].map(({ href, label, Icon }) => (
               <Link
                 key={href}
