@@ -11,6 +11,8 @@ import {
   Flag,
   Clock,
   Layers,
+  Ticket,
+  ExternalLink,
 } from "lucide-react"
 import {
   ESCALADA_CATALOG,
@@ -19,6 +21,7 @@ import {
   PAIS_LABELS,
   totalVias,
 } from "@/lib/escalada/catalog"
+import { gygSearchUrl } from "@/lib/affiliates/getyourguide"
 import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
@@ -520,6 +523,34 @@ export default async function SectorPage({
               <p className="text-xs text-muted-foreground mt-2">
                 {entry.lat.toFixed(4)}°, {entry.lon.toFixed(4)}°
               </p>
+            </section>
+
+            {/* Tours GYG */}
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <Ticket className="w-4 h-4 text-[var(--color-teal)]" />
+                <span className="text-sm font-bold">Tours y guías disponibles</span>
+              </div>
+              <div className="space-y-2">
+                <a
+                  href={gygSearchUrl(`${entry.nombre} guided climbing tour`)}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2.5 text-sm hover:border-[var(--color-teal)] transition-colors"
+                >
+                  <span>Guías de escalada en {entry.nombre}</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                </a>
+                <a
+                  href={gygSearchUrl(`${entry.region} trekking day tour`)}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2.5 text-sm hover:border-[var(--color-teal)] transition-colors"
+                >
+                  <span>Excursiones en {entry.region}</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                </a>
+              </div>
             </section>
 
             {/* CTA */}

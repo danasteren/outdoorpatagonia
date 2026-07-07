@@ -11,6 +11,7 @@ import {
   AlertTriangle,
   Bird,
 } from "lucide-react"
+import { gygSearchUrl } from "@/lib/affiliates/getyourguide"
 import { SENDEROS_CATALOG, getSenderoEntry, DIFICULTAD_LABELS, DIFICULTAD_COLORS } from "@/lib/senderos/catalog"
 import { FAUNA_CATALOG } from "@/lib/fauna/catalog"
 import { ALL_GEAR } from "@/lib/planner/data"
@@ -349,6 +350,34 @@ export default async function SenderoPage({
                 </div>
               </section>
             )}
+
+            {/* Tours GYG */}
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <ExternalLink className="w-4 h-4 text-[var(--color-teal)]" />
+                <span className="text-sm font-bold">Tours y excursiones</span>
+              </div>
+              <div className="space-y-2">
+                <a
+                  href={gygSearchUrl(`${entry.title} guided trek patagonia`)}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2.5 text-sm hover:border-[var(--color-teal)] transition-colors"
+                >
+                  <span>Trekking guiado: {entry.title}</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                </a>
+                <a
+                  href={gygSearchUrl(`${entry.parqueName ?? "patagonia"} day tour`)}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2.5 text-sm hover:border-[var(--color-teal)] transition-colors"
+                >
+                  <span>Excursiones en la zona</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                </a>
+              </div>
+            </section>
 
             {/* Planner CTA */}
             <div className="rounded-xl bg-[var(--color-forest)] text-[var(--color-cream)] p-5">
