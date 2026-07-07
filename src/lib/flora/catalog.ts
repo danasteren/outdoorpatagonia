@@ -137,6 +137,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
   },
   {
     slug: "notro",
+    taxonId: 319327,
     scientificName: "Embothrium coccineum",
     commonNameEs: "Notro / Ciruelillo",
     commonNameEn: "Chilean firetree",
@@ -145,6 +146,45 @@ export const FLORA_CATALOG: FloraEntry[] = [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },
       { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
+    ],
+  },
+  {
+    slug: "chacay-hembra",
+    taxonId: 965424,
+    scientificName: "Ochetophila trinervis",
+    commonNameEs: "Chacay hembra",
+    commonNameEn: "Chacay hembra",
+    category: "arbusto",
+    parquesRelacionados: [
+      { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
+      { nombre: "Lanín", slug: "lanin" },
+    ],
+  },
+  {
+    slug: "trevo",
+    taxonId: 1241356,
+    scientificName: "Archidasyphyllum diacanthoides",
+    commonNameEs: "Trevo / Palo santo",
+    commonNameEn: "Trevoa",
+    category: "arbol",
+    parquesRelacionados: [
+      { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
+      { nombre: "Los Alerces", slug: "los-alerces" },
+      { nombre: "Lanín", slug: "lanin" },
+      { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
+    ],
+  },
+  {
+    slug: "avellano",
+    taxonId: 490916,
+    scientificName: "Gevuina avellana",
+    commonNameEs: "Avellano nativo / Guevín",
+    commonNameEn: "Chilean hazel",
+    category: "arbol",
+    parquesRelacionados: [
+      { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
+      { nombre: "Lanín", slug: "lanin" },
+      { nombre: "Los Alerces", slug: "los-alerces" },
     ],
   },
   {
