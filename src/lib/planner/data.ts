@@ -1,5 +1,6 @@
 import type { Season, Interest, Tour, GearItem } from "./types";
 import { gygSearchUrl } from "../affiliates/getyourguide";
+import { amazonSearchUrl } from "../affiliates/amazon";
 
 export interface Destination {
   id: string;
@@ -302,84 +303,84 @@ export const ALL_GEAR: GearItem[] = [
   {
     name: "Mochila 60L para trekking",
     description: "Osprey Atmos AG 65 o similar: ajuste ergonómico, soporte lumbar y cubierta de lluvia.",
-    url: "https://www.amazon.com/s?k=60L+trekking+backpack+patagonia&tag=outdoorpatago-20",
+    url: amazonSearchUrl("60L trekking backpack patagonia"),
     interests: ["trekking", "naturaleza"],
     seasons: ["verano", "otono", "primavera", "invierno"],
   },
   {
     name: "Campera de lluvia GORE-TEX",
     description: "Imprescindible en Patagonia. Patagonia Torrentshell o Arc'teryx Beta: viento y lluvia.",
-    url: "https://www.amazon.com/s?k=gore-tex+rain+jacket+patagonia+wind&tag=outdoorpatago-20",
+    url: amazonSearchUrl("gore-tex rain jacket patagonia wind"),
     interests: ["trekking", "naturaleza", "fotografia"],
     seasons: ["verano", "otono", "primavera", "invierno"],
   },
   {
     name: "Botas de trekking impermeables",
     description: "Salomon X Ultra o Merrell Moab: suela Vibram, impermeables y tobillo alto para senderos de roca.",
-    url: "https://www.amazon.com/s?k=waterproof+hiking+boots+trekking&tag=outdoorpatago-20",
+    url: amazonSearchUrl("waterproof hiking boots trekking"),
     interests: ["trekking"],
     seasons: ["verano", "otono", "primavera"],
   },
   {
     name: "Campera de pluma (down jacket)",
     description: "Para noches y mañanas en Patagonia incluso en verano. Patagonia Down Sweater o similar.",
-    url: "https://www.amazon.com/s?k=down+jacket+patagonia+lightweight&tag=outdoorpatago-20",
+    url: amazonSearchUrl("down jacket patagonia lightweight"),
     interests: ["trekking", "naturaleza", "fauna"],
     seasons: ["verano", "otono", "invierno", "primavera"],
   },
   {
     name: "Binoculares para fauna",
     description: "Nikon Monarch M5 8x42: ideal para avistamiento de ballenas, cóndores y orcas.",
-    url: "https://www.amazon.com/s?k=nikon+monarch+binoculars+wildlife&tag=outdoorpatago-20",
+    url: amazonSearchUrl("nikon monarch binoculars wildlife"),
     interests: ["fauna", "naturaleza", "fotografia"],
     seasons: ["verano", "otono", "primavera", "invierno"],
   },
   {
     name: "Cámara mirrorless + trípode ultraligero",
     description: "Sony A7C o Fujifilm X-T5 con trípode de fibra de carbono: ideal para poca luz en glaciares y fauna.",
-    url: "https://www.amazon.com/s?k=mirrorless+camera+wildlife+landscape+photography&tag=outdoorpatago-20",
+    url: amazonSearchUrl("mirrorless camera wildlife landscape photography"),
     interests: ["fotografia"],
     seasons: ["verano", "otono", "primavera"],
   },
   {
     name: "Lente teleobjetivo 100-400mm",
     description: "Para fotografía de fauna a distancia: orcas, ballenas, cóndores, flamencos.",
-    url: "https://www.amazon.com/s?k=100-400mm+telephoto+lens+wildlife&tag=outdoorpatago-20",
+    url: amazonSearchUrl("100-400mm telephoto lens wildlife"),
     interests: ["fotografia", "fauna"],
     seasons: ["verano", "otono", "primavera", "invierno"],
   },
   {
     name: "Base layer merino wool",
     description: "Icebreaker o Smartwool 200g: regula temperatura, no retiene olores, esencial para varios días de trekking.",
-    url: "https://www.amazon.com/s?k=merino+wool+base+layer+hiking&tag=outdoorpatago-20",
+    url: amazonSearchUrl("merino wool base layer hiking"),
     interests: ["trekking", "naturaleza"],
     seasons: ["otono", "invierno", "primavera"],
   },
   {
     name: "Sleeping bag -10°C",
     description: "Western Mountaineering o Sea to Summit: para camping en Torres del Paine y El Chaltén donde las noches son frías.",
-    url: "https://www.amazon.com/s?k=sleeping+bag+minus+10+camping&tag=outdoorpatago-20",
+    url: amazonSearchUrl("sleeping bag minus 10 camping"),
     interests: ["trekking"],
     seasons: ["verano", "otono", "primavera"],
   },
   {
     name: "Guía de campo — Fauna de la Patagonia",
     description: "Identificación de aves, mamíferos y flora patagónica para salidas en Valdés y parques nacionales.",
-    url: "https://www.amazon.com/s?k=patagonia+wildlife+field+guide&tag=outdoorpatago-20",
+    url: amazonSearchUrl("patagonia wildlife field guide"),
     interests: ["fauna", "naturaleza"],
     seasons: ["verano", "otono", "primavera", "invierno"],
   },
   {
     name: "Tabla de corte portátil + set de cocina camping",
     description: "MSR TrailShot + utensilios: para el circuito W o El Chaltén donde la comida en los refugios puede ser cara.",
-    url: "https://www.amazon.com/s?k=backpacking+cooking+set+camping&tag=outdoorpatago-20",
+    url: amazonSearchUrl("backpacking cooking set camping"),
     interests: ["trekking", "gastronomia"],
     seasons: ["verano", "otono", "primavera"],
   },
   {
     name: "Crampones para hielo",
     description: "Necesarios si hacés el Mini Trekking en el Perito Moreno o hielos continentales. Grivel o Camp.",
-    url: "https://www.amazon.com/s?k=crampons+ice+trekking+glacier&tag=outdoorpatago-20",
+    url: amazonSearchUrl("crampons ice trekking glacier"),
     interests: ["trekking", "naturaleza"],
     seasons: ["verano", "primavera"],
   },

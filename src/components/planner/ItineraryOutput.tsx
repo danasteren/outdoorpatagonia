@@ -21,7 +21,7 @@ const ItineraryMapInner = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse rounded-xl">
+      <div className="h-64 sm:h-80 flex items-center justify-center bg-muted animate-pulse rounded-xl">
         <span className="text-sm text-muted-foreground">Cargando mapa…</span>
       </div>
     ),
@@ -61,7 +61,12 @@ interface ItineraryOutputProps {
 
 export function ItineraryOutput({ result, form, onReset }: ItineraryOutputProps) {
   return (
-    <div className="max-w-3xl mx-auto space-y-8 pb-16">
+    <div className="max-w-3xl mx-auto space-y-8 pb-24">
+      {/* Floating save button */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-6 z-50">
+        <SaveItineraryButton form={form} result={result} floating />
+      </div>
+
       {/* Header */}
       <div className="text-center space-y-2 pt-4">
         <h1 className="font-heading text-3xl sm:text-4xl text-foreground">
@@ -79,15 +84,10 @@ export function ItineraryOutput({ result, form, onReset }: ItineraryOutputProps)
           ))}
           <Chip>{BUDGET_LABELS[form.budget]}</Chip>
         </div>
-
-        {/* Guardar */}
-        <div className="flex justify-center pt-2">
-          <SaveItineraryButton form={form} result={result} />
-        </div>
       </div>
 
       {/* Mapa embebido */}
-      <div className="relative h-64 sm:h-80 rounded-xl overflow-hidden shadow-card">
+      <div className="h-64 sm:h-80 rounded-xl overflow-hidden shadow-card">
         <ItineraryMapInner
           days={result.days}
           center={result.mapCenter}
