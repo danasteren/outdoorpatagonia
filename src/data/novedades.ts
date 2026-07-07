@@ -15,10 +15,41 @@ export interface VersionNovedades {
 
 export const novedades: VersionNovedades[] = [
   {
+    numero: "1.4",
+    fecha: "Julio 2026",
+    titulo: "Escalada, Tours y mejoras en el Planner",
+    esUltima: true,
+    cambios: [
+      {
+        tipo: "nuevo",
+        texto: "Bloque \"Tours disponibles\" en páginas de parques — propuestas de GetYourGuide para salidas guiadas desde cada parque",
+      },
+      {
+        tipo: "mejora",
+        texto: "Sección de escalada rediseñada — nuevo modelo de datos, fichas más completas y mejor navegación por sector",
+      },
+      {
+        tipo: "mejora",
+        texto: "Sección \"Relacionados\" en páginas de fauna y flora — acceso directo a contenido vinculado desde cada ficha",
+      },
+      {
+        tipo: "mejora",
+        texto: "Sección de ozono reubicada en la home — aparece al final de la página principal con más contexto",
+      },
+      {
+        tipo: "correccion",
+        texto: "Mapa del Planner — vuelve a funcionar correctamente en todos los navegadores",
+      },
+      {
+        tipo: "mejora",
+        texto: "Botón guardar flotante en el Planner — siempre a mano mientras armás tu itinerario",
+      },
+    ],
+  },
+  {
     numero: "1.3",
     fecha: "Julio 2026",
     titulo: "Astronomía, Qué llevar y mejoras en la home",
-    esUltima: true,
     cambios: [
       {
         tipo: "nuevo",
