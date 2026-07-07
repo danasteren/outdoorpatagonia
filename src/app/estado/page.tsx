@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { fetchWeather, fetchGlacierData } from "@/lib/apis/openmeteo"
 import { fetchPatagoniaFires } from "@/lib/apis/nasa-firms"
 import { Section, PageShell } from "@/components/layout"
@@ -17,10 +18,22 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function EstadoPage() {
+const TABS = [
+  { key: "clima", label: "Clima en puntos clave" },
+  { key: "glaciares", label: "Glaciares — temperatura actual" },
+]
+
+export default async function EstadoPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>
+}) {
+  const { tab } = await searchParams
+  const activeTab = tab === "glaciares" ? "glaciares" : "clima"
+
   const [weatherResult, glacierResult, fireResult] = await Promise.allSettled([
-    fetchWeather(),
-    fetchGlacierData(),
+    activeTab === "clima" ? fetchWeather() : Promise.resolve([]),
+    activeTab === "glaciares" ? fetchGlacierData() : Promise.resolve([]),
     fetchPatagoniaFires(),
   ])
 
@@ -33,7 +46,6 @@ export default async function EstadoPage() {
 
   return (
     <div>
-      {/* Hero */}
       <Section
         spacing="lg"
         className="bg-gradient-to-br from-[var(--color-forest)] via-[#1e4a38] to-[var(--color-teal)] text-[var(--color-cream)]"
@@ -57,17 +69,36 @@ export default async function EstadoPage() {
         </PageShell>
       </Section>
 
-      {/* Clima + Glaciares */}
+      <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex gap-1">
+            {TABS.map(({ key, label }) => {
+              const isActive = key === activeTab
+              return (
+                <Link
+                  key={key}
+                  href={`/estado?tab=${key}`}
+                  className={`px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
+                    isActive
+                      ? "border-b-2 border-[var(--color-forest)] text-[var(--color-forest)] -mb-px"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {label}
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
       <Section spacing="md" background="muted">
         <PageShell>
-          <div className="space-y-10">
-            <WeatherSection data={weather} />
-            <GlacierSection data={glaciers} />
-          </div>
+          {activeTab === "clima" && <WeatherSection data={weather} />}
+          {activeTab === "glaciares" && <GlacierSection data={glaciers} />}
         </PageShell>
       </Section>
 
-      {/* Incendios */}
       <Section spacing="md">
         <PageShell>
           <FireDetailSection data={fires} />

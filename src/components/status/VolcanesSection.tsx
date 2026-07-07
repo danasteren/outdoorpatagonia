@@ -1,4 +1,5 @@
-import { Mountain, TriangleAlert, CircleAlert, CheckCircle, ExternalLink } from "lucide-react"
+import Link from "next/link"
+import { Mountain, TriangleAlert, CircleAlert, CheckCircle } from "lucide-react"
 import { Card } from "@/components/primitives"
 import type { Volcan, NivelAlerta } from "@/lib/apis/sernageomin"
 
@@ -38,10 +39,8 @@ function VolcanCard({ v }: { v: Volcan }) {
   const fecha = formatFecha(v.fechaPost)
 
   return (
-    <a
-      href={v.urlFuente}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href={`/volcanes/${v.slug}`}
       className="block group"
     >
       <Card
@@ -86,12 +85,11 @@ function VolcanCard({ v }: { v: Volcan }) {
         )}
 
         {/* Link */}
-        <div className="flex items-center gap-0.5 mt-2 text-[9px] text-muted-foreground/50 group-hover:text-primary/60 transition-colors">
-          <ExternalLink size={9} strokeWidth={1.5} />
-          <span>Ver en SERNAGEOMIN</span>
+        <div className="mt-2 text-[9px] text-muted-foreground/50 group-hover:text-primary/60 transition-colors">
+          Ver detalle →
         </div>
       </Card>
-    </a>
+    </Link>
   )
 }
 

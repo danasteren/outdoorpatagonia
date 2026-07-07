@@ -82,28 +82,32 @@ export default async function FaunaIndexPage({
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 md:px-10 py-10">
-        <div className="flex gap-1 border-b border-border mb-8">
-          {categories.map((cat) => {
-            const isActive = cat === activeCategory
-            const count = FAUNA_CATALOG.filter((e) => e.category === cat).length
-            return (
-              <Link
-                key={cat}
-                href={`/fauna?cat=${cat}`}
-                className={`px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
-                  isActive
-                    ? "border-b-2 border-[var(--color-forest)] text-[var(--color-forest)] -mb-px"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {CATEGORY_LABELS_PLURAL[cat]}
-                <span className="ml-1.5 text-xs opacity-60">({count})</span>
-              </Link>
-            )
-          })}
+      <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
+        <div className="max-w-6xl mx-auto px-4 md:px-10">
+          <div className="flex gap-1">
+            {categories.map((cat) => {
+              const isActive = cat === activeCategory
+              const count = FAUNA_CATALOG.filter((e) => e.category === cat).length
+              return (
+                <Link
+                  key={cat}
+                  href={`/fauna?cat=${cat}`}
+                  className={`px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
+                    isActive
+                      ? "border-b-2 border-[var(--color-forest)] text-[var(--color-forest)] -mb-px"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {CATEGORY_LABELS_PLURAL[cat]}
+                  <span className="ml-1.5 text-xs opacity-60">({count})</span>
+                </Link>
+              )
+            })}
+          </div>
         </div>
+      </div>
 
+      <div className="max-w-6xl mx-auto px-4 md:px-10 py-10">
         <section>
           <div className="flex items-center gap-3 mb-6">
             <h2 className="text-xl font-bold">{CATEGORY_LABELS_PLURAL[activeCategory]}</h2>
