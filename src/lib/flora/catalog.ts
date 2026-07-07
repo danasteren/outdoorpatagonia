@@ -17,6 +17,13 @@ export const CATEGORY_LABELS: Record<FloraCategory, string> = {
   enredadera: "Enredadera",
 }
 
+export const CATEGORY_LABELS_PLURAL: Record<FloraCategory, string> = {
+  arbol: "Árboles",
+  arbusto: "Arbustos",
+  "herbácea": "Herbáceas",
+  enredadera: "Enredaderas",
+}
+
 export const FLORA_CATALOG: FloraEntry[] = [
   {
     slug: "lenga",

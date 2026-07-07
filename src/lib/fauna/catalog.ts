@@ -235,3 +235,11 @@ export const CATEGORY_LABELS: Record<FaunaCategory, string> = {
   anfibio: "Anfibio",
   pez: "Pez",
 }
+
+export const CATEGORY_LABELS_PLURAL: Record<FaunaCategory, string> = {
+  mamifero: "Mamíferos",
+  ave: "Aves",
+  reptil: "Reptiles",
+  anfibio: "Anfibios",
+  pez: "Peces",
+}

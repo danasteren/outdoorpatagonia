@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { ExternalLink, MapPin, Calendar, Eye } from "lucide-react"
 import { cache } from "react"
@@ -282,11 +283,13 @@ export default async function FaunaEspeciePage({
       {/* Hero */}
       <div className="relative h-72 md:h-96 overflow-hidden">
         {heroImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={heroImage}
             alt={commonName}
-            className="w-full h-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[center_30%]"
           />
         ) : (
           <div className="w-full h-full bg-[var(--color-forest)]" />

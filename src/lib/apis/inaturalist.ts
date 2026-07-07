@@ -252,7 +252,7 @@ export async function fetchSpeciesDetail(
     commonNameEs: t.preferred_common_name ?? null,
     imageUrl: photo?.medium_url ?? photo?.square_url ?? null,
     largeImageUrl:
-      photo?.original_url ?? photo?.large_url ?? photo?.medium_url ?? null,
+      photo?.large_url ?? photo?.medium_url ?? photo?.square_url ?? null,
     description: t.wikipedia_summary ?? null,
     wikipediaUrl: t.wikipedia_url ?? null,
     conservationStatus: t.conservation_status?.status_name ?? null,
@@ -285,7 +285,7 @@ export async function fetchSpeciesByName(
     commonNameEs: t.preferred_common_name ?? null,
     imageUrl: photo?.medium_url ?? photo?.square_url ?? null,
     largeImageUrl:
-      photo?.original_url ?? photo?.large_url ?? photo?.medium_url ?? null,
+      photo?.large_url ?? photo?.medium_url ?? photo?.square_url ?? null,
     description: t.wikipedia_summary ?? null,
     wikipediaUrl: t.wikipedia_url ?? null,
     conservationStatus: t.conservation_status?.status_name ?? null,
@@ -334,6 +334,28 @@ export async function fetchSpeciesSightingsPatagonia(
       longitude: isNaN(lng) ? null : lng,
     }
   })
+}
+
+// ─── Catalog index: batch taxon default photos ────────────────────────────────
+
+export async function fetchTaxonPhotos(
+  taxonIds: number[]
+): Promise<Map<number, string>> {
+  if (taxonIds.length === 0) return new Map()
+  const url = `https://api.inaturalist.org/v1/taxa/${taxonIds.join(",")}?locale=es&per_page=${taxonIds.length}`
+  const map = new Map<number, string>()
+  try {
+    const res = await fetch(url, { next: { revalidate: 86400 } })
+    if (!res.ok) return map
+    const data: INatTaxonResponse = await res.json()
+    for (const t of data.results) {
+      const photo = t.default_photo ?? t.taxon_photos?.[0]?.photo
+      if (photo?.square_url) map.set(t.id, photo.square_url)
+    }
+  } catch {
+    // fail silently
+  }
+  return map
 }
 
 // ─── Species pages: monthly sighting histogram (all-time, global) ─────────────
