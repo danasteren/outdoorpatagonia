@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Fuse from 'fuse.js'
 import Link from 'next/link'
-import { Search, BookOpen, PawPrint, Leaf, Mountain, ChevronRight } from 'lucide-react'
+import { Search, BookOpen, PawPrint, Leaf, Mountain, ChevronRight, MapPin, Flame, Pickaxe, Globe } from 'lucide-react'
 import type { SearchItem, SearchResultType } from '@/lib/search/types'
 
 const TYPE_CONFIG: Record<
@@ -31,13 +31,37 @@ const TYPE_CONFIG: Record<
   },
   sendero: {
     label: 'Senderos',
-    Icon: Mountain,
+    Icon: MapPin,
     colorClass: 'text-orange-500',
     badgeClass: 'bg-orange-50 text-orange-600 dark:bg-orange-950/40 dark:text-orange-400',
   },
+  flora: {
+    label: 'Flora',
+    Icon: Leaf,
+    colorClass: 'text-green-500',
+    badgeClass: 'bg-green-50 text-green-700 dark:bg-green-950/40 dark:text-green-400',
+  },
+  volcan: {
+    label: 'Volcanes',
+    Icon: Flame,
+    colorClass: 'text-red-500',
+    badgeClass: 'bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400',
+  },
+  sector: {
+    label: 'Escalada',
+    Icon: Pickaxe,
+    colorClass: 'text-sky-500',
+    badgeClass: 'bg-sky-50 text-sky-600 dark:bg-sky-950/40 dark:text-sky-400',
+  },
+  pagina: {
+    label: 'Páginas',
+    Icon: Globe,
+    colorClass: 'text-[var(--color-teal)]',
+    badgeClass: 'bg-teal-50 text-teal-700 dark:bg-teal-950/40 dark:text-teal-400',
+  },
 }
 
-const GROUP_ORDER: SearchResultType[] = ['articulo', 'fauna', 'parque', 'sendero']
+const GROUP_ORDER: SearchResultType[] = ['articulo', 'fauna', 'flora', 'parque', 'sendero', 'volcan', 'sector', 'pagina']
 
 export function BuscarClient({ items, initialQ }: { items: SearchItem[]; initialQ: string }) {
   const router = useRouter()

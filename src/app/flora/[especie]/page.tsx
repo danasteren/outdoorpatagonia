@@ -105,7 +105,7 @@ export default async function FloraEspeciePage({
 
   if (!detail && !entry) permanentRedirect("/flora")
 
-  const commonName = detail?.commonNameEs ?? entry?.commonNameEs ?? especie.replace(/-/g, " ")
+  const commonName = entry?.commonNameEs ?? detail?.commonNameEs ?? especie.replace(/-/g, " ")
   const scientificName = detail?.scientificName ?? entry?.scientificName ?? especie
   const taxonId = detail?.taxonId ?? entry?.taxonId
 
@@ -241,7 +241,7 @@ export default async function FloraEspeciePage({
             {detail?.description && (
               <section>
                 <h2 className="text-xl font-bold mb-3">
-                  Sobre {commonName.toLowerCase().startsWith("a") || commonName.toLowerCase().startsWith("e") ? "el" : "la"} {commonName.toLowerCase()}
+                  Sobre {commonName.toLowerCase().startsWith("a") || commonName.toLowerCase().startsWith("e") ? "el" : "la"} {commonName}
                 </h2>
                 <p
                   className="text-muted-foreground leading-relaxed text-sm"

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
   PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe, Telescope,
@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
+import { SearchOverlay } from './SearchOverlay'
 
 export type AuthUser = { name: string; email: string; avatarUrl: string | null } | null
 
@@ -39,7 +40,9 @@ export function HeaderShell({
   const [menuOpen, setMenuOpen] = useState(false)
   const [exploreOpen, setExploreOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const closeSearch = useCallback(() => setSearchOpen(false), [])
   const exploreRef = useRef<HTMLDivElement>(null)
   const userMenuRef = useRef<HTMLDivElement>(null)
 
@@ -71,6 +74,7 @@ export function HeaderShell({
     setMenuOpen(false)
     setExploreOpen(false)
     setUserMenuOpen(false)
+    setSearchOpen(false)
   }, [pathname])
 
   useEffect(() => {
@@ -81,7 +85,6 @@ export function HeaderShell({
   const mapaHref = lang === 'en' ? '/en/mapa' : '/mapa'
   const planearHref = '/planear'
   const operadoresHref = '/operadores'
-  const isActivePlanear = pathname === '/planear'
 
   async function handleSignIn() {
     const codeVerifier = generateRandomBase64url(32)
@@ -100,6 +103,7 @@ export function HeaderShell({
 
   return (
     <>
+      {searchOpen && <SearchOverlay onClose={closeSearch} />}
       <header
         className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-[box-shadow] duration-200${scrolled ? ' shadow-sm' : ''}`}
       >
@@ -203,29 +207,17 @@ export function HeaderShell({
                 </div>
               </div>
             </div>
-
-            {/* Planear — terracotta CTA */}
-            <Link
-              href={planearHref}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActivePlanear
-                  ? 'text-[var(--color-terracotta)] bg-[var(--color-terracotta)]/10'
-                  : 'text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)]/8'
-                }`}
-            >
-              <Compass size={15} strokeWidth={1.75} />
-              Planear
-            </Link>
           </nav>
 
           {/* Desktop utilities */}
           <div className="hidden md:flex items-center gap-3 ml-auto shrink-0">
-            <Link
-              href="/buscar"
+            <button
+              onClick={() => setSearchOpen(true)}
               aria-label="Buscar"
               className="flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <Search size={16} strokeWidth={1.75} />
-            </Link>
+            </button>
             <div className="w-px h-3.5 bg-border" />
 
             {/* Auth */}
@@ -297,8 +289,15 @@ export function HeaderShell({
             <DarkModeToggle />
           </div>
 
-          {/* Mobile: dark mode + hamburger */}
+          {/* Mobile: lupa + dark mode + hamburger */}
           <div className="md:hidden flex items-center gap-1 ml-auto">
+            <button
+              onClick={() => setSearchOpen(true)}
+              aria-label="Buscar"
+              className="flex items-center justify-center w-9 h-9 rounded-lg text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <Search size={18} strokeWidth={1.75} />
+            </button>
             <DarkModeToggle />
             <button
               onClick={() => setMenuOpen((v) => !v)}
