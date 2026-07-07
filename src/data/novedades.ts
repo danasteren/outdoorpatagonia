@@ -146,7 +146,7 @@ export const novedades: VersionNovedades[] = [
   {
     numero: "1.0",
     fecha: "Junio 2026",
-    titulo: "Lanzamiento del nuevo outdoorpatagonia.com",
+    titulo: "Lanzamiento del nuevo sitio web outdoorpatagonia.com",
     cambios: [
       {
         tipo: "nuevo",
