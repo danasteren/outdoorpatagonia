@@ -158,7 +158,7 @@ export async function Hero() {
           </div>
 
           <h1
-            className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
             Senderos, flora, fauna, volcanes, glaciares y muchos más todo en un solo lugar, la Patagonia.
