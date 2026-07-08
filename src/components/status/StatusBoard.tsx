@@ -9,7 +9,6 @@ import {
   fetchPatagoniaPhotos,
 } from "@/lib/apis/inaturalist"
 import { fetchImpactoData } from "@/lib/apis/openaq"
-import { fetchVolcanes } from "@/lib/apis/sernageomin"
 import { getMoonData } from "@/lib/astronomy"
 import { WeatherSection } from "./WeatherSection"
 import { GlacierSection } from "./GlacierSection"
@@ -17,7 +16,6 @@ import { SightingList } from "./SightingList"
 import { MoonSection } from "./MoonSection"
 import { ImpactoSection } from "./ImpactoSection"
 import { PhotoGrid } from "./PhotoGrid"
-import { VolcanesSection } from "./VolcanesSection"
 
 function SightingPanel({
   title,
@@ -45,7 +43,6 @@ export async function StatusBoard() {
     fungiResult,
     photosResult,
     impactoResult,
-    volcanesResult,
   ] = await Promise.allSettled([
     fetchWeather(),
     fetchGlacierData(),
@@ -54,7 +51,6 @@ export async function StatusBoard() {
     fetchPatagoniaFungi(),
     fetchPatagoniaPhotos(),
     fetchImpactoData(),
-    fetchVolcanes(),
   ])
 
   const weather = weatherResult.status === "fulfilled" ? weatherResult.value : []
@@ -64,7 +60,6 @@ export async function StatusBoard() {
   const fungi = fungiResult.status === "fulfilled" ? fungiResult.value : []
   const photos = photosResult.status === "fulfilled" ? photosResult.value : []
   const impacto   = impactoResult.status === "fulfilled" ? impactoResult.value : { readings: [], lastDate: "" }
-  const volcanes  = volcanesResult.status === "fulfilled" ? volcanesResult.value : []
 
   const moon = getMoonData()
 
@@ -119,9 +114,6 @@ export async function StatusBoard() {
               <MoonSection moon={moon} />
             </div>
           )}
-
-          {/* Volcanes */}
-          <VolcanesSection data={volcanes} />
 
           {/* Fotografía */}
           {photos.length > 0 && <PhotoGrid photos={photos} />}
