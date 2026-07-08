@@ -12,6 +12,7 @@ import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { Breadcrumb } from "@/components/primitives/Breadcrumb"
+import { HeroActions } from "@/components/HeroActions"
 
 export const revalidate = 86400
 export const dynamicParams = false
@@ -174,6 +175,7 @@ export default async function ArqueologiaDetailPage({
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        <HeroActions imageUrl={wikiImage?.url} imageAlt={entry.nombre} title={entry.nombre} />
         <div className="relative px-6 md:px-10 pb-8">
           <div className="max-w-6xl mx-auto">
             <Breadcrumb

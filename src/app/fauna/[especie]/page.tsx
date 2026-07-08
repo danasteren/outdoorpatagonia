@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { ExternalLink, MapPin, Calendar, Eye } from "lucide-react"
+import { HeroActions } from "@/components/HeroActions"
 import { cache } from "react"
 import { createClient as createBuildClient } from "@supabase/supabase-js"
 import {
@@ -294,7 +295,8 @@ export default async function FaunaEspeciePage({
         ) : (
           <div className="w-full h-full bg-[var(--color-forest)]" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/30 to-transparent" />
+        <HeroActions imageUrl={heroImage ?? undefined} imageAlt={commonName} title={commonName} />
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
           <div className="max-w-6xl mx-auto">
             <Breadcrumb

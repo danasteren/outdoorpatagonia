@@ -9,6 +9,7 @@ import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { Breadcrumb } from "@/components/primitives/Breadcrumb"
+import { HeroActions } from "@/components/HeroActions"
 import type { NivelAlerta } from "@/lib/apis/sernageomin"
 
 export const revalidate = 3600
@@ -152,6 +153,7 @@ export default async function VolcanPage({
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <HeroActions imageUrl={wikiImage?.url} imageAlt={`Volcán ${entry.nombre}`} title={entry.nombre} />
         <div className="relative px-6 md:px-10 pb-8">
           <div className="max-w-6xl mx-auto">
             <Breadcrumb

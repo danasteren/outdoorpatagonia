@@ -22,6 +22,7 @@ import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { Breadcrumb } from "@/components/primitives/Breadcrumb"
+import { HeroActions } from "@/components/HeroActions"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -155,6 +156,7 @@ export default async function ParqueNacionalPage({
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <HeroActions imageUrl={heroPhoto?.url} imageAlt={entry.name} title={entry.name} />
         <div className="relative px-6 md:px-10 pb-8">
           <div className="max-w-6xl mx-auto">
             <Breadcrumb

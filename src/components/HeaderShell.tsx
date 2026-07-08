@@ -105,25 +105,32 @@ export function HeaderShell({
     <>
       {searchOpen && <SearchOverlay onClose={closeSearch} />}
       <header
-        className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-[box-shadow] duration-200${scrolled ? ' shadow-sm' : ''}`}
+        style={{
+          backgroundColor: `color-mix(in oklch, var(--color-background) ${scrolled ? '75%' : '15%'}, transparent)`,
+        }}
+        className={`sticky top-0 z-50 backdrop-blur-md border-b transition-all duration-300 ${scrolled ? 'border-border shadow-sm' : 'border-transparent'}`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-2">
 
           {/* Logo */}
           <Link href={lang === 'en' ? '/en' : '/'} className="flex items-center shrink-0 mr-3">
-            <img src="/brand/op_02.svg" alt="Outdoor Patagonia" className="h-9 w-auto" />
+            <img
+              src="/brand/op_02.svg"
+              alt="Outdoor Patagonia"
+              className={`w-auto transition-all duration-300 ${scrolled ? 'h-9' : 'h-11'}`}
+            />
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-0.5 flex-1">
+          {/* Desktop utilities — Explorar al lado de la lupa, logo queda solo */}
+          <div className="hidden md:flex items-center gap-2 ml-auto shrink-0">
 
             {/* Explorar dropdown */}
             <div ref={exploreRef} className="relative">
               <button
                 onClick={() => setExploreOpen((v) => !v)}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${exploreOpen
-                    ? 'text-foreground bg-muted'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                  ? 'text-foreground bg-muted'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
                   }`}
               >
                 <Globe size={15} strokeWidth={1.75} />
@@ -136,9 +143,9 @@ export function HeaderShell({
               </button>
 
               <div
-                className={`absolute top-full left-0 mt-2 w-[460px] bg-popover border border-border rounded-xl shadow-modal p-3 z-50 transition-[opacity,transform] duration-150 origin-top-left${exploreOpen
-                    ? ' opacity-100 scale-100 pointer-events-auto'
-                    : ' opacity-0 scale-95 pointer-events-none'
+                className={`absolute top-full right-0 mt-2 w-[460px] bg-popover border border-border rounded-xl shadow-modal p-3 z-50 transition-[opacity,transform] duration-150 origin-top-right${exploreOpen
+                  ? ' opacity-100 scale-100 pointer-events-auto'
+                  : ' opacity-0 scale-95 pointer-events-none'
                   }`}
               >
                 <div className="grid grid-cols-2 gap-0.5">
@@ -208,10 +215,8 @@ export function HeaderShell({
                 </div>
               </div>
             </div>
-          </nav>
 
-          {/* Desktop utilities */}
-          <div className="hidden md:flex items-center gap-3 ml-auto shrink-0">
+            <div className="w-px h-3.5 bg-border" />
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Buscar"
@@ -239,8 +244,8 @@ export function HeaderShell({
                 </button>
                 <div
                   className={`absolute top-full right-0 mt-2 w-48 bg-popover border border-border rounded-xl shadow-modal p-1.5 z-50 transition-[opacity,transform] duration-150 origin-top-right${userMenuOpen
-                      ? ' opacity-100 scale-100 pointer-events-auto'
-                      : ' opacity-0 scale-95 pointer-events-none'
+                    ? ' opacity-100 scale-100 pointer-events-auto'
+                    : ' opacity-0 scale-95 pointer-events-none'
                     }`}
                 >
                   <div className="px-3 py-2 mb-1">
