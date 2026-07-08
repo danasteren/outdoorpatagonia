@@ -80,9 +80,8 @@ export async function Hero() {
 
   return (
     <section
-      className={`relative isolate overflow-hidden text-[var(--color-cream)] min-h-[92svh] sm:min-h-[88vh] flex flex-col ${
-        photo ? "bg-[var(--color-forest)]" : `bg-gradient-to-br ${gradient} bg-[length:200%_200%] animate-hero-pan`
-      }`}
+      className={`relative isolate overflow-hidden text-[var(--color-cream)] min-h-[92svh] sm:min-h-[88vh] flex flex-col ${photo ? "bg-[var(--color-forest)]" : `bg-gradient-to-br ${gradient} bg-[length:200%_200%] animate-hero-pan`
+        }`}
     >
       {/* Real Patagonia photo backdrop (iNaturalist), rotates daily */}
       {photo && (
@@ -106,11 +105,10 @@ export async function Hero() {
         {PARTICLES.map((p, i) => (
           <span
             key={i}
-            className={`absolute rounded-full ${
-              particles === "stars"
-                ? "bg-white animate-twinkle"
-                : "bg-[var(--color-teal-light)] animate-float-up"
-            }`}
+            className={`absolute rounded-full ${particles === "stars"
+              ? "bg-white animate-twinkle"
+              : "bg-[var(--color-teal-light)] animate-float-up"
+              }`}
             style={{
               left: p.left,
               bottom: particles === "stars" ? `${20 + (i % 5) * 15}%` : "-5%",
@@ -163,7 +161,7 @@ export async function Hero() {
             className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
-            Naturaleza, cultura e historias del sur del mundo.
+            Senderos, flora, fauna, volcanes, glaciares y muchos más todo en un solo lugar, la Patagonia.
           </h1>
 
           <p className="text-lg text-[var(--color-cream)] opacity-80 mb-6 leading-relaxed">
