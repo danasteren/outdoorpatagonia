@@ -97,6 +97,18 @@ export function MapView() {
   const openFeature = useCallback((feature: MapFeature) => {
     setSelectedFeature(feature);
     setPanelOpen(true);
+
+    // On mobile, pan so the marker lands in the upper ~30% of the screen,
+    // above the bottom drawer that covers the lower ~60%.
+    if (mapRef.current && typeof window !== "undefined" && window.innerWidth < 768) {
+      const map = mapRef.current;
+      const [lng, lat] = feature.coordinates;
+      const zoom = map.getZoom();
+      const markerPx = map.project([lat, lng], zoom);
+      // Shift center 20% of map height below the marker → marker appears at ~30% from top
+      const targetCenter = map.unproject(markerPx.add([0, map.getSize().y * 0.2]), zoom);
+      map.panTo(targetCenter, { animate: true, duration: 0.3 });
+    }
   }, []);
 
   const closePanel = useCallback(() => {

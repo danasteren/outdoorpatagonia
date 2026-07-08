@@ -52,16 +52,16 @@ export function MapInfoPanel({ feature, open, onClose }: MapInfoPanelProps) {
       <div
         className={[
           "md:hidden absolute inset-x-0 bottom-0 z-[800]",
-          "bg-card border-t border-border rounded-t-2xl shadow-modal",
+          "bg-card border-t border-border rounded-t-2xl shadow-modal overflow-hidden",
           "transition-transform duration-300 ease-out",
           open && feature ? "translate-y-0" : "translate-y-full",
         ].join(" ")}
-        style={{ maxHeight: "70svh" }}
+        style={{ maxHeight: "60dvh" }}
       >
-        <div className="w-12 h-1.5 bg-muted-foreground/30 rounded-full mx-auto mt-3 mb-1" />
+        <div className="w-12 h-1.5 bg-muted-foreground/30 rounded-full mx-auto mt-3 mb-1 shrink-0" />
         <div
           className="overflow-y-auto overscroll-contain"
-          style={{ maxHeight: "calc(70svh - 24px)", paddingBottom: "env(safe-area-inset-bottom, 16px)" }}
+          style={{ maxHeight: "calc(60dvh - 24px)", paddingBottom: "env(safe-area-inset-bottom, 16px)" }}
         >
           {feature && <PanelContent feature={feature} onClose={onClose} />}
         </div>
