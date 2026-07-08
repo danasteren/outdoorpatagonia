@@ -1,4 +1,4 @@
-export type SearchResultType = 'articulo' | 'fauna' | 'flora' | 'parque' | 'sendero' | 'volcan' | 'sector' | 'pagina'
+export type SearchResultType = 'articulo' | 'fauna' | 'flora' | 'parque' | 'sendero' | 'volcan' | 'sector' | 'arqueologia' | 'pagina'
 
 export type SearchItem = {
   type: SearchResultType

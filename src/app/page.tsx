@@ -162,7 +162,7 @@ export default function Home() {
       <EstadoCTA />
 
       {/* Ozono */}
-      <Section spacing="lg">
+      <Section spacing="sm">
         <PageShell>
           <OzoneSection />
         </PageShell>

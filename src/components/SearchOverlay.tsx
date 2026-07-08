@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
   Search, X, PawPrint, Leaf, Mountain, MapPin, Flame, Pickaxe,
-  Globe, BookOpen, ArrowRight, Telescope, Activity,
+  Globe, BookOpen, ArrowRight, Telescope, Activity, Bone,
 } from 'lucide-react'
 import Fuse from 'fuse.js'
 import type { SearchResultType } from '@/lib/search/types'
@@ -134,7 +134,7 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Buscá parques, fauna, senderos, volcanes…"
-            className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
+            className="flex-1 bg-transparent text-base md:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
