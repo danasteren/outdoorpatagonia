@@ -17,9 +17,18 @@ import {
   BadgeCheck,
   BadgeX,
   Search,
+  MailPlus,
 } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
+type Subscriber = {
+  id: string;
+  created_at: string;
+  email: string;
+  source: string;
+  unsubscribed_at: string | null;
+};
 
 type ContactMessage = {
   id: string;
@@ -112,6 +121,7 @@ export default async function AdminPage() {
   type SearchQueryRow = { query: string; results_count: number };
 
   const [
+    { data: subscribersData },
     { data: contactMessagesData },
     { data: operatorApplicationsData },
     { count: savedArticlesCount },
@@ -119,6 +129,11 @@ export default async function AdminPage() {
     { data: topArticlesData },
     { data: searchQueriesData },
   ] = await Promise.all([
+    admin
+      .from("subscribers")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .returns<Subscriber[]>(),
     admin
       .from("contact_messages")
       .select("*")
@@ -140,6 +155,8 @@ export default async function AdminPage() {
       .returns<SearchQueryRow[]>(),
   ]);
 
+  const subscribers = subscribersData ?? [];
+  const activeSubscribers = subscribers.filter((s) => !s.unsubscribed_at);
   const contactMessages = contactMessagesData ?? [];
   const operatorApplications = operatorApplicationsData ?? [];
 
@@ -394,6 +411,72 @@ export default async function AdminPage() {
           </ul>
         </div>
       )}
+
+      {/* Newsletter */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <StatCard
+          icon={<MailPlus className="w-5 h-5" />}
+          label="Suscriptores activos"
+          value={activeSubscribers.length}
+        />
+        <StatCard
+          icon={<Mail className="w-5 h-5" />}
+          label="Total histórico"
+          value={subscribers.length}
+        />
+      </div>
+      <div className="rounded-xl border border-border overflow-hidden mb-10">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
+          <MailPlus className="w-4 h-4 text-muted-foreground" />
+          <h2 className="font-medium text-sm">
+            Suscriptores al newsletter ({subscribers.length})
+          </h2>
+        </div>
+        {subscribers.length === 0 ? (
+          <p className="px-4 py-6 text-sm text-muted-foreground">
+            No hay suscriptores todavía.
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-muted/20 text-left">
+                  <th className="px-4 py-2 text-muted-foreground font-medium">Email</th>
+                  <th className="px-4 py-2 text-muted-foreground font-medium">Origen</th>
+                  <th className="px-4 py-2 text-muted-foreground font-medium">Alta</th>
+                  <th className="px-4 py-2 text-muted-foreground font-medium">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {subscribers.map((s) => (
+                  <tr key={s.id} className="border-b border-border last:border-0 hover:bg-muted/20 transition-colors">
+                    <td className="px-4 py-3">{s.email}</td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {s.source === "mailerlite_import" ? "MailerLite" : "Sitio"}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
+                      <span title={formatDate(s.created_at)}>{timeAgo(s.created_at)}</span>
+                    </td>
+                    <td className="px-4 py-3">
+                      {s.unsubscribed_at ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                          <BadgeX className="w-3.5 h-3.5" />
+                          Baja
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-xs text-teal">
+                          <BadgeCheck className="w-3.5 h-3.5" />
+                          Activo
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
 
       {/* Mensajes de contacto */}
       <div className="rounded-xl border border-border overflow-hidden mb-10">

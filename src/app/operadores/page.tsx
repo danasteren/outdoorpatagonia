@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Briefcase } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 import { getAllOperators } from "@/lib/operators/queries";
 import { OperadoresClient } from "./OperadoresClient";
 import { OperadorForm } from "@/components/OperadorForm";
@@ -16,25 +18,16 @@ export default async function OperadoresPage() {
   const operators = await getAllOperators();
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      {/* Encabezado */}
-      <div className="mb-10">
-        <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-terracotta)] mb-2">
-          Directorio
-        </p>
-        <h1
-          className="text-3xl md:text-5xl font-bold text-foreground leading-tight mb-4"
-          style={{ fontFamily: "var(--font-playfair)" }}
-        >
-          Operadores de Patagonia
-        </h1>
-        <p className="text-muted-foreground text-base max-w-2xl">
-          Agencias, guías y operadores turísticos especializados en la Patagonia
-          argentina y chilena. Desde trekking en Torres del Paine hasta
-          expediciones en Tierra del Fuego.
-        </p>
-      </div>
-
+    <div className="min-h-screen">
+      <PageHero
+        icon={Briefcase}
+        eyebrow="Directorio"
+        title="Operadores de Patagonia"
+        description="Agencias, guías y operadores turísticos especializados en la Patagonia argentina y chilena. Desde trekking en Torres del Paine hasta expediciones en Tierra del Fuego."
+        breadcrumb={[{ label: "Inicio", href: "/" }, { label: "Operadores" }]}
+        tone="terracotta"
+      />
+      <div className="max-w-6xl mx-auto px-4 py-10">
       {/* Listado con filtros (client) */}
       <OperadoresClient operators={operators} />
 
@@ -57,6 +50,7 @@ export default async function OperadoresPage() {
 
           <OperadorForm />
         </div>
+      </div>
       </div>
     </div>
   );

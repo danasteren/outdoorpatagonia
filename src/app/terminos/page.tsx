@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ScrollText } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
   title: "Términos y Condiciones — Outdoor Patagonia",
@@ -8,15 +10,16 @@ export const metadata: Metadata = {
 
 export default function TerminosPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-14">
-      <h1
-        className="text-3xl md:text-4xl font-bold text-foreground mb-10"
-        style={{ fontFamily: "var(--font-playfair)" }}
-      >
-        Términos y Condiciones
-      </h1>
-
-      <div className="prose prose-neutral dark:prose-invert max-w-none text-sm leading-relaxed space-y-8">
+    <div className="min-h-screen">
+      <PageHero
+        icon={ScrollText}
+        eyebrow="Legal"
+        title="Términos y Condiciones"
+        breadcrumb={[{ label: "Inicio", href: "/" }, { label: "Términos" }]}
+        tone="muted"
+      />
+      <div className="max-w-3xl mx-auto px-4 py-14">
+        <div className="prose prose-neutral dark:prose-invert max-w-none text-sm leading-relaxed space-y-8">
         <p>
           Bienvenido a <strong>Outdoor Patagonia</strong>. Al usar este sitio, aceptás cumplir con
           los siguientes términos.
@@ -74,6 +77,7 @@ export default function TerminosPage() {
           </a>
           .
         </p>
+        </div>
       </div>
     </div>
   );

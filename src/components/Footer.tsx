@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { novedades } from "@/data/novedades";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 export function Footer() {
   const ultimaVersion = novedades.find((v) => v.esUltima);
@@ -7,6 +8,18 @@ export function Footer() {
   return (
     <footer className="bg-[var(--color-forest)] text-[var(--color-cream)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-10 mb-10 border-b border-[var(--color-cream)]/10">
+          <div>
+            <p className="font-semibold text-[var(--color-cream)]">
+              Recibí novedades de la Patagonia
+            </p>
+            <p className="text-sm text-[var(--color-cream)]/60 mt-0.5">
+              Un email de vez en cuando, nada de spam.
+            </p>
+          </div>
+          <NewsletterForm />
+        </div>
+
         <div className="grid grid-cols-2 md:grid-cols-[1.5fr_1fr_1fr_1fr_1fr] gap-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1 flex flex-col gap-4 max-w-xs">

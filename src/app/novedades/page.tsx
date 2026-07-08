@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Sparkles } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 import NovedadesAccordion from "./NovedadesAccordion";
 
 export const metadata: Metadata = {
@@ -15,32 +17,29 @@ const legend = [
 
 export default function NovedadesPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-14">
-      <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-teal)] mb-3">
-        Actualizaciones
-      </p>
-      <h1
-        className="text-4xl md:text-5xl font-bold text-foreground mb-4"
-        style={{ fontFamily: "var(--font-playfair)" }}
-      >
-        Novedades
-      </h1>
-      <p className="text-muted-foreground mb-8 max-w-lg">
-        Todo lo que vamos sumando y mejorando en Outdoor Patagonia, versión a versión.
-      </p>
+    <div className="min-h-screen">
+      <PageHero
+        icon={Sparkles}
+        eyebrow="Actualizaciones"
+        title="Novedades"
+        description="Todo lo que vamos sumando y mejorando en Outdoor Patagonia, versión a versión."
+        breadcrumb={[{ label: "Inicio", href: "/" }, { label: "Novedades" }]}
+        tone="forest"
+      />
+      <div className="max-w-3xl mx-auto px-4 py-14">
+        <div className="flex items-center gap-2 mb-10">
+          {legend.map((badge) => (
+            <span
+              key={badge.label}
+              className={`text-[9px] font-bold px-2.5 py-1 rounded-full leading-5 tracking-wide ${badge.className}`}
+            >
+              {badge.label}
+            </span>
+          ))}
+        </div>
 
-      <div className="flex items-center gap-2 mb-10">
-        {legend.map((badge) => (
-          <span
-            key={badge.label}
-            className={`text-[9px] font-bold px-2.5 py-1 rounded-full leading-5 tracking-wide ${badge.className}`}
-          >
-            {badge.label}
-          </span>
-        ))}
+        <NovedadesAccordion />
       </div>
-
-      <NovedadesAccordion />
     </div>
   );
 }

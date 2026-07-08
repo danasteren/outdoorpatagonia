@@ -10,14 +10,14 @@ import {
   ShoppingBag,
   AlertTriangle,
   Bird,
+  Footprints,
 } from "lucide-react"
 import { gygSearchUrl } from "@/lib/affiliates/getyourguide"
 import { SENDEROS_CATALOG, getSenderoEntry, DIFICULTAD_LABELS, DIFICULTAD_COLORS } from "@/lib/senderos/catalog"
 import { FAUNA_CATALOG } from "@/lib/fauna/catalog"
 import { ALL_GEAR } from "@/lib/planner/data"
-import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
-import { Breadcrumb } from "@/components/primitives/Breadcrumb"
+import { DetailHero } from "@/components/DetailHero"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -53,16 +53,6 @@ export async function generateMetadata({
   }
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
-const DIFICULTAD_BG: Record<string, string> = {
-  baja: "bg-green-500/15 text-green-700 dark:text-green-400",
-  "baja-moderada": "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400",
-  moderada: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400",
-  "moderada-alta": "bg-orange-500/15 text-orange-600",
-  alta: "bg-red-500/15 text-red-600",
-}
-
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default async function SenderoPage({
@@ -91,57 +81,26 @@ export default async function SenderoPage({
 
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <div
-        className="relative h-60 md:h-80 flex flex-col justify-end"
-        style={{
-          background:
-            "linear-gradient(135deg, #2d4a3e 0%, #1a3028 60%, #0d1f1a 100%)",
-        }}
-      >
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.05) 20px, rgba(255,255,255,0.05) 21px)",
-          }}
-        />
-        <div className="relative px-6 md:px-10 pb-8 max-w-6xl mx-auto w-full">
-          <Breadcrumb
-            items={[
-              { label: "Inicio", href: "/" },
-              { label: "Senderos", href: "/senderos" },
-              { label: entry.title },
-            ]}
-          />
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            <Badge variant="outline" size="sm" className="border-white/30 text-white/80">
-              Sendero
-            </Badge>
-            <span
-              className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${DIFICULTAD_BG[entry.dificultad]}`}
-            >
-              {dificultadLabel}
-            </span>
-          </div>
-          <h1
-            className="text-3xl md:text-5xl font-bold text-white leading-tight"
-            style={{ fontFamily: "var(--font-playfair)" }}
-          >
-            {entry.title}
-          </h1>
-          <p className="text-white/60 mt-1.5 text-sm">
-            <Link
-              href={`/parques/${entry.parqueSlug}`}
-              className="hover:text-white/90 transition-colors"
-            >
+      <DetailHero
+        fallbackGradient="linear-gradient(135deg, #2d4a3e 0%, #1a3028 60%, #0d1f1a 100%)"
+        breadcrumb={[
+          { label: "Inicio", href: "/" },
+          { label: "Senderos", href: "/senderos" },
+          { label: entry.title },
+        ]}
+        icon={Footprints}
+        eyebrow="Sendero"
+        title={entry.title}
+        subtitle={
+          <>
+            <Link href={`/parques/${entry.parqueSlug}`} className="hover:text-white transition-colors">
               {entry.parqueName}
             </Link>
             {" · "}
             Inicio: {entry.inicio}
-          </p>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       {/* Stats strip */}
       <div className="bg-[var(--color-forest)] text-[var(--color-cream)]">

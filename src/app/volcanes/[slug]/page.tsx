@@ -6,10 +6,8 @@ import { VOLCANES_CATALOG, getVolcanEntry } from "@/lib/volcanes/catalog"
 import { fetchVolcanes } from "@/lib/apis/sernageomin"
 import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
-import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
-import { Breadcrumb } from "@/components/primitives/Breadcrumb"
-import { HeroActions } from "@/components/HeroActions"
+import { DetailHero } from "@/components/DetailHero"
 import type { NivelAlerta } from "@/lib/apis/sernageomin"
 
 export const revalidate = 3600
@@ -125,70 +123,19 @@ export default async function VolcanPage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
-      {/* Hero */}
-      <div className="relative h-72 md:h-96 flex flex-col justify-end overflow-hidden">
-        {wikiImage && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={wikiImage.url}
-            alt={`Volcán ${entry.nombre}`}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        )}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: wikiImage
-              ? "linear-gradient(135deg, rgba(60,10,0,0.55) 0%, rgba(30,10,5,0.5) 60%, rgba(60,10,0,0.75) 100%)"
-              : "linear-gradient(135deg, #3c0a00 0%, #6b1a05 60%, #3c0a00 100%)",
-          }}
-        />
-        {!wikiImage && (
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(255,255,255,0.08) 30px, rgba(255,255,255,0.08) 31px), repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(255,255,255,0.04) 30px, rgba(255,255,255,0.04) 31px)",
-            }}
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        <HeroActions imageUrl={wikiImage?.url} imageAlt={`Volcán ${entry.nombre}`} title={entry.nombre} />
-        <div className="relative px-6 md:px-10 pb-8">
-          <div className="max-w-6xl mx-auto">
-            <Breadcrumb
-              items={[
-                { label: "Inicio", href: "/" },
-                { label: "Volcanes", href: "/volcanes" },
-                { label: entry.nombre },
-              ]}
-              className="mb-3 text-white/60"
-            />
-            <div className="flex items-end gap-3">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <Flame size={16} className="text-orange-400" strokeWidth={1.5} />
-                  <span className="text-xs text-white/70 uppercase tracking-widest">Volcán</span>
-                </div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: "var(--font-playfair)" }}>
-                  {entry.nombre}
-                </h1>
-                <p className="text-white/70 mt-1 text-sm">{paisLabel} · {entry.elevacion.toLocaleString("es-AR")} m s. n. m.</p>
-              </div>
-              {wikiImage && (
-                <a
-                  href={wikiImage.pageUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10px] text-white/40 hover:text-white/70 transition-colors flex-shrink-0"
-                >
-                  Foto: Wikipedia
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+      <DetailHero
+        image={wikiImage ? { url: wikiImage.url, alt: `Volcán ${entry.nombre}`, credit: "Wikipedia", creditUrl: wikiImage.pageUrl } : null}
+        fallbackGradient="linear-gradient(135deg, #3c0a00 0%, #6b1a05 60%, #3c0a00 100%)"
+        breadcrumb={[
+          { label: "Inicio", href: "/" },
+          { label: "Volcanes", href: "/volcanes" },
+          { label: entry.nombre },
+        ]}
+        icon={Flame}
+        eyebrow="Volcán"
+        title={entry.nombre}
+        subtitle={`${paisLabel} · ${entry.elevacion.toLocaleString("es-AR")} m s. n. m.`}
+      />
 
       {/* Content */}
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-8">

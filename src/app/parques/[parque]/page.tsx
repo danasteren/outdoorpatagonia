@@ -11,6 +11,7 @@ import {
   Bird,
   Compass,
   Ticket,
+  TreePine,
 } from "lucide-react"
 import { PARQUES_CATALOG, getParqueEntry } from "@/lib/parques/catalog"
 import { gygSearchUrl } from "@/lib/affiliates/getyourguide"
@@ -21,8 +22,7 @@ import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
 import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
-import { Breadcrumb } from "@/components/primitives/Breadcrumb"
-import { HeroActions } from "@/components/HeroActions"
+import { DetailHero } from "@/components/DetailHero"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -123,79 +123,23 @@ export default async function ParqueNacionalPage({
 
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <div className="relative h-72 md:h-96 flex flex-col justify-end overflow-hidden">
-        {heroPhoto && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={heroPhoto.url}
-            alt={entry.name}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        )}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: heroPhoto
-              ? entry.country === "ar"
-                ? "linear-gradient(135deg, rgba(13,34,24,0.55) 0%, rgba(26,58,42,0.5) 60%, rgba(13,34,24,0.75) 100%)"
-                : "linear-gradient(135deg, rgba(7,21,41,0.55) 0%, rgba(13,31,60,0.5) 60%, rgba(7,21,41,0.75) 100%)"
-              : entry.country === "ar"
-                ? "linear-gradient(135deg, var(--color-forest) 0%, #1a3a2a 60%, #0d2218 100%)"
-                : "linear-gradient(135deg, #1a2a4a 0%, #0d1f3c 60%, #071529 100%)",
-          }}
-        />
-        {/* Topographic pattern overlay — only when there's no real photo */}
-        {!heroPhoto && (
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(255,255,255,0.08) 30px, rgba(255,255,255,0.08) 31px), repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(255,255,255,0.04) 30px, rgba(255,255,255,0.04) 31px)",
-            }}
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        <HeroActions imageUrl={heroPhoto?.url} imageAlt={entry.name} title={entry.name} />
-        <div className="relative px-6 md:px-10 pb-8">
-          <div className="max-w-6xl mx-auto">
-            <Breadcrumb
-              items={[
-                { label: "Inicio", href: "/" },
-                { label: "Parques", href: "/parques" },
-                { label: entry.name },
-              ]}
-            />
-            <div className="flex flex-wrap items-center gap-2 mb-3">
-              <Badge variant="outline" size="sm" className="border-white/30 text-white/80">
-                Parque Nacional
-              </Badge>
-              <Badge variant="outline" size="sm" className="border-white/30 text-white/80">
-                {countryLabel}
-              </Badge>
-            </div>
-            <h1
-              className="text-4xl md:text-6xl font-bold text-white leading-tight"
-              style={{ fontFamily: "var(--font-playfair)" }}
-            >
-              {entry.name}
-            </h1>
-            <p className="text-white/60 mt-2 text-sm">
-              {locationLabel} · {entry.surface}
-            </p>
-          </div>
-        </div>
-        {heroPhoto && (
-          <a
-            href={heroPhoto.creditUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute bottom-2 right-3 text-[10px] text-white/50 hover:text-white/90 transition-colors"
-          >
-            Foto: {heroPhoto.credit}
-          </a>
-        )}
-      </div>
+      <DetailHero
+        image={heroPhoto ? { url: heroPhoto.url, alt: entry.name, credit: heroPhoto.credit, creditUrl: heroPhoto.creditUrl } : null}
+        fallbackGradient={
+          entry.country === "ar"
+            ? "linear-gradient(135deg, var(--color-forest) 0%, #1a3a2a 60%, #0d2218 100%)"
+            : "linear-gradient(135deg, #1a2a4a 0%, #0d1f3c 60%, #071529 100%)"
+        }
+        breadcrumb={[
+          { label: "Inicio", href: "/" },
+          { label: "Parques", href: "/parques" },
+          { label: entry.name },
+        ]}
+        icon={TreePine}
+        eyebrow="Parque Nacional"
+        title={entry.name}
+        subtitle={`${locationLabel} · ${entry.surface}`}
+      />
 
       {/* Weather strip */}
       {weather && (
@@ -379,6 +323,9 @@ export default async function ParqueNacionalPage({
             {/* Info card */}
             <Card variant="elevated">
               <CardBody className="p-5 space-y-4">
+                <Badge variant="outline" size="sm">
+                  Parque Nacional
+                </Badge>
                 <div>
                   <span className="text-xs text-muted-foreground uppercase tracking-widest">
                     País

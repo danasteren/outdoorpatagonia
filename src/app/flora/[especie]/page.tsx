@@ -1,9 +1,8 @@
 import { permanentRedirect } from "next/navigation"
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
-import { ExternalLink, MapPin, Calendar, Eye } from "lucide-react"
-import { HeroActions } from "@/components/HeroActions"
+import { ExternalLink, MapPin, Calendar, Eye, Leaf } from "lucide-react"
+import { DetailHero } from "@/components/DetailHero"
 import {
   FLORA_CATALOG,
   type FloraCategory,
@@ -21,7 +20,6 @@ import { fetchGbifByScientificName } from "@/lib/apis/gbif"
 import { FaunaSightingsMapClient } from "@/components/data/FaunaSightingsMapClient"
 import { FaunaSightingsClient } from "@/components/data/FaunaSightingsClient"
 import { Badge } from "@/components/primitives/Badge"
-import { Breadcrumb } from "@/components/primitives/Breadcrumb"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -165,55 +163,19 @@ export default async function FloraEspeciePage({
 
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <div className="relative h-72 md:h-96 overflow-hidden">
-        {heroImage ? (
-          <Image
-            src={heroImage}
-            alt={commonName}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[center_30%]"
-          />
-        ) : (
-          <div className="w-full h-full bg-[var(--color-forest)]" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-        <HeroActions imageUrl={heroImage ?? undefined} imageAlt={commonName} title={commonName} />
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-          <div className="max-w-6xl mx-auto">
-            <Breadcrumb
-              items={[
-                { label: "Inicio", href: "/" },
-                { label: "Flora", href: "/flora" },
-                { label: commonName },
-              ]}
-            />
-            <div className="flex flex-wrap items-center gap-2 mb-3">
-              {categoryLabel && (
-                <Badge variant="category" size="sm">
-                  {categoryLabel}
-                </Badge>
-              )}
-              {conservation && (
-                <span
-                  className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-black/40 ${conservation.color}`}
-                >
-                  {conservation.label}
-                </span>
-              )}
-            </div>
-            <h1
-              className="text-4xl md:text-6xl font-bold text-white leading-tight"
-              style={{ fontFamily: "var(--font-playfair)" }}
-            >
-              {commonName}
-            </h1>
-            <p className="text-white/70 italic text-lg mt-1">{scientificName}</p>
-          </div>
-        </div>
-      </div>
+      <DetailHero
+        image={heroImage ? { url: heroImage, alt: commonName } : null}
+        fallbackGradient="var(--color-forest)"
+        breadcrumb={[
+          { label: "Inicio", href: "/" },
+          { label: "Flora", href: "/flora" },
+          { label: commonName },
+        ]}
+        icon={Leaf}
+        eyebrow={categoryLabel ?? "Flora"}
+        title={commonName}
+        subtitle={<p className="italic">{scientificName}</p>}
+      />
 
       {/* Quick stats */}
       <div className="bg-[var(--color-forest)] text-[var(--color-cream)]">
@@ -239,6 +201,21 @@ export default async function FloraEspeciePage({
 
           {/* Left column */}
           <div className="lg:col-span-2 space-y-8">
+
+            {(categoryLabel || conservation) && (
+              <div className="flex flex-wrap items-center gap-2">
+                {categoryLabel && (
+                  <Badge variant="category" size="sm">
+                    {categoryLabel}
+                  </Badge>
+                )}
+                {conservation && (
+                  <Badge variant="outline" size="sm" className={conservation.color}>
+                    {conservation.label}
+                  </Badge>
+                )}
+              </div>
+            )}
 
             {detail?.description && (
               <section>

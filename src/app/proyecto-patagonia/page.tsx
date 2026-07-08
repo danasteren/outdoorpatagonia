@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Compass } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
   title: "Sobre Outdoor Patagonia",
@@ -13,18 +15,16 @@ export const metadata: Metadata = {
 
 export default function ProyectoPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-14">
-      <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-terracotta)] mb-2">
-        El proyecto
-      </p>
-      <h1
-        className="text-3xl md:text-4xl font-bold text-foreground leading-tight mb-6"
-        style={{ fontFamily: "var(--font-playfair)" }}
-      >
-        Sobre Outdoor Patagonia
-      </h1>
-
-      <div className="prose prose-neutral dark:prose-invert max-w-none text-sm leading-relaxed space-y-8">
+    <div className="min-h-screen">
+      <PageHero
+        icon={Compass}
+        eyebrow="El proyecto"
+        title="Sobre Outdoor Patagonia"
+        breadcrumb={[{ label: "Inicio", href: "/" }, { label: "Proyecto Patagonia" }]}
+        tone="terracotta"
+      />
+      <div className="max-w-3xl mx-auto px-4 py-14">
+        <div className="prose prose-neutral dark:prose-invert max-w-none text-sm leading-relaxed space-y-8">
         <p>
           En <strong>Outdoor Patagonia</strong>, exploramos y compartimos la majestuosidad de la
           Patagonia chilena y argentina, destacando su cultura, naturaleza, gastronomía, flora,
@@ -58,6 +58,7 @@ export default function ProyectoPage() {
           >
             Ver directorio de operadores
           </Link>
+        </div>
         </div>
       </div>
     </div>

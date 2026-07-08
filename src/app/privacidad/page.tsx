@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ShieldCheck } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
   title: "Política de Privacidad — Outdoor Patagonia",
@@ -9,15 +11,16 @@ export const metadata: Metadata = {
 
 export default function PrivacidadPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-14">
-      <h1
-        className="text-3xl md:text-4xl font-bold text-foreground mb-10"
-        style={{ fontFamily: "var(--font-playfair)" }}
-      >
-        Política de Privacidad
-      </h1>
-
-      <div className="prose prose-neutral dark:prose-invert max-w-none text-sm leading-relaxed space-y-8">
+    <div className="min-h-screen">
+      <PageHero
+        icon={ShieldCheck}
+        eyebrow="Legal"
+        title="Política de Privacidad"
+        breadcrumb={[{ label: "Inicio", href: "/" }, { label: "Privacidad" }]}
+        tone="muted"
+      />
+      <div className="max-w-3xl mx-auto px-4 py-14">
+        <div className="prose prose-neutral dark:prose-invert max-w-none text-sm leading-relaxed space-y-8">
         <p>
           En <strong>Outdoor Patagonia</strong>, valoramos tu privacidad y nos comprometemos a
           proteger tus datos personales. Esta política explica cómo recopilamos, usamos y
@@ -74,6 +77,7 @@ export default function PrivacidadPage() {
             .
           </p>
         </section>
+        </div>
       </div>
     </div>
   );
