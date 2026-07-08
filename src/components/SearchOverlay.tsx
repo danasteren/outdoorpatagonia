@@ -19,7 +19,8 @@ const TYPE_META: Record<SearchResultType, { Icon: React.ElementType; color: stri
   parque:   { Icon: Mountain,  color: 'text-emerald-500',         label: 'Parque' },
   sendero:  { Icon: MapPin,    color: 'text-orange-500',          label: 'Sendero' },
   volcan:   { Icon: Flame,     color: 'text-red-500',             label: 'Volcán' },
-  sector:   { Icon: Pickaxe,   color: 'text-sky-500',             label: 'Escalada' },
+  sector:      { Icon: Pickaxe, color: 'text-sky-500',    label: 'Escalada' },
+  arqueologia: { Icon: Bone,    color: 'text-amber-600',  label: 'Arqueología' },
 }
 
 const QUICK_LINKS = [

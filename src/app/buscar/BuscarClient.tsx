@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Fuse from 'fuse.js'
 import Link from 'next/link'
-import { Search, BookOpen, PawPrint, Leaf, Mountain, ChevronRight, MapPin, Flame, Pickaxe, Globe } from 'lucide-react'
+import { Search, BookOpen, PawPrint, Leaf, Mountain, ChevronRight, MapPin, Flame, Pickaxe, Globe, Bone } from 'lucide-react'
 import type { SearchItem, SearchResultType } from '@/lib/search/types'
 
 const TYPE_CONFIG: Record<
@@ -59,9 +59,15 @@ const TYPE_CONFIG: Record<
     colorClass: 'text-[var(--color-teal)]',
     badgeClass: 'bg-teal-50 text-teal-700 dark:bg-teal-950/40 dark:text-teal-400',
   },
+  arqueologia: {
+    label: 'Arqueología',
+    Icon: Bone,
+    colorClass: 'text-amber-600',
+    badgeClass: 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400',
+  },
 }
 
-const GROUP_ORDER: SearchResultType[] = ['articulo', 'fauna', 'flora', 'parque', 'sendero', 'volcan', 'sector', 'pagina']
+const GROUP_ORDER: SearchResultType[] = ['articulo', 'fauna', 'flora', 'parque', 'sendero', 'volcan', 'sector', 'arqueologia', 'pagina']
 
 export function BuscarClient({ items, initialQ }: { items: SearchItem[]; initialQ: string }) {
   const router = useRouter()
