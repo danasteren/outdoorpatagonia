@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { MapPin, BookOpen, Calendar, LogOut, Compass, ArrowRight, Bookmark } from 'lucide-react'
+import { MapPin, BookOpen, Calendar, LogOut, Compass, ArrowRight, Bookmark, Bell, ChevronRight } from 'lucide-react'
 import { getSavedItineraries, getSavedArticles } from '@/lib/actions/user-data'
 import { DeleteItineraryButton } from '@/components/perfil/DeleteItineraryButton'
 import { toCategorySlug } from '@/lib/category'
@@ -226,6 +226,23 @@ export default async function PerfilPage() {
               ))}
             </ul>
           )}
+        </section>
+
+        {/* Configuración */}
+        <section>
+          <Link
+            href="/perfil/notificaciones"
+            className="flex items-center gap-4 p-4 rounded-2xl border border-border bg-card hover:shadow-[var(--shadow-hover)] transition-shadow"
+          >
+            <div className="w-8 h-8 rounded-xl bg-[var(--color-teal)]/10 flex items-center justify-center shrink-0">
+              <Bell size={15} strokeWidth={1.5} className="text-[var(--color-teal)]" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-sm text-foreground">Notificaciones</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Elegí qué alertas recibir por correo</p>
+            </div>
+            <ChevronRight size={16} strokeWidth={1.5} className="text-muted-foreground/40 shrink-0" />
+          </Link>
         </section>
 
         {/* Cerrar sesión */}
