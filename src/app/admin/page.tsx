@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ReplyBox } from "@/components/admin/ReplyBox";
-import { NewsletterComposer } from "@/components/admin/NewsletterComposer";
+import { AdminTabs } from "@/components/admin/AdminTabs";
 import {
   Users,
   UserCheck,
@@ -21,6 +22,7 @@ import {
   MailPlus,
   ChevronDown,
   CheckCheck,
+  Camera,
 } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -208,21 +210,9 @@ export default async function AdminPage() {
     return bt - at;
   });
 
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-8">
-        <ShieldCheck className="w-7 h-7 text-teal" />
-        <div>
-          <h1 className="text-2xl font-semibold">Panel de administración</h1>
-          <p className="text-sm text-muted-foreground">
-            Acceso restringido · {user.email}
-          </p>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+  const usuariosTab = (
+    <>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard
           icon={<Users className="w-5 h-5" />}
           label="Usuarios totales"
@@ -256,7 +246,6 @@ export default async function AdminPage() {
         </a>
       </div>
 
-      {/* Users table */}
       <div className="rounded-xl border border-border overflow-hidden">
         <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
           <LogIn className="w-4 h-4 text-muted-foreground" />
@@ -378,9 +367,12 @@ export default async function AdminPage() {
           </table>
         </div>
       </div>
+    </>
+  );
 
-      {/* Contenido guardado */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-10">
+  const contenidoTab = (
+    <>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard
           icon={<Bookmark className="w-5 h-5" />}
           label="Artículos guardados"
@@ -394,7 +386,7 @@ export default async function AdminPage() {
       </div>
 
       {topArticles.length > 0 && (
-        <div className="rounded-xl border border-border overflow-hidden mb-10">
+        <div className="rounded-xl border border-border overflow-hidden">
           <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
             <Bookmark className="w-4 h-4 text-muted-foreground" />
             <h2 className="font-medium text-sm">Artículos más guardados</h2>
@@ -414,9 +406,11 @@ export default async function AdminPage() {
           </ul>
         </div>
       )}
+    </>
+  );
 
-      {/* Newsletter */}
-      <NewsletterComposer activeCount={activeSubscribers.length} />
+  const newsletterTab = (
+    <>
       <div className="grid grid-cols-2 gap-4 mb-6">
         <StatCard
           icon={<MailPlus className="w-5 h-5" />}
@@ -429,7 +423,7 @@ export default async function AdminPage() {
           value={subscribers.length}
         />
       </div>
-      <div className="rounded-xl border border-border overflow-hidden mb-10">
+      <div className="rounded-xl border border-border overflow-hidden">
         <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
           <MailPlus className="w-4 h-4 text-muted-foreground" />
           <h2 className="font-medium text-sm">
@@ -481,197 +475,269 @@ export default async function AdminPage() {
           </div>
         )}
       </div>
+    </>
+  );
 
-      {/* Mensajes de contacto */}
-      <div className="rounded-xl border border-border overflow-hidden mb-10">
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
-          <Mail className="w-4 h-4 text-muted-foreground" />
-          <h2 className="font-medium text-sm">
-            Mensajes de contacto ({contactMessages.length})
-          </h2>
-        </div>
-        {contactMessages.length === 0 ? (
-          <p className="px-4 py-6 text-sm text-muted-foreground">
-            No hay mensajes todavía.
-          </p>
-        ) : (
-          <ul className="divide-y divide-border">
-            {contactMessages.map((m) => (
-              <li key={m.id}>
-                <details className="group">
-                  <summary className="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden hover:bg-muted/20 transition-colors">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium truncate">{m.asunto}</p>
-                      <p className="text-xs text-muted-foreground truncate">
-                        {m.nombre} · {m.email} ·{" "}
-                        <span title={formatDate(m.created_at)}>
-                          {timeAgo(m.created_at)}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-3 shrink-0">
-                      {m.replied_at && (
-                        <span className="inline-flex items-center gap-1 text-xs text-teal font-medium">
-                          <CheckCheck className="w-3.5 h-3.5" />
-                          Respondido
-                        </span>
-                      )}
-                      <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform group-open:rotate-180" />
-                    </div>
-                  </summary>
-                  <div className="px-4 pb-4 pt-1">
-                    <p className="text-sm whitespace-pre-wrap mb-3">
-                      {m.mensaje}
+  const mensajesTab = (
+    <div className="rounded-xl border border-border overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
+        <Mail className="w-4 h-4 text-muted-foreground" />
+        <h2 className="font-medium text-sm">
+          Mensajes de contacto ({contactMessages.length})
+        </h2>
+      </div>
+      {contactMessages.length === 0 ? (
+        <p className="px-4 py-6 text-sm text-muted-foreground">
+          No hay mensajes todavía.
+        </p>
+      ) : (
+        <ul className="divide-y divide-border">
+          {contactMessages.map((m) => (
+            <li key={m.id}>
+              <details className="group">
+                <summary className="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden hover:bg-muted/20 transition-colors">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium truncate">{m.asunto}</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {m.nombre} · {m.email} ·{" "}
+                      <span title={formatDate(m.created_at)}>
+                        {timeAgo(m.created_at)}
+                      </span>
                     </p>
-                    <ReplyBox
-                      source="contact"
-                      id={m.id}
-                      to={m.email}
-                      defaultSubject={`Re: ${m.asunto}`}
-                      alreadyReplied={!!m.replied_at}
-                    />
                   </div>
-                </details>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    {m.replied_at && (
+                      <span className="inline-flex items-center gap-1 text-xs text-teal font-medium">
+                        <CheckCheck className="w-3.5 h-3.5" />
+                        Respondido
+                      </span>
+                    )}
+                    <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform group-open:rotate-180" />
+                  </div>
+                </summary>
+                <div className="px-4 pb-4 pt-1">
+                  <p className="text-sm whitespace-pre-wrap mb-3">
+                    {m.mensaje}
+                  </p>
+                  <ReplyBox
+                    source="contact"
+                    id={m.id}
+                    to={m.email}
+                    defaultSubject={`Re: ${m.asunto}`}
+                    alreadyReplied={!!m.replied_at}
+                  />
+                </div>
+              </details>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 
-      {/* Búsquedas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-        <div className="rounded-xl border border-border overflow-hidden">
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
-            <Search className="w-4 h-4 text-muted-foreground" />
-            <h2 className="font-medium text-sm">
-              Búsquedas más frecuentes ({searchCountMap.size} únicas)
-            </h2>
-          </div>
-          {topSearches.length === 0 ? (
-            <p className="px-4 py-6 text-sm text-muted-foreground">
-              Aún no hay búsquedas registradas.
-            </p>
-          ) : (
-            <ul className="divide-y divide-border">
-              {topSearches.map(([q, { count }]) => (
-                <li
-                  key={q}
-                  className="flex items-center justify-between px-4 py-2.5 text-sm"
-                >
-                  <span className="truncate">{q}</span>
-                  <span className="text-muted-foreground tabular-nums shrink-0 ml-3">
-                    {count}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div className="rounded-xl border border-border overflow-hidden">
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
-            <Search className="w-4 h-4 text-orange-400" />
-            <h2 className="font-medium text-sm text-orange-600 dark:text-orange-400">
-              Sin resultados — contenido que falta
-            </h2>
-          </div>
-          {zeroResultSearches.length === 0 ? (
-            <p className="px-4 py-6 text-sm text-muted-foreground">
-              Todo lo que buscaron tuvo resultados.
-            </p>
-          ) : (
-            <ul className="divide-y divide-border">
-              {zeroResultSearches.map(([q, { count }]) => (
-                <li
-                  key={q}
-                  className="flex items-center justify-between px-4 py-2.5 text-sm"
-                >
-                  <span className="truncate text-orange-600 dark:text-orange-400">{q}</span>
-                  <span className="text-muted-foreground tabular-nums shrink-0 ml-3">
-                    {count}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
-
-      {/* Solicitudes de operadores */}
-      <div className="rounded-xl border border-border overflow-hidden mb-10">
+  const busquedasTab = (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="rounded-xl border border-border overflow-hidden">
         <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
-          <Building2 className="w-4 h-4 text-muted-foreground" />
+          <Search className="w-4 h-4 text-muted-foreground" />
           <h2 className="font-medium text-sm">
-            Solicitudes de operadores ({operatorApplications.length})
+            Búsquedas más frecuentes ({searchCountMap.size} únicas)
           </h2>
         </div>
-        {operatorApplications.length === 0 ? (
+        {topSearches.length === 0 ? (
           <p className="px-4 py-6 text-sm text-muted-foreground">
-            No hay solicitudes todavía.
+            Aún no hay búsquedas registradas.
           </p>
         ) : (
           <ul className="divide-y divide-border">
-            {operatorApplications.map((a) => (
-              <li key={a.id}>
-                <details className="group">
-                  <summary className="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden hover:bg-muted/20 transition-colors">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium truncate">
-                        {a.empresa} · {a.pais}
-                      </p>
-                      <p className="text-xs text-muted-foreground truncate">
-                        {a.contacto} · {a.email}
-                        {a.telefono ? ` · ${a.telefono}` : ""} ·{" "}
-                        <span title={formatDate(a.created_at)}>
-                          {timeAgo(a.created_at)}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-3 shrink-0">
-                      {a.replied_at && (
-                        <span className="inline-flex items-center gap-1 text-xs text-teal font-medium">
-                          <CheckCheck className="w-3.5 h-3.5" />
-                          Respondido
-                        </span>
-                      )}
-                      <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform group-open:rotate-180" />
-                    </div>
-                  </summary>
-                  <div className="px-4 pb-4 pt-1 space-y-2">
-                    {a.sitio_web && (
-                      <a
-                        href={a.sitio_web}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-teal hover:underline block"
-                      >
-                        {a.sitio_web} ↗
-                      </a>
-                    )}
-                    {a.especialidades && a.especialidades.length > 0 && (
-                      <p className="text-xs text-muted-foreground">
-                        {a.especialidades.join(", ")}
-                      </p>
-                    )}
-                    {a.descripcion && (
-                      <p className="text-sm whitespace-pre-wrap">
-                        {a.descripcion}
-                      </p>
-                    )}
-                    <ReplyBox
-                      source="operator"
-                      id={a.id}
-                      to={a.email}
-                      defaultSubject={`Re: solicitud de ${a.empresa} — Outdoor Patagonia`}
-                      alreadyReplied={!!a.replied_at}
-                    />
-                  </div>
-                </details>
+            {topSearches.map(([q, { count }]) => (
+              <li
+                key={q}
+                className="flex items-center justify-between px-4 py-2.5 text-sm"
+              >
+                <span className="truncate">{q}</span>
+                <span className="text-muted-foreground tabular-nums shrink-0 ml-3">
+                  {count}
+                </span>
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      <div className="rounded-xl border border-border overflow-hidden">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
+          <Search className="w-4 h-4 text-orange-400" />
+          <h2 className="font-medium text-sm text-orange-600 dark:text-orange-400">
+            Sin resultados — contenido que falta
+          </h2>
+        </div>
+        {zeroResultSearches.length === 0 ? (
+          <p className="px-4 py-6 text-sm text-muted-foreground">
+            Todo lo que buscaron tuvo resultados.
+          </p>
+        ) : (
+          <ul className="divide-y divide-border">
+            {zeroResultSearches.map(([q, { count }]) => (
+              <li
+                key={q}
+                className="flex items-center justify-between px-4 py-2.5 text-sm"
+              >
+                <span className="truncate text-orange-600 dark:text-orange-400">{q}</span>
+                <span className="text-muted-foreground tabular-nums shrink-0 ml-3">
+                  {count}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+
+  const operadoresTab = (
+    <div className="rounded-xl border border-border overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
+        <Building2 className="w-4 h-4 text-muted-foreground" />
+        <h2 className="font-medium text-sm">
+          Solicitudes de operadores ({operatorApplications.length})
+        </h2>
+      </div>
+      {operatorApplications.length === 0 ? (
+        <p className="px-4 py-6 text-sm text-muted-foreground">
+          No hay solicitudes todavía.
+        </p>
+      ) : (
+        <ul className="divide-y divide-border">
+          {operatorApplications.map((a) => (
+            <li key={a.id}>
+              <details className="group">
+                <summary className="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden hover:bg-muted/20 transition-colors">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium truncate">
+                      {a.empresa} · {a.pais}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {a.contacto} · {a.email}
+                      {a.telefono ? ` · ${a.telefono}` : ""} ·{" "}
+                      <span title={formatDate(a.created_at)}>
+                        {timeAgo(a.created_at)}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    {a.replied_at && (
+                      <span className="inline-flex items-center gap-1 text-xs text-teal font-medium">
+                        <CheckCheck className="w-3.5 h-3.5" />
+                        Respondido
+                      </span>
+                    )}
+                    <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform group-open:rotate-180" />
+                  </div>
+                </summary>
+                <div className="px-4 pb-4 pt-1 space-y-2">
+                  {a.sitio_web && (
+                    <a
+                      href={a.sitio_web}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-teal hover:underline block"
+                    >
+                      {a.sitio_web} ↗
+                    </a>
+                  )}
+                  {a.especialidades && a.especialidades.length > 0 && (
+                    <p className="text-xs text-muted-foreground">
+                      {a.especialidades.join(", ")}
+                    </p>
+                  )}
+                  {a.descripcion && (
+                    <p className="text-sm whitespace-pre-wrap">
+                      {a.descripcion}
+                    </p>
+                  )}
+                  <ReplyBox
+                    source="operator"
+                    id={a.id}
+                    to={a.email}
+                    defaultSubject={`Re: solicitud de ${a.empresa} — Outdoor Patagonia`}
+                    alreadyReplied={!!a.replied_at}
+                  />
+                </div>
+              </details>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-3 mb-8 flex-wrap">
+        <div className="flex items-center gap-3">
+          <ShieldCheck className="w-7 h-7 text-teal" />
+          <div>
+            <h1 className="text-2xl font-semibold">Panel de administración</h1>
+            <p className="text-sm text-muted-foreground">
+              Acceso restringido · {user.email}
+            </p>
+          </div>
+        </div>
+        <Link
+          href="/admin/ahora"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[var(--color-teal)] text-[var(--color-cream)] text-sm font-semibold hover:opacity-90 transition-opacity"
+        >
+          <Camera className="w-4 h-4" />
+          Patagonia Ahora
+        </Link>
+      </div>
+
+      <AdminTabs
+        tabs={[
+          {
+            id: "usuarios",
+            label: "Usuarios",
+            icon: <Users className="w-4 h-4" />,
+            count: users.length,
+            content: usuariosTab,
+          },
+          {
+            id: "contenido",
+            label: "Contenido",
+            icon: <Bookmark className="w-4 h-4" />,
+            content: contenidoTab,
+          },
+          {
+            id: "newsletter",
+            label: "Newsletter",
+            icon: <MailPlus className="w-4 h-4" />,
+            count: activeSubscribers.length,
+            content: newsletterTab,
+          },
+          {
+            id: "mensajes",
+            label: "Mensajes",
+            icon: <Mail className="w-4 h-4" />,
+            count: contactMessages.length,
+            content: mensajesTab,
+          },
+          {
+            id: "busquedas",
+            label: "Búsquedas",
+            icon: <Search className="w-4 h-4" />,
+            content: busquedasTab,
+          },
+          {
+            id: "operadores",
+            label: "Operadores",
+            icon: <Building2 className="w-4 h-4" />,
+            count: operatorApplications.length,
+            content: operadoresTab,
+          },
+        ]}
+      />
     </div>
   );
 }
