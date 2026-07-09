@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { Calendar, Clock, Hash } from "lucide-react";
+import { Calendar, Clock, Hash, Sparkles } from "lucide-react";
 import { fixWpLazyLoad } from "@/lib/utils";
 import { FavoriteButton } from "@/components/FavoriteButton";
+import { Breadcrumb } from "@/components/primitives/Breadcrumb";
+import { toCategorySlug } from "@/lib/category";
 
 interface Article {
   title: string;
@@ -33,38 +35,63 @@ export function ArticleLayout({
 
   const altLangLabel = article.language === "es" ? "English" : "Español";
 
+  const isEnglish = article.language === "en";
+  const homeHref = isEnglish ? "/en" : "/";
+  const bannerText = isEnglish
+    ? "You're viewing an article carried over from our previous site."
+    : "Estás viendo un artículo que quedó del sitio anterior.";
+  const bannerCta = isEnglish ? "See what's new" : "Ver lo nuevo del sitio";
+
+  const categorySlug = article.category ? toCategorySlug(article.category) : null;
+  const categoryHref = categorySlug
+    ? isEnglish
+      ? `/en/category/${categorySlug}`
+      : `/categoria/${categorySlug}`
+    : null;
+  const breadcrumbItems = [
+    { label: isEnglish ? "Home" : "Inicio", href: homeHref },
+    ...(article.category && categoryHref
+      ? [{ label: article.category, href: categoryHref }]
+      : []),
+    { label: article.title },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Minimal nav */}
-      <header className="sticky top-0 z-10 bg-background/90 backdrop-blur border-b border-border">
-        <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-bold text-sm tracking-wider uppercase text-foreground hover:text-[var(--color-teal)] transition-colors"
-          >
-            Outdoor Patagonia
-          </Link>
-          {altLangHref && (
-            <Link
-              href={altLangHref}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {altLangLabel}
-            </Link>
-          )}
-        </div>
+      {/* Legacy content banner */}
+      <header className="sticky top-0 z-10 border-b border-border">
+        <Link
+          href={homeHref}
+          className="flex items-center justify-center gap-2 bg-[var(--color-teal)] px-4 py-2 text-center text-xs md:text-sm text-white hover:bg-[var(--color-teal)]/90 transition-colors"
+        >
+          <Sparkles size={14} strokeWidth={1.75} className="shrink-0" />
+          <span>
+            {bannerText} <span className="font-semibold underline underline-offset-2">{bannerCta}</span>
+          </span>
+        </Link>
+        {altLangHref && (
+          <div className="bg-background/90 backdrop-blur">
+            <div className="max-w-4xl mx-auto px-4 h-10 flex items-center justify-end">
+              <Link
+                href={altLangHref}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {altLangLabel}
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       <div className="max-w-3xl mx-auto px-4 py-10">
       <article>
+          {/* Breadcrumb — links to the current site's home/category pages */}
+          <Breadcrumb items={breadcrumbItems} variant="dark" className="mb-4" />
+
           {/* Category badge */}
-          {article.category && (
+          {article.category && categoryHref && (
             <Link
-              href={
-                article.language === "en"
-                  ? `/en/category/${article.category.toLowerCase().replace(/\s+/g, "-")}`
-                  : `/categoria/${article.category.toLowerCase().replace(/\s+/g, "-")}`
-              }
+              href={categoryHref}
               className="inline-block text-xs font-semibold uppercase tracking-widest px-2.5 py-1 rounded-sm bg-[var(--color-terracotta)] text-white mb-6 hover:opacity-80 transition-opacity"
             >
               {article.category}

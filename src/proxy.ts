@@ -39,6 +39,49 @@ export async function proxy(request: NextRequest) {
     }
   }
 
+  // Redirect stale WordPress article URLs — wrong/old category prefix
+  // (/lugares-patagonia/chalten-...) or deeper dead page hierarchy
+  // (/proyecto-patagonia/espacios/domo/preparacion-terreno-domo) — both are
+  // leftover links baked into migrated article content. The real article
+  // slug is always the last segment; a mismatch against its current
+  // category means everything before it is stale. This must run as a real
+  // HTTP redirect here rather than in the page component: `redirect()` /
+  // `permanentRedirect()` called from a Server Component only inserts a
+  // client-side meta-refresh tag (200 OK) in this Next.js version, not an
+  // actual 301 — see next/dist/client/components/redirect.d.ts.
+  const RESERVED_FIRST_SEGMENTS = new Set(["api", "admin", "auth"]);
+  if (segments.length >= 2 && !RESERVED_FIRST_SEGMENTS.has(segments[0])) {
+    const isEnDeep = segments[0] === "en";
+    const lang = isEnDeep ? "en" : "es";
+    const articleSlug = segments[segments.length - 1];
+
+    const lookup = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { cookies: { getAll: () => [], setAll: () => {} } }
+    );
+    const { data } = await lookup
+      .from("articles")
+      .select("category")
+      .eq("slug", articleSlug)
+      .eq("language", lang)
+      .eq("status", "published")
+      .maybeSingle();
+
+    if (data) {
+      const catSlug = toCategorySlug(data.category ?? "");
+      const target =
+        catSlug === "recursos-descargables"
+          ? "/"
+          : isEnDeep
+            ? `/en/${catSlug}/${articleSlug}`
+            : `/${catSlug}/${articleSlug}`;
+      if (pathname.replace(/\/+$/, "") !== target) {
+        return NextResponse.redirect(new URL(target, request.url), 301);
+      }
+    }
+  }
+
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-pathname", pathname);
 

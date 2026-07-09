@@ -1,4 +1,4 @@
-import { notFound, permanentRedirect, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createBuildClient } from "@supabase/supabase-js";
@@ -100,7 +100,7 @@ export default async function ArticlePage({
   const correctCategory = toCategorySlug(articleData.category ?? "");
   if (correctCategory === "recursos-descargables") permanentRedirect("/");
   if (slug !== correctCategory) {
-    redirect(`/en/${correctCategory}/${article}`);
+    permanentRedirect(`/en/${correctCategory}/${article}`);
   }
 
   const altLangHref = altLang
