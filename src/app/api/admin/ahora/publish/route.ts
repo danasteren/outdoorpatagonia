@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { sendNewsletterBatch } from "@/lib/email";
+import { sendNewsletterBatch } from "@/lib/newsletter/send";
 
 const ADMIN_EMAIL = "danasteren@gmail.com";
 const SITE_URL = "https://outdoorpatagonia.com";

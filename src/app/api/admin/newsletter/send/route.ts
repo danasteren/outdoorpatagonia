@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { sendNewsletterBatch } from "@/lib/email";
+import { sendNewsletterBatch } from "@/lib/newsletter/send";
 
 const ADMIN_EMAIL = "danasteren@gmail.com";
 const TEST_EMAIL = "info@outdoorpatagonia.com";
