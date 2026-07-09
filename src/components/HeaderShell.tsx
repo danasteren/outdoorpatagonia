@@ -83,7 +83,6 @@ export function HeaderShell({
   }, [menuOpen])
 
   const mapaHref = lang === 'en' ? '/en/mapa' : '/mapa'
-  const planearHref = '/planear'
   const operadoresHref = '/operadores'
 
   async function handleSignIn() {
@@ -350,20 +349,6 @@ export function HeaderShell({
             <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-2 mb-1.5">
               Herramientas
             </p>
-            <Link
-              href={planearHref}
-              className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)]/8 transition-colors"
-            >
-              <Compass size={16} strokeWidth={1.75} className="shrink-0" />
-              Planeá tu viaje
-            </Link>
-            <Link
-              href="/buscar"
-              className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            >
-              <Search size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-              Buscar
-            </Link>
             <Link
               href={mapaHref}
               className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
