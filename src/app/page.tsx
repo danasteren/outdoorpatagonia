@@ -5,6 +5,7 @@ import { OzoneSection } from "@/components/status/OzoneSection";
 import { Section } from "@/components/layout";
 import { PageShell } from "@/components/layout";
 import { Hero } from "@/components/home/Hero";
+import { AhoraSection } from "@/components/home/AhoraSection";
 import {
   PawPrint,
   Leaf,
@@ -114,6 +115,7 @@ export default function Home() {
   return (
     <div>
       <Hero />
+      <AhoraSection />
 
       {/* Categorías */}
       <Section id="categorias" spacing="lg" className="scroll-mt-20">
