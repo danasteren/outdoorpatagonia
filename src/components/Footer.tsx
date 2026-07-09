@@ -31,7 +31,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm leading-relaxed text-[var(--color-cream)]/60">
-              Guía de naturaleza, cultura e historias del sur de Argentina y Chile.
+              Guía de naturaleza, flora, fauna, arqueología, astronomía y mucho más del sur de Argentina y Chile.
             </p>
             <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-teal-light)]/50">
               Hecho en la Patagonia
@@ -145,7 +145,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-[var(--color-cream)]/10 flex flex-col sm:flex-row justify-between gap-2 text-xs text-[var(--color-cream)]/35">
-          <span>© {new Date().getFullYear()} Outdoor Patagonia. Todos los derechos reservados.</span>
+          <span>© 2023-{new Date().getFullYear()} Outdoor Patagonia. Todos los derechos reservados.</span>
           <div className="flex gap-4">
             <Link href="/privacidad" className="hover:text-[var(--color-cream)]/60 transition-colors">
               Privacidad
