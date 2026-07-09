@@ -115,6 +115,18 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
   const trimmed = query.trim()
   const showResults = trimmed.length >= 2
 
+  useEffect(() => {
+    if (trimmed.length < 3) return
+    const timer = setTimeout(() => {
+      fetch('/api/search-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: trimmed, results_count: fuseResults.length }),
+      }).catch(() => {})
+    }, 800)
+    return () => clearTimeout(timer)
+  }, [trimmed, fuseResults.length])
+
   return (
     <div className="fixed inset-0 z-[1002] flex flex-col">
       {/* Backdrop */}
