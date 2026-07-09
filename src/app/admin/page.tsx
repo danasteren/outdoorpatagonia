@@ -19,6 +19,8 @@ import {
   BadgeX,
   Search,
   MailPlus,
+  ChevronDown,
+  CheckCheck,
 } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -495,21 +497,32 @@ export default async function AdminPage() {
         ) : (
           <ul className="divide-y divide-border">
             {contactMessages.map((m) => (
-              <li key={m.id} className="px-4 py-3">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium truncate">{m.asunto}</p>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {m.nombre} · {m.email} ·{" "}
-                      <span title={formatDate(m.created_at)}>
-                        {timeAgo(m.created_at)}
-                      </span>
-                    </p>
-                    <p className="text-sm mt-1.5 whitespace-pre-wrap">
+              <li key={m.id}>
+                <details className="group">
+                  <summary className="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden hover:bg-muted/20 transition-colors">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium truncate">{m.asunto}</p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {m.nombre} · {m.email} ·{" "}
+                        <span title={formatDate(m.created_at)}>
+                          {timeAgo(m.created_at)}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      {m.replied_at && (
+                        <span className="inline-flex items-center gap-1 text-xs text-teal font-medium">
+                          <CheckCheck className="w-3.5 h-3.5" />
+                          Respondido
+                        </span>
+                      )}
+                      <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform group-open:rotate-180" />
+                    </div>
+                  </summary>
+                  <div className="px-4 pb-4 pt-1">
+                    <p className="text-sm whitespace-pre-wrap mb-3">
                       {m.mensaje}
                     </p>
-                  </div>
-                  <div className="shrink-0">
                     <ReplyBox
                       source="contact"
                       id={m.id}
@@ -518,7 +531,7 @@ export default async function AdminPage() {
                       alreadyReplied={!!m.replied_at}
                     />
                   </div>
-                </div>
+                </details>
               </li>
             ))}
           </ul>
@@ -599,41 +612,52 @@ export default async function AdminPage() {
         ) : (
           <ul className="divide-y divide-border">
             {operatorApplications.map((a) => (
-              <li key={a.id} className="px-4 py-3">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium truncate">
-                      {a.empresa} · {a.pais}
-                    </p>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {a.contacto} · {a.email}
-                      {a.telefono ? ` · ${a.telefono}` : ""} ·{" "}
-                      <span title={formatDate(a.created_at)}>
-                        {timeAgo(a.created_at)}
-                      </span>
-                    </p>
+              <li key={a.id}>
+                <details className="group">
+                  <summary className="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden hover:bg-muted/20 transition-colors">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium truncate">
+                        {a.empresa} · {a.pais}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {a.contacto} · {a.email}
+                        {a.telefono ? ` · ${a.telefono}` : ""} ·{" "}
+                        <span title={formatDate(a.created_at)}>
+                          {timeAgo(a.created_at)}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      {a.replied_at && (
+                        <span className="inline-flex items-center gap-1 text-xs text-teal font-medium">
+                          <CheckCheck className="w-3.5 h-3.5" />
+                          Respondido
+                        </span>
+                      )}
+                      <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform group-open:rotate-180" />
+                    </div>
+                  </summary>
+                  <div className="px-4 pb-4 pt-1 space-y-2">
                     {a.sitio_web && (
                       <a
                         href={a.sitio_web}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-teal hover:underline"
+                        className="text-xs text-teal hover:underline block"
                       >
                         {a.sitio_web} ↗
                       </a>
                     )}
                     {a.especialidades && a.especialidades.length > 0 && (
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-muted-foreground">
                         {a.especialidades.join(", ")}
                       </p>
                     )}
                     {a.descripcion && (
-                      <p className="text-sm mt-1.5 whitespace-pre-wrap">
+                      <p className="text-sm whitespace-pre-wrap">
                         {a.descripcion}
                       </p>
                     )}
-                  </div>
-                  <div className="shrink-0">
                     <ReplyBox
                       source="operator"
                       id={a.id}
@@ -642,7 +666,7 @@ export default async function AdminPage() {
                       alreadyReplied={!!a.replied_at}
                     />
                   </div>
-                </div>
+                </details>
               </li>
             ))}
           </ul>
