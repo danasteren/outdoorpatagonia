@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Importa el export CSV de MailerLite a la tabla `subscribers` de Supabase.
-El CSV debe tener una columna "email" (es el formato default de export de MailerLite).
+Acepta el formato default de export de MailerLite, con columna "Subscriber" o "email".
 
 Usage: python scripts/import_newsletter_subscribers.py mailerlite_export.csv [--dry-run]
 """
@@ -22,7 +22,10 @@ HEADERS = {
 def read_emails(path: str) -> list[str]:
     with open(path, newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
-        field = next((k for k in reader.fieldnames or [] if k.strip().lower() == "email"), None)
+        field = next(
+            (k for k in reader.fieldnames or [] if k.strip().lower() in ("email", "subscriber")),
+            None,
+        )
         if not field:
             sys.exit(f"No encontré una columna 'email' en {path}. Columnas: {reader.fieldnames}")
         emails = {row[field].strip().lower() for row in reader if row.get(field, "").strip()}

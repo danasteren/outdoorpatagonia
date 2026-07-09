@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ReplyBox } from "@/components/admin/ReplyBox";
+import { NewsletterComposer } from "@/components/admin/NewsletterComposer";
 import {
   Users,
   UserCheck,
@@ -413,6 +414,7 @@ export default async function AdminPage() {
       )}
 
       {/* Newsletter */}
+      <NewsletterComposer activeCount={activeSubscribers.length} />
       <div className="grid grid-cols-2 gap-4 mb-6">
         <StatCard
           icon={<MailPlus className="w-5 h-5" />}
