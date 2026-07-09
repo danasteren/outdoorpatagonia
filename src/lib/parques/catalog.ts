@@ -183,8 +183,9 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
       "Safari náutico por Lago Argentino — glaciares Upsala y Spegazzini desde el agua",
     ],
     howToGet:
-      "Vuelo directo desde Buenos Aires al aeropuerto El Calafate (FTE), 2.5 horas. El sector glaciares está a 80 km (remis o transfer desde El Calafate). El sector Fitz Roy: bus desde El Calafate a El Chaltén (3h).",
-    entryFee: "USD 21–28 por persona (varía por temporada)",
+      "Vuelo directo desde Buenos Aires al aeropuerto El Calafate (FTE), 2.5 horas. El sector glaciares está a 80 km de El Calafate (bus de línea —Cal Tur, Taqsa, Chaltén Travel—, transfer privado o excursión con guía, 1h30 de viaje). El sector Fitz Roy: bus desde El Calafate a El Chaltén (3h).",
+    entryFee:
+      "$45.000 ARS turistas extranjeros, $15.000 ARS residentes argentinos, $5.000 ARS residentes de Santa Cruz (tarifas 2026, sujetas a actualización — confirmar en argentina.gob.ar/parquesnacionales/tarifas)",
     bestMonths: ["Oct", "Nov", "Dic", "Ene", "Feb", "Mar", "Abr"],
     website: "https://www.argentina.gob.ar/parques-nacionales/glaciares",
     plannerDestinationId: "calafate",
