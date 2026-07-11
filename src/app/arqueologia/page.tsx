@@ -128,7 +128,7 @@ export default async function ArqueologiaPage({
         {/* Tabs */}
         <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
           <div className="max-w-6xl mx-auto px-4 md:px-10">
-            <div className="flex gap-1 overflow-x-auto">
+            <div className="flex gap-1 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain">
               {categories.map((cat) => {
                 const isActive = cat === activeCategory
                 const count = ARQUEOLOGIA_CATALOG.filter((e) => e.categoria === cat).length
@@ -137,7 +137,7 @@ export default async function ArqueologiaPage({
                   <Link
                     key={cat}
                     href={`/arqueologia?cat=${cat}`}
-                    className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
+                    className={`flex shrink-0 items-center gap-1.5 px-4 py-3.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
                       isActive
                         ? `border-b-2 -mb-px ${CATEGORIA_COLOR[cat].tab}`
                         : "text-muted-foreground hover:text-foreground"

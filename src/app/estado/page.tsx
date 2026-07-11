@@ -71,14 +71,14 @@ export default async function EstadoPage({
 
       <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex gap-1">
+          <div className="flex gap-1 overflow-x-auto scrollbar-hide">
             {TABS.map(({ key, label }) => {
               const isActive = key === activeTab
               return (
                 <Link
                   key={key}
                   href={`/estado?tab=${key}`}
-                  className={`px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
+                  className={`shrink-0 px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
                     isActive
                       ? "border-b-2 border-[var(--color-forest)] text-[var(--color-forest)] -mb-px"
                       : "text-muted-foreground hover:text-foreground"

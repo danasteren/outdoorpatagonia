@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import {
   Moon,
   Stars,
@@ -393,9 +394,27 @@ const EVENTO_ICONS: Record<AstroEvent["tipo"], React.FC<{ size: number; strokeWi
   especial: Sparkles,
 }
 
+// ─── Tabs ─────────────────────────────────────────────────────────────────────
+
+type TabKey = "hoy" | "meteoros" | "eventos" | "cielos" | "constelaciones"
+
+const TABS: { key: TabKey; label: string; icon: React.FC<{ size: number; strokeWidth: number; className?: string }> }[] = [
+  { key: "hoy", label: "Hoy", icon: Moon },
+  { key: "meteoros", label: "Meteoros", icon: Sparkles },
+  { key: "eventos", label: "Eventos", icon: CalendarDays },
+  { key: "cielos", label: "Cielos oscuros", icon: MapPin },
+  { key: "constelaciones", label: "Constelaciones", icon: Telescope },
+]
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function AstronomiaPage() {
+export default async function AstronomiaPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>
+}) {
+  const { tab } = await searchParams
+  const activeTab: TabKey = TABS.some((t) => t.key === tab) ? (tab as TabKey) : "hoy"
   const moon = getMoonData()
   const qualityColor = QUALITY_COLORS[moon.stargazingQuality]
   const nowUTC = new Date()
@@ -549,8 +568,35 @@ export default function AstronomiaPage() {
         </PageShell>
       </Section>
 
+      {/* Tabs */}
+      <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
+        <PageShell>
+          <div className="flex gap-1 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain">
+            {TABS.map((t) => {
+              const isActive = t.key === activeTab
+              const Icon = t.icon
+              return (
+                <Link
+                  key={t.key}
+                  href={t.key === "hoy" ? "/astronomia" : `/astronomia?tab=${t.key}`}
+                  className={`flex shrink-0 items-center gap-1.5 px-4 py-3.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
+                    isActive
+                      ? "border-b-2 -mb-px border-[var(--color-teal)] text-[var(--color-teal)]"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Icon size={14} strokeWidth={1.5} />
+                  {t.label}
+                </Link>
+              )
+            })}
+          </div>
+        </PageShell>
+      </div>
+
       {/* Luna hoy + Temporada Vía Láctea */}
-      <Section spacing="md" background="muted">
+      {activeTab === "hoy" && (
+      <Section spacing="md">
         <PageShell>
           <div className="grid md:grid-cols-2 gap-6">
             {/* Luna */}
@@ -974,8 +1020,10 @@ export default function AstronomiaPage() {
           </div>
         </PageShell>
       </Section>
+      )}
 
       {/* Lluvia de meteoros */}
+      {activeTab === "meteoros" && (
       <Section spacing="md">
         <PageShell>
           <div className="flex items-center gap-2 mb-6">
@@ -987,9 +1035,11 @@ export default function AstronomiaPage() {
           <MeteorTabs upcoming={meteorsProximos} past={meteorsPasados} />
         </PageShell>
       </Section>
+      )}
 
       {/* Eventos astronómicos */}
-      <Section spacing="md" background="muted">
+      {activeTab === "eventos" && (
+      <Section spacing="md">
         <PageShell>
           <div className="flex items-center gap-2 mb-6">
             <CalendarDays size={18} strokeWidth={1.5} className="text-[var(--color-teal)]" />
@@ -1000,8 +1050,10 @@ export default function AstronomiaPage() {
           <EventoTabs upcoming={eventosProximos} past={eventosPasados} />
         </PageShell>
       </Section>
+      )}
 
       {/* Cielos oscuros */}
+      {activeTab === "cielos" && (
       <Section spacing="md">
         <PageShell>
           <div className="flex items-center gap-2 mb-2">
@@ -1031,9 +1083,11 @@ export default function AstronomiaPage() {
           </div>
         </PageShell>
       </Section>
+      )}
 
       {/* Constelaciones */}
-      <Section spacing="md" background="muted">
+      {activeTab === "constelaciones" && (
+      <Section spacing="md">
         <PageShell>
           <div className="flex items-center gap-2 mb-2">
             <Telescope size={18} strokeWidth={1.5} className="text-[var(--color-teal)]" />
@@ -1069,6 +1123,7 @@ export default function AstronomiaPage() {
           </div>
         </PageShell>
       </Section>
+      )}
 
       {/* Consejo final */}
       <Section

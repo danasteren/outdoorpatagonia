@@ -201,6 +201,8 @@
   .shadow-hover { box-shadow: var(--shadow-hover); }
   .shadow-modal { box-shadow: var(--shadow-modal); }
   .font-heading { font-family: var(--font-playfair); }
+  .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
 }
 
 /* ── Hero keyframes ──────────────────────────────────────────────── */
