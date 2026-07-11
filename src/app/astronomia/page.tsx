@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import Link from "next/link"
+import type { LucideIcon } from "lucide-react"
+import { AstronomiaTabBar } from "@/components/AstronomiaTabBar"
 import {
   Moon,
   Stars,
@@ -398,7 +399,7 @@ const EVENTO_ICONS: Record<AstroEvent["tipo"], React.FC<{ size: number; strokeWi
 
 type TabKey = "hoy" | "meteoros" | "eventos" | "cielos" | "constelaciones"
 
-const TABS: { key: TabKey; label: string; icon: React.FC<{ size: number; strokeWidth: number; className?: string }> }[] = [
+const TABS: { key: TabKey; label: string; icon: LucideIcon }[] = [
   { key: "hoy", label: "Hoy", icon: Moon },
   { key: "meteoros", label: "Meteoros", icon: Sparkles },
   { key: "eventos", label: "Eventos", icon: CalendarDays },
@@ -571,26 +572,7 @@ export default async function AstronomiaPage({
       {/* Tabs */}
       <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
         <PageShell>
-          <div className="flex gap-1 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain">
-            {TABS.map((t) => {
-              const isActive = t.key === activeTab
-              const Icon = t.icon
-              return (
-                <Link
-                  key={t.key}
-                  href={t.key === "hoy" ? "/astronomia" : `/astronomia?tab=${t.key}`}
-                  className={`flex shrink-0 items-center gap-1.5 px-4 py-3.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
-                    isActive
-                      ? "border-b-2 -mb-px border-[var(--color-teal)] text-[var(--color-teal)]"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <Icon size={14} strokeWidth={1.5} />
-                  {t.label}
-                </Link>
-              )
-            })}
-          </div>
+          <AstronomiaTabBar tabs={TABS} activeTab={activeTab} defaultTab="hoy" />
         </PageShell>
       </div>
 

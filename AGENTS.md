@@ -154,3 +154,22 @@ Al escribir contenido o descripciones, estructurar así:
 - ✅ "El Parque Nacional Los Glaciares tiene 726.927 ha y alberga el Perito Moreno, uno de los pocos glaciares en crecimiento del mundo."
 - ❌ "En este artículo vamos a explorar todo lo que necesitás saber sobre los glaciares patagónicos."
 <!-- END:seo-geo -->
+
+<!-- BEGIN:relacionados-workflow -->
+## Ampliar contenido: entradas conectadas ("relacionados")
+
+Los catálogos estáticos (`src/lib/volcanes/catalog.ts`, `src/lib/parques/catalog.ts`, `src/lib/arqueologia/catalog.ts`, `src/lib/escalada/`, y futuras secciones del mismo tipo) pueden crecer con nuevas entradas que se conectan entre sí — ej: "Termas Geométricas" conectada al volcán Villarrica y al Parque Nacional Villarrica.
+
+### Cuándo se dispara este flujo
+El usuario indica un tema (lugar, atractivo, dato) y con qué entrada(s) existentes se conecta. Ejemplo: *"en Villarrica hay que agregar las Termas Geométricas"*.
+
+### Proceso
+1. **Evaluar dónde vive el contenido:**
+   - Si encaja en una sección existente, agregarlo ahí.
+   - Si es un tema que puede escalar a varias entradas similares (ej: termas, miradores, refugios), evaluar sección nueva tipo catálogo — **preguntar al usuario antes de crear la sección** (mismo criterio que en escalado de contenido vía keywords).
+2. **Investigar con fuentes oficiales** — nunca inventar datos. Priorizar: sitio oficial del atractivo/operador, CONAF (Chile) / APN (Argentina) según corresponda, SERNAGEOMIN para volcanes, municipalidad/turismo regional. Wikipedia solo como apoyo secundario, nunca única fuente.
+3. **Armar la entrada** con la misma estructura que el catálogo destino (descripción en párrafos, datos concretos, FAQ, `urlFuente`) siguiendo el checklist de `## SEO & GEO`.
+4. **Conectar cross-links**: cada entrada tiene un campo `relacionados: { tipo: string; slug: string }[]` que apunta a otras entradas (de cualquier catálogo). La conexión es **simétrica** — si A lista a B como relacionado, B también debe listar a A.
+5. Renderizar los relacionados en la página de detalle vía un componente compartido (`RelacionadosSection` o equivalente) que resuelve cada `{ tipo, slug }` contra el catálogo correspondiente.
+6. Sumar la nueva ruta a `src/app/sitemap.ts` si es una entrada con página propia.
+<!-- END:relacionados-workflow -->
