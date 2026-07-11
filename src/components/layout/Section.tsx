@@ -8,7 +8,7 @@ const sectionVariants = cva("w-full", {
       none: "",
       sm: "py-8",
       md: "py-12",
-      lg: "py-16",
+      lg: "py-8 lg:py-16",
       xl: "py-20 md:py-28",
     },
     background: {
@@ -24,7 +24,7 @@ const sectionVariants = cva("w-full", {
 
 export interface SectionProps
   extends React.ComponentProps<"section">,
-    VariantProps<typeof sectionVariants> {}
+  VariantProps<typeof sectionVariants> { }
 
 function Section({
   className,
