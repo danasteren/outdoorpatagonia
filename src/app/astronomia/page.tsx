@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
-import type { LucideIcon } from "lucide-react"
 import { AstronomiaTabBar } from "@/components/AstronomiaTabBar"
+import { TAB_KEYS, type TabKey } from "@/lib/astronomia-tabs"
 import {
   Moon,
   Stars,
@@ -395,18 +395,6 @@ const EVENTO_ICONS: Record<AstroEvent["tipo"], React.FC<{ size: number; strokeWi
   especial: Sparkles,
 }
 
-// ─── Tabs ─────────────────────────────────────────────────────────────────────
-
-type TabKey = "hoy" | "meteoros" | "eventos" | "cielos" | "constelaciones"
-
-const TABS: { key: TabKey; label: string; icon: LucideIcon }[] = [
-  { key: "hoy", label: "Hoy", icon: Moon },
-  { key: "meteoros", label: "Meteoros", icon: Sparkles },
-  { key: "eventos", label: "Eventos", icon: CalendarDays },
-  { key: "cielos", label: "Cielos oscuros", icon: MapPin },
-  { key: "constelaciones", label: "Constelaciones", icon: Telescope },
-]
-
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function AstronomiaPage({
@@ -415,7 +403,7 @@ export default async function AstronomiaPage({
   searchParams: Promise<{ tab?: string }>
 }) {
   const { tab } = await searchParams
-  const activeTab: TabKey = TABS.some((t) => t.key === tab) ? (tab as TabKey) : "hoy"
+  const activeTab: TabKey = TAB_KEYS.includes(tab as TabKey) ? (tab as TabKey) : "hoy"
   const moon = getMoonData()
   const qualityColor = QUALITY_COLORS[moon.stargazingQuality]
   const nowUTC = new Date()
@@ -572,7 +560,7 @@ export default async function AstronomiaPage({
       {/* Tabs */}
       <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
         <PageShell>
-          <AstronomiaTabBar tabs={TABS} activeTab={activeTab} defaultTab="hoy" />
+          <AstronomiaTabBar activeTab={activeTab} />
         </PageShell>
       </div>
 

@@ -2,19 +2,18 @@
 
 import { useEffect, useRef } from "react"
 import Link from "next/link"
-import type { LucideIcon } from "lucide-react"
+import { Moon, Sparkles, CalendarDays, MapPin, Telescope } from "lucide-react"
+import { TAB_KEYS, TAB_LABELS, type TabKey } from "@/lib/astronomia-tabs"
 
-export type AstronomiaTab<K extends string> = { key: K; label: string; icon: LucideIcon }
+const TAB_ICONS: Record<TabKey, typeof Moon> = {
+  hoy: Moon,
+  meteoros: Sparkles,
+  eventos: CalendarDays,
+  cielos: MapPin,
+  constelaciones: Telescope,
+}
 
-export function AstronomiaTabBar<K extends string>({
-  tabs,
-  activeTab,
-  defaultTab,
-}: {
-  tabs: AstronomiaTab<K>[]
-  activeTab: K
-  defaultTab: K
-}) {
+export function AstronomiaTabBar({ activeTab }: { activeTab: TabKey }) {
   const activeRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
@@ -23,14 +22,14 @@ export function AstronomiaTabBar<K extends string>({
 
   return (
     <div className="flex gap-1 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain">
-      {tabs.map((t) => {
-        const isActive = t.key === activeTab
-        const Icon = t.icon
+      {TAB_KEYS.map((key) => {
+        const isActive = key === activeTab
+        const Icon = TAB_ICONS[key]
         return (
           <Link
-            key={t.key}
+            key={key}
             ref={isActive ? activeRef : undefined}
-            href={t.key === defaultTab ? "/astronomia" : `/astronomia?tab=${t.key}`}
+            href={key === "hoy" ? "/astronomia" : `/astronomia?tab=${key}`}
             className={`flex shrink-0 items-center gap-1.5 px-4 py-3.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
               isActive
                 ? "border-b-2 -mb-px border-[var(--color-teal)] text-[var(--color-teal)]"
@@ -38,7 +37,7 @@ export function AstronomiaTabBar<K extends string>({
             }`}
           >
             <Icon size={14} strokeWidth={1.5} />
-            {t.label}
+            {TAB_LABELS[key]}
           </Link>
         )
       })}
