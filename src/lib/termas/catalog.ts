@@ -183,6 +183,166 @@ export const TERMAS_CATALOG: TermaEntry[] = [
     wikipediaTitle: "Termas de Copahue",
     relacionados: [{ tipo: "volcan", slug: "copahue" }],
   },
+  {
+    slug: "malalcahuello",
+    nombre: "Termas de Malalcahuello",
+    pais: "CL",
+    region: "Araucanía — 1,5 km al interior de Malalcahuello, comuna de Curacautín (~120 km de Temuco)",
+    temperaturaAgua: "37–43 °C según piscina (brota a más de 38 °C)",
+    descripcion: [
+      "Las Termas de Malalcahuello son un hotel termal de montaña frente al volcán Lonquimay, dentro de la Reserva Nacional Malalcahuello, en la comuna de Curacautín. Están a 1,5 km del pueblo de Malalcahuello y a unos 120 km de Temuco, sobre la ruta internacional hacia el paso Pino Hachado.",
+      "El agua brota a más de 38 °C y es rica en minerales como calcio, hierro y magnesio. En 2003 el Ministerio de Salud de Chile las declaró oficialmente 'fuente de agua curativa'. El complejo combina piscinas termales, spa, cabañas y bungalows en un entorno de bosque de araucarias y coigües.",
+      "El complejo tiene una piscina de nado a contracorriente entre 37 y 38 °C, un jacuzzi que llega a 41 °C, y dos piletas más pequeñas de 7 °C y 43 °C para contraste térmico. Es uno de los puntos de partida habituales para el ascenso al volcán Lonquimay y para el centro de esquí Corralco.",
+    ],
+    datosExtra: [
+      { label: "Temperatura del agua", valor: "37–43 °C según piscina" },
+      { label: "Reconocimiento oficial", valor: "'Fuente de agua curativa', MINSAL 2003" },
+      { label: "Distancia desde Temuco", valor: "~120 km" },
+      { label: "Ubicación", valor: "Reserva Nacional Malalcahuello" },
+      { label: "Volcán cercano", valor: "Lonquimay" },
+    ],
+    faq: [
+      {
+        pregunta: "¿Cómo llegar a las Termas de Malalcahuello?",
+        respuesta:
+          "Desde Temuco se toma la Ruta 5 Sur hasta Victoria y luego la ruta hacia Curacautín y Malalcahuello (~120 km en total). Las termas están 1,5 km al interior del pueblo de Malalcahuello, sobre el camino internacional hacia el paso Pino Hachado.",
+      },
+      {
+        pregunta: "¿Por qué las Termas de Malalcahuello son 'agua curativa'?",
+        respuesta:
+          "El Ministerio de Salud de Chile las reconoció oficialmente como fuente de agua curativa en 2003 por su composición mineral (calcio, hierro, magnesio), utilizada tradicionalmente para dolencias reumáticas y de piel.",
+      },
+      {
+        pregunta: "¿Se puede combinar con el volcán Lonquimay o el centro de esquí Corralco?",
+        respuesta:
+          "Sí, las termas están frente al volcán Lonquimay y son un punto de partida habitual tanto para el ascenso de verano como para acceder al centro de esquí Corralco en temporada de nieve.",
+      },
+    ],
+    urlFuente: "https://www.termasdemalalcahuello.cl/",
+    relacionados: [{ tipo: "volcan", slug: "lonquimay" }],
+  },
+  {
+    slug: "llifen",
+    nombre: "Termas de Llifén",
+    pais: "CL",
+    region: "Los Ríos — 20 km de Futrono, a orillas del río Calcurrupe (123 km de Valdivia)",
+    lat: -40.20637,
+    lng: -72.26285,
+    temperaturaAgua: "20–40 °C según piscina",
+    descripcion: [
+      "Las Termas de Llifén son manantiales termales descubiertos en 1865 en la margen norte del río Calcurrupe, cerca de la orilla este del lago Ranco, a 125 m s.n.m. Su nombre viene del mapudungún 'lyvn' ('arder', 'encenderse el fuego'). Están a 20 km de Futrono y 123 km de Valdivia, en la Región de Los Ríos.",
+      "El agua es rica en calcio, azufre, magnesio, potasio y sodio, tradicionalmente usada para afecciones reumáticas, cardiovasculares y hepáticas. El complejo actual combina piscinas termales con alojamiento tipo spa y cabañas frente al lago Ranco.",
+      "A diferencia de las termas volcánicas de la Araucanía, Llifén no está asociada a un volcán activo específico: su origen es hidrotermal profundo, ligado a la falla Liquiñe-Ofqui que atraviesa toda esta franja de la Patagonia chilena.",
+    ],
+    datosExtra: [
+      { label: "Temperatura del agua", valor: "20–40 °C según piscina" },
+      { label: "Altitud", valor: "125 m s. n. m." },
+      { label: "Descubrimiento", valor: "1865" },
+      { label: "Distancia desde Futrono", valor: "20 km" },
+      { label: "Distancia desde Valdivia", valor: "123 km" },
+    ],
+    faq: [
+      {
+        pregunta: "¿Cómo llegar a las Termas de Llifén?",
+        respuesta:
+          "Están a 20 km de Futrono y 123 km de Valdivia, en la Región de Los Ríos, a orillas del río Calcurrupe cerca del lago Ranco. El acceso es por camino pavimentado y ripio desde Futrono.",
+      },
+      {
+        pregunta: "¿Qué significa 'Llifén'?",
+        respuesta:
+          "Es una palabra mapudungún derivada de 'lyvn', que significa 'arder' o 'encenderse el fuego' — una referencia directa al origen termal de las aguas.",
+      },
+      {
+        pregunta: "¿Las Termas de Llifén están cerca de un volcán?",
+        respuesta:
+          "No de uno activo específico. A diferencia de Malalcahuello o Copahue, el origen de estas aguas es hidrotermal profundo, asociado a la falla Liquiñe-Ofqui que recorre la Patagonia chilena, no a la actividad de un cráter puntual.",
+      },
+    ],
+    urlFuente: "https://www.termasllifen.cl/",
+    wikipediaTitle: "Baños de Llifén",
+  },
+  {
+    slug: "huife",
+    nombre: "Termas de Huife",
+    pais: "CL",
+    region: "Araucanía — 33 km de Pucón, a orillas del río Liucura",
+    lat: -39.227698,
+    lng: -71.657364,
+    temperaturaAgua: "38–58 °C, pH 8,8–8,9 (aguas sulfatadas, alcalinas, cloruradas)",
+    descripcion: [
+      "Las Termas de Huife están a 33 km de Pucón por camino pavimentado, a orillas del río Liucura y a 400 m s.n.m., con vista al cordón montañoso que rodea al volcán Villarrica. Es uno de los complejos termales más antiguos y conocidos del corredor Pucón–Curarrehue.",
+      "El agua brota entre 38 °C y 58 °C, con un pH de 8,8 a 8,9: son aguas sulfatadas, alcalinas, cloruradas y carbonatadas, ricas en sodio y potasio. El complejo combina piscinas al aire libre —una con guijarros de cuarzo para reflexología— con piscinas individuales y pozones naturales de piedra junto al río.",
+      "El contraste entre el agua termal caliente y el agua fría del río Liucura, que corre al lado, es parte de la experiencia tradicional del lugar, aprovechado también por circulación sanguínea. Está en el mismo corredor que Termas Pucón Indómito y Termas Menetué.",
+    ],
+    datosExtra: [
+      { label: "Temperatura del agua", valor: "38–58 °C" },
+      { label: "pH", valor: "8,8–8,9" },
+      { label: "Altitud", valor: "400 m s. n. m." },
+      { label: "Distancia desde Pucón", valor: "33 km" },
+      { label: "Distancia desde Temuco", valor: "130 km" },
+    ],
+    faq: [
+      {
+        pregunta: "¿Cómo llegar a las Termas de Huife desde Pucón?",
+        respuesta:
+          "Son 33 km por camino pavimentado desde Pucón, siguiendo el valle del río Liucura hacia Curarrehue. El trayecto toma alrededor de 40 minutos en auto.",
+      },
+      {
+        pregunta: "¿Qué diferencia a Huife de Termas Pucón Indómito?",
+        respuesta:
+          "Ambas están en el mismo corredor del río Liucura, pero Huife es un complejo más tradicional con piscinas de aguas más calientes (hasta 58 °C) y pozones naturales junto al río, mientras que Indómito es un desarrollo más moderno con tinajas privadas.",
+      },
+      {
+        pregunta: "¿Se puede combinar Huife con el volcán Villarrica?",
+        respuesta:
+          "Sí, desde el complejo se ve el cordón montañoso que rodea al volcán Villarrica, y muchos visitantes combinan el ascenso al volcán o el paso por Pucón con una parada termal en Huife.",
+      },
+    ],
+    urlFuente: "https://termashuife.cl/",
+    wikipediaTitle: "Termas Huife",
+    relacionados: [{ tipo: "volcan", slug: "villarrica" }],
+  },
+  {
+    slug: "puyuhuapi",
+    nombre: "Termas de Puyuhuapi",
+    pais: "CL",
+    region: "Aysén — Bahía Dorita, 16 km al sur de Puyuhuapi (225 km de Coyhaique), junto a la Carretera Austral",
+    lat: -44.413727,
+    lng: -72.645821,
+    temperaturaAgua: "30–42 °C en piscinas exteriores; 34 °C en la piscina interior",
+    descripcion: [
+      "Las Termas de Puyuhuapi son uno de los complejos termales más remotos y exclusivos de la Patagonia chilena: se accede únicamente en bote, cruzando el fiordo desde el pueblo de Puyuhuapi o navegando cinco horas desde Puerto Chacabuco. Están en la Bahía Dorita, dentro del Seno Ventisquero, muy cerca del Parque Nacional Queulat y su Ventisquero Colgante.",
+      "El lodge fue fundado a mediados de los años 80 en un terreno originalmente explorado por el aviador Ernesto Hein Águila, y desarrollado desde 1986 por el empresario germano-chileno Eberhard Kossmann, quien conoció el lugar navegando los fiordos al sur de Puerto Montt. La construcción, en madera nativa trabajada por artesanos locales, mantiene ese origen artesanal.",
+      "El agua termal emerge del campo volcánico de Puyuhuapi y confluye con agua de mar y agua dulce de vertiente, una combinación poco común. Las tres piscinas exteriores frente a la bahía varían entre 30 °C y 42 °C según el caudal, mientras que la piscina interior del lodge se mantiene a 34 °C todo el año.",
+    ],
+    datosExtra: [
+      { label: "Acceso", valor: "Solo en bote (fiordo Puyuhuapi / Seno Ventisquero)" },
+      { label: "Temperatura del agua", valor: "30–42 °C exterior, 34 °C piscina interior" },
+      { label: "Fundación", valor: "Mediados de los 80, desarrollado desde 1986" },
+      { label: "Distancia desde Coyhaique", valor: "225 km por Carretera Austral + cruce en bote" },
+      { label: "Parque cercano", valor: "Parque Nacional Queulat" },
+    ],
+    faq: [
+      {
+        pregunta: "¿Cómo se llega a las Termas de Puyuhuapi?",
+        respuesta:
+          "Solo por agua: hay cruces en bote desde el muelle del pueblo de Puyuhuapi (horarios habituales 13:00, 15:30 y 19:00), o una navegación de unas 5 horas desde Puerto Chacabuco por el fiordo Aysén y el canal Puyuhuapi. No hay acceso terrestre directo al lodge.",
+      },
+      {
+        pregunta: "¿Se puede visitar sin alojarse en el lodge?",
+        respuesta:
+          "El acceso de día (day-pass) está sujeto a disponibilidad y a los horarios de cruce en bote, que conviene confirmar y reservar con el lodge con anticipación dado lo remoto del lugar.",
+      },
+      {
+        pregunta: "¿Las Termas de Puyuhuapi se pueden combinar con el Parque Nacional Queulat?",
+        respuesta:
+          "Sí, están a poca distancia por la Carretera Austral del Parque Nacional Queulat y su famoso Ventisquero Colgante, uno de los atractivos más visitados de la ruta.",
+      },
+    ],
+    urlFuente: "https://www.puyuhuapilodge.com/",
+    wikipediaTitle: "Termas de Puyuhuapi",
+    relacionados: [{ tipo: "parque", slug: "queulat" }],
+  },
 ]
 
 export function getTermaEntry(slug: string): TermaEntry | null {

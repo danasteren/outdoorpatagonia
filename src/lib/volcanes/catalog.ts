@@ -138,6 +138,7 @@ export const VOLCANES_CATALOG: VolcanEntry[] = [
     ],
     urlFuente: "https://www.sernageomin.cl/?s=Lonquimay+alerta",
     wikipediaTitle: "Volcán Lonquimay",
+    relacionados: [{ tipo: "termas", slug: "malalcahuello" }],
   },
   {
     slug: "llaima",
@@ -222,6 +223,7 @@ export const VOLCANES_CATALOG: VolcanEntry[] = [
     relacionados: [
       { tipo: "termas", slug: "geometricas" },
       { tipo: "termas", slug: "pucon-indomito" },
+      { tipo: "termas", slug: "huife" },
     ],
   },
   {

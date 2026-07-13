@@ -346,6 +346,7 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.conaf.cl/parques/parque-nacional-queulat/",
     faunaEspecies: [],
     senderosEnElParque: [],
+    relacionados: [{ tipo: "termas", slug: "puyuhuapi" }],
   },
   {
     slug: "torres-del-paine",
