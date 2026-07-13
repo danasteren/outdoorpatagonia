@@ -11,6 +11,9 @@ const BRAND = {
   terracotta: "#c8763a",
 };
 
+const LOGO_URL = "https://outdoorpatagonia.com/brand/op_02_email.png";
+const SERIF_STACK = "'Playfair Display', Georgia, 'Times New Roman', serif";
+
 const NIVEL_COLOR: Record<"Verde" | "Amarillo" | "Naranja" | "Rojo", string> = {
   Verde: "#22c55e",
   Amarillo: "#facc15",
@@ -59,7 +62,14 @@ function renderShell({
 <html lang="es">
   <body style="margin:0;padding:0;background:${BRAND.cream};font-family:system-ui,sans-serif;color:${BRAND.forest};">
     <div style="max-width:560px;margin:0 auto;padding:32px 24px;">
-      <p style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:${BRAND.teal};font-weight:600;margin:0 0 24px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
+        <tr>
+          <td>
+            <img src="${LOGO_URL}" alt="Outdoor Patagonia" width="180" style="display:block;width:180px;height:auto;" />
+          </td>
+        </tr>
+      </table>
+      <p style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:${BRAND.teal};font-weight:600;margin:0 0 20px;">
         ${escapeHtml(eyebrow)}
       </p>
       ${contentHtml}
@@ -89,11 +99,13 @@ export function renderNewsletterEmail({
   unsubscribeUrl: string;
 }): EmailContent {
   const contentHtml = `
-    <h1 style="font-size:20px;margin:0 0 20px;">${escapeHtml(subject)}</h1>
-    ${paragraphsHtml(bodyText)}
+    <h1 style="font-family:${SERIF_STACK};font-size:26px;line-height:1.25;margin:0 0 20px;color:${BRAND.forest};">${escapeHtml(subject)}</h1>
+    <div style="font-size:15px;line-height:1.6;">
+      ${paragraphsHtml(bodyText)}
+    </div>
   `;
   return {
-    html: renderShell({ eyebrow: "Outdoor Patagonia", contentHtml, unsubscribeUrl }),
+    html: renderShell({ eyebrow: "Newsletter", contentHtml, unsubscribeUrl }),
     text: withUnsubscribe(bodyText, unsubscribeUrl),
   };
 }

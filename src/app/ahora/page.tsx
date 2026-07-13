@@ -9,7 +9,7 @@ export const revalidate = 120;
 export const metadata: Metadata = {
   title: "Patagonia Ahora — momentos en vivo desde el terreno",
   description:
-    "Fotos y videos cortos que Dana comparte en vivo mientras recorre la Patagonia. Cada momento dura 24hs en la portada y después pasa al archivo.",
+    "Fotos y videos cortos que el equipo de Outdoor Patagonia comparte en vivo mientras recorre la Patagonia. Cada momento dura 24hs en la portada y después pasa al archivo.",
   alternates: { canonical: "https://outdoorpatagonia.com/ahora" },
   openGraph: {
     title: "Patagonia Ahora",
@@ -61,8 +61,8 @@ export default async function AhoraPage() {
             Patagonia Ahora
           </h1>
           <p className="text-lg opacity-80 max-w-2xl">
-            Cada foto o video dura 24hs acá y después pasa al archivo de abajo. Es lo que Dana
-            está viendo ahora mismo, recorriendo la Patagonia.
+            Cada foto o video dura 24hs acá y después pasa al archivo de abajo. Es lo que el
+            equipo está viendo ahora mismo, recorriendo la Patagonia.
           </p>
         </PageShell>
       </Section>
