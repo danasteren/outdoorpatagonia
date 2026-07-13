@@ -1,5 +1,7 @@
 // Catalog augments PARQUES from map-data.ts — coordinates use [lng, lat] convention
 
+import type { Relacionado } from "@/lib/relacionados"
+
 export type ParqueEntry = {
   slug: string
   name: string
@@ -30,6 +32,7 @@ export type ParqueEntry = {
   plannerLocation?: string
   // GetYourGuide search links — label shown to user, query sent to gygSearchUrl()
   gygTours?: Array<{ label: string; query: string }>
+  relacionados?: Relacionado[]
 }
 
 export const PARQUES_CATALOG: ParqueEntry[] = [
@@ -296,6 +299,7 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.conaf.cl/parques/parque-nacional-puyehue/",
     faunaEspecies: ["condor-andino"],
     senderosEnElParque: [],
+    relacionados: [{ tipo: "termas", slug: "puyehue" }],
   },
   {
     slug: "chiloe",

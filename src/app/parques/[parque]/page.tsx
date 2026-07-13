@@ -23,6 +23,7 @@ import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
+import { RelacionadosSection } from "@/components/RelacionadosSection"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -315,6 +316,8 @@ export default async function ParqueNacionalPage({
                 Resultados en GetYourGuide · podemos recibir comisión por reservas
               </p>
             </section>
+
+            <RelacionadosSection items={entry.relacionados} />
           </div>
 
           {/* Right col — 2/5 */}

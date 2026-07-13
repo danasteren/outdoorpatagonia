@@ -8,6 +8,7 @@ import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
+import { RelacionadosSection } from "@/components/RelacionadosSection"
 import type { NivelAlerta } from "@/lib/apis/sernageomin"
 
 export const revalidate = 3600
@@ -200,6 +201,8 @@ export default async function VolcanPage({
                 ))}
               </div>
             </div>
+
+            <RelacionadosSection items={entry.relacionados} />
 
           </div>
 

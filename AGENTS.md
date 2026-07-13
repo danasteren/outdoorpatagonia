@@ -172,4 +172,9 @@ El usuario indica un tema (lugar, atractivo, dato) y con qué entrada(s) existen
 4. **Conectar cross-links**: cada entrada tiene un campo `relacionados: { tipo: string; slug: string }[]` que apunta a otras entradas (de cualquier catálogo). La conexión es **simétrica** — si A lista a B como relacionado, B también debe listar a A.
 5. Renderizar los relacionados en la página de detalle vía un componente compartido (`RelacionadosSection` o equivalente) que resuelve cada `{ tipo, slug }` contra el catálogo correspondiente.
 6. Sumar la nueva ruta a `src/app/sitemap.ts` si es una entrada con página propia.
+
+### Cuándo sumar la sección nueva al nav
+Una sección nueva (ej: `/termas`) tiene rutas, sitemap y SEO propios desde el día 1, pero **no entra al nav principal hasta tener masa crítica** (referencia: ~6-8 entradas, similar al tamaño con el que arrancó arqueología). Hasta ese punto se descubre vía `relacionados` desde secciones ya establecidas y por búsqueda interna — no ocupa un ícono en el nav por 1-2 entradas.
+
+Cuando llegue el momento de sumarla, el nav vive en `src/components/HeaderShell.tsx` (dos listas duplicadas: desktop dropdown y mobile — mantenerlas en sync).
 <!-- END:relacionados-workflow -->

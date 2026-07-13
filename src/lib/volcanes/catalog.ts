@@ -1,3 +1,5 @@
+import type { Relacionado } from "@/lib/relacionados"
+
 export type VolcanEntry = {
   slug: string
   nombre: string
@@ -13,6 +15,7 @@ export type VolcanEntry = {
   faq: Array<{ pregunta: string; respuesta: string }>
   urlFuente: string
   wikipediaTitle?: string
+  relacionados?: Relacionado[]
 }
 
 export const VOLCANES_CATALOG: VolcanEntry[] = [
@@ -215,6 +218,7 @@ export const VOLCANES_CATALOG: VolcanEntry[] = [
     ],
     urlFuente: "https://www.sernageomin.cl/?s=Villarrica+alerta",
     wikipediaTitle: "Volcán Villarrica",
+    relacionados: [{ tipo: "termas", slug: "geometricas" }],
   },
   {
     slug: "lanin",
