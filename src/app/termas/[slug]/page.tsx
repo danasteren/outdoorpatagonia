@@ -67,7 +67,9 @@ export default async function TermaPage({
     name: entry.nombre,
     description: entry.descripcion[0],
     url: `https://outdoorpatagonia.com/termas/${slug}`,
-    geo: { "@type": "GeoCoordinates", latitude: entry.lat, longitude: entry.lng },
+    ...(entry.lat != null && entry.lng != null && {
+      geo: { "@type": "GeoCoordinates", latitude: entry.lat, longitude: entry.lng },
+    }),
     touristType: { "@type": "Audience", audienceType: "outdoor enthusiasts, wellness tourism" },
     containedInPlace: { "@type": "Country", name: paisLabel },
   }
@@ -171,18 +173,22 @@ export default async function TermaPage({
                 <div className="flex items-start gap-2">
                   <MapPin size={16} strokeWidth={1.5} className="text-muted-foreground flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-foreground">
-                    {Math.abs(entry.lat).toFixed(3)}°S, {Math.abs(entry.lng).toFixed(3)}°O
+                    {entry.lat != null && entry.lng != null
+                      ? `${Math.abs(entry.lat).toFixed(3)}°S, ${Math.abs(entry.lng).toFixed(3)}°O`
+                      : entry.region}
                   </p>
                 </div>
-                <a
-                  href={`https://www.google.com/maps?q=${entry.lat},${entry.lng}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 flex items-center gap-1.5 text-xs text-primary hover:underline"
-                >
-                  <ExternalLink size={11} strokeWidth={1.5} />
-                  Ver en Google Maps
-                </a>
+                {entry.lat != null && entry.lng != null && (
+                  <a
+                    href={`https://www.google.com/maps?q=${entry.lat},${entry.lng}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 flex items-center gap-1.5 text-xs text-primary hover:underline"
+                  >
+                    <ExternalLink size={11} strokeWidth={1.5} />
+                    Ver en Google Maps
+                  </a>
+                )}
               </CardBody>
             </Card>
 

@@ -61,6 +61,7 @@ export const VOLCANES_CATALOG: VolcanEntry[] = [
     ],
     urlFuente: "https://www.sernageomin.cl/?s=Copahue+alerta",
     wikipediaTitle: "Volcán Copahue",
+    relacionados: [{ tipo: "termas", slug: "copahue" }],
   },
   {
     slug: "callaqui",
@@ -218,7 +219,10 @@ export const VOLCANES_CATALOG: VolcanEntry[] = [
     ],
     urlFuente: "https://www.sernageomin.cl/?s=Villarrica+alerta",
     wikipediaTitle: "Volcán Villarrica",
-    relacionados: [{ tipo: "termas", slug: "geometricas" }],
+    relacionados: [
+      { tipo: "termas", slug: "geometricas" },
+      { tipo: "termas", slug: "pucon-indomito" },
+    ],
   },
   {
     slug: "lanin",

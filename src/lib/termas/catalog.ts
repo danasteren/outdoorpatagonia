@@ -5,8 +5,9 @@ export type TermaEntry = {
   nombre: string
   pais: "CL" | "AR"
   region: string
-  lat: number
-  lng: number
+  // Omitir si la fuente oficial no publica coordenadas verificables — nunca estimar/inventar.
+  lat?: number
+  lng?: number
   temperaturaAgua: string
   descripcion: string[]
   datosExtra: Array<{ label: string; valor: string }>
@@ -100,6 +101,87 @@ export const TERMAS_CATALOG: TermaEntry[] = [
     urlFuente: "https://puyehue.cl/",
     wikipediaTitle: "Termas de Puyehue",
     relacionados: [{ tipo: "parque", slug: "puyehue" }],
+  },
+  {
+    slug: "pucon-indomito",
+    nombre: "Termas Pucón Indómito",
+    pais: "CL",
+    region: "Araucanía — camino Pucón–Huife km 27, Lote 2A (~27 km de Pucón)",
+    temperaturaAgua: "30–39 °C en piscinas y tinajas",
+    descripcion: [
+      "Termas Pucón Indómito es un complejo termal a orillas del río Liucura, a unos 27 km de Pucón por el camino totalmente pavimentado hacia Huife. A diferencia de las Termas Geométricas o Puyehue, es un desarrollo más reciente orientado al día de spa: combina piscinas al aire libre, una piscina techada y tinajas de madera individuales.",
+      "El complejo cuenta con 5 piscinas termales al aire libre —una de ellas con acceso para silla de ruedas—, una piscina techada y 13 tinajas privadas, además de sauna, spa con masajes y restaurante con cocina local. El agua se mantiene entre 30 y 39 °C según la piscina.",
+      "Está en el mismo corredor que las Termas de Huife y Menetué, en el valle del Liucura camino a Curarrehue, una de las zonas con mayor concentración de centros termales cerca de Pucón por su cercanía al volcán Villarrica.",
+    ],
+    datosExtra: [
+      { label: "Piscinas al aire libre", valor: "5 (una accesible en silla de ruedas)" },
+      { label: "Piscina techada", valor: "1" },
+      { label: "Tinajas privadas", valor: "13" },
+      { label: "Temperatura del agua", valor: "30–39 °C" },
+      { label: "Horario", valor: "Martes a domingo, 10:30–20:30 (piscinas cierran 20:00)" },
+      { label: "Distancia desde Pucón", valor: "~27 km, camino pavimentado a Huife" },
+    ],
+    faq: [
+      {
+        pregunta: "¿Cómo llegar a Termas Pucón Indómito?",
+        respuesta:
+          "Están a unos 27 km de Pucón por el camino pavimentado hacia Huife (Camino Pucón–Huife, km 27, Lote 2A), en el valle del río Liucura. El trayecto es de aproximadamente 30–40 minutos en auto desde el centro de Pucón.",
+      },
+      {
+        pregunta: "¿Termas Pucón Indómito abre todos los días?",
+        respuesta:
+          "No: el horario de atención es de martes a domingo, de 10:30 a 20:30 hs (las piscinas cierran a las 20:00). Permanece cerrado los lunes.",
+      },
+      {
+        pregunta: "¿Qué diferencia a Indómito de otras termas cerca de Pucón?",
+        respuesta:
+          "Indómito es un desarrollo más moderno orientado al spa de un día, con tinajas privadas de madera además de piscinas compartidas. Está en el mismo camino que Termas de Huife y Menetué, por lo que suele compararse con esas opciones más tradicionales de la zona.",
+      },
+    ],
+    urlFuente: "https://termaspuconindomito.cl/",
+    relacionados: [{ tipo: "volcan", slug: "villarrica" }],
+  },
+  {
+    slug: "copahue",
+    nombre: "Termas de Copahue",
+    pais: "AR",
+    region: "Neuquén — 19 km de Caviahue, a ~2.000 m s. n. m.",
+    lat: -37.8167,
+    lng: -71.1,
+    temperaturaAgua: "20–70 °C según laguna (Laguna del Chancho y Laguna Verde: 27–40 °C)",
+    descripcion: [
+      "Las Termas de Copahue son un complejo termal único en Argentina por combinar aguas, vapores, fangos y algas mineromedicinales en un mismo lugar, a los pies del volcán Copahue, dentro del Parque Provincial Caviahue-Copahue. El pueblo de Copahue está a 19 km de Caviahue y a unos 2.000 m s.n.m., lo que lo convierte en uno de los centros termales más altos de Sudamérica.",
+      "El pueblo pehuenche conocía las propiedades curativas de estas aguas desde mucho antes de la llegada de los criollos. El uso médico documentado comenzó en 1870, cuando el médico Pedro Ortiz Vélez empezó a traer pacientes con la autorización del cacique Cheuquel. El complejo es administrado hoy por el Ente Provincial de Termas de Neuquén (EPROTEN).",
+      "El agua termal —de origen volcánico directo, alimentada por la misma actividad que el volcán Copahue— varía entre 20 °C y 70 °C según la fuente. Las lagunas Laguna del Chancho y Laguna Verde, las más visitadas, oscilan entre 27 °C y 40 °C. Por la nieve, el complejo solo abre de diciembre a abril/mayo; el resto del año el acceso por la ruta provincial 26 queda cortado.",
+    ],
+    datosExtra: [
+      { label: "Altitud", valor: "~2.000 m s. n. m." },
+      { label: "Temperatura del agua", valor: "20–70 °C según fuente" },
+      { label: "Temporada de apertura", valor: "Diciembre a abril/mayo (cierra por nieve)" },
+      { label: "Distancia desde Caviahue", valor: "19 km" },
+      { label: "Uso médico documentado desde", valor: "1870" },
+      { label: "Administración", valor: "EPROTEN (Ente Provincial de Termas de Neuquén)" },
+    ],
+    faq: [
+      {
+        pregunta: "¿Cuándo se puede visitar las Termas de Copahue?",
+        respuesta:
+          "El complejo opera de diciembre a abril o mayo, según la nieve. El resto del año la ruta provincial 26 entre Caviahue y Copahue queda cortada por nevadas y el pueblo de Copahue prácticamente se vacía.",
+      },
+      {
+        pregunta: "¿Las Termas de Copahue están conectadas al volcán del mismo nombre?",
+        respuesta:
+          "Sí, el agua termal es de origen volcánico directo: proviene de la misma actividad geotérmica que mantiene activo al volcán Copahue, que se puede ver desde el complejo. Es importante verificar el nivel de alerta de SERNAGEOMIN/SEGEMAR antes de la visita, ya que el volcán tiene actividad eruptiva intermitente.",
+      },
+      {
+        pregunta: "¿Qué tratamientos ofrecen las Termas de Copahue?",
+        respuesta:
+          "Baños sulfurosos y ferruginosos, baños de vapor, aplicaciones de fango y algas, e hidromasajes, indicados para afecciones de piel, reuma, artritis y vías respiratorias. El complejo cuenta con seis tipos de aguas medicinales distintas.",
+      },
+    ],
+    urlFuente: "https://www.caviahue-copahue.gob.ar/termasdelcopahue/",
+    wikipediaTitle: "Termas de Copahue",
+    relacionados: [{ tipo: "volcan", slug: "copahue" }],
   },
 ]
 
