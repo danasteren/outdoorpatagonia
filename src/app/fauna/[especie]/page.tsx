@@ -337,7 +337,7 @@ export default async function FaunaEspeciePage({
             {resolvedDetail?.description && (
               <section>
                 <h2 className="text-xl font-bold mb-3">
-                  Sobre el {commonName.toLowerCase()}
+                  Sobre {entry?.genero === "f" ? "la" : "el"} {commonName.toLowerCase()}
                 </h2>
                 <p
                   className="text-muted-foreground leading-relaxed text-sm"

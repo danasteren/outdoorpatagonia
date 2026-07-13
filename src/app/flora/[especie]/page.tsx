@@ -220,7 +220,7 @@ export default async function FloraEspeciePage({
             {detail?.description && (
               <section>
                 <h2 className="text-xl font-bold mb-3">
-                  Sobre {commonName.toLowerCase().startsWith("a") || commonName.toLowerCase().startsWith("e") ? "el" : "la"} {commonName}
+                  Sobre {entry?.genero === "f" ? "la" : "el"} {commonName}
                 </h2>
                 <p
                   className="text-muted-foreground leading-relaxed text-sm"

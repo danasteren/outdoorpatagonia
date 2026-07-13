@@ -7,6 +7,7 @@ export type FaunaEntry = {
   commonNameEs: string
   commonNameEn: string
   category: FaunaCategory
+  genero: "m" | "f"
   parquesRelacionados: Array<{ nombre: string; slug: string }>
 }
 
@@ -18,6 +19,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Guanaco",
     commonNameEn: "Guanaco",
     category: "mamifero",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },
@@ -32,6 +34,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Puma",
     commonNameEn: "Mountain Lion",
     category: "mamifero",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },
@@ -45,6 +48,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Cóndor andino",
     commonNameEn: "Andean Condor",
     category: "ave",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Los Glaciares", slug: "los-glaciares" },
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
@@ -59,6 +63,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Huemul",
     commonNameEn: "South Andean Deer",
     category: "mamifero",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Los Glaciares", slug: "los-glaciares" },
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
@@ -72,6 +77,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Pingüino de Magallanes",
     commonNameEn: "Magellanic Penguin",
     category: "ave",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Monte León", slug: "monte-leon" },
       { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
@@ -85,6 +91,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Choique",
     commonNameEn: "Lesser Rhea",
     category: "ave",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },
@@ -98,6 +105,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Flamenco austral",
     commonNameEn: "Chilean Flamingo",
     category: "ave",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Los Flamencos", slug: "los-flamencos" },
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
@@ -110,6 +118,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Zorro gris patagónico",
     commonNameEn: "South American Gray Fox",
     category: "mamifero",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
@@ -123,6 +132,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Coipo",
     commonNameEn: "Coypu",
     category: "mamifero",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Los Glaciares", slug: "los-glaciares" },
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
@@ -135,6 +145,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Cauquén común",
     commonNameEn: "Upland Goose",
     category: "ave",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
@@ -147,6 +158,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Lobo marino del sur",
     commonNameEn: "South American Sea Lion",
     category: "mamifero",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Monte León", slug: "monte-leon" },
       { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
@@ -159,6 +171,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Ballena franca austral",
     commonNameEn: "Southern Right Whale",
     category: "mamifero",
+    genero: "f",
     parquesRelacionados: [
       { nombre: "Península Valdés", slug: "peninsula-valdes" },
       { nombre: "Monte León", slug: "monte-leon" },
@@ -171,6 +184,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Orca",
     commonNameEn: "Orca",
     category: "mamifero",
+    genero: "f",
     parquesRelacionados: [
       { nombre: "Península Valdés", slug: "peninsula-valdes" },
     ],
@@ -182,6 +196,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Delfín austral",
     commonNameEn: "Peale's Dolphin",
     category: "mamifero",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
@@ -194,6 +209,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Tonina overa",
     commonNameEn: "Commerson's Dolphin",
     category: "mamifero",
+    genero: "f",
     parquesRelacionados: [
       { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
       { nombre: "Monte León", slug: "monte-leon" },
@@ -206,6 +222,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Ballena jorobada",
     commonNameEn: "Humpback Whale",
     category: "mamifero",
+    genero: "f",
     parquesRelacionados: [
       { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
     ],
@@ -217,6 +234,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEs: "Elefante marino del sur",
     commonNameEn: "Southern Elephant Seal",
     category: "mamifero",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Monte León", slug: "monte-leon" },
       { nombre: "Valdés", slug: "valdes" },

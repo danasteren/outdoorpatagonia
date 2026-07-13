@@ -6,6 +6,7 @@ export type FloraEntry = {
   commonNameEs: string
   commonNameEn: string
   category: FloraCategory
+  genero: "m" | "f"
   taxonId?: number
   parquesRelacionados: Array<{ nombre: string; slug: string }>
 }
@@ -31,6 +32,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Lenga",
     commonNameEn: "Lenga beech",
     category: "arbol",
+    genero: "f",
     parquesRelacionados: [
       { nombre: "Los Glaciares", slug: "los-glaciares" },
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
@@ -44,6 +46,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Ñire",
     commonNameEn: "Antarctic beech",
     category: "arbol",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Los Glaciares", slug: "los-glaciares" },
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
@@ -56,6 +59,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Coihue",
     commonNameEn: "Coigue",
     category: "arbol",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Alerces", slug: "los-alerces" },
@@ -68,6 +72,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Alerce",
     commonNameEn: "Patagonian cypress",
     category: "arbol",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Los Alerces", slug: "los-alerces" },
     ],
@@ -78,6 +83,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Araucaria / Pehuén",
     commonNameEn: "Monkey puzzle tree",
     category: "arbol",
+    genero: "f",
     parquesRelacionados: [
       { nombre: "Lanín", slug: "lanin" },
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
@@ -90,6 +96,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Maitén",
     commonNameEn: "Maiten tree",
     category: "arbol",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Alerces", slug: "los-alerces" },
@@ -103,6 +110,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Arrayán / Quetri",
     commonNameEn: "Chilean myrtle",
     category: "arbol",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Alerces", slug: "los-alerces" },
@@ -115,6 +123,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Pitra / Patagua",
     commonNameEn: "Pitra",
     category: "arbol",
+    genero: "f",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Alerces", slug: "los-alerces" },
@@ -128,6 +137,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Ciprés de la cordillera",
     commonNameEn: "Cordilleran cypress",
     category: "arbol",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Alerces", slug: "los-alerces" },
@@ -142,6 +152,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Notro / Ciruelillo",
     commonNameEn: "Chilean firetree",
     category: "arbol",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },
@@ -155,6 +166,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Chacay hembra",
     commonNameEn: "Chacay hembra",
     category: "arbol",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Lanín", slug: "lanin" },
@@ -167,6 +179,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Trevo / Palo santo",
     commonNameEn: "Trevoa",
     category: "arbol",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Alerces", slug: "los-alerces" },
@@ -181,6 +194,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Avellano nativo / Guevín",
     commonNameEn: "Chilean hazel",
     category: "arbol",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Lanín", slug: "lanin" },
@@ -193,6 +207,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Calafate",
     commonNameEn: "Calafate barberry",
     category: "arbusto",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Los Glaciares", slug: "los-glaciares" },
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
@@ -205,6 +220,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Michay",
     commonNameEn: "Darwin's barberry",
     category: "arbusto",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Lanín", slug: "lanin" },
@@ -216,6 +232,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Chilco",
     commonNameEn: "Hummingbird fuchsia",
     category: "arbusto",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },
@@ -228,6 +245,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Amancay",
     commonNameEn: "Golden lily",
     category: "herbácea",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },
@@ -240,6 +258,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Colihue",
     commonNameEn: "Colihue bamboo",
     category: "arbusto",
+    genero: "m",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Alerces", slug: "los-alerces" },
@@ -252,6 +271,7 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEs: "Mutisia",
     commonNameEn: "Climbing mutisia",
     category: "enredadera",
+    genero: "f",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Lanín", slug: "lanin" },
