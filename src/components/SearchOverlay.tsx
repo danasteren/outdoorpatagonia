@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
   Search, X, PawPrint, Leaf, Mountain, MapPin, Flame, Pickaxe,
-  Globe, BookOpen, ArrowRight, Telescope, Activity, Bone,
+  Globe, BookOpen, ArrowRight, Telescope, Activity, Bone, Droplets,
 } from 'lucide-react'
 import Fuse from 'fuse.js'
 import type { SearchResultType } from '@/lib/search/types'
@@ -21,6 +21,7 @@ const TYPE_META: Record<SearchResultType, { Icon: React.ElementType; color: stri
   volcan:   { Icon: Flame,     color: 'text-red-500',             label: 'Volcán' },
   sector:      { Icon: Pickaxe, color: 'text-sky-500',    label: 'Escalada' },
   arqueologia: { Icon: Bone,    color: 'text-amber-600',  label: 'Arqueología' },
+  terma:       { Icon: Droplets, color: 'text-cyan-500',  label: 'Termas' },
 }
 
 const QUICK_LINKS = [

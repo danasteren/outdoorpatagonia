@@ -5,6 +5,7 @@ import { SENDEROS_CATALOG, DIFICULTAD_LABELS } from '@/lib/senderos/catalog'
 import { VOLCANES_CATALOG } from '@/lib/volcanes/catalog'
 import { ESCALADA_CATALOG } from '@/lib/escalada/catalog'
 import { ARQUEOLOGIA_CATALOG, CATEGORIA_LABELS as ARQUE_LABELS } from '@/lib/arqueologia/catalog'
+import { TERMAS_CATALOG } from '@/lib/termas/catalog'
 import type { SearchItem } from './types'
 
 const STATIC_PAGES: SearchItem[] = [
@@ -21,6 +22,7 @@ const STATIC_PAGES: SearchItem[] = [
   { type: 'pagina', title: 'Senderos y trekking', description: 'Los mejores senderos para hacer trekking en Patagonia', href: '/senderos', meta: 'Sección' },
   { type: 'pagina', title: 'Volcanes patagónicos', description: 'Volcanes activos y principales de la Patagonia', href: '/volcanes', meta: 'Sección' },
   { type: 'pagina', title: 'Arqueología patagónica', description: 'Dinosaurios, fósiles, sitios humanos y petroglifos de la Patagonia', href: '/arqueologia', meta: 'Sección' },
+  { type: 'pagina', title: 'Termas de la Patagonia', description: 'Termas naturales y complejos termales de Argentina y Chile', href: '/termas', meta: 'Sección' },
 ]
 
 function buildStaticIndex(): SearchItem[] {
@@ -85,7 +87,15 @@ function buildStaticIndex(): SearchItem[] {
     searchableText: a.nombreCientifico,
   }))
 
-  return [...STATIC_PAGES, ...fauna, ...flora, ...parques, ...senderos, ...volcanes, ...sectores, ...arqueologia]
+  const termas: SearchItem[] = TERMAS_CATALOG.map((t) => ({
+    type: 'terma',
+    title: t.nombre,
+    description: `${t.region} · ${t.temperaturaAgua}`,
+    href: `/termas/${t.slug}`,
+    meta: t.pais === 'AR' ? 'Argentina' : 'Chile',
+  }))
+
+  return [...STATIC_PAGES, ...fauna, ...flora, ...parques, ...senderos, ...volcanes, ...sectores, ...arqueologia, ...termas]
 }
 
 export const STATIC_SEARCH_INDEX: SearchItem[] = buildStaticIndex()
