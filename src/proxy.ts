@@ -6,6 +6,11 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const segments = pathname.split("/").filter(Boolean);
 
+  // /categoria/gastronomia moved to its own dedicated section at /gastronomia
+  if (pathname.replace(/\/+$/, "") === "/categoria/gastronomia") {
+    return NextResponse.redirect(new URL("/gastronomia", request.url), 301);
+  }
+
   // Redirect old flat-slug article URLs: /{slug} or /en/{slug}
   const isEsFlat = segments.length === 1;
   const isEnFlat = segments.length === 2 && segments[0] === "en";

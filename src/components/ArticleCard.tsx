@@ -8,6 +8,7 @@ import { toCategorySlug } from "@/lib/category";
 
 function categoryHref(category: string, language: string) {
   const slug = toCategorySlug(category);
+  if (language !== "en" && slug === "gastronomia") return "/gastronomia";
   return language === "en" ? `/en/category/${slug}` : `/categoria/${slug}`;
 }
 

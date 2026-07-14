@@ -42,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         .filter((a) => a.language === "es" && a.category)
         .map((a) => toCategorySlug(a.category as string))
     ),
-  ];
+  ].filter((cat) => cat !== "gastronomia");
   const enCategories = [
     ...new Set(
       rows
@@ -114,6 +114,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: BASE, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/en`, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/arqueologia`, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE}/gastronomia`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/volcanes`, changeFrequency: "daily", priority: 0.8 },
     { url: `${BASE}/termas`, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE}/mapa`, changeFrequency: "monthly", priority: 0.7 },

@@ -16,6 +16,7 @@ interface Article {
   cover_image_url: string | null;
   language: string;
   slug: string;
+  wp_id: number | null;
 }
 
 export function ArticleLayout({
@@ -46,8 +47,11 @@ export function ArticleLayout({
   const categoryHref = categorySlug
     ? isEnglish
       ? `/en/category/${categorySlug}`
-      : `/categoria/${categorySlug}`
+      : categorySlug === "gastronomia"
+        ? "/gastronomia"
+        : `/categoria/${categorySlug}`
     : null;
+  const isLegacy = article.wp_id != null;
   const breadcrumbItems = [
     { label: isEnglish ? "Home" : "Inicio", href: homeHref },
     ...(article.category && categoryHref
@@ -58,17 +62,19 @@ export function ArticleLayout({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Legacy content banner */}
+      {/* Legacy content banner — only for articles migrated from the old WordPress site */}
       <header className="sticky top-0 z-10 border-b border-border">
-        <Link
-          href={homeHref}
-          className="flex items-center justify-center gap-2 bg-[var(--color-teal)] px-4 py-2 text-center text-xs md:text-sm text-white hover:bg-[var(--color-teal)]/90 transition-colors"
-        >
-          <Sparkles size={14} strokeWidth={1.75} className="shrink-0" />
-          <span>
-            {bannerText} <span className="font-semibold underline underline-offset-2">{bannerCta}</span>
-          </span>
-        </Link>
+        {isLegacy && (
+          <Link
+            href={homeHref}
+            className="flex items-center justify-center gap-2 bg-[var(--color-teal)] px-4 py-2 text-center text-xs md:text-sm text-white hover:bg-[var(--color-teal)]/90 transition-colors"
+          >
+            <Sparkles size={14} strokeWidth={1.75} className="shrink-0" />
+            <span>
+              {bannerText} <span className="font-semibold underline underline-offset-2">{bannerCta}</span>
+            </span>
+          </Link>
+        )}
         {altLangHref && (
           <div className="bg-background/90 backdrop-blur">
             <div className="max-w-4xl mx-auto px-4 h-10 flex items-center justify-end">

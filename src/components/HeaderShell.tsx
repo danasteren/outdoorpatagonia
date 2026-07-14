@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
   PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe, Telescope,
-  User, LogOut, Backpack, ShieldCheck, Flame, Bone,
+  User, LogOut, Backpack, ShieldCheck, Flame, Bone, ChefHat,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
@@ -155,6 +155,7 @@ export function HeaderShell({
                     { href: '/estado', label: 'Estado', Icon: Activity },
                     { href: '/fauna', label: 'Fauna', Icon: PawPrint },
                     { href: '/flora', label: 'Flora', Icon: Leaf },
+                    { href: '/gastronomia', label: 'Gastronomía', Icon: ChefHat },
                     { href: '/parques', label: 'Parques', Icon: Mountain },
                     { href: '/senderos', label: 'Senderos', Icon: MapPin },
                     { href: '/volcanes', label: 'Volcanes', Icon: Flame },
@@ -379,6 +380,7 @@ export function HeaderShell({
               { href: '/estado', label: 'Estado', Icon: Activity },
               { href: '/fauna', label: 'Fauna', Icon: PawPrint },
               { href: '/flora', label: 'Flora', Icon: Leaf },
+              { href: '/gastronomia', label: 'Gastronomía', Icon: ChefHat },
               { href: '/parques', label: 'Parques', Icon: Mountain },
               { href: '/senderos', label: 'Senderos', Icon: MapPin },
               { href: '/volcanes', label: 'Volcanes', Icon: Flame },

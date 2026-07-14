@@ -45,7 +45,10 @@ export async function generateStaticParams() {
     .not("category", "is", null);
 
   const cats = [...new Set((data ?? []).map((r) => r.category as string))];
-  return cats.map((cat) => ({ cat: toCategorySlug(cat) }));
+  return cats
+    .map((cat) => toCategorySlug(cat))
+    .filter((cat) => cat !== "gastronomia")
+    .map((cat) => ({ cat }));
 }
 
 export async function generateMetadata({
@@ -72,6 +75,8 @@ export default async function CategoryPage({
   params: Promise<{ cat: string }>;
 }) {
   const { cat } = await params;
+  if (cat === "gastronomia") notFound(); // real 301 handled in proxy.ts
+
   const categoryName = await resolveCategoryName(cat);
   if (!categoryName) notFound();
 

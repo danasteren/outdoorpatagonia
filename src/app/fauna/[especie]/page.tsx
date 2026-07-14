@@ -42,7 +42,7 @@ const getFaunaArticle = cache(async (slug: string) => {
   const { data } = await buildClient()
     .from("articles")
     .select(
-      "title, excerpt, content, category, tags, reading_time_min, published_at, cover_image_url, language, slug, seo_title, seo_description"
+      "title, excerpt, content, category, tags, reading_time_min, published_at, cover_image_url, language, slug, seo_title, seo_description, wp_id"
     )
     .eq("slug", slug)
     .eq("language", "es")
