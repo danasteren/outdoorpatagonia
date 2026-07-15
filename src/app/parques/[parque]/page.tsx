@@ -140,6 +140,7 @@ export default async function ParqueNacionalPage({
         eyebrow="Parque Nacional"
         title={entry.name}
         subtitle={`${locationLabel} · ${entry.surface}`}
+        save={{ slug: entry.slug, title: entry.name, category: "parques" }}
       />
 
       {/* Weather strip */}

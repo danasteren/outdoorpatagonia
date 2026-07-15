@@ -175,6 +175,7 @@ export default async function FloraEspeciePage({
         eyebrow={categoryLabel ?? "Flora"}
         title={commonName}
         subtitle={<p className="italic">{scientificName}</p>}
+        save={{ slug: especie, title: commonName, category: "flora" }}
       />
 
       {/* Quick stats */}

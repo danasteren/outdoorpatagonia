@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
 import {
   type Destino,
@@ -17,8 +18,16 @@ const MONTHS = [
 const DESTINO_KEYS = Object.keys(DESTINOS) as Destino[];
 
 export function QueLevarClient() {
-  const [destino, setDestino] = useState<Destino | null>(null);
-  const [mes, setMes] = useState<number | null>(null);
+  const searchParams = useSearchParams();
+  const destinoParam = searchParams.get("destino") as Destino | null;
+  const mesParam = Number(searchParams.get("mes"))
+
+  const [destino, setDestino] = useState<Destino | null>(
+    destinoParam && DESTINO_KEYS.includes(destinoParam) ? destinoParam : null
+  );
+  const [mes, setMes] = useState<number | null>(
+    mesParam >= 1 && mesParam <= 12 ? mesParam : null
+  );
 
   const result = destino && mes ? getPackingResult(destino, mes) : null;
 

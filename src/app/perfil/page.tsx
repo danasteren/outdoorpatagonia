@@ -1,10 +1,11 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { MapPin, BookOpen, Calendar, LogOut, Compass, ArrowRight, Bookmark, Bell, ChevronRight } from 'lucide-react'
+import { MapPin, BookOpen, Calendar, LogOut, Compass, ArrowRight, Bookmark, Bell, ChevronRight, PartyPopper, ShoppingBag, Sparkles } from 'lucide-react'
 import { getSavedItineraries, getSavedArticles } from '@/lib/actions/user-data'
 import { DeleteItineraryButton } from '@/components/perfil/DeleteItineraryButton'
 import { toCategorySlug } from '@/lib/category'
+import { getUpcomingTrip, getRecommendations, matchDestino } from '@/lib/perfil/insights'
 
 export const metadata = {
   title: 'Mi perfil — Outdoor Patagonia',
@@ -29,6 +30,18 @@ function formatMemberSince(dateStr: string) {
   return date.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' })
 }
 
+// Patrón de líneas topográficas (curvas de nivel) tileable, en el mismo tono
+// que el resto del hero — reemplaza los blobs de gradiente por algo con
+// identidad de marca (outdoor/montaña) y drift sutil vía `animate-hero-pan`.
+const TOPO_PATTERN = `data:image/svg+xml,${encodeURIComponent(`
+<svg xmlns='http://www.w3.org/2000/svg' width='360' height='180'>
+  <path d='M-20 30 Q 25 10 70 30 T 160 30 T 250 30 T 340 30 T 430 30' stroke='#87cabf' stroke-width='1' fill='none' opacity='0.55'/>
+  <path d='M-20 70 Q 25 45 70 70 T 160 70 T 250 70 T 340 70 T 430 70' stroke='#87cabf' stroke-width='1' fill='none' opacity='0.35'/>
+  <path d='M-20 110 Q 25 130 70 110 T 160 110 T 250 110 T 340 110 T 430 110' stroke='#4b9492' stroke-width='1' fill='none' opacity='0.4'/>
+  <path d='M-20 150 Q 25 165 70 150 T 160 150 T 250 150 T 340 150 T 430 150' stroke='#4b9492' stroke-width='1' fill='none' opacity='0.25'/>
+</svg>
+`)}`
+
 export default async function PerfilPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -43,16 +56,19 @@ export default async function PerfilPage() {
   const avatarUrl = user.user_metadata?.avatar_url as string | undefined
   const memberSince = user.created_at ? formatMemberSince(user.created_at) : null
 
+  const upcomingTrip = getUpcomingTrip(itineraries)
+  const recommendations = getRecommendations(articles.map((a) => ({ slug: a.slug, category: a.category })))
+
   return (
     <div className="min-h-screen">
       {/* ── Hero ─────────────────────────────────────────────── */}
       <div className="bg-[var(--color-forest)] relative overflow-hidden">
         <div
-          className="absolute inset-0 opacity-20 pointer-events-none"
+          className="absolute inset-0 opacity-20 pointer-events-none animate-hero-pan"
           style={{
-            backgroundImage: `radial-gradient(ellipse at 15% 60%, #4b9492 0%, transparent 55%),
-                              radial-gradient(ellipse at 85% 10%, #87cabf 0%, transparent 45%),
-                              radial-gradient(ellipse at 50% 100%, #1a3a2a 0%, transparent 60%)`,
+            backgroundImage: `url("${TOPO_PATTERN}")`,
+            backgroundRepeat: 'repeat',
+            backgroundSize: '360px 180px',
           }}
         />
 
@@ -89,10 +105,28 @@ export default async function PerfilPage() {
             <div className="px-7 py-4 text-center">
               <p className="text-2xl font-bold text-white tabular-nums">{articles.length}</p>
               <p className="text-[10px] text-[var(--color-teal-light)]/70 uppercase tracking-widest mt-0.5">
-                {articles.length === 1 ? 'Artículo' : 'Artículos'}
+                {articles.length === 1 ? 'Guardado' : 'Guardados'}
               </p>
             </div>
           </div>
+
+          {/* Countdown al próximo viaje */}
+          {upcomingTrip && (
+            <div className="mt-5 flex justify-center">
+              <Link
+                href={`/perfil/viajes/${upcomingTrip.itinerary.id}`}
+                className="inline-flex items-center gap-2 text-xs font-medium text-white bg-[var(--color-teal)]/20 border border-[var(--color-teal)]/30 hover:bg-[var(--color-teal)]/30 transition-colors px-4 py-2 rounded-full"
+              >
+                <PartyPopper size={13} strokeWidth={1.75} />
+                {upcomingTrip.daysUntil === 0
+                  ? '¡Tu viaje empieza hoy!'
+                  : upcomingTrip.daysUntil === 1
+                  ? 'Falta 1 día para tu viaje'
+                  : `Faltan ${upcomingTrip.daysUntil} días para tu viaje`}
+                <ArrowRight size={11} strokeWidth={2} />
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Bottom fade into background */}
@@ -137,34 +171,49 @@ export default async function PerfilPage() {
             </div>
           ) : (
             <ul className="space-y-3">
-              {itineraries.map((it) => (
+              {itineraries.map((it) => {
+                const destino = matchDestino(it.result)
+                return (
                 <li
                   key={it.id}
                   className="flex items-center gap-4 p-4 rounded-2xl border border-border bg-card hover:shadow-[var(--shadow-hover)] transition-shadow"
                 >
-                  <div className="shrink-0 w-14 h-14 rounded-xl bg-[var(--color-forest)] flex flex-col items-center justify-center gap-0.5">
-                    <span className="text-[9px] uppercase tracking-widest text-[var(--color-teal-light)]/60 font-medium">
-                      {MONTH_NAMES[it.form_data.month]}
-                    </span>
-                    <span className="text-base font-bold text-white leading-none">{it.form_data.year}</span>
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm text-foreground truncate">{it.title}</p>
-                    {it.subtitle && (
-                      <p className="text-xs text-muted-foreground truncate mt-0.5">{it.subtitle}</p>
-                    )}
-                    <div className="flex items-center gap-1.5 mt-1.5">
-                      <Calendar size={10} strokeWidth={1.5} className="text-muted-foreground/60" />
-                      <span className="text-xs text-muted-foreground">
-                        {it.form_data.days} {it.form_data.days === 1 ? 'día' : 'días'} · {MONTH_NAMES_FULL[it.form_data.month]} {it.form_data.year}
+                  <Link href={`/perfil/viajes/${it.id}`} className="flex items-center gap-4 flex-1 min-w-0">
+                    <div className="shrink-0 w-14 h-14 rounded-xl bg-[var(--color-forest)] flex flex-col items-center justify-center gap-0.5">
+                      <span className="text-[9px] uppercase tracking-widest text-[var(--color-teal-light)]/60 font-medium">
+                        {MONTH_NAMES[it.form_data.month]}
                       </span>
+                      <span className="text-base font-bold text-white leading-none">{it.form_data.year}</span>
                     </div>
-                  </div>
 
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm text-foreground truncate">{it.title}</p>
+                      {it.subtitle && (
+                        <p className="text-xs text-muted-foreground truncate mt-0.5">{it.subtitle}</p>
+                      )}
+                      <div className="flex items-center gap-1.5 mt-1.5">
+                        <Calendar size={10} strokeWidth={1.5} className="text-muted-foreground/60" />
+                        <span className="text-xs text-muted-foreground">
+                          {it.form_data.days} {it.form_data.days === 1 ? 'día' : 'días'} · {MONTH_NAMES_FULL[it.form_data.month]} {it.form_data.year}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+
+                  {destino && (
+                    <Link
+                      href={`/planear/que-llevar?destino=${destino}&mes=${it.form_data.month}`}
+                      title="Ver qué llevar para este viaje"
+                      className="shrink-0 text-muted-foreground hover:text-[var(--color-teal)] transition-colors"
+                    >
+                      <ShoppingBag size={15} strokeWidth={1.5} />
+                    </Link>
+                  )}
+                  <ChevronRight size={16} strokeWidth={1.5} className="text-muted-foreground/40 shrink-0" />
                   <DeleteItineraryButton id={it.id} />
                 </li>
-              ))}
+                )
+              })}
             </ul>
           )}
         </section>
@@ -176,7 +225,7 @@ export default async function PerfilPage() {
               <div className="w-8 h-8 rounded-xl bg-[var(--color-terracotta)]/10 flex items-center justify-center">
                 <BookOpen size={15} strokeWidth={1.5} className="text-[var(--color-terracotta)]" />
               </div>
-              <h2 className="font-semibold text-base">Artículos guardados</h2>
+              <h2 className="font-semibold text-base">Contenido guardado</h2>
             </div>
             {articles.length > 0 && (
               <span className="text-xs bg-[var(--color-terracotta)]/10 text-[var(--color-terracotta)] px-2.5 py-0.5 rounded-full font-semibold">
@@ -190,9 +239,9 @@ export default async function PerfilPage() {
               <div className="w-14 h-14 rounded-2xl bg-[var(--color-terracotta)]/8 flex items-center justify-center mx-auto mb-4">
                 <Bookmark size={24} strokeWidth={1.2} className="text-[var(--color-terracotta)]" />
               </div>
-              <p className="text-sm font-semibold text-foreground mb-1.5">Todavía no guardaste ningún artículo</p>
+              <p className="text-sm font-semibold text-foreground mb-1.5">Todavía no guardaste nada</p>
               <p className="text-xs text-muted-foreground mb-6 max-w-xs mx-auto">
-                Marcá los artículos que te interesen para encontrarlos fácilmente después
+                Marcá parques, senderos, termas o artículos que te interesen para encontrarlos fácilmente después
               </p>
               <Link
                 href="/"
@@ -227,6 +276,38 @@ export default async function PerfilPage() {
             </ul>
           )}
         </section>
+
+        {/* Recomendaciones basadas en lo guardado */}
+        {recommendations.length > 0 && (
+          <section>
+            <div className="flex items-center gap-2.5 mb-4">
+              <div className="w-8 h-8 rounded-xl bg-[var(--color-teal)]/10 flex items-center justify-center">
+                <Sparkles size={15} strokeWidth={1.5} className="text-[var(--color-teal)]" />
+              </div>
+              <h2 className="font-semibold text-base">Basado en lo que guardaste</h2>
+            </div>
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {recommendations.map((r) => (
+                <li key={r.href}>
+                  <Link
+                    href={r.href}
+                    className="flex items-center gap-3 px-4 py-3.5 rounded-2xl border border-border bg-card hover:shadow-[var(--shadow-hover)] transition-shadow group"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground group-hover:text-[var(--color-teal)] transition-colors truncate">
+                        {r.nombre}
+                      </p>
+                      <span className="text-[10px] uppercase tracking-wide font-semibold text-muted-foreground">
+                        {r.categoria}
+                      </span>
+                    </div>
+                    <ArrowRight size={14} strokeWidth={1.5} className="shrink-0 text-muted-foreground/40 group-hover:text-[var(--color-teal)] transition-colors" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* Configuración */}
         <section>

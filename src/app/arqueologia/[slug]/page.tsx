@@ -162,6 +162,7 @@ export default async function ArqueologiaDetailPage({
             <p className="mt-1">{paisLabel} · {entry.provincia} · {entry.era}</p>
           </>
         }
+        save={{ slug: entry.slug, title: entry.nombre, category: "arqueologia" }}
       />
 
       {/* Content */}

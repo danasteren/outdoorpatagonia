@@ -24,6 +24,29 @@ export async function saveItinerary(form: TripFormData, result: ItineraryResult)
   return { id: data.id as string }
 }
 
+export async function getSavedItinerary(id: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data } = await supabase
+    .from("saved_itineraries")
+    .select("id, title, subtitle, created_at, form_data, result")
+    .eq("id", id)
+    .eq("user_id", user.id)
+    .maybeSingle()
+
+  if (!data) return null
+  return data as {
+    id: string
+    title: string
+    subtitle: string | null
+    created_at: string
+    form_data: TripFormData
+    result: ItineraryResult
+  }
+}
+
 export async function deleteItinerary(id: string) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -43,7 +66,7 @@ export async function getSavedItineraries() {
 
   const { data } = await supabase
     .from("saved_itineraries")
-    .select("id, title, subtitle, created_at, form_data")
+    .select("id, title, subtitle, created_at, form_data, result")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })
 
@@ -53,6 +76,7 @@ export async function getSavedItineraries() {
     subtitle: string | null
     created_at: string
     form_data: TripFormData
+    result: ItineraryResult
   }>
 }
 

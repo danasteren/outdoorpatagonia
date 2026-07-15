@@ -9,10 +9,13 @@ export function FavoriteButton({
   slug,
   title,
   category,
+  variant = "default",
 }: {
   slug: string
   title: string
   category: string | null
+  /** "icon": botón compacto tipo glass-pill para superponer sobre una foto de hero. */
+  variant?: "default" | "icon"
 }) {
   const [isFavorite, setIsFavorite] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -54,6 +57,34 @@ export function FavoriteButton({
   }
 
   if (!checked) return null
+
+  if (variant === "icon") {
+    return (
+      <div className="relative inline-flex">
+        <button
+          type="button"
+          onClick={handleClick}
+          disabled={loading}
+          aria-label={isFavorite ? "Quitar de guardados" : "Guardar"}
+          title={isFavorite ? "Quitar de guardados" : "Guardar"}
+          className="flex items-center justify-center w-8 lg:w-9 h-8 lg:h-9 rounded-lg backdrop-blur-sm bg-black/40 border border-white/20 text-white/80 hover:bg-black/65 hover:text-white transition-all cursor-pointer disabled:opacity-50"
+        >
+          {loading ? (
+            <Loader2 size={18} className="animate-spin" />
+          ) : isFavorite ? (
+            <BookmarkCheck size={18} className="text-[var(--color-teal-light)]" />
+          ) : (
+            <Bookmark size={18} />
+          )}
+        </button>
+        {showHint && (
+          <span className="absolute top-0 right-full mr-2 whitespace-nowrap text-xs bg-popover border border-border rounded-lg px-2.5 py-1.5 shadow-sm text-muted-foreground z-10">
+            Iniciá sesión para guardar
+          </span>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className="relative inline-flex">

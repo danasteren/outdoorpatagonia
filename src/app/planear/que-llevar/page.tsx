@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { QueLevarClient } from "./QueLevarClient";
 
 export const metadata: Metadata = {
@@ -32,7 +33,9 @@ export default function QueLevarPage() {
           Seleccioná tu destino y el mes de viaje para ver la lista exacta de ropa y equipamiento.
         </p>
       </div>
-      <QueLevarClient />
+      <Suspense>
+        <QueLevarClient />
+      </Suspense>
     </main>
   );
 }

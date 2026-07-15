@@ -103,6 +103,7 @@ export default async function TermaPage({
         eyebrow="Termas"
         title={entry.nombre}
         subtitle={`${paisLabel} · ${entry.region}`}
+        save={{ slug: entry.slug, title: entry.nombre, category: "termas" }}
       />
 
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-8">

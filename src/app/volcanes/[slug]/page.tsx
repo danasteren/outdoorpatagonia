@@ -136,6 +136,7 @@ export default async function VolcanPage({
         eyebrow="Volcán"
         title={entry.nombre}
         subtitle={`${paisLabel} · ${entry.elevacion.toLocaleString("es-AR")} m s. n. m.`}
+        save={{ slug: entry.slug, title: entry.nombre, category: "volcanes" }}
       />
 
       {/* Content */}

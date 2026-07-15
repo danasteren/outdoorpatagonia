@@ -100,6 +100,7 @@ export default async function SenderoPage({
             Inicio: {entry.inicio}
           </>
         }
+        save={{ slug: entry.slug, title: entry.title, category: "senderos" }}
       />
 
       {/* Stats strip */}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Share2, Link2, Maximize2, X, Check } from "lucide-react"
+import { FavoriteButton } from "@/components/FavoriteButton"
 
 function WhatsAppIcon() {
   return (
@@ -25,9 +26,10 @@ interface HeroActionsProps {
   imageUrl?: string
   imageAlt?: string
   title?: string
+  save?: { slug: string; title: string; category: string }
 }
 
-export function HeroActions({ imageUrl, imageAlt = "imagen", title }: HeroActionsProps) {
+export function HeroActions({ imageUrl, imageAlt = "imagen", title, save }: HeroActionsProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -113,6 +115,10 @@ export function HeroActions({ imageUrl, imageAlt = "imagen", title }: HeroAction
         className={`fixed top-20 lg:top-24 right-2 lg:right-6 flex flex-col items-center gap-1.5 z-20 transition-opacity duration-300 ${heroVisible ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
       >
+        {save && (
+          <FavoriteButton slug={save.slug} title={save.title} category={save.category} variant="icon" />
+        )}
+
         {imageUrl && (
           <button
             onClick={() => setLightboxOpen(true)}

@@ -26,6 +26,7 @@ import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
 import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { Breadcrumb } from "@/components/primitives/Breadcrumb"
+import { FavoriteButton } from "@/components/FavoriteButton"
 import { SectorMapClient } from "./SectorMapClient"
 import { RoutesTable } from "./RoutesTable"
 
@@ -234,6 +235,9 @@ export default async function SectorPage({
               }`}
             >
               {PAIS_LABELS[entry.pais]}
+            </span>
+            <span className="ml-auto">
+              <FavoriteButton slug={entry.slug} title={entry.nombre} category="escalada" variant="icon" />
             </span>
           </div>
 

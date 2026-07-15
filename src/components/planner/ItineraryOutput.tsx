@@ -10,6 +10,7 @@ import {
   ArrowLeft,
   ExternalLink,
 } from "lucide-react";
+import Link from "next/link";
 import type { ItineraryResult, TripFormData } from "@/lib/planner/types";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/primitives";
 import { Button } from "@/components/primitives";
@@ -56,16 +57,23 @@ const MONTH_NAMES = [
 interface ItineraryOutputProps {
   result: ItineraryResult;
   form: TripFormData;
-  onReset: () => void;
+  onReset?: () => void;
+  /** Viaje ya guardado en el perfil — oculta el botón flotante de guardar. */
+  alreadySaved?: boolean;
+  /** Alternativa a onReset: link de "volver" en vez del botón de reset. */
+  backHref?: string;
+  backLabel?: string;
 }
 
-export function ItineraryOutput({ result, form, onReset }: ItineraryOutputProps) {
+export function ItineraryOutput({ result, form, onReset, alreadySaved, backHref, backLabel }: ItineraryOutputProps) {
   return (
     <div className="max-w-3xl mx-auto space-y-8 pb-24">
       {/* Floating save button */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-6 z-50">
-        <SaveItineraryButton form={form} result={result} floating />
-      </div>
+      {!alreadySaved && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-6 z-50">
+          <SaveItineraryButton form={form} result={result} floating />
+        </div>
+      )}
 
       {/* Header */}
       <div className="text-center space-y-2 pt-4">
@@ -191,12 +199,21 @@ export function ItineraryOutput({ result, form, onReset }: ItineraryOutputProps)
         </Section>
       )}
 
-      {/* Reset */}
+      {/* Volver */}
       <div className="flex justify-center pt-4">
-        <Button variant="brand-secondary" onClick={onReset}>
-          <ArrowLeft size={16} />
-          Planear otro viaje
-        </Button>
+        {onReset ? (
+          <Button variant="brand-secondary" onClick={onReset}>
+            <ArrowLeft size={16} />
+            Planear otro viaje
+          </Button>
+        ) : backHref ? (
+          <Button variant="brand-secondary" asChild>
+            <Link href={backHref}>
+              <ArrowLeft size={16} />
+              {backLabel ?? "Volver"}
+            </Link>
+          </Button>
+        ) : null}
       </div>
     </div>
   );

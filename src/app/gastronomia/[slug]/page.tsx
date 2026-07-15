@@ -122,6 +122,7 @@ export default async function GastronomiaEntryPage({
         eyebrow="Gastronomía"
         title={entry.nombre}
         subtitle={`${PAIS_LABEL[entry.pais]} · ${CATEGORIA_LABEL[entry.categoria]}`}
+        save={{ slug: entry.slug, title: entry.nombre, category: "gastronomia" }}
       />
 
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-8">

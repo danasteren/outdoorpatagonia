@@ -20,6 +20,8 @@ interface DetailHeroProps {
   title: string
   /** Line(s) under the title — location · key stat, or scientific name. */
   subtitle?: ReactNode
+  /** Habilita el botón de guardar en las acciones del hero. */
+  save?: { slug: string; title: string; category: string }
 }
 
 /** Photo/gradient hero for detail pages — breadcrumb + icon/eyebrow row + title, no clickable-looking badges. */
@@ -31,6 +33,7 @@ export function DetailHero({
   eyebrow,
   title,
   subtitle,
+  save,
 }: DetailHeroProps) {
   return (
     <div className="relative h-72 md:h-96 flex flex-col justify-end overflow-hidden">
@@ -60,7 +63,7 @@ export function DetailHero({
         />
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-      <HeroActions imageUrl={image?.url} imageAlt={image?.alt} title={title} />
+      <HeroActions imageUrl={image?.url} imageAlt={image?.alt} title={title} save={save} />
       <div className="relative px-6 md:px-10 pb-8">
         <div className="max-w-6xl mx-auto">
           <Breadcrumb items={breadcrumb} className="mb-3 text-white/60" />
