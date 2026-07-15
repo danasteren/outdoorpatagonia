@@ -6,7 +6,7 @@ import { Modal, ModalContent } from "@/components/primitives"
 import type { PhotoSighting } from "@/lib/apis/inaturalist"
 
 function largeUrl(smallUrl: string): string {
-  return smallUrl.replace(/\/small\b/, "/medium")
+  return smallUrl.replace(/\/small\b/, "/large")
 }
 
 interface Props {
@@ -42,11 +42,10 @@ export function PhotoGrid({ photos }: Props) {
                 alt={displayName(p)}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end p-2">
-                <p className="text-white text-[10px] font-medium leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300 line-clamp-2 text-left">
-                  {displayName(p)}
-                </p>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+              <p className="absolute bottom-0 left-0 right-0 p-2 text-white text-[10px] font-medium leading-tight line-clamp-2 text-left">
+                {displayName(p)}
+              </p>
             </button>
           ))}
         </div>
@@ -64,14 +63,14 @@ export function PhotoGrid({ photos }: Props) {
       </div>
 
       <Modal open={selected !== null} onOpenChange={(open) => !open && setSelected(null)}>
-        <ModalContent className="max-w-sm p-0 overflow-hidden">
+        <ModalContent className="w-[calc(100%-2rem)] max-w-sm sm:w-full sm:max-w-lg md:max-w-2xl lg:max-w-3xl p-0 overflow-hidden">
           {selected && (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={largeUrl(selected.photoUrl)}
                 alt={displayName(selected)}
-                className="w-full h-64 object-cover"
+                className="w-full h-64 sm:h-80 md:h-[28rem] lg:h-[32rem] object-cover"
               />
               <div className="p-5">
                 <p className="font-semibold text-foreground mb-0.5">{displayName(selected)}</p>
