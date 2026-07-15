@@ -7,6 +7,7 @@ import { SENDEROS_CATALOG } from "@/lib/senderos/catalog";
 import { VOLCANES_CATALOG } from "@/lib/volcanes/catalog";
 import { ARQUEOLOGIA_CATALOG } from "@/lib/arqueologia/catalog";
 import { TERMAS_CATALOG } from "@/lib/termas/catalog";
+import { GASTRONOMIA_CATALOG } from "@/lib/gastronomia/catalog";
 
 const BASE = "https://outdoorpatagonia.com";
 
@@ -23,7 +24,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const rows = articles ?? [];
 
-  const articleUrls: MetadataRoute.Sitemap = rows.map((a) => {
+  const articleUrls: MetadataRoute.Sitemap = rows
+    .filter((a) => !(a.language === "es" && toCategorySlug(a.category ?? "") === "gastronomia"))
+    .map((a) => {
     const cat = toCategorySlug(a.category ?? "");
     return {
       url:
@@ -100,6 +103,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const gastronomiaUrls: MetadataRoute.Sitemap = GASTRONOMIA_CATALOG.map((g) => ({
+    url: `${BASE}/gastronomia/${g.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
   const { data: operatorsData } = await supabase
     .from("operators")
     .select("slug");
@@ -129,6 +138,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...faunaUrls,
     ...arqueologiaUrls,
     ...termasUrls,
+    ...gastronomiaUrls,
     ...categoryUrls,
     ...articleUrls,
   ];
