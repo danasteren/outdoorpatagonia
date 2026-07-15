@@ -7,8 +7,9 @@ import { ARQUEOLOGIA_CATALOG } from "@/lib/arqueologia/catalog"
 import { ESCALADA_CATALOG } from "@/lib/escalada/catalog"
 import { TERMAS_CATALOG } from "@/lib/termas/catalog"
 import { GASTRONOMIA_CATALOG } from "@/lib/gastronomia/catalog"
+import { FAUNA_CATALOG } from "@/lib/fauna/catalog"
 
-export type RelacionadoTipo = "volcan" | "parque" | "arqueologia" | "escalada" | "termas" | "gastronomia"
+export type RelacionadoTipo = "volcan" | "parque" | "arqueologia" | "escalada" | "termas" | "gastronomia" | "fauna"
 
 export type Relacionado = {
   tipo: RelacionadoTipo
@@ -46,6 +47,10 @@ export function resolveRelacionado(r: Relacionado): RelacionadoResuelto | null {
     case "gastronomia": {
       const e = GASTRONOMIA_CATALOG.find((g) => g.slug === r.slug)
       return e ? { nombre: e.nombre, href: `/gastronomia/${e.slug}`, categoria: "Gastronomía" } : null
+    }
+    case "fauna": {
+      const e = FAUNA_CATALOG.find((f) => f.slug === r.slug)
+      return e ? { nombre: e.commonNameEs, href: `/fauna/${e.slug}`, categoria: "Fauna" } : null
     }
     default:
       return null

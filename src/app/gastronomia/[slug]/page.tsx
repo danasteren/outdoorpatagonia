@@ -2,29 +2,20 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ChefHat, ExternalLink, ChevronLeft, Tag } from "lucide-react"
-import { GASTRONOMIA_CATALOG, getGastronomiaEntry } from "@/lib/gastronomia/catalog"
+import {
+  GASTRONOMIA_CATALOG,
+  getGastronomiaEntry,
+  CATEGORIA_LABELS,
+  PAIS_LABELS,
+} from "@/lib/gastronomia/catalog"
 import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
+import { fetchPexelsPhoto } from "@/lib/apis/pexels"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
 import { RelacionadosSection } from "@/components/RelacionadosSection"
 
 export const revalidate = 86400
 export const dynamicParams = false
-
-const PAIS_LABEL: Record<string, string> = {
-  AR: "Argentina",
-  CL: "Chile",
-  "AR/CL": "Argentina y Chile",
-}
-
-const CATEGORIA_LABEL: Record<string, string> = {
-  plato: "Plato",
-  bebida: "Bebida",
-  postre: "Postre",
-  condimento: "Condimento",
-  conserva: "Conserva",
-  ingrediente: "Ingrediente",
-}
 
 export function generateStaticParams() {
   return GASTRONOMIA_CATALOG.map((e) => ({ slug: e.slug }))
@@ -66,16 +57,23 @@ export default async function GastronomiaEntryPage({
   const entry = getGastronomiaEntry(slug)
   if (!entry) notFound()
 
+  const pexelsPhoto =
+    !entry.coverImageUrl && entry.pexelsQuery
+      ? await fetchPexelsPhoto(entry.pexelsQuery)
+      : null
+
   const wikiImage =
-    !entry.coverImageUrl && entry.wikipediaTitle
+    !entry.coverImageUrl && !pexelsPhoto && entry.wikipediaTitle
       ? await fetchWikipediaLeadImage(entry.wikipediaTitle)
       : null
 
   const heroImage = entry.coverImageUrl
     ? { url: entry.coverImageUrl, alt: entry.nombre }
-    : wikiImage
-      ? { url: wikiImage.url, alt: entry.nombre, credit: "Wikipedia", creditUrl: wikiImage.pageUrl }
-      : null
+    : pexelsPhoto
+      ? { url: pexelsPhoto.url, alt: entry.nombre, credit: pexelsPhoto.photographer, creditUrl: pexelsPhoto.pageUrl }
+      : wikiImage
+        ? { url: wikiImage.url, alt: entry.nombre, credit: "Wikipedia", creditUrl: wikiImage.pageUrl }
+        : null
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -121,7 +119,7 @@ export default async function GastronomiaEntryPage({
         icon={ChefHat}
         eyebrow="Gastronomía"
         title={entry.nombre}
-        subtitle={`${PAIS_LABEL[entry.pais]} · ${CATEGORIA_LABEL[entry.categoria]}`}
+        subtitle={`${PAIS_LABELS[entry.pais]} · ${CATEGORIA_LABELS[entry.categoria]}`}
         save={{ slug: entry.slug, title: entry.nombre, category: "gastronomia" }}
       />
 
@@ -181,7 +179,7 @@ export default async function GastronomiaEntryPage({
                   <Tag size={14} strokeWidth={1.5} />
                   Categoría
                 </h2>
-                <p className="text-sm text-foreground">{CATEGORIA_LABEL[entry.categoria]} · {PAIS_LABEL[entry.pais]}</p>
+                <p className="text-sm text-foreground">{CATEGORIA_LABELS[entry.categoria]} · {PAIS_LABELS[entry.pais]}</p>
               </CardBody>
             </Card>
 
@@ -228,7 +226,7 @@ export default async function GastronomiaEntryPage({
                     <p className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
                       {e.nombre}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{CATEGORIA_LABEL[e.categoria]}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{CATEGORIA_LABELS[e.categoria]}</p>
                   </Card>
                 </Link>
               ))}

@@ -1,17 +1,45 @@
 import type { Relacionado } from "@/lib/relacionados"
 
+export type GastronomiaCategoria = "plato" | "bebida" | "postre" | "condimento" | "conserva" | "ingrediente"
+
 export type GastronomiaEntry = {
   slug: string
   nombre: string
   pais: "AR" | "CL" | "AR/CL"
-  categoria: "plato" | "bebida" | "postre" | "condimento" | "conserva" | "ingrediente"
+  categoria: GastronomiaCategoria
   descripcion: string[]
   datosExtra: Array<{ label: string; valor: string }>
   faq: Array<{ pregunta: string; respuesta: string }>
   urlFuente?: string
   wikipediaTitle?: string
+  /** Search query used against the Pexels API when there's no coverImageUrl or Wikipedia image. */
+  pexelsQuery?: string
   coverImageUrl?: string
   relacionados?: Relacionado[]
+}
+
+export const CATEGORIA_LABELS: Record<GastronomiaCategoria, string> = {
+  plato: "Plato",
+  bebida: "Bebida",
+  postre: "Postre",
+  condimento: "Condimento",
+  conserva: "Conserva",
+  ingrediente: "Ingrediente",
+}
+
+export const CATEGORIA_LABELS_PLURAL: Record<GastronomiaCategoria, string> = {
+  plato: "Platos",
+  bebida: "Bebidas",
+  postre: "Postres",
+  condimento: "Condimentos",
+  conserva: "Conservas",
+  ingrediente: "Ingredientes",
+}
+
+export const PAIS_LABELS: Record<GastronomiaEntry["pais"], string> = {
+  AR: "Argentina",
+  CL: "Chile",
+  "AR/CL": "Argentina y Chile",
 }
 
 export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
@@ -339,6 +367,131 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Se puede preparar kuchen en casa fácilmente?", respuesta: "Sí, existen recetas simples para horno casero con ingredientes accesibles." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/06/kuchen-de-Frutos-Rojos.jpg",
+  },
+  {
+    slug: "trucha-patagonica-recetas-pesca",
+    nombre: "Trucha patagónica",
+    pais: "AR/CL",
+    categoria: "plato",
+    descripcion: [
+      "La trucha no es nativa de la Patagonia: se introdujo en lagos y ríos de Argentina y Chile durante las dos primeras décadas del siglo XX para desarrollar la pesca deportiva. Las especies que mejor se adaptaron fueron la arcoíris, la de arroyo, la marrón y la de lago, que encontraron en las aguas frías y muy oxigenadas de la cordillera un ambiente ideal para prosperar.",
+      "La pesca con mosca es la tradición asociada a la trucha patagónica: la temporada se abre en noviembre y se extiende hasta mayo, con lagos, ríos y arroyos de ambos países como destino de pescadores de todo el mundo. Hoy existen guías y excursiones pensadas para quienes nunca pescaron.",
+      "En la cocina se prepara de muchas formas: a la parrilla —la más tradicional—, a la plancha, al horno, en escabeche, en ceviche, en paté, en carpaccio o confitada. La trucha ahumada artesanal es el producto emblemático de la región: se elabora sobre todo con trucha arcoíris de criadero, criada sin antibióticos ni vacunas, ahumada en frío o caliente según el productor.",
+    ],
+    datosExtra: [
+      { label: "Especies principales", valor: "Arcoíris, arroyo, marrón, de lago" },
+      { label: "Introducción a la región", valor: "Primeras dos décadas del siglo XX" },
+      { label: "Temporada de pesca", valor: "Noviembre a mayo" },
+      { label: "Preparación más tradicional", valor: "A la parrilla" },
+      { label: "Producto emblemático", valor: "Trucha ahumada artesanal" },
+    ],
+    faq: [
+      { pregunta: "¿De dónde viene la trucha de la Patagonia?", respuesta: "Fue introducida a principios del siglo XX para desarrollar la pesca deportiva; no es una especie nativa de la región." },
+      { pregunta: "¿Cuándo es la temporada de pesca?", respuesta: "De noviembre a mayo, según la provincia o región." },
+      { pregunta: "¿Cómo se prepara tradicionalmente?", respuesta: "A la parrilla es la forma más tradicional, aunque también se prepara a la plancha, al horno, ahumada o en ceviche." },
+      { pregunta: "¿Qué es la trucha ahumada patagónica?", respuesta: "Un producto artesanal elaborado con trucha arcoíris de criadero, ahumada en frío o caliente, muy asociado a la región de los lagos." },
+      { pregunta: "¿Se puede pescar sin experiencia previa?", respuesta: "Sí, hay guías y excursiones de pesca con mosca pensadas para principiantes en toda la Patagonia." },
+    ],
+    wikipediaTitle: "Trucha arcoíris",
+    pexelsQuery: "grilled trout fish dish",
+  },
+  {
+    slug: "centolla-patagonica",
+    nombre: "Centolla",
+    pais: "AR/CL",
+    categoria: "plato",
+    descripcion: [
+      "La centolla patagónica (Lithodes santolla) —también llamada centolla magallánica o centolla austral— es un crustáceo que vive en el lecho marino de las aguas frías del extremo sur de Sudamérica, y uno de los productos gastronómicos más asociados a Tierra del Fuego y la región de Magallanes.",
+      "En Chile, la temporada extractiva en Magallanes va del 15 de julio al 15 de diciembre; está prohibida su captura (veda) entre el 1 de marzo y el 30 de junio. Se pesca sobre todo en invierno, cuando la calidad de su carne es óptima. Su extracción es una actividad económica clave para las localidades del archipiélago fueguino.",
+      "La forma más simple de comerla es al vapor o hervida, con una salsa de mantequilla y ajo o apenas un toque de limón. En Punta Arenas, el plato clásico es el chupe de centolla, horneado en plato de greda con la pulpa, crema y queso parmesano. También se la encuentra en ensaladas, cazuelas, pastas rellenas, gratinados, sopas, empanadas y sushi.",
+    ],
+    datosExtra: [
+      { label: "Nombre científico", valor: "Lithodes santolla" },
+      { label: "Temporada extractiva (Magallanes)", valor: "15 de julio a 15 de diciembre" },
+      { label: "Veda", valor: "1 de marzo a 30 de junio" },
+      { label: "Preparación clásica", valor: "Chupe de centolla (Punta Arenas)" },
+      { label: "Zona de referencia", valor: "Tierra del Fuego, Magallanes" },
+    ],
+    faq: [
+      { pregunta: "¿Qué es la centolla magallánica?", respuesta: "Un crustáceo (Lithodes santolla) que vive en el lecho marino del extremo sur de Sudamérica, muy asociado a la gastronomía de Tierra del Fuego y Magallanes." },
+      { pregunta: "¿Cuándo es la temporada de centolla?", respuesta: "En la región de Magallanes, la temporada extractiva va del 15 de julio al 15 de diciembre; está vedada del 1 de marzo al 30 de junio." },
+      { pregunta: "¿Cómo se prepara la centolla?", respuesta: "Al vapor o hervida, con mantequilla, ajo y limón; en Punta Arenas el clásico es el chupe de centolla, horneado con crema y parmesano." },
+      { pregunta: "¿Dónde se consigue fresca?", respuesta: "En Tierra del Fuego y la región de Magallanes, sobre todo durante la temporada extractiva de invierno." },
+      { pregunta: "¿Por qué es tan cara?", respuesta: "Por la dificultad y estacionalidad de su captura, y por la veda que protege su reproducción durante buena parte del año." },
+    ],
+    pexelsQuery: "king crab seafood dish",
+  },
+  {
+    slug: "carnes-de-caza-patagonicas-guanaco-liebre",
+    nombre: "Carnes de caza: guanaco y liebre",
+    pais: "AR/CL",
+    categoria: "plato",
+    descripcion: [
+      "El guanaco (Lama guanicoe) fue la presa central de la dieta tehuelche: un pueblo cazador-recolector que basaba su alimentación en guanacos, ñandúes y aves, cazados en las estepas de Chubut, Santa Cruz y el centro de Río Negro. Se conserva hasta hoy la costumbre de preparar charqui de guanaco —carne salada y secada al sol— y algunos restaurantes patagónicos ofrecen milanesas de guanaco. Es una carne magra, de sabor intenso y algo dulzón, sin la grasa intramuscular del vacuno: aporta 24 gramos de proteína cada 100 gramos, más que la carne vacuna o el pollo, con bajo contenido de colesterol y de grasa visible.",
+      "La liebre europea (Lepus europaeus) llegó en cambio en 1888, introducida desde Alemania para fomentar la caza deportiva en Río Negro y Santa Fe. Su enorme capacidad reproductiva la convirtió en plaga agrícola en gran parte de Argentina y Chile, lo que impulsó una industria frigorífica de exportación: Argentina es hoy el primer exportador mundial de carne de liebre, sobre todo a la Unión Europea. Su carne es oscura, casi negruzca, muy distinta a los tonos pálidos del conejo. La preparación tradicional es la \"liebre a la patagónica\": se macera la carne en vino tinto con laurel, perejil, zanahoria y apio durante unas 12 horas antes de cocinarla.",
+    ],
+    datosExtra: [
+      { label: "Guanaco — proteína", valor: "24 g cada 100 g" },
+      { label: "Guanaco — preparación tradicional", valor: "Charqui, milanesas" },
+      { label: "Liebre — introducción", valor: "1888, desde Alemania" },
+      { label: "Liebre — estatus", valor: "Especie exótica invasora / plaga agrícola" },
+      { label: "Liebre — preparación clásica", valor: "Liebre a la patagónica (macerada en vino tinto)" },
+    ],
+    faq: [
+      { pregunta: "¿A qué sabe la carne de guanaco?", respuesta: "Es una carne magra, de sabor intenso y algo dulzón, sin la grasa intramuscular característica del vacuno." },
+      { pregunta: "¿Qué es el charqui de guanaco?", respuesta: "Carne de guanaco salada y secada al sol, una técnica de conservación de origen tehuelche que se mantiene hasta hoy." },
+      { pregunta: "¿Por qué hay tanta liebre europea en la Patagonia?", respuesta: "Fue introducida en 1888 para caza deportiva y, por su alta capacidad reproductiva, se convirtió en una especie invasora que hoy se considera plaga agrícola." },
+      { pregunta: "¿Argentina exporta carne de liebre?", respuesta: "Sí, es el primer exportador mundial de carne de liebre, principalmente a la Unión Europea." },
+      { pregunta: "¿Cómo se prepara la liebre a la patagónica?", respuesta: "Se macera la carne en vino tinto con laurel, perejil, zanahoria y apio durante unas 12 horas antes de cocinarla." },
+    ],
+    pexelsQuery: "grilled game meat dish",
+    relacionados: [{ tipo: "fauna", slug: "guanaco" }],
+  },
+  {
+    slug: "tortas-fritas-patagonicas",
+    nombre: "Tortas fritas",
+    pais: "AR",
+    categoria: "postre",
+    descripcion: [
+      "Las tortas fritas son masas simples de harina, agua o leche y grasa (o manteca), fritas en abundante aceite o grasa hasta dorarse, con un corte característico en el centro. Su origen se remonta al kreppel alemán, que llegó a Sudamérica con la colonización europea y se arraigó en Argentina y Uruguay hasta volverse un clásico propio.",
+      "En Argentina, y especialmente en el campo patagónico, adquirieron identidad propia gracias a la vida gaucha: una preparación simple, barata y rendidora, hecha con lo que hubiera a mano —harina, agua y grasa del ganado—. La tradición de hacerlas en los días de lluvia viene de esa misma lógica campestre: se dice que los gauchos aprovechaban el agua de lluvia recolectada para amasar. Se comen recién hechas, espolvoreadas con azúcar o sal, y son un acompañamiento clásico del mate o el café con leche en las tardes de mal tiempo.",
+    ],
+    datosExtra: [
+      { label: "Origen", valor: "Kreppel alemán, adaptado en el Río de la Plata" },
+      { label: "Ingredientes base", valor: "Harina, agua o leche, grasa o manteca" },
+      { label: "Tradición asociada", valor: "Días de lluvia, acompañadas con mate" },
+      { label: "Variantes", valor: "Dulces (con azúcar) o saladas" },
+    ],
+    faq: [
+      { pregunta: "¿De dónde vienen las tortas fritas?", respuesta: "Su origen se remonta al kreppel alemán, que llegó con la colonización europea y se convirtió en un clásico propio de Argentina y Uruguay." },
+      { pregunta: "¿Por qué se comen los días de lluvia?", respuesta: "Es una tradición del campo: se dice que los gauchos aprovechaban el agua de lluvia recolectada para amasar la masa." },
+      { pregunta: "¿Qué ingredientes lleva la receta clásica?", respuesta: "Harina, agua, grasa o manteca y una pizca de sal; las versiones de campo usan grasa derretida tanto en la masa como para freír." },
+      { pregunta: "¿Se comen dulces o saladas?", respuesta: "Ambas versiones existen: espolvoreadas con azúcar, o simplemente con sal, según la región y la costumbre familiar." },
+      { pregunta: "¿Con qué se acompañan tradicionalmente?", respuesta: "Con mate o café con leche, como parte de la merienda." },
+    ],
+    wikipediaTitle: "Torta frita",
+    pexelsQuery: "fried dough pastry argentina",
+  },
+  {
+    slug: "salmon-a-lo-pobre",
+    nombre: "Salmón a lo pobre",
+    pais: "CL",
+    categoria: "plato",
+    descripcion: [
+      "El salmón a lo pobre es la versión con pescado de los clásicos platos \"a lo pobre\" de la cocina chilena, que combinan una proteína a la plancha con papas fritas, cebolla salteada y uno o dos huevos fritos encima. El nombre y el formato vienen del bistec a lo pobre, popularizado en Santiago a principios del siglo XX —posiblemente con influencia de la cocina francesa— y asociado por la tradición al campo chileno y a las zonas ganaderas del Maule.",
+      "La versión con salmón reemplaza el bistec por un filete de salmón, manteniendo los acompañamientos tradicionales: es una manera de acercar un plato de identidad muy chilena a quienes prefieren pescado antes que carne roja.",
+    ],
+    datosExtra: [
+      { label: "Base del plato", valor: "Papas fritas, cebolla salteada, huevo frito" },
+      { label: "Origen del formato", valor: "Bistec a lo pobre, Santiago, principios del siglo XX" },
+      { label: "Variante", valor: "Filete de salmón en vez de carne vacuna" },
+    ],
+    faq: [
+      { pregunta: "¿Qué lleva el salmón a lo pobre?", respuesta: "Un filete de salmón a la plancha o a la mantequilla, acompañado de papas fritas, cebolla salteada y huevo frito." },
+      { pregunta: "¿De dónde viene el nombre \"a lo pobre\"?", respuesta: "Del bistec a lo pobre, un plato popularizado en Santiago a principios del siglo XX que combina una proteína simple con papas, cebolla y huevo." },
+      { pregunta: "¿Es un plato tradicional o una variación moderna?", respuesta: "Es una variación relativamente reciente del bistec a lo pobre, que reemplaza la carne vacuna por salmón." },
+    ],
+    pexelsQuery: "salmon steak with fries and egg",
   },
 ]
 
