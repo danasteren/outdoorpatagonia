@@ -82,6 +82,9 @@ export default async function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        <Script id="adsense-auto-ads" strategy="afterInteractive">
+          {`(window.adsbygoogle = window.adsbygoogle || []).push({google_ad_client: "ca-pub-3634364666141836", enable_page_level_ads: true});`}
+        </Script>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-0W9F62HBB7"
           strategy="afterInteractive"
