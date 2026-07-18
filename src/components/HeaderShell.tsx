@@ -116,7 +116,12 @@ export function HeaderShell({
             <img
               src="/brand/op_02.svg"
               alt="Outdoor Patagonia"
-              className={`w-auto transition-all duration-300 ${scrolled ? 'h-9' : 'h-11'}`}
+              className={`w-auto transition-all duration-300 dark:hidden ${scrolled ? 'h-9' : 'h-11'}`}
+            />
+            <img
+              src="/brand/op_02_dark.svg"
+              alt="Outdoor Patagonia"
+              className={`hidden w-auto transition-all duration-300 dark:block ${scrolled ? 'h-9' : 'h-11'}`}
             />
           </Link>
 
