@@ -13,6 +13,7 @@ import { fetchPexelsPhoto } from "@/lib/apis/pexels"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
 import { RelacionadosSection } from "@/components/RelacionadosSection"
+import { ProductosRecomendados } from "@/components/ProductosRecomendados"
 
 export const revalidate = 86400
 export const dynamicParams = false
@@ -182,6 +183,8 @@ export default async function GastronomiaEntryPage({
                 <p className="text-sm text-foreground">{CATEGORIA_LABELS[entry.categoria]} · {PAIS_LABELS[entry.pais]}</p>
               </CardBody>
             </Card>
+
+            <ProductosRecomendados items={entry.productosRecomendados} />
 
             {entry.urlFuente && (
               <Card variant="elevated">

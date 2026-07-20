@@ -16,6 +16,8 @@ export type GastronomiaEntry = {
   pexelsQuery?: string
   coverImageUrl?: string
   relacionados?: Relacionado[]
+  /** Productos de Amazon relacionados, mostrados en el sidebar con link de afiliado. */
+  productosRecomendados?: Array<{ nombre: string; query: string }>
 }
 
 export const CATEGORIA_LABELS: Record<GastronomiaCategoria, string> = {
@@ -291,6 +293,12 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2024/06/patagonia-honos-de-pino-7.jpg",
     relacionados: [{ tipo: "gastronomia", slug: "hongos-de-pino-en-escabeche" }],
+    productosRecomendados: [
+      { nombre: "Deshidratador de alimentos", query: "food dehydrator for mushrooms herbs" },
+      { nombre: "Cuchillo de forrajeo plegable", query: "folding mushroom foraging knife brush" },
+      { nombre: "Frascos de vidrio herméticos", query: "airtight glass mason jars for food storage" },
+      { nombre: "Guía de hongos comestibles", query: "field guide edible mushrooms identification book" },
+    ],
   },
   {
     slug: "hongos-de-pino-en-escabeche",
@@ -318,6 +326,12 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/06/hongos-de-pino-en-escabeche-outdoor-patagonia.jpg",
     relacionados: [{ tipo: "gastronomia", slug: "hongo-de-pino-recoleccion-secado-usos" }],
+    productosRecomendados: [
+      { nombre: "Frascos de vidrio con cierre hermético", query: "airtight glass mason jars for pickling canning" },
+      { nombre: "Kit de esterilización de frascos", query: "canning jar sterilizing kit funnel tongs" },
+      { nombre: "Vinagre de manzana orgánico", query: "organic apple cider vinegar for pickling" },
+      { nombre: "Libro de conservas y encurtidos", query: "book pickling canning preserving recipes" },
+    ],
   },
   {
     slug: "mermelada-rosa-mosqueta-patagonica",
