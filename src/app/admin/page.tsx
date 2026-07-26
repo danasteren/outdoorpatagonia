@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ReplyBox } from "@/components/admin/ReplyBox";
+import { DeleteButton } from "@/components/admin/DeleteButton";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 import {
   Users,
@@ -519,13 +520,16 @@ export default async function AdminPage() {
                   <p className="text-sm whitespace-pre-wrap mb-3">
                     {m.mensaje}
                   </p>
-                  <ReplyBox
-                    source="contact"
-                    id={m.id}
-                    to={m.email}
-                    defaultSubject={`Re: ${m.asunto}`}
-                    alreadyReplied={!!m.replied_at}
-                  />
+                  <div className="flex items-center justify-between gap-3">
+                    <ReplyBox
+                      source="contact"
+                      id={m.id}
+                      to={m.email}
+                      defaultSubject={`Re: ${m.asunto}`}
+                      alreadyReplied={!!m.replied_at}
+                    />
+                    <DeleteButton source="contact" id={m.id} />
+                  </div>
                 </div>
               </details>
             </li>
@@ -656,13 +660,16 @@ export default async function AdminPage() {
                       {a.descripcion}
                     </p>
                   )}
-                  <ReplyBox
-                    source="operator"
-                    id={a.id}
-                    to={a.email}
-                    defaultSubject={`Re: solicitud de ${a.empresa} — Outdoor Patagonia`}
-                    alreadyReplied={!!a.replied_at}
-                  />
+                  <div className="flex items-center justify-between gap-3">
+                    <ReplyBox
+                      source="operator"
+                      id={a.id}
+                      to={a.email}
+                      defaultSubject={`Re: solicitud de ${a.empresa} — Outdoor Patagonia`}
+                      alreadyReplied={!!a.replied_at}
+                    />
+                    <DeleteButton source="operator" id={a.id} />
+                  </div>
                 </div>
               </details>
             </li>
