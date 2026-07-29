@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Calendar, Clock, Hash, Sparkles } from "lucide-react";
-import { fixWpLazyLoad } from "@/lib/utils";
+import { fixWpLazyLoad, addInstagramPhotoCredits } from "@/lib/utils";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { Breadcrumb } from "@/components/primitives/Breadcrumb";
 import { toCategorySlug } from "@/lib/category";
@@ -150,7 +150,9 @@ export function ArticleLayout({
           {/* Body */}
           <div
             className="article-body overflow-x-hidden"
-            dangerouslySetInnerHTML={{ __html: fixWpLazyLoad(article.content ?? "") }}
+            dangerouslySetInnerHTML={{
+              __html: addInstagramPhotoCredits(fixWpLazyLoad(article.content ?? ""), isEnglish),
+            }}
           />
 
           {/* Tags */}
