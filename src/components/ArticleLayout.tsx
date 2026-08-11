@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Calendar, Clock, Hash, Sparkles } from "lucide-react";
-import { fixWpLazyLoad, addInstagramPhotoCredits } from "@/lib/utils";
+import { fixWpLazyLoad, addInstagramPhotoCredits, extractPhotoCredit } from "@/lib/utils";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { Breadcrumb } from "@/components/primitives/Breadcrumb";
 import { toCategorySlug } from "@/lib/category";
@@ -14,6 +14,7 @@ interface Article {
   reading_time_min: number | null;
   published_at: string | null;
   cover_image_url: string | null;
+  cover_image_alt: string | null;
   language: string;
   slug: string;
   wp_id: number | null;
@@ -140,11 +141,34 @@ export function ArticleLayout({
 
           {/* Cover image */}
           {article.cover_image_url && (
-            <img
-              src={article.cover_image_url}
-              alt={article.title}
-              className="w-full rounded-md mb-10 object-cover max-h-[480px]"
-            />
+            <div className="mb-10">
+              <img
+                src={article.cover_image_url}
+                alt={article.title}
+                className="w-full rounded-md object-cover max-h-[480px]"
+              />
+              {(() => {
+                const credit = article.cover_image_alt
+                  ? extractPhotoCredit(article.cover_image_alt)
+                  : null;
+                if (!credit) return null;
+                const text = credit.name ? `${credit.name} (@${credit.handle})` : `@${credit.handle}`;
+                const label = isEnglish ? "Photo" : "Foto";
+                return (
+                  <p className="text-sm text-muted-foreground mt-2 text-center">
+                    {label}:{" "}
+                    <a
+                      href={`https://www.instagram.com/${credit.handle}/`}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      className="text-[var(--color-teal)] underline underline-offset-2 hover:text-[var(--color-teal-light)] transition-colors"
+                    >
+                      {text}
+                    </a>
+                  </p>
+                );
+              })()}
+            </div>
           )}
 
           {/* Body */}

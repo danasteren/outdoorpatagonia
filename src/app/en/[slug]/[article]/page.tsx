@@ -28,7 +28,7 @@ async function getArticle(article: string) {
   const { data } = await supabase
     .from("articles")
     .select(
-      "title, excerpt, content, category, tags, reading_time_min, published_at, cover_image_url, language, slug, seo_title, seo_description, wp_id"
+      "title, excerpt, content, category, tags, reading_time_min, published_at, cover_image_url, cover_image_alt, language, slug, seo_title, seo_description, wp_id"
     )
     .eq("slug", article)
     .eq("language", "en")
