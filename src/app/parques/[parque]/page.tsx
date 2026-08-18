@@ -14,6 +14,7 @@ import {
   TreePine,
 } from "lucide-react"
 import { PARQUES_CATALOG, getParqueEntry } from "@/lib/parques/catalog"
+import { truncateAtWord } from "@/lib/text"
 import { gygSearchUrl } from "@/lib/affiliates/getyourguide"
 import { SENDEROS_CATALOG } from "@/lib/senderos/catalog"
 import { FAUNA_CATALOG } from "@/lib/fauna/catalog"
@@ -45,16 +46,16 @@ export async function generateMetadata({
   const entry = getParqueEntry(parque)
   if (!entry) return {}
 
-  const country = entry.country === "ar" ? "Argentina" : "Chile"
+  const description = truncateAtWord(entry.description, 157)
   return {
     title: `${entry.name} — Parque Nacional | Outdoor Patagonia`,
-    description: `Todo sobre el Parque Nacional ${entry.name} (${country}): actividades, clima actual, senderos y cómo llegar.`,
+    description,
     alternates: {
       canonical: `https://outdoorpatagonia.com/parques/${parque}`,
     },
     openGraph: {
       title: `Parque Nacional ${entry.name}`,
-      description: entry.description.slice(0, 155),
+      description,
       type: "article",
     },
   }

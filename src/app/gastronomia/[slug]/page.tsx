@@ -10,6 +10,7 @@ import {
 } from "@/lib/gastronomia/catalog"
 import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { fetchPexelsPhoto } from "@/lib/apis/pexels"
+import { truncateAtWord } from "@/lib/text"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
 import { RelacionadosSection } from "@/components/RelacionadosSection"
@@ -31,7 +32,7 @@ export async function generateMetadata({
   const entry = getGastronomiaEntry(slug)
   if (!entry) return {}
 
-  const description = entry.descripcion[0].slice(0, 160)
+  const description = truncateAtWord(entry.descripcion[0], 160)
 
   return {
     title: `${entry.nombre} — Gastronomía Patagónica`,

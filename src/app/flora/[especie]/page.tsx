@@ -1,4 +1,4 @@
-import { permanentRedirect } from "next/navigation"
+import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ExternalLink, MapPin, Calendar, Eye, Leaf } from "lucide-react"
@@ -10,6 +10,7 @@ import {
   CATEGORY_LABELS,
 } from "@/lib/flora/catalog"
 import { RelatedContent } from "@/components/RelatedContent"
+import { truncateAtWord } from "@/lib/text"
 import {
   fetchSpeciesDetail,
   fetchSpeciesByName,
@@ -37,10 +38,20 @@ export async function generateMetadata({
   const entry = getFloraEntry(especie)
   const name = entry?.commonNameEs ?? especie.replace(/-/g, " ")
   const sci = entry?.scientificName ?? ""
+  const parksText = entry && entry.parquesRelacionados.length > 0
+    ? entry.parquesRelacionados.map((p) => p.nombre).join(", ")
+    : null
+
+  const description = truncateAtWord(
+    parksText
+      ? `Dónde encontrar ${name} (${sci}) en la Patagonia: en ${parksText}. Observaciones recientes y temporada de floración.`
+      : `Dónde encontrar ${name} (${sci}) en la Patagonia: observaciones recientes, temporada de floración y parques nacionales.`,
+    160
+  )
 
   return {
     title: `${name} — Flora de la Patagonia | Outdoor Patagonia`,
-    description: `Dónde encontrar ${name} (${sci}) en la Patagonia: observaciones recientes, temporada de floración y parques nacionales.`,
+    description,
     alternates: {
       canonical: `https://outdoorpatagonia.com/flora/${especie}`,
     },
@@ -102,7 +113,7 @@ export default async function FloraEspeciePage({
     ? await fetchSpeciesDetail(entry.taxonId)
     : await fetchSpeciesByName(entry?.scientificName ?? especie.replace(/-/g, " "))
 
-  if (!detail && !entry) permanentRedirect("/flora")
+  if (!detail && !entry) notFound()
 
   const commonName = entry?.commonNameEs ?? detail?.commonNameEs ?? especie.replace(/-/g, " ")
   const scientificName = detail?.scientificName ?? entry?.scientificName ?? especie

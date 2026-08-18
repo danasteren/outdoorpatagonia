@@ -11,6 +11,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/gastronomia", request.url), 301);
   }
 
+  // Orphan backlinked URL with no matching flora catalog entry or iNaturalist
+  // match — real HTTP 301 to the actual entry, since redirect() from inside
+  // the [especie] page component only produces a 200 + meta-refresh, not a
+  // true redirect, in this Next.js version.
+  if (pathname.replace(/\/+$/, "") === "/flora/frutos-rojos-patagonia") {
+    return NextResponse.redirect(new URL("/flora/calafate", request.url), 301);
+  }
+
   // Redirect old flat-slug article URLs: /{slug} or /en/{slug}
   const isEsFlat = segments.length === 1;
   const isEnFlat = segments.length === 2 && segments[0] === "en";

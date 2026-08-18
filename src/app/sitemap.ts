@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
 import { toCategorySlug } from "@/lib/category";
 import { FAUNA_CATALOG } from "@/lib/fauna/catalog";
+import { FLORA_CATALOG } from "@/lib/flora/catalog";
 import { PARQUES_CATALOG } from "@/lib/parques/catalog";
 import { SENDEROS_CATALOG } from "@/lib/senderos/catalog";
 import { VOLCANES_CATALOG } from "@/lib/volcanes/catalog";
@@ -73,6 +74,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const floraUrls: MetadataRoute.Sitemap = FLORA_CATALOG.map((e) => ({
+    url: `${BASE}/flora/${e.slug}`,
+    changeFrequency: "daily" as const,
+    priority: 0.8,
+  }));
+
   const parquesUrls: MetadataRoute.Sitemap = PARQUES_CATALOG.map((p) => ({
     url: `${BASE}/parques/${p.slug}`,
     changeFrequency: "daily" as const,
@@ -136,6 +143,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...senderosUrls,
     ...volcanesUrls,
     ...faunaUrls,
+    ...floraUrls,
     ...arqueologiaUrls,
     ...termasUrls,
     ...gastronomiaUrls,
