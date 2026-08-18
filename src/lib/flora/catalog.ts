@@ -9,6 +9,7 @@ export type FloraEntry = {
   genero: "m" | "f"
   taxonId?: number
   parquesRelacionados: Array<{ nombre: string; slug: string }>
+  productosRecomendados?: Array<{ nombre: string; query: string }>
 }
 
 export const CATEGORY_LABELS: Record<FloraCategory, string> = {
@@ -213,6 +214,12 @@ export const FLORA_CATALOG: FloraEntry[] = [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
     ],
+    productosRecomendados: [
+      { nombre: "Guía de flora patagónica", query: "field guide patagonia plants flora book" },
+      { nombre: "Canasto de recolección plegable", query: "foldable foraging berry picking basket" },
+      { nombre: "Frascos de vidrio para mermelada", query: "glass mason jars for jam making" },
+      { nombre: "Libro de mermeladas y conservas caseras", query: "homemade jam preserving recipes book" },
+    ],
   },
   {
     slug: "michay",
@@ -250,6 +257,12 @@ export const FLORA_CATALOG: FloraEntry[] = [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },
       { nombre: "Lanín", slug: "lanin" },
+    ],
+    productosRecomendados: [
+      { nombre: "Guía de flora patagónica", query: "field guide patagonia plants flora book" },
+      { nombre: "Binoculares compactos", query: "compact binoculars hiking nature watching" },
+      { nombre: "Lente macro para celular", query: "clip on macro lens for smartphone photography" },
+      { nombre: "Libro de fotografía de flores silvestres", query: "wildflower photography book field guide" },
     ],
   },
   {

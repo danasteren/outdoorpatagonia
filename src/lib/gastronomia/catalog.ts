@@ -357,6 +357,12 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Se puede hacer sin azúcar?", respuesta: "Sí, se puede elaborar con miel o stevia manteniendo su sabor característico." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/10/rosa-mosqueta-1-1.jpg",
+    productosRecomendados: [
+      { nombre: "Frascos de vidrio para mermelada", query: "glass mason jars for jam making" },
+      { nombre: "Kit de esterilización de frascos", query: "canning jar sterilizing kit funnel tongs" },
+      { nombre: "Cuchara mezcladora de madera", query: "wooden mixing spoon for cooking jam" },
+      { nombre: "Libro de mermeladas y conservas caseras", query: "homemade jam preserving recipes book" },
+    ],
   },
   {
     slug: "kuchen-chileno-historia-tradicion",

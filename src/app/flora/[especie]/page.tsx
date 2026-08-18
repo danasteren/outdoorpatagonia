@@ -10,6 +10,7 @@ import {
   CATEGORY_LABELS,
 } from "@/lib/flora/catalog"
 import { RelatedContent } from "@/components/RelatedContent"
+import { ProductosRecomendados } from "@/components/ProductosRecomendados"
 import { truncateAtWord } from "@/lib/text"
 import {
   fetchSpeciesDetail,
@@ -299,6 +300,10 @@ export default async function FloraEspeciePage({
                   ))}
                 </div>
               </section>
+            )}
+
+            {entry?.productosRecomendados && (
+              <ProductosRecomendados items={entry.productosRecomendados} />
             )}
 
             {taxonId && (
