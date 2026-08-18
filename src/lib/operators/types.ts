@@ -14,6 +14,14 @@ export type Operator = {
   created_at: string;
 };
 
+// Solo para el panel admin: incluye datos de facturación que nunca se
+// exponen en las queries públicas (ver src/lib/operators/queries.ts).
+export type OperatorAdmin = Operator & {
+  price_monthly: number | null;
+  featured_until: string | null;
+  notes: string | null;
+};
+
 export const REGIONS = [
   "Santa Cruz",
   "Tierra del Fuego",

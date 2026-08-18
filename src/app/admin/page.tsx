@@ -5,6 +5,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { ReplyBox } from "@/components/admin/ReplyBox";
 import { DeleteButton } from "@/components/admin/DeleteButton";
 import { AdminTabs } from "@/components/admin/AdminTabs";
+import { NewOperatorForm } from "@/components/admin/NewOperatorForm";
+import { getAllOperatorsAdmin } from "@/lib/operators/queries";
 import {
   Users,
   UserCheck,
@@ -134,6 +136,7 @@ export default async function AdminPage() {
     { count: savedItinerariesCount },
     { data: topArticlesData },
     { data: searchQueriesData },
+    listedOperators,
   ] = await Promise.all([
     admin
       .from("subscribers")
@@ -159,6 +162,7 @@ export default async function AdminPage() {
       .order("created_at", { ascending: false })
       .limit(1000)
       .returns<SearchQueryRow[]>(),
+    getAllOperatorsAdmin(),
   ]);
 
   const subscribers = subscribersData ?? [];
@@ -599,8 +603,88 @@ export default async function AdminPage() {
     </div>
   );
 
+  const featuredPaid = listedOperators.filter((o) => o.is_featured);
+  const nowMs = Date.now();
+  const ms7d = 7 * 24 * 60 * 60 * 1000;
+
   const operadoresTab = (
-    <div className="rounded-xl border border-border overflow-hidden">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <h2 className="text-sm font-semibold">Operadores destacados (pagos)</h2>
+        <NewOperatorForm />
+      </div>
+
+      <div className="rounded-xl border border-border overflow-hidden">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
+          <Building2 className="w-4 h-4 text-muted-foreground" />
+          <h3 className="font-medium text-sm">
+            Publicados en el directorio ({listedOperators.length}, {featuredPaid.length} destacados)
+          </h3>
+        </div>
+        {listedOperators.length === 0 ? (
+          <p className="px-4 py-6 text-sm text-muted-foreground">
+            Todavía no hay operadores publicados.
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-muted/20 text-left">
+                  <th className="px-4 py-2 text-muted-foreground font-medium">Nombre</th>
+                  <th className="px-4 py-2 text-muted-foreground font-medium">Destacado</th>
+                  <th className="px-4 py-2 text-muted-foreground font-medium">Precio</th>
+                  <th className="px-4 py-2 text-muted-foreground font-medium">Pagado hasta</th>
+                </tr>
+              </thead>
+              <tbody>
+                {listedOperators.map((o) => {
+                  const untilMs = o.featured_until ? new Date(o.featured_until).getTime() : null;
+                  const dueSoon = untilMs !== null && untilMs - nowMs < ms7d;
+                  const overdue = untilMs !== null && untilMs < nowMs;
+                  return (
+                    <tr key={o.id} className="border-b border-border last:border-0 hover:bg-muted/20 transition-colors">
+                      <td className="px-4 py-3 font-medium">{o.name}</td>
+                      <td className="px-4 py-3">
+                        {o.is_featured ? (
+                          <span className="inline-flex items-center gap-1 text-xs text-teal font-medium">
+                            <CheckCheck className="w-3.5 h-3.5" />
+                            Sí
+                          </span>
+                        ) : (
+                          <span className="text-xs text-muted-foreground">No</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-muted-foreground">
+                        {o.price_monthly ? `$${o.price_monthly}/mes` : "—"}
+                      </td>
+                      <td className="px-4 py-3">
+                        {o.featured_until ? (
+                          <span
+                            className={
+                              overdue
+                                ? "text-destructive font-medium"
+                                : dueSoon
+                                  ? "text-orange-600 dark:text-orange-400 font-medium"
+                                  : "text-muted-foreground"
+                            }
+                          >
+                            {formatDate(o.featured_until)}
+                            {overdue ? " · vencido" : dueSoon ? " · renovar pronto" : ""}
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-xl border border-border overflow-hidden">
       <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
         <Building2 className="w-4 h-4 text-muted-foreground" />
         <h2 className="font-medium text-sm">
@@ -676,6 +760,7 @@ export default async function AdminPage() {
           ))}
         </ul>
       )}
+      </div>
     </div>
   );
 
