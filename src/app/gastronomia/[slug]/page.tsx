@@ -32,10 +32,11 @@ export async function generateMetadata({
   const entry = getGastronomiaEntry(slug)
   if (!entry) return {}
 
-  const description = truncateAtWord(entry.descripcion[0], 160)
+  const description = entry.metaDescription ?? truncateAtWord(entry.descripcion[0], 160)
+  const title = entry.metaTitle ?? `${entry.nombre} — Gastronomía Patagónica`
 
   return {
-    title: `${entry.nombre} — Gastronomía Patagónica`,
+    title,
     description,
     alternates: {
       canonical: `https://outdoorpatagonia.com/gastronomia/${slug}`,

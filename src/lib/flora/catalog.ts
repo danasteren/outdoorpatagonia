@@ -10,6 +10,9 @@ export type FloraEntry = {
   taxonId?: number
   parquesRelacionados: Array<{ nombre: string; slug: string }>
   productosRecomendados?: Array<{ nombre: string; query: string }>
+  /** Overrides opcionales de SEO title/description. Si no están, se generan desde commonNameEs/scientificName. */
+  metaTitle?: string
+  metaDescription?: string
 }
 
 export const CATEGORY_LABELS: Record<FloraCategory, string> = {
@@ -209,6 +212,9 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEn: "Calafate barberry",
     category: "arbusto",
     genero: "m",
+    metaTitle: "Calafate, la Planta: Dónde y Cuándo Verla en Patagonia",
+    metaDescription:
+      "Calafate (Berberis microphylla): dónde crece en la Patagonia -Los Glaciares, Torres del Paine, Tierra del Fuego- y cuándo es su temporada de floración.",
     parquesRelacionados: [
       { nombre: "Los Glaciares", slug: "los-glaciares" },
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
@@ -253,6 +259,9 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEn: "Golden lily",
     category: "herbácea",
     genero: "m",
+    metaTitle: "Amancay, la Flor: Dónde y Cuándo Verla en Patagonia",
+    metaDescription:
+      "Amancay (Alstroemeria aurea): dónde florece en la Patagonia -Nahuel Huapi, Los Glaciares, Lanín-, su temporada y observaciones recientes registradas.",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },

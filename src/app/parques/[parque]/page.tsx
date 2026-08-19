@@ -46,9 +46,10 @@ export async function generateMetadata({
   const entry = getParqueEntry(parque)
   if (!entry) return {}
 
-  const description = truncateAtWord(entry.description, 157)
+  const description = entry.metaDescription ?? truncateAtWord(entry.description, 157)
+  const title = entry.metaTitle ?? `${entry.name} — Parque Nacional | Outdoor Patagonia`
   return {
-    title: `${entry.name} — Parque Nacional | Outdoor Patagonia`,
+    title,
     description,
     alternates: {
       canonical: `https://outdoorpatagonia.com/parques/${parque}`,

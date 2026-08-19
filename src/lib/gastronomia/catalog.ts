@@ -10,6 +10,9 @@ export type GastronomiaEntry = {
   descripcion: string[]
   datosExtra: Array<{ label: string; valor: string }>
   faq: Array<{ pregunta: string; respuesta: string }>
+  /** Overrides opcionales de SEO title/description. Si no están, se generan desde nombre/descripcion. */
+  metaTitle?: string
+  metaDescription?: string
   urlFuente?: string
   wikipediaTitle?: string
   /** Search query used against the Pexels API when there's no coverImageUrl or Wikipedia image. */
@@ -270,6 +273,9 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     nombre: "Hongo de pino",
     pais: "AR",
     categoria: "ingrediente",
+    metaTitle: "Hongo de Pino: Cómo Identificarlo y Secarlo en Patagonia",
+    metaDescription:
+      "Guía para identificar, recolectar y secar el hongo de pino (Suillus luteus) en los bosques patagónicos: temporada, limpieza y conservación paso a paso.",
     descripcion: [
       "El hongo de pino (Suillus luteus) crece en simbiosis con los pinos, en densos bosques de coníferas patagónicos, debajo de las acículas (hojas de pino). Se identifica por un sombrero de color castaño oscuro a ocre amarillento, liso y viscoso, y un tallo firme y claro; un ejemplar sano tiene la base esponjosa amarillenta, sin manchas oscuras ni partes blandas. Se recolecta sobre todo en otoño, y de forma menos común a inicios de primavera.",
       "Para cosecharlo se corta con un cuchillo limpio y afilado en la base del tallo, cuidando no dañar el micelio, o se extrae con un giro suave desde la base. Una práctica de recolectores locales es devolver al bosque los restos de la limpieza —esponja del sombrero, pedazos de tallo— cerca del punto de recolección, ya que puede favorecer nuevos brotes en la misma temporada o al año siguiente.",
@@ -305,6 +311,9 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     nombre: "Hongos de pino en escabeche",
     pais: "AR",
     categoria: "conserva",
+    metaTitle: "Hongos de Pino en Escabeche: Receta Patagónica",
+    metaDescription:
+      "Receta patagónica de hongos de pino en escabeche: ingredientes, marinada con laurel y pimienta en grano, y cómo conservarlos hasta 15 días en la heladera.",
     descripcion: [
       "En la Patagonia, donde los bosques de coníferas cubren vastas extensiones y la cultura del forrajeo silvestre resurgió con fuerza, los hongos de pino en escabeche se ganaron un lugar propio en la cocina regional. Es una preparación que conserva los sabores de temporada y aprovecha, de forma ancestral y sustentable, lo que ofrece el bosque.",
       "Se elabora con hongos de pino frescos recién recolectados en otoño, o rehidratados si están secos, cubiertos en una marinada de vinagre y especias que permite conservarlos varios días. Agregar hojas de laurel y granos de pimienta enteros al escabeche suma aroma. Además del hongo de pino, pueden usarse otras variedades como girgolas, portobellos o champiñones.",

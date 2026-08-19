@@ -33,6 +33,9 @@ export type ParqueEntry = {
   // GetYourGuide search links — label shown to user, query sent to gygSearchUrl()
   gygTours?: Array<{ label: string; query: string }>
   relacionados?: Relacionado[]
+  /** Overrides opcionales de SEO title/description. Si no están, se generan desde name/description. */
+  metaTitle?: string
+  metaDescription?: string
 }
 
 export const PARQUES_CATALOG: ParqueEntry[] = [
@@ -355,6 +358,9 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     region: "Magallanes",
     surface: "242.242 ha",
     coordinates: [-73.0, -51.03],
+    metaTitle: "Torres del Paine: Clima en Vivo, Trekking y Cómo Llegar",
+    metaDescription:
+      "Torres del Paine: clima en vivo, cómo llegar desde Punta Arenas, senderos como el Valle del Francés y el Glaciar Grey, y toda la info para planear tu visita.",
     description:
       "El parque más fotografiado de Sudamérica. Las tres torres de granito de 2.500 metros, los Cuernos del Paine, el Glaciar Grey y el Valle del Francés forman un escenario que no existe en ningún otro lugar del planeta. Declarado Reserva de la Biósfera, recibe más de 250.000 visitantes al año.",
     highlights: [

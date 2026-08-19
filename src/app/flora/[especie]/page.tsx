@@ -43,15 +43,18 @@ export async function generateMetadata({
     ? entry.parquesRelacionados.map((p) => p.nombre).join(", ")
     : null
 
-  const description = truncateAtWord(
-    parksText
-      ? `Dónde encontrar ${name} (${sci}) en la Patagonia: en ${parksText}. Observaciones recientes y temporada de floración.`
-      : `Dónde encontrar ${name} (${sci}) en la Patagonia: observaciones recientes, temporada de floración y parques nacionales.`,
-    160
-  )
+  const description =
+    entry?.metaDescription ??
+    truncateAtWord(
+      parksText
+        ? `Dónde encontrar ${name} (${sci}) en la Patagonia: en ${parksText}. Observaciones recientes y temporada de floración.`
+        : `Dónde encontrar ${name} (${sci}) en la Patagonia: observaciones recientes, temporada de floración y parques nacionales.`,
+      160
+    )
+  const title = entry?.metaTitle ?? `${name} — Flora de la Patagonia | Outdoor Patagonia`
 
   return {
-    title: `${name} — Flora de la Patagonia | Outdoor Patagonia`,
+    title,
     description,
     alternates: {
       canonical: `https://outdoorpatagonia.com/flora/${especie}`,
