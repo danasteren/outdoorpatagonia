@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Fuse from 'fuse.js'
 import Link from 'next/link'
-import { Search, BookOpen, PawPrint, Leaf, Mountain, ChevronRight, MapPin, Flame, Pickaxe, Globe, Bone, Droplets } from 'lucide-react'
+import { Search, BookOpen, PawPrint, Leaf, Mountain, ChevronRight, MapPin, Flame, Pickaxe, Globe, Bone, Droplets, ChefHat } from 'lucide-react'
 import type { SearchItem, SearchResultType } from '@/lib/search/types'
 
 const TYPE_CONFIG: Record<
@@ -71,9 +71,15 @@ const TYPE_CONFIG: Record<
     colorClass: 'text-cyan-500',
     badgeClass: 'bg-cyan-50 text-cyan-700 dark:bg-cyan-950/40 dark:text-cyan-400',
   },
+  gastronomia: {
+    label: 'Gastronomía',
+    Icon: ChefHat,
+    colorClass: 'text-rose-500',
+    badgeClass: 'bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-400',
+  },
 }
 
-const GROUP_ORDER: SearchResultType[] = ['articulo', 'fauna', 'flora', 'parque', 'sendero', 'volcan', 'sector', 'arqueologia', 'terma', 'pagina']
+const GROUP_ORDER: SearchResultType[] = ['articulo', 'fauna', 'flora', 'parque', 'sendero', 'volcan', 'sector', 'arqueologia', 'terma', 'gastronomia', 'pagina']
 
 export function BuscarClient({ items, initialQ }: { items: SearchItem[]; initialQ: string }) {
   const router = useRouter()

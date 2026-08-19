@@ -1,8 +1,6 @@
 import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
-import { FAUNA_CATALOG, CATEGORY_LABELS } from '@/lib/fauna/catalog'
-import { PARQUES_CATALOG } from '@/lib/parques/catalog'
-import { SENDEROS_CATALOG, DIFICULTAD_LABELS } from '@/lib/senderos/catalog'
+import { STATIC_SEARCH_INDEX } from '@/lib/search/buildIndex'
 import { BuscarClient } from './BuscarClient'
 import type { SearchItem } from '@/lib/search/types'
 import type { Metadata } from 'next'
@@ -37,34 +35,7 @@ export default async function BuscarPage({
 
   const articleItems = await getArticleItems()
 
-  const faunaItems: SearchItem[] = FAUNA_CATALOG.map((f) => ({
-    type: 'fauna' as const,
-    title: f.commonNameEs,
-    description: `${f.scientificName} · ${f.parquesRelacionados.map((p) => p.nombre).join(', ')}`,
-    href: `/fauna/${f.slug}`,
-    meta: CATEGORY_LABELS[f.category],
-    searchableText: f.commonNameEn,
-  }))
-
-  const parqueItems: SearchItem[] = PARQUES_CATALOG.map((p) => ({
-    type: 'parque' as const,
-    title: p.name,
-    description: p.description,
-    href: `/parques/${p.slug}`,
-    meta: p.country === 'ar' ? 'Argentina' : 'Chile',
-    searchableText: p.highlights.join(' '),
-  }))
-
-  const senderoItems: SearchItem[] = SENDEROS_CATALOG.map((s) => ({
-    type: 'sendero' as const,
-    title: s.title,
-    description: s.description,
-    href: `/senderos/${s.slug}`,
-    meta: DIFICULTAD_LABELS[s.dificultad],
-    searchableText: `${s.parqueName} ${s.inicio}`,
-  }))
-
-  const allItems = [...articleItems, ...faunaItems, ...parqueItems, ...senderoItems]
+  const allItems = [...articleItems, ...STATIC_SEARCH_INDEX]
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">

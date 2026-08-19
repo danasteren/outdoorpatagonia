@@ -6,6 +6,7 @@ import { VOLCANES_CATALOG } from '@/lib/volcanes/catalog'
 import { ESCALADA_CATALOG } from '@/lib/escalada/catalog'
 import { ARQUEOLOGIA_CATALOG, CATEGORIA_LABELS as ARQUE_LABELS } from '@/lib/arqueologia/catalog'
 import { TERMAS_CATALOG } from '@/lib/termas/catalog'
+import { GASTRONOMIA_CATALOG, CATEGORIA_LABELS as GASTRONOMIA_LABELS } from '@/lib/gastronomia/catalog'
 import type { SearchItem } from './types'
 
 const STATIC_PAGES: SearchItem[] = [
@@ -95,7 +96,15 @@ function buildStaticIndex(): SearchItem[] {
     meta: t.pais === 'AR' ? 'Argentina' : 'Chile',
   }))
 
-  return [...STATIC_PAGES, ...fauna, ...flora, ...parques, ...senderos, ...volcanes, ...sectores, ...arqueologia, ...termas]
+  const gastronomia: SearchItem[] = GASTRONOMIA_CATALOG.map((g) => ({
+    type: 'gastronomia',
+    title: g.nombre,
+    description: g.descripcion[0]?.slice(0, 120) ?? '',
+    href: `/gastronomia/${g.slug}`,
+    meta: GASTRONOMIA_LABELS[g.categoria],
+  }))
+
+  return [...STATIC_PAGES, ...fauna, ...flora, ...parques, ...senderos, ...volcanes, ...sectores, ...arqueologia, ...termas, ...gastronomia]
 }
 
 export const STATIC_SEARCH_INDEX: SearchItem[] = buildStaticIndex()
