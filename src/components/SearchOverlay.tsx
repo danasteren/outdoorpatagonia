@@ -8,7 +8,7 @@ import {
   Globe, BookOpen, ArrowRight, Telescope, Activity, Bone, Droplets, ChefHat,
 } from 'lucide-react'
 import Fuse from 'fuse.js'
-import type { SearchResultType } from '@/lib/search/types'
+import type { SearchItem, SearchResultType } from '@/lib/search/types'
 import { STATIC_SEARCH_INDEX } from '@/lib/search/buildIndex'
 
 const TYPE_META: Record<SearchResultType, { Icon: React.ElementType; color: string; label: string }> = {
@@ -36,18 +36,20 @@ const QUICK_LINKS = [
   { href: '/astronomia', label: 'Astronomía', Icon: Telescope, color: 'text-[var(--color-teal)]' },
 ]
 
-const fuse = new Fuse(STATIC_SEARCH_INDEX, {
-  keys: [
-    { name: 'title',          weight: 3 },
-    { name: 'description',    weight: 1 },
-    { name: 'meta',           weight: 0.5 },
-    { name: 'searchableText', weight: 1.5 },
-  ],
-  threshold: 0.35,
-  minMatchCharLength: 2,
-  includeScore: true,
-  includeMatches: true,
-})
+function buildFuse(items: SearchItem[]) {
+  return new Fuse(items, {
+    keys: [
+      { name: 'title',          weight: 3 },
+      { name: 'description',    weight: 1 },
+      { name: 'meta',           weight: 0.5 },
+      { name: 'searchableText', weight: 1.5 },
+    ],
+    threshold: 0.35,
+    minMatchCharLength: 2,
+    includeScore: true,
+    includeMatches: true,
+  })
+}
 
 // Resalta las letras coincidentes dentro de un string
 function Highlighted({ text, indices }: { text: string; indices?: readonly [number, number][] }) {
@@ -67,14 +69,16 @@ function Highlighted({ text, indices }: { text: string; indices?: readonly [numb
   return <>{parts}</>
 }
 
-type SearchFuseResult = ReturnType<typeof fuse.search>[number]
+type SearchFuseResult = ReturnType<Fuse<SearchItem>['search']>[number]
 
-export function SearchOverlay({ onClose }: { onClose: () => void }) {
+export function SearchOverlay({ onClose, articleItems }: { onClose: () => void; articleItems: SearchItem[] }) {
   const [query, setQuery] = useState('')
   const [selectedIdx, setSelectedIdx] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
   const router = useRouter()
+
+  const fuse = useMemo(() => buildFuse([...STATIC_SEARCH_INDEX, ...articleItems]), [articleItems])
 
   useEffect(() => { inputRef.current?.focus() }, [])
 
@@ -87,7 +91,7 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
     const q = query.trim()
     if (q.length < 2) return []
     return fuse.search(q, { limit: 12 })
-  }, [query])
+  }, [fuse, query])
 
   // Reset selection when results change
   useEffect(() => { setSelectedIdx(-1) }, [fuseResults])

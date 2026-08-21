@@ -1,6 +1,8 @@
 import { headers } from "next/headers";
 import { createClient as createServerClient } from "@/lib/supabase/server";
+import { toCategorySlug } from "@/lib/category";
 import { HeaderShell, type AuthUser } from "./HeaderShell";
+import type { SearchItem } from "@/lib/search/types";
 
 
 export async function Header() {
@@ -17,5 +19,22 @@ export async function Header() {
     avatarUrl: (rawUser.user_metadata?.avatar_url as string | undefined) ?? null,
   } : null;
 
-  return <HeaderShell lang={lang} user={authUser} />;
+  const { data: articles } = await supabase
+    .from('articles')
+    .select('title, excerpt, category, slug')
+    .eq('language', lang)
+    .eq('status', 'published')
+
+  const articleItems: SearchItem[] = (articles ?? []).map((a) => {
+    const catSlug = a.category ? toCategorySlug(a.category) : ''
+    return {
+      type: 'articulo' as const,
+      title: a.title,
+      description: a.excerpt ?? '',
+      href: lang === 'en' ? `/en/${catSlug}/${a.slug}` : `/${catSlug}/${a.slug}`,
+      meta: a.category ?? undefined,
+    }
+  })
+
+  return <HeaderShell lang={lang} user={authUser} articleItems={articleItems} />;
 }

@@ -11,6 +11,7 @@ import {
 import { DarkModeToggle } from './DarkModeToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
 import { SearchOverlay } from './SearchOverlay'
+import type { SearchItem } from '@/lib/search/types'
 
 export type AuthUser = { name: string; email: string; avatarUrl: string | null } | null
 
@@ -32,9 +33,11 @@ function UserAvatar({ user, size = 7 }: { user: AuthUser & object; size?: number
 export function HeaderShell({
   lang,
   user,
+  articleItems,
 }: {
   lang: string
   user: AuthUser
+  articleItems: SearchItem[]
 }) {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -102,7 +105,7 @@ export function HeaderShell({
 
   return (
     <>
-      {searchOpen && <SearchOverlay onClose={closeSearch} />}
+      {searchOpen && <SearchOverlay onClose={closeSearch} articleItems={articleItems} />}
       <header
         style={{
           backgroundColor: `color-mix(in oklch, var(--color-background) ${scrolled ? '75%' : '15%'}, transparent)`,
