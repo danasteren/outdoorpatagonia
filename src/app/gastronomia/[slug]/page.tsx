@@ -7,6 +7,7 @@ import {
   getGastronomiaEntry,
   CATEGORIA_LABELS,
   PAIS_LABELS,
+  type GastronomiaCategoria,
 } from "@/lib/gastronomia/catalog"
 import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { fetchPexelsPhoto } from "@/lib/apis/pexels"
@@ -33,7 +34,15 @@ export async function generateMetadata({
   if (!entry) return {}
 
   const description = entry.metaDescription ?? truncateAtWord(entry.descripcion[0], 160)
-  const title = entry.metaTitle ?? `${entry.nombre} — Gastronomía Patagónica`
+  const CATEGORIA_TITLE: Record<GastronomiaCategoria, string> = {
+    plato: `${entry.nombre}: Receta Patagónica Tradicional`,
+    bebida: `${entry.nombre}: Bebida Típica de la Patagonia`,
+    postre: `${entry.nombre}: Postre Típico Patagónico`,
+    condimento: `${entry.nombre} Patagónico: Origen y Usos en la Cocina`,
+    conserva: `${entry.nombre}: Receta y Conservación Patagónica`,
+    ingrediente: `${entry.nombre}: Guía Patagónica de Uso y Origen`,
+  }
+  const title = entry.metaTitle ?? CATEGORIA_TITLE[entry.categoria]
 
   return {
     title,

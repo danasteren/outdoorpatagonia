@@ -51,7 +51,18 @@ export async function generateMetadata({
         : `Dónde encontrar ${name} (${sci}) en la Patagonia: observaciones recientes, temporada de floración y parques nacionales.`,
       160
     )
-  const title = entry?.metaTitle ?? `${name} — Flora de la Patagonia | Outdoor Patagonia`
+  const CATEGORY_TITLE_NOUN: Record<FloraCategory, { noun: string; pronoun: "lo" | "la" }> = {
+    arbol: { noun: "el Árbol", pronoun: "lo" },
+    arbusto: { noun: "el Arbusto", pronoun: "lo" },
+    "herbácea": { noun: "la Planta", pronoun: "la" },
+    enredadera: { noun: "la Enredadera", pronoun: "la" },
+  }
+  const categoryTitle = entry ? CATEGORY_TITLE_NOUN[entry.category] : null
+  const title =
+    entry?.metaTitle ??
+    (categoryTitle
+      ? `${name}, ${categoryTitle.noun}: Dónde y Cuándo Ver${categoryTitle.pronoun} en Patagonia`
+      : `${name} — Flora de la Patagonia | Outdoor Patagonia`)
 
   return {
     title,
