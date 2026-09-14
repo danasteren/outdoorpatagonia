@@ -19,6 +19,10 @@ export function NewsletterForm() {
   return (
     <div className="w-full max-w-sm">
       <form action={action} className="flex flex-col sm:flex-row gap-2">
+        <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
+          <label htmlFor="newsletter-website">No completar este campo</label>
+          <input type="text" id="newsletter-website" name="website" tabIndex={-1} autoComplete="off" />
+        </div>
         <input
           name="email"
           type="email"

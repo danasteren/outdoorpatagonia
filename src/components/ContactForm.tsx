@@ -31,6 +31,10 @@ export function ContactForm() {
 
   return (
     <form action={action} className="flex flex-col gap-5">
+      <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
+        <label htmlFor="website">No completar este campo</label>
+        <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="nombre" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">

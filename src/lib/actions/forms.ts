@@ -14,6 +14,9 @@
   alter table contact_messages enable row level security;
   create policy "anon insert" on contact_messages for insert with check (true);
 
+  -- Ver supabase/migrations/008_form_antispam.sql para la columna `ip`
+  -- usada en el rate limit de este archivo.
+
   create table operator_applications (
     id uuid primary key default gen_random_uuid(),
     created_at timestamptz default now(),
@@ -31,6 +34,8 @@
 */
 
 import { createClient } from "@/lib/supabase/server"
+import { getClientIp, isRateLimited } from "@/lib/antispam"
+import { sendContactNotificationEmail } from "@/lib/email"
 
 export type FormState = { success: true } | { success: false; error: string } | null
 
@@ -38,6 +43,12 @@ export async function submitContactForm(
   _prev: FormState,
   formData: FormData
 ): Promise<FormState> {
+  // Honeypot: campo invisible para humanos. Si viene completo, es un bot —
+  // devolvemos éxito sin guardar nada para no delatar el filtro.
+  if (formData.get("website")?.toString().trim()) {
+    return { success: true }
+  }
+
   const nombre = formData.get("nombre")?.toString().trim()
   const email = formData.get("email")?.toString().trim()
   const asunto = formData.get("asunto")?.toString().trim()
@@ -50,12 +61,24 @@ export async function submitContactForm(
     return { success: false, error: "El email no es válido." }
   }
 
+  const ip = await getClientIp()
+  if (await isRateLimited({ table: "contact_messages", email, ip, maxByEmail: 3, maxByIp: 5 })) {
+    return { success: false, error: "Enviaste muchos mensajes en poco tiempo. Probá de nuevo más tarde." }
+  }
+
   const supabase = await createClient()
   const { error } = await supabase
     .from("contact_messages")
-    .insert({ nombre, email, asunto, mensaje })
+    .insert({ nombre, email, asunto, mensaje, ip })
 
   if (error) return { success: false, error: "No pudimos enviar tu mensaje. Intentá de nuevo." }
+
+  try {
+    await sendContactNotificationEmail({ nombre, email, asunto, mensaje })
+  } catch {
+    // No bloqueamos el alta del mensaje si falla el email de notificación.
+  }
+
   return { success: true }
 }
 

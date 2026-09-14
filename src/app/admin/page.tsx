@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ReplyBox } from "@/components/admin/ReplyBox";
+import { NewsletterComposer } from "@/components/admin/NewsletterComposer";
 import { DeleteButton } from "@/components/admin/DeleteButton";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 import { NewOperatorForm } from "@/components/admin/NewOperatorForm";
@@ -428,6 +429,11 @@ export default async function AdminPage() {
           value={subscribers.length}
         />
       </div>
+
+      <div className="mb-6">
+        <NewsletterComposer recipientCount={activeSubscribers.length} />
+      </div>
+
       <div className="rounded-xl border border-border overflow-hidden">
         <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/40">
           <MailPlus className="w-4 h-4 text-muted-foreground" />
