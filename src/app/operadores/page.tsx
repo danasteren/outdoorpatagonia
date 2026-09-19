@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Briefcase } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { getAllOperators } from "@/lib/operators/queries";
@@ -32,7 +33,7 @@ export default async function OperadoresPage() {
       <OperadoresClient operators={operators} />
 
       {/* CTA para operadores */}
-      <div className="mt-16 border border-dashed border-border rounded-2xl p-8 md:p-12">
+      <div id="sumar" className="mt-16 border border-dashed border-border rounded-2xl p-8 md:p-12 scroll-mt-24">
         <div className="max-w-2xl mx-auto">
           <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-terracotta)] mb-2">
             ¿Sos operador?
@@ -45,7 +46,8 @@ export default async function OperadoresPage() {
           </h2>
           <p className="text-muted-foreground text-sm mb-8 max-w-md">
             Llegás a viajeros que ya están planificando su viaje a Patagonia.
-            Completá el formulario y te contactamos.
+            Completá el formulario y te contactamos. Si querés aparecer arriba de
+            todo, mirá los <Link href="/anunciar" className="underline text-[var(--color-terracotta)]">planes destacados</Link>.
           </p>
 
           <OperadorForm />
