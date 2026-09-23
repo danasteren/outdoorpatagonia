@@ -1,0 +1,34 @@
+# Temas semilla para el autocompletado de Google (uno por línea).
+# El agente semanal puede sumar temas nuevos acá cuando detecte demanda.
+
+# Gastronomía y flora (hoy traen la mayor parte del tráfico)
+hongo de pino
+calafate
+frutos patagonia
+recetas patagonicas
+cordero patagonico
+flora patagonica
+plantas patagonia
+
+# Fauna
+fauna patagonica
+puma patagonia
+ballenas puerto madryn
+pinguinos patagonia
+
+# Destinos y parques
+torres del paine
+el chalten
+glaciar perito moreno
+bariloche
+ushuaia
+carretera austral
+parque nacional patagonia
+
+# Secciones
+volcanes patagonia
+termas patagonia
+dinosaurios patagonia
+petroglifos patagonia
+escalada patagonia
+trekking patagonia
