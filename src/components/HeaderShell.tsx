@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
   PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe, Telescope,
-  User, LogOut, Backpack, ShieldCheck, Flame, Bone, ChefHat,
+  User, LogOut, Backpack, ShieldCheck, Flame, Bone, ChefHat, Droplets,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
@@ -166,6 +166,7 @@ export function HeaderShell({
                     { href: '/gastronomia', label: 'Gastronomía', Icon: ChefHat },
                     { href: '/parques', label: 'Parques', Icon: Mountain },
                     { href: '/senderos', label: 'Senderos', Icon: MapPin },
+                    { href: '/termas', label: 'Termas', Icon: Droplets },
                     { href: '/volcanes', label: 'Volcanes', Icon: Flame },
                   ].map(({ href, label, Icon }) => (
                     <Link
@@ -391,6 +392,7 @@ export function HeaderShell({
               { href: '/gastronomia', label: 'Gastronomía', Icon: ChefHat },
               { href: '/parques', label: 'Parques', Icon: Mountain },
               { href: '/senderos', label: 'Senderos', Icon: MapPin },
+              { href: '/termas', label: 'Termas', Icon: Droplets },
               { href: '/volcanes', label: 'Volcanes', Icon: Flame },
             ].map(({ href, label, Icon }) => (
               <Link
