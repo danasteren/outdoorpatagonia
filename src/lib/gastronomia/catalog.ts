@@ -273,9 +273,9 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     nombre: "Hongo de pino",
     pais: "AR",
     categoria: "ingrediente",
-    metaTitle: "Hongo de Pino: Cómo Identificarlo y Secarlo en Patagonia",
+    metaTitle: "Hongo de Pino Comestible: Cómo Identificarlo en Patagonia",
     metaDescription:
-      "Guía para identificar, recolectar y secar el hongo de pino (Suillus luteus) en los bosques patagónicos: temporada, limpieza y conservación paso a paso.",
+      "El hongo de pino (Suillus luteus) es comestible: sombrero viscoso ocre-castaño. Cómo identificarlo, recolectarlo en otoño y secarlo en bosques patagónicos.",
     descripcion: [
       "El hongo de pino (Suillus luteus) crece en simbiosis con los pinos, en densos bosques de coníferas patagónicos, debajo de las acículas (hojas de pino). Se identifica por un sombrero de color castaño oscuro a ocre amarillento, liso y viscoso, y un tallo firme y claro; un ejemplar sano tiene la base esponjosa amarillenta, sin manchas oscuras ni partes blandas. Se recolecta sobre todo en otoño, y de forma menos común a inicios de primavera.",
       "Para cosecharlo se corta con un cuchillo limpio y afilado en la base del tallo, cuidando no dañar el micelio, o se extrae con un giro suave desde la base. Una práctica de recolectores locales es devolver al bosque los restos de la limpieza —esponja del sombrero, pedazos de tallo— cerca del punto de recolección, ya que puede favorecer nuevos brotes en la misma temporada o al año siguiente.",

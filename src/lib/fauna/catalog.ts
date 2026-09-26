@@ -9,6 +9,9 @@ export type FaunaEntry = {
   category: FaunaCategory
   genero: "m" | "f"
   parquesRelacionados: Array<{ nombre: string; slug: string }>
+  /** Overrides opcionales de SEO title/description. Si no están, se generan desde commonNameEs/scientificName. */
+  metaTitle?: string
+  metaDescription?: string
 }
 
 export const FAUNA_CATALOG: FaunaEntry[] = [
@@ -119,6 +122,9 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEn: "South American Gray Fox",
     category: "mamifero",
     genero: "m",
+    metaTitle: "Zorro Gris de la Patagonia: Dónde Verlo y Cómo Identificarlo",
+    metaDescription:
+      "El zorro gris patagónico (Lycalopex griseus) vive en Torres del Paine, Tierra del Fuego y Los Glaciares. Cómo identificarlo y dónde avistarlo en la Patagonia.",
     parquesRelacionados: [
       { nombre: "Torres del Paine", slug: "torres-del-paine" },
       { nombre: "Tierra del Fuego", slug: "tierra-del-fuego" },
