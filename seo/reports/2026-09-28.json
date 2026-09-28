@@ -1,0 +1,851 @@
+{
+  "days": 28,
+  "gsc_enabled": true,
+  "gsc_total_queries": 3776,
+  "striking_distance": [
+    {
+      "query": "strait of magellan",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 3,
+      "impressions": 969,
+      "ctr": 0.0030959752321981426,
+      "position": 8.701754385964913
+    },
+    {
+      "query": "hongos de pino",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 3,
+      "impressions": 592,
+      "ctr": 0.005067567567567568,
+      "position": 8.717905405405405
+    },
+    {
+      "query": "hongo de pino",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 1,
+      "impressions": 556,
+      "ctr": 0.0017985611510791368,
+      "position": 9.244604316546763
+    },
+    {
+      "query": "amancay",
+      "page": "https://outdoorpatagonia.com/flora/amancay",
+      "clicks": 0,
+      "impressions": 316,
+      "ctr": 0,
+      "position": 11.996835443037975
+    },
+    {
+      "query": "magellan strait",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 1,
+      "impressions": 272,
+      "ctr": 0.003676470588235294,
+      "position": 8.257352941176471
+    },
+    {
+      "query": "chilco",
+      "page": "https://outdoorpatagonia.com/flora/chilco",
+      "clicks": 3,
+      "impressions": 215,
+      "ctr": 0.013953488372093023,
+      "position": 10.758139534883721
+    },
+    {
+      "query": "patagonia fires",
+      "page": "https://outdoorpatagonia.com/en/environmental-impact/patagonia-wildfires-causes-impacts-solutions",
+      "clicks": 0,
+      "impressions": 189,
+      "ctr": 0,
+      "position": 26.55026455026455
+    },
+    {
+      "query": "morillas",
+      "page": "https://outdoorpatagonia.com/gastronomia/recoleccion-morillas-patagonia-consejos",
+      "clicks": 2,
+      "impressions": 184,
+      "ctr": 0.010869565217391304,
+      "position": 9.33695652173913
+    },
+    {
+      "query": "hongo de pino comestible",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 0,
+      "impressions": 178,
+      "ctr": 0,
+      "position": 9.325842696629213
+    },
+    {
+      "query": "guanaco escupiendo",
+      "page": "https://outdoorpatagonia.com/fauna/todo-sobre-el-guanaco",
+      "clicks": 1,
+      "impressions": 143,
+      "ctr": 0.006993006993006993,
+      "position": 8.832167832167833
+    },
+    {
+      "query": "pedulas escalada",
+      "page": "https://outdoorpatagonia.com/consejos/pedulas-escalada",
+      "clicks": 2,
+      "impressions": 133,
+      "ctr": 0.015037593984962405,
+      "position": 9.8796992481203
+    },
+    {
+      "query": "cordero patagonico",
+      "page": "https://outdoorpatagonia.com/gastronomia/cordero-patagonico",
+      "clicks": 0,
+      "impressions": 101,
+      "ctr": 0,
+      "position": 12.366336633663366
+    },
+    {
+      "query": "condor",
+      "page": "https://outdoorpatagonia.com/fauna/condor-andino",
+      "clicks": 0,
+      "impressions": 82,
+      "ctr": 0,
+      "position": 17.926829268292682
+    },
+    {
+      "query": "coipo",
+      "page": "https://outdoorpatagonia.com/en/fauna/nutria",
+      "clicks": 0,
+      "impressions": 81,
+      "ctr": 0,
+      "position": 8.234567901234568
+    },
+    {
+      "query": "hongos de pino comestibles",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 0,
+      "impressions": 78,
+      "ctr": 0,
+      "position": 9.153846153846153
+    },
+    {
+      "query": "hongo llao llao",
+      "page": "https://outdoorpatagonia.com/gastronomia/llao-llao-patagonia",
+      "clicks": 0,
+      "impressions": 75,
+      "ctr": 0,
+      "position": 9.24
+    },
+    {
+      "query": "hongos de pino secos",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 1,
+      "impressions": 74,
+      "ctr": 0.013513513513513514,
+      "position": 9.567567567567568
+    },
+    {
+      "query": "alerce patagonico",
+      "page": "https://outdoorpatagonia.com/flora/alerce",
+      "clicks": 0,
+      "impressions": 69,
+      "ctr": 0,
+      "position": 9.565217391304348
+    },
+    {
+      "query": "kuchen que es",
+      "page": "https://outdoorpatagonia.com/gastronomia/kuchen-chileno-historia-tradicion",
+      "clicks": 0,
+      "impressions": 68,
+      "ctr": 0,
+      "position": 8.985294117647058
+    },
+    {
+      "query": "teros",
+      "page": "https://outdoorpatagonia.com/fauna/tero",
+      "clicks": 0,
+      "impressions": 58,
+      "ctr": 0,
+      "position": 11.137931034482758
+    },
+    {
+      "query": "red berries",
+      "page": "https://outdoorpatagonia.com/en/flora/red-berries-of-patagonia",
+      "clicks": 0,
+      "impressions": 52,
+      "ctr": 0,
+      "position": 8.807692307692307
+    },
+    {
+      "query": "hongo de pino seco",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 0,
+      "impressions": 47,
+      "ctr": 0,
+      "position": 8.893617021276595
+    },
+    {
+      "query": "guanaco",
+      "page": "https://outdoorpatagonia.com/fauna/todo-sobre-el-guanaco",
+      "clicks": 0,
+      "impressions": 46,
+      "ctr": 0,
+      "position": 25.565217391304348
+    },
+    {
+      "query": "llao llao hongo",
+      "page": "https://outdoorpatagonia.com/gastronomia/llao-llao-patagonia",
+      "clicks": 0,
+      "impressions": 45,
+      "ctr": 0,
+      "position": 9
+    },
+    {
+      "query": "que es kuchen en chile",
+      "page": "https://outdoorpatagonia.com/gastronomia/kuchen-chileno-historia-tradicion",
+      "clicks": 0,
+      "impressions": 43,
+      "ctr": 0,
+      "position": 8.279069767441861
+    },
+    {
+      "query": "curiosidades del tero",
+      "page": "https://outdoorpatagonia.com/fauna/tero",
+      "clicks": 0,
+      "impressions": 39,
+      "ctr": 0,
+      "position": 9.41025641025641
+    },
+    {
+      "query": "que es kuchen",
+      "page": "https://outdoorpatagonia.com/gastronomia/kuchen-chileno-historia-tradicion",
+      "clicks": 0,
+      "impressions": 38,
+      "ctr": 0,
+      "position": 9
+    },
+    {
+      "query": "alerce patagónico",
+      "page": "https://outdoorpatagonia.com/flora/alerce",
+      "clicks": 0,
+      "impressions": 37,
+      "ctr": 0,
+      "position": 9.621621621621621
+    },
+    {
+      "query": "calafate fruit",
+      "page": "https://outdoorpatagonia.com/en/flora/calafate-in-patagonia",
+      "clicks": 0,
+      "impressions": 33,
+      "ctr": 0,
+      "position": 9.666666666666666
+    },
+    {
+      "query": "flora patagonica",
+      "page": "https://outdoorpatagonia.com/flora",
+      "clicks": 0,
+      "impressions": 32,
+      "ctr": 0,
+      "position": 8.59375
+    },
+    {
+      "query": "patagonia lamb",
+      "page": "https://outdoorpatagonia.com/en/gastronomy/patagonian-lamb",
+      "clicks": 1,
+      "impressions": 31,
+      "ctr": 0.03225806451612903,
+      "position": 10.096774193548388
+    },
+    {
+      "query": "how big is patagonia",
+      "page": "https://outdoorpatagonia.com/en/history/patagonia-where-is-it-located",
+      "clicks": 0,
+      "impressions": 31,
+      "ctr": 0,
+      "position": 13.32258064516129
+    },
+    {
+      "query": "southern lapwing attack",
+      "page": "https://outdoorpatagonia.com/en/fauna/southern-lapwing",
+      "clicks": 1,
+      "impressions": 30,
+      "ctr": 0.03333333333333333,
+      "position": 8.733333333333334
+    },
+    {
+      "query": "lupinos patagonia",
+      "page": "https://outdoorpatagonia.com/flora/lupinos",
+      "clicks": 0,
+      "impressions": 30,
+      "ctr": 0,
+      "position": 9.366666666666667
+    },
+    {
+      "query": "what is calafate",
+      "page": "https://outdoorpatagonia.com/en/flora/calafate-in-patagonia",
+      "clicks": 0,
+      "impressions": 30,
+      "ctr": 0,
+      "position": 10.433333333333334
+    },
+    {
+      "query": "why is the strait of magellan dangerous",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 0,
+      "impressions": 28,
+      "ctr": 0,
+      "position": 13.035714285714286
+    },
+    {
+      "query": "árboles de la patagonia argentina",
+      "page": "https://outdoorpatagonia.com/flora",
+      "clicks": 0,
+      "impressions": 27,
+      "ctr": 0,
+      "position": 9.11111111111111
+    },
+    {
+      "query": "outdoor patagonia",
+      "page": "https://outdoorpatagonia.com/",
+      "clicks": 1,
+      "impressions": 26,
+      "ctr": 0.038461538461538464,
+      "position": 18.692307692307693
+    },
+    {
+      "query": "puma patagonia",
+      "page": "https://outdoorpatagonia.com/fauna/puma-concolor-patagonia",
+      "clicks": 1,
+      "impressions": 26,
+      "ctr": 0.038461538461538464,
+      "position": 10.961538461538462
+    },
+    {
+      "query": "is patagonia a country",
+      "page": "https://outdoorpatagonia.com/en/history/patagonia-where-is-it-located",
+      "clicks": 0,
+      "impressions": 25,
+      "ctr": 0,
+      "position": 21.36
+    },
+    {
+      "query": "tero patagonico",
+      "page": "https://outdoorpatagonia.com/fauna/tero",
+      "clicks": 1,
+      "impressions": 24,
+      "ctr": 0.041666666666666664,
+      "position": 8.291666666666668
+    },
+    {
+      "query": "dato curioso del tero",
+      "page": "https://outdoorpatagonia.com/fauna/tero",
+      "clicks": 0,
+      "impressions": 24,
+      "ctr": 0,
+      "position": 9.041666666666666
+    },
+    {
+      "query": "bariloche meaning",
+      "page": "https://outdoorpatagonia.com/en/destinations/bariloche-travel-guide",
+      "clicks": 0,
+      "impressions": 23,
+      "ctr": 0,
+      "position": 11.26086956521739
+    },
+    {
+      "query": "cordero patagónico",
+      "page": "https://outdoorpatagonia.com/gastronomia/cordero-patagonico",
+      "clicks": 0,
+      "impressions": 23,
+      "ctr": 0,
+      "position": 19.391304347826086
+    },
+    {
+      "query": "que es un kuchen",
+      "page": "https://outdoorpatagonia.com/gastronomia/kuchen-chileno-historia-tradicion",
+      "clicks": 0,
+      "impressions": 23,
+      "ctr": 0,
+      "position": 8
+    },
+    {
+      "query": "jabali europeo",
+      "page": "https://outdoorpatagonia.com/fauna/jabali-europeo",
+      "clicks": 0,
+      "impressions": 22,
+      "ctr": 0,
+      "position": 11.636363636363637
+    },
+    {
+      "query": "llao llao que significa",
+      "page": "https://outdoorpatagonia.com/gastronomia/llao-llao-patagonia",
+      "clicks": 0,
+      "impressions": 22,
+      "ctr": 0,
+      "position": 9.636363636363637
+    },
+    {
+      "query": "pedulas de escalada",
+      "page": "https://outdoorpatagonia.com/consejos/pedulas-escalada",
+      "clicks": 0,
+      "impressions": 22,
+      "ctr": 0,
+      "position": 8.954545454545453
+    },
+    {
+      "query": "tero espolones",
+      "page": "https://outdoorpatagonia.com/fauna/tero",
+      "clicks": 0,
+      "impressions": 22,
+      "ctr": 0,
+      "position": 10.181818181818182
+    },
+    {
+      "query": "hongo del pino",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 0,
+      "impressions": 21,
+      "ctr": 0,
+      "position": 9.19047619047619
+    },
+    {
+      "query": "llao llao fruto",
+      "page": "https://outdoorpatagonia.com/gastronomia/llao-llao-patagonia",
+      "clicks": 0,
+      "impressions": 21,
+      "ctr": 0,
+      "position": 9.666666666666666
+    },
+    {
+      "query": "patagonian lamb",
+      "page": "https://outdoorpatagonia.com/en/gastronomy/patagonian-lamb",
+      "clicks": 0,
+      "impressions": 21,
+      "ctr": 0,
+      "position": 12.666666666666666
+    },
+    {
+      "query": "guanaco escupe",
+      "page": "https://outdoorpatagonia.com/fauna/todo-sobre-el-guanaco",
+      "clicks": 0,
+      "impressions": 20,
+      "ctr": 0,
+      "position": 8.6
+    },
+    {
+      "query": "hongos secos de pino",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 0,
+      "impressions": 20,
+      "ctr": 0,
+      "position": 9.75
+    },
+    {
+      "query": "loica argentina",
+      "page": "https://outdoorpatagonia.com/fauna/loica-en-la-patagonia-habitat-caracteristicas-conservacion",
+      "clicks": 0,
+      "impressions": 20,
+      "ctr": 0,
+      "position": 10.3
+    },
+    {
+      "query": "martin pescador en argentina",
+      "page": "https://outdoorpatagonia.com/fauna/martin-pescador",
+      "clicks": 0,
+      "impressions": 20,
+      "ctr": 0,
+      "position": 9.05
+    },
+    {
+      "query": "que es un kuchen en chile",
+      "page": "https://outdoorpatagonia.com/gastronomia/kuchen-chileno-historia-tradicion",
+      "clicks": 0,
+      "impressions": 20,
+      "ctr": 0,
+      "position": 8.55
+    }
+  ],
+  "low_ctr": [
+    {
+      "query": "ciervo",
+      "page": "https://outdoorpatagonia.com/fauna/ciervo-colorado",
+      "clicks": 3,
+      "impressions": 2261,
+      "ctr": 0.0013268465280849183,
+      "position": 1.010172490048651,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "strait of magellan map",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 36,
+      "impressions": 1534,
+      "ctr": 0.02346805736636245,
+      "position": 1.2790091264667536,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "liebre europea",
+      "page": "https://outdoorpatagonia.com/fauna/liebre-europea-historia-impacto-y-curiosidades",
+      "clicks": 0,
+      "impressions": 1354,
+      "ctr": 0,
+      "position": 1.9054652880354506,
+      "expected_ctr": 0.15
+    },
+    {
+      "query": "ciervo colorado",
+      "page": "https://outdoorpatagonia.com/fauna/ciervo-colorado",
+      "clicks": 3,
+      "impressions": 1270,
+      "ctr": 0.002362204724409449,
+      "position": 1.0881889763779529,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "strait of magellan",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 3,
+      "impressions": 969,
+      "ctr": 0.0030959752321981426,
+      "position": 8.701754385964913,
+      "expected_ctr": 0.02
+    },
+    {
+      "query": "monito del monte",
+      "page": "https://outdoorpatagonia.com/en/fauna/monito-del-monte-marsupial",
+      "clicks": 0,
+      "impressions": 835,
+      "ctr": 0,
+      "position": 1.784431137724551,
+      "expected_ctr": 0.15
+    },
+    {
+      "query": "tero",
+      "page": "https://outdoorpatagonia.com/fauna/tero",
+      "clicks": 0,
+      "impressions": 740,
+      "ctr": 0,
+      "position": 1.4027027027027028,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "huevos de tero",
+      "page": "https://outdoorpatagonia.com/fauna/tero",
+      "clicks": 3,
+      "impressions": 600,
+      "ctr": 0.005,
+      "position": 1.0016666666666667,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "hongos de pino",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 3,
+      "impressions": 592,
+      "ctr": 0.005067567567567568,
+      "position": 8.717905405405405,
+      "expected_ctr": 0.02
+    },
+    {
+      "query": "hongo de pino",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 1,
+      "impressions": 556,
+      "ctr": 0.0017985611510791368,
+      "position": 9.244604316546763,
+      "expected_ctr": 0.02
+    },
+    {
+      "query": "huevo de tero",
+      "page": "https://outdoorpatagonia.com/fauna/tero",
+      "clicks": 0,
+      "impressions": 502,
+      "ctr": 0,
+      "position": 1.0836653386454183,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "magellan strait map",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 12,
+      "impressions": 464,
+      "ctr": 0.02586206896551724,
+      "position": 1.7650862068965516,
+      "expected_ctr": 0.15
+    },
+    {
+      "query": "zorro patagonico",
+      "page": "https://outdoorpatagonia.com/fauna/zorro-gris",
+      "clicks": 1,
+      "impressions": 359,
+      "ctr": 0.002785515320334262,
+      "position": 2.651810584958217,
+      "expected_ctr": 0.1
+    },
+    {
+      "query": "strait of magellan on map",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 1,
+      "impressions": 301,
+      "ctr": 0.0033222591362126247,
+      "position": 1.3621262458471761,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "magellan strait",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 1,
+      "impressions": 272,
+      "ctr": 0.003676470588235294,
+      "position": 8.257352941176471,
+      "expected_ctr": 0.025
+    },
+    {
+      "query": "puma concolor",
+      "page": "https://outdoorpatagonia.com/fauna/puma-concolor-patagonia",
+      "clicks": 0,
+      "impressions": 270,
+      "ctr": 0,
+      "position": 1.5629629629629629,
+      "expected_ctr": 0.15
+    },
+    {
+      "query": "piche",
+      "page": "https://outdoorpatagonia.com/fauna/piche-patagonico",
+      "clicks": 0,
+      "impressions": 254,
+      "ctr": 0,
+      "position": 2.751968503937008,
+      "expected_ctr": 0.1
+    },
+    {
+      "query": "loica",
+      "page": "https://outdoorpatagonia.com/en/fauna/loica-in-patagonia-habitat-behavior-conservation",
+      "clicks": 0,
+      "impressions": 253,
+      "ctr": 0,
+      "position": 6.098814229249012,
+      "expected_ctr": 0.04
+    },
+    {
+      "query": "straits of magellan map",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 6,
+      "impressions": 237,
+      "ctr": 0.02531645569620253,
+      "position": 1.6371308016877637,
+      "expected_ctr": 0.15
+    },
+    {
+      "query": "puma patagonico",
+      "page": "https://outdoorpatagonia.com/fauna/puma-concolor-patagonia",
+      "clicks": 0,
+      "impressions": 200,
+      "ctr": 0,
+      "position": 4.775,
+      "expected_ctr": 0.05
+    },
+    {
+      "query": "rosehip harvesting",
+      "page": "https://outdoorpatagonia.com/en/gastronomy/patagonian-rosehip-jam",
+      "clicks": 0,
+      "impressions": 195,
+      "ctr": 0,
+      "position": 7.912820512820513,
+      "expected_ctr": 0.025
+    },
+    {
+      "query": "hongo de pino comestible",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 0,
+      "impressions": 178,
+      "ctr": 0,
+      "position": 9.325842696629213,
+      "expected_ctr": 0.02
+    },
+    {
+      "query": "strait of magellan on a map",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 2,
+      "impressions": 174,
+      "ctr": 0.011494252873563218,
+      "position": 1.4137931034482758,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "zorro gris",
+      "page": "https://outdoorpatagonia.com/fauna/zorro-gris",
+      "clicks": 0,
+      "impressions": 167,
+      "ctr": 0,
+      "position": 1.9520958083832336,
+      "expected_ctr": 0.15
+    },
+    {
+      "query": "guanaco escupiendo",
+      "page": "https://outdoorpatagonia.com/fauna/todo-sobre-el-guanaco",
+      "clicks": 1,
+      "impressions": 143,
+      "ctr": 0.006993006993006993,
+      "position": 8.832167832167833,
+      "expected_ctr": 0.02
+    },
+    {
+      "query": "ciervo colorado argentina",
+      "page": "https://outdoorpatagonia.com/fauna/ciervo-colorado",
+      "clicks": 0,
+      "impressions": 141,
+      "ctr": 0,
+      "position": 2.1914893617021276,
+      "expected_ctr": 0.15
+    },
+    {
+      "query": "por qué el huemul está en peligro de extinción",
+      "page": "https://outdoorpatagonia.com/fauna/peligro-extincion-huemul",
+      "clicks": 0,
+      "impressions": 131,
+      "ctr": 0,
+      "position": 6.66412213740458,
+      "expected_ctr": 0.03
+    },
+    {
+      "query": "porque el huemul está en peligro de extinción",
+      "page": "https://outdoorpatagonia.com/fauna/peligro-extincion-huemul",
+      "clicks": 2,
+      "impressions": 124,
+      "ctr": 0.016129032258064516,
+      "position": 3.9274193548387095,
+      "expected_ctr": 0.07
+    },
+    {
+      "query": "chucao",
+      "page": "https://outdoorpatagonia.com/en/fauna/chucao-patagonia-symbol-native-wildlife",
+      "clicks": 0,
+      "impressions": 120,
+      "ctr": 0,
+      "position": 4.316666666666666,
+      "expected_ctr": 0.07
+    },
+    {
+      "query": "pedulas",
+      "page": "https://outdoorpatagonia.com/consejos/pedulas-escalada",
+      "clicks": 0,
+      "impressions": 118,
+      "ctr": 0,
+      "position": 7.415254237288136,
+      "expected_ctr": 0.03
+    },
+    {
+      "query": "zorro gris argentino",
+      "page": "https://outdoorpatagonia.com/fauna/zorro-gris",
+      "clicks": 0,
+      "impressions": 106,
+      "ctr": 0,
+      "position": 1.3679245283018868,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "monito de monte",
+      "page": "https://outdoorpatagonia.com/fauna/monito-del-monte",
+      "clicks": 0,
+      "impressions": 95,
+      "ctr": 0,
+      "position": 1.0105263157894737,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "huemul porque esta en peligro de extincion",
+      "page": "https://outdoorpatagonia.com/fauna/peligro-extincion-huemul",
+      "clicks": 0,
+      "impressions": 92,
+      "ctr": 0,
+      "position": 4.956521739130435,
+      "expected_ctr": 0.05
+    },
+    {
+      "query": "flora de la patagonia",
+      "page": "https://outdoorpatagonia.com/flora",
+      "clicks": 1,
+      "impressions": 89,
+      "ctr": 0.011235955056179775,
+      "position": 6.764044943820225,
+      "expected_ctr": 0.03
+    },
+    {
+      "query": "strait of magellan in world map",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 0,
+      "impressions": 88,
+      "ctr": 0,
+      "position": 1.125,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "zorro gris patagonico",
+      "page": "https://outdoorpatagonia.com/fauna/zorro-gris",
+      "clicks": 0,
+      "impressions": 88,
+      "ctr": 0,
+      "position": 5.909090909090909,
+      "expected_ctr": 0.04
+    },
+    {
+      "query": "where is the strait of magellan on a map",
+      "page": "https://outdoorpatagonia.com/en/history/strait-of-magellan-history-significance",
+      "clicks": 3,
+      "impressions": 82,
+      "ctr": 0.036585365853658534,
+      "position": 1,
+      "expected_ctr": 0.28
+    },
+    {
+      "query": "coipo",
+      "page": "https://outdoorpatagonia.com/en/fauna/nutria",
+      "clicks": 0,
+      "impressions": 81,
+      "ctr": 0,
+      "position": 8.234567901234568,
+      "expected_ctr": 0.025
+    },
+    {
+      "query": "hongos de pino comestibles",
+      "page": "https://outdoorpatagonia.com/gastronomia/hongo-de-pino-recoleccion-secado-usos",
+      "clicks": 0,
+      "impressions": 78,
+      "ctr": 0,
+      "position": 9.153846153846153,
+      "expected_ctr": 0.02
+    },
+    {
+      "query": "hongo llao llao",
+      "page": "https://outdoorpatagonia.com/gastronomia/llao-llao-patagonia",
+      "clicks": 0,
+      "impressions": 75,
+      "ctr": 0,
+      "position": 9.24,
+      "expected_ctr": 0.02
+    }
+  ],
+  "autocomplete": {
+    "hongo de pino": [],
+    "calafate": [],
+    "frutos patagonia": [],
+    "recetas patagonicas": [],
+    "cordero patagonico": [],
+    "flora patagonica": [],
+    "plantas patagonia": [],
+    "fauna patagonica": [],
+    "puma patagonia": [],
+    "ballenas puerto madryn": [],
+    "pinguinos patagonia": [],
+    "torres del paine": [],
+    "el chalten": [],
+    "glaciar perito moreno": [],
+    "bariloche": [],
+    "ushuaia": [],
+    "carretera austral": [],
+    "parque nacional patagonia": [],
+    "volcanes patagonia": [],
+    "termas patagonia": [],
+    "dinosaurios patagonia": [],
+    "petroglifos patagonia": [],
+    "escalada patagonia": [],
+    "trekking patagonia": []
+  }
+}
