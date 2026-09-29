@@ -113,15 +113,20 @@ export async function generateMetadata({
   const name = entry?.commonNameEs ?? especie.replace(/-/g, " ")
   const sci = entry?.scientificName ?? ""
 
+  const title = entry?.metaTitle ?? `${name} — Fauna de la Patagonia | Outdoor Patagonia`
+  const description =
+    entry?.metaDescription ??
+    `Dónde ver ${name} (${sci}) en la Patagonia: avistamientos recientes, temporada y parques nacionales.`
+
   return {
-    title: `${name} — Fauna de la Patagonia | Outdoor Patagonia`,
-    description: `Dónde ver ${name} (${sci}) en la Patagonia: avistamientos recientes, temporada y parques nacionales.`,
+    title,
+    description,
     alternates: {
       canonical: `https://outdoorpatagonia.com/fauna/${especie}`,
     },
     openGraph: {
-      title: `${name} en la Patagonia`,
-      description: `Avistamientos recientes, temporada y dónde ver ${name} en parques de la Patagonia.`,
+      title,
+      description,
       type: "article",
     },
   }
