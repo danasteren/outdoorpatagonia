@@ -19,7 +19,7 @@ Env:
 
 from __future__ import annotations
 
-import os, re, json, time, argparse, unicodedata, requests
+import os, re, sys, json, time, argparse, unicodedata, requests
 from datetime import date, timedelta
 from pathlib import Path
 from urllib.parse import quote
@@ -111,14 +111,18 @@ def low_ctr(best: dict[str, dict], min_impr: int) -> list[dict]:
 
 # ── Autocomplete ──────────────────────────────────────────────────────────────
 
+def fetch_suggestions(q: str) -> list[str]:
+    r = requests.get("https://suggestqueries.google.com/complete/search",
+                     params={"client": "firefox", "hl": "es", "gl": "ar", "q": q}, timeout=15)
+    r.raise_for_status()
+    return r.json()[1]
+
+
 def autocomplete(q: str) -> list[str]:
     try:
-        r = requests.get("https://suggestqueries.google.com/complete/search",
-                         params={"client": "firefox", "hl": "es", "gl": "ar", "q": q}, timeout=15)
-        r.raise_for_status()
-        return r.json()[1]
+        return fetch_suggestions(q)
     except Exception:
-        return []
+        return []  # a single flaky variant shouldn't sink the run; check_autocomplete() guards the whole source
 
 
 def expand_seed(seed: str) -> list[str]:
@@ -217,6 +221,14 @@ def main():
     pages = catalog_pages()
     seeds = [s.strip() for s in Path(args.seeds).read_text().splitlines()
              if s.strip() and not s.startswith("#")]
+    if seeds:
+        try:
+            fetch_suggestions(seeds[0])
+        except Exception as e:
+            # Silently returning [] here once made every seed look "fully covered".
+            sys.exit(f"ERROR: el autocompletado de Google no responde ({e}). "
+                     "Revisar el acceso a la red del entorno (suggestqueries.google.com).")
+
     ac = {}
     for i, seed in enumerate(seeds, 1):
         print(f"[{i}/{len(seeds)}] autocompletado: {seed}")
