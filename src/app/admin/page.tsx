@@ -27,6 +27,7 @@ import {
   ChevronDown,
   CheckCheck,
   Camera,
+  Bot,
 } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -783,13 +784,22 @@ export default async function AdminPage() {
             </p>
           </div>
         </div>
-        <Link
-          href="/admin/ahora"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[var(--color-teal)] text-[var(--color-cream)] text-sm font-semibold hover:opacity-90 transition-opacity"
-        >
-          <Camera className="w-4 h-4" />
-          Patagonia Ahora
-        </Link>
+        <div className="flex items-center gap-2 flex-wrap">
+          <Link
+            href="/admin/agentes"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-border text-sm font-semibold hover:border-teal transition-colors"
+          >
+            <Bot className="w-4 h-4 text-teal" />
+            Agentes
+          </Link>
+          <Link
+            href="/admin/ahora"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[var(--color-teal)] text-[var(--color-cream)] text-sm font-semibold hover:opacity-90 transition-opacity"
+          >
+            <Camera className="w-4 h-4" />
+            Patagonia Ahora
+          </Link>
+        </div>
       </div>
 
       <AdminTabs
