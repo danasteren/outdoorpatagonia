@@ -19,6 +19,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 <!-- BEGIN:novedades-workflow -->
 ## Workflow: "actualiza novedades"
 
+**Standing rule: do this automatically at the end of every task that ships a user-visible change** — no need for the user to ask. Add the items to the current `esUltima` entry if it's still the in-progress release, or start a new version (confirm the number with the user). Keep `package.json` `version` in sync (`1.6` → `"1.6.0"`). Include the `novedades.ts` edit in the same commit as the change. Tasks with only internal changes (see "Never publish" below) don't touch novedades.
+
 When the user says **"actualiza novedades"** (or equivalent phrasing):
 
 1. Run `git log --oneline -30` to get recent commits since the last published version

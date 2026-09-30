@@ -15,10 +15,104 @@ export interface VersionNovedades {
 
 export const novedades: VersionNovedades[] = [
   {
+    numero: "1.6",
+    fecha: "Septiembre 2026",
+    titulo: "Termas en el menú, créditos de fotos y buscador más completo",
+    esUltima: true,
+    cambios: [
+      {
+        tipo: "nuevo",
+        texto: "Termas en el menú principal — ahora las encontrás directo desde la navegación, en desktop y en el celular",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Página Anunciá — si tenés un emprendimiento turístico en la Patagonia, podés destacar tu ficha en el directorio de operadores",
+      },
+      {
+        tipo: "mejora",
+        texto: "Crédito de las fotos — cada artículo muestra quién sacó la foto de portada, con link a su Instagram",
+      },
+      {
+        tipo: "mejora",
+        texto: "Buscador rápido más completo — la lupa del header ahora encuentra también artículos y platos de gastronomía",
+      },
+      {
+        tipo: "mejora",
+        texto: "Títulos más claros en fichas de flora y gastronomía — se entiende mejor de qué se trata cada una desde Google",
+      },
+    ],
+  },
+  {
+    numero: "1.5",
+    fecha: "Julio 2026",
+    titulo: "Termas, Gastronomía y Patagonia Ahora",
+    cambios: [
+      {
+        tipo: "nuevo",
+        texto: "Sección Termas — Copahue, Puyuhuapi, Huife, Malalcahuello, Llifén, Pucón y más, conectadas con los volcanes y parques de cada zona",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Sección Gastronomía — platos típicos de la Patagonia organizados en pestañas por categoría",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Patagonia Ahora — la foto o el video del día desde el campo, en la home y con archivo completo en /ahora",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Newsletter — suscribite desde el pie de página para recibir el contenido nuevo en tu mail",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Notificaciones en tu perfil — elegí qué alertas querés recibir: contenido nuevo, incendios o volcanes",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Senderos de El Chaltén en el mapa",
+      },
+      {
+        tipo: "mejora",
+        texto: "Perfil renovado — guardá cualquier ficha (parques, senderos, volcanes, termas, fauna, flora y más), abrí tus viajes guardados, mirá la cuenta regresiva al próximo y recibí recomendaciones",
+      },
+      {
+        tipo: "mejora",
+        texto: "Astronomía con pestañas — cielos oscuros, meteoros y eventos celestes, cada uno en su lugar",
+      },
+      {
+        tipo: "mejora",
+        texto: "Header renovado — transparente arriba de todo, Explorar al lado de la lupa y logo adaptado al modo oscuro",
+      },
+      {
+        tipo: "mejora",
+        texto: "Mapa en el celular — se centra solo al tocar un punto y el panel inferior es más cómodo",
+      },
+      {
+        tipo: "mejora",
+        texto: "El buscador ahora encuentra termas y sitios arqueológicos",
+      },
+      {
+        tipo: "correccion",
+        texto: "Los links viejos del blog llevan directo al artículo correcto, con aviso y migas de pan",
+      },
+      {
+        tipo: "correccion",
+        texto: "Los Glaciares — tarifas y cómo llegar actualizados con datos 2026",
+      },
+      {
+        tipo: "correccion",
+        texto: "Celular — el iPhone ya no hace zoom al abrir la búsqueda y las barras de categorías ya no se desbordan de costado",
+      },
+      {
+        tipo: "correccion",
+        texto: "Grilla de fotos y visor ampliado en /estado — se ven mejor y se navegan más fácil",
+      },
+    ],
+  },
+  {
     numero: "1.4",
     fecha: "Julio 2026",
     titulo: "Escalada, Tours y mejoras en el Planner",
-    esUltima: true,
     cambios: [
       {
         tipo: "nuevo",
