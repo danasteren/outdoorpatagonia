@@ -12,7 +12,7 @@ CREATE INDEX IF NOT EXISTS subscribers_ip_created_idx ON subscribers (ip, create
 -- subscribe_email pasa a aceptar la IP del suscriptor para el rate limit.
 DROP FUNCTION IF EXISTS subscribe_email(TEXT);
 
-CREATE FUNCTION subscribe_email(p_email TEXT, p_ip TEXT DEFAULT NULL)
+CREATE OR REPLACE FUNCTION subscribe_email(p_email TEXT, p_ip TEXT DEFAULT NULL)
 RETURNS void
 LANGUAGE sql
 SECURITY DEFINER
