@@ -47,7 +47,7 @@ export async function generateMetadata({
   if (!entry) return {}
 
   const description = entry.metaDescription ?? truncateAtWord(entry.description, 157)
-  const title = entry.metaTitle ?? `${entry.name} — Parque Nacional | Outdoor Patagonia`
+  const title = entry.metaTitle ?? `${entry.name} — Parque Nacional`
   return {
     title,
     description,

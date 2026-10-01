@@ -7,7 +7,7 @@ import { NotificationToggle } from '@/components/perfil/NotificationToggle'
 import { NOTIFICATION_TYPES } from '@/lib/notifications/types'
 
 export const metadata = {
-  title: 'Notificaciones — Outdoor Patagonia',
+  title: 'Notificaciones',
 }
 
 export default async function NotificacionesPage() {

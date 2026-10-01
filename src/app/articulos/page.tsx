@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Artículos — Outdoor Patagonia",
+  title: "Artículos",
   description:
     "Todos los artículos de Outdoor Patagonia: fauna, flora, parques, senderos, escalada y más. Contenido migrado del sitio anterior y nuevo material organizado por categoría.",
   alternates: {

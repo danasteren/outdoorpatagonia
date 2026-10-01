@@ -15,10 +15,10 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const op = await getOperatorBySlug(slug);
-  if (!op) return { title: "Operador no encontrado — Outdoor Patagonia" };
+  if (!op) return { title: "Operador no encontrado" };
 
   return {
-    title: `${op.name} — Outdoor Patagonia`,
+    title: `${op.name}`,
     description: op.description ?? `Perfil de ${op.name} en el directorio de operadores de Outdoor Patagonia.`,
     alternates: {
       canonical: `https://outdoorpatagonia.com/operadores/${op.slug}`,

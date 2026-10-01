@@ -60,7 +60,7 @@ export async function generateMetadata({
   const categoryName = await resolveCategoryName(cat);
   const label = categoryName ?? cat.replace(/-/g, " ");
   return {
-    title: `${label} — Outdoor Patagonia`,
+    title: `${label}`,
     description: `Artículos sobre ${label.toLowerCase()} en Outdoor Patagonia.`,
     alternates: {
       canonical: `https://outdoorpatagonia.com/categoria/${cat}`,

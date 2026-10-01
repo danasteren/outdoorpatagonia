@@ -61,7 +61,7 @@ export async function generateMetadata({
     entry?.metaTitle ??
     (categoryTitle
       ? `${name}, ${categoryTitle.noun}: Dónde y Cuándo Ver${categoryTitle.pronoun} en Patagonia`
-      : `${name} — Flora de la Patagonia | Outdoor Patagonia`)
+      : `${name} — Flora de la Patagonia`)
 
   return {
     title,

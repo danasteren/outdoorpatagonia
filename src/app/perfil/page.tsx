@@ -8,7 +8,7 @@ import { toCategorySlug } from '@/lib/category'
 import { getUpcomingTrip, getRecommendations, matchDestino } from '@/lib/perfil/insights'
 
 export const metadata = {
-  title: 'Mi perfil — Outdoor Patagonia',
+  title: 'Mi perfil',
 }
 
 const MONTH_NAMES = [

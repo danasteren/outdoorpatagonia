@@ -113,7 +113,7 @@ export async function generateMetadata({
   const name = entry?.commonNameEs ?? especie.replace(/-/g, " ")
   const sci = entry?.scientificName ?? ""
 
-  const title = entry?.metaTitle ?? `${name} — Fauna de la Patagonia | Outdoor Patagonia`
+  const title = entry?.metaTitle ?? `${name} — Fauna de la Patagonia`
   const description =
     entry?.metaDescription ??
     `Dónde ver ${name} (${sci}) en la Patagonia: avistamientos recientes, temporada y parques nacionales.`

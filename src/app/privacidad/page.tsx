@@ -3,7 +3,7 @@ import { ShieldCheck } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidad — Outdoor Patagonia",
+  title: "Política de Privacidad",
   description:
     "Cómo recopilamos, usamos y protegemos tu información personal en Outdoor Patagonia.",
   alternates: { canonical: "https://outdoorpatagonia.com/privacidad" },

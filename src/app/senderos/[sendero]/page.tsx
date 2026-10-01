@@ -40,7 +40,7 @@ export async function generateMetadata({
   if (!entry) return {}
 
   return {
-    title: `${entry.title} — Sendero en ${entry.parqueName} | Outdoor Patagonia`,
+    title: `${entry.title} — Sendero en ${entry.parqueName}`,
     description: `${entry.title}: ${entry.distancia}, ${entry.duracion}, dificultad ${entry.dificultad}. ${entry.description.slice(0, 100)}`,
     alternates: {
       canonical: `https://outdoorpatagonia.com/senderos/${sendero}`,

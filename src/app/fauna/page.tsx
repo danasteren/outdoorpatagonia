@@ -12,7 +12,7 @@ import { Badge } from "@/components/primitives/Badge"
 import { fetchTaxonPhotos } from "@/lib/apis/inaturalist"
 
 export const metadata: Metadata = {
-  title: "Fauna de la Patagonia — Guía de Especies | Outdoor Patagonia",
+  title: "Fauna de la Patagonia — Guía de Especies",
   description:
     "Guía de fauna patagónica: guanaco, puma, cóndor andino, pingüino de Magallanes y más. Avistamientos recientes, temporada y dónde verlos en los parques nacionales.",
   alternates: {

@@ -52,7 +52,7 @@ export async function generateMetadata({
 
   const vias = totalVias(entry)
   const estilosStr = entry.estilos.map((e) => ESTILO_LABELS[e]).join(", ")
-  const title = `Escalada ${entry.nombre} — rutas, grados y temporada | Outdoor Patagonia`
+  const title = `Escalada ${entry.nombre} — rutas, grados y temporada`
   const description = `${entry.nombre} (${entry.region}): ${estilosStr}${vias > 0 ? `, ${vias}+ vías` : ""}. Grados ${entry.gradosMin}–${entry.gradosMax}, ${entry.altitud} msnm. Cómo llegar, permisos y condiciones en vivo.`
 
   return {

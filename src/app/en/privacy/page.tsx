@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Outdoor Patagonia",
+  title: "Privacy Policy",
   description: "How we collect, use and protect your personal information at Outdoor Patagonia.",
   alternates: {
     canonical: "https://outdoorpatagonia.com/en/privacy",

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Useful Links and Resources for Traveling Patagonia — Outdoor Patagonia",
+  title: "Useful Links and Resources for Traveling Patagonia",
   description:
     "Everything you need to plan your trip to Patagonia: transport, national parks, weather, routes and emergency contacts.",
   alternates: {

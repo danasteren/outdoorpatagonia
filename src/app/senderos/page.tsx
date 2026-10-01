@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/primitives/Badge"
 
 export const metadata: Metadata = {
-  title: "Senderos de la Patagonia — Guía de Trekking | Outdoor Patagonia",
+  title: "Senderos de la Patagonia — Guía de Trekking",
   description:
     "Guía de senderos patagónicos: Laguna de los Tres, Circuito W, Volcán Lanín y más. Distancias, dificultad, desnivel y consejos para cada trek.",
   alternates: {

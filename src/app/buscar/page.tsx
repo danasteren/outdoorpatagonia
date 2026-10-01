@@ -6,7 +6,7 @@ import type { SearchItem } from '@/lib/search/types'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Buscar — Outdoor Patagonia',
+  title: 'Buscar',
   description: 'Buscá parques, fauna, senderos y artículos sobre la Patagonia.',
 }
 

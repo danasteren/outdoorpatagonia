@@ -4,7 +4,7 @@ import { ESCALADA_CATALOG, totalVias } from "@/lib/escalada/catalog"
 import { EscaladaClient } from "./EscaladaClient"
 
 export const metadata: Metadata = {
-  title: "Escalada en Patagonia — Sectores Argentina y Chile | Outdoor Patagonia",
+  title: "Escalada en Patagonia — Sectores Argentina y Chile",
   description:
     "Guía completa de escalada en Patagonia: Fitz Roy, Cerro Torre, Torres del Paine, Piedra Parada, Cochamó y más. Vías, grados, temporada y condiciones en vivo para deportiva, alpinismo y boulder.",
   alternates: {

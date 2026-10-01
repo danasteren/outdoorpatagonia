@@ -4,7 +4,7 @@ import { Backpack, ChevronRight } from "lucide-react";
 import { PlanearClient } from "./PlanearClient";
 
 export const metadata: Metadata = {
-  title: "Planeá tu viaje a la Patagonia — Outdoor Patagonia",
+  title: "Planeá tu viaje a la Patagonia",
   description:
     "Creá tu itinerario personalizado para la Patagonia en 5 preguntas: cuándo vas, cuántos días, qué te interesa y tu presupuesto.",
 };

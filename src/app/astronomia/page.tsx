@@ -21,7 +21,7 @@ import { MeteorTabs } from "@/components/MeteorTabs"
 import { EventoTabs } from "@/components/EventoTabs"
 
 export const metadata: Metadata = {
-  title: "Astronomía en Patagonia — cielos oscuros y observación | Outdoor Patagonia",
+  title: "Astronomía en Patagonia — cielos oscuros y observación",
   description:
     "Fase lunar, Vía Láctea, lluvias de meteoros y eventos astronómicos. Patagonia es uno de los mejores cielos oscuros del mundo.",
   openGraph: {

@@ -4,7 +4,7 @@ import { PageHero } from "@/components/PageHero";
 import { ContactForm } from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contacto — Outdoor Patagonia",
+  title: "Contacto",
   description:
     "¿Tenés una consulta, sugerencia o propuesta? Escribinos a Outdoor Patagonia.",
   alternates: { canonical: "https://outdoorpatagonia.com/contacto" },

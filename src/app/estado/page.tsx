@@ -8,7 +8,7 @@ import { GlacierSection } from "@/components/status/GlacierSection"
 import { FireDetailSection } from "@/components/status/FireDetailSection"
 
 export const metadata: Metadata = {
-  title: "Estado de la Patagonia — datos en tiempo real | Outdoor Patagonia",
+  title: "Estado de la Patagonia — datos en tiempo real",
   description:
     "Panel ambiental en tiempo real: clima, glaciares e incendios activos en la Patagonia. Actualizado cada hora.",
   openGraph: {

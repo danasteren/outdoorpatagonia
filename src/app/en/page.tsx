@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ArticleCard } from "@/components/ArticleCard";
 
 export const metadata: Metadata = {
-  title: "Outdoor Patagonia — Nature, culture and stories from the south",
+  title: { absolute: "Outdoor Patagonia — Nature, culture and stories from the south" },
   description:
     "The definitive guide to Patagonia: trekking, flora, fauna, gastronomy and tools to explore southern Argentina and Chile.",
   alternates: {

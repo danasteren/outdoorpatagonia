@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { MapPageClient } from "./MapPageClient";
 
 export const metadata: Metadata = {
-  title: "Mapa interactivo — Outdoor Patagonia",
+  title: "Mapa interactivo",
   description:
     "Explorá la Patagonia: parques nacionales, senderos, fauna y condiciones climáticas en tiempo real.",
 };

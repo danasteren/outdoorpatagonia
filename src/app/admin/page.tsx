@@ -65,7 +65,7 @@ type OperatorApplication = {
 };
 
 export const metadata: Metadata = {
-  title: "Admin — Outdoor Patagonia",
+  title: "Admin",
   robots: { index: false, follow: false },
 };
 

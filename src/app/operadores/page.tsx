@@ -7,7 +7,7 @@ import { OperadoresClient } from "./OperadoresClient";
 import { OperadorForm } from "@/components/OperadorForm";
 
 export const metadata: Metadata = {
-  title: "Directorio de Operadores — Outdoor Patagonia",
+  title: "Directorio de Operadores",
   description:
     "Encontrá operadores turísticos, guías y agencias de aventura en la Patagonia argentina y chilena. Trekking, kayak, cabalgatas, escalada y más.",
   alternates: {

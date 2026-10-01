@@ -3,7 +3,7 @@ import { getSavedItinerary } from "@/lib/actions/user-data"
 import { ItineraryOutput } from "@/components/planner/ItineraryOutput"
 
 export const metadata = {
-  title: "Tu viaje — Outdoor Patagonia",
+  title: "Tu viaje",
 }
 
 export default async function ViajeGuardadoPage({

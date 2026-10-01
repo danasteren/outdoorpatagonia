@@ -3,7 +3,7 @@ import { ScrollText } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Términos y Condiciones — Outdoor Patagonia",
+  title: "Términos y Condiciones",
   description: "Términos y condiciones de uso del sitio Outdoor Patagonia.",
   alternates: { canonical: "https://outdoorpatagonia.com/terminos" },
 };

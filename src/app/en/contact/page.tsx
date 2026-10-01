@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Contact — Outdoor Patagonia",
+  title: "Contact",
   description: "Have a question or suggestion? Get in touch with Outdoor Patagonia.",
   alternates: {
     canonical: "https://outdoorpatagonia.com/en/contact",

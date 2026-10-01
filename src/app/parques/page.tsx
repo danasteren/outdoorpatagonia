@@ -5,7 +5,7 @@ import { PARQUES_CATALOG } from "@/lib/parques/catalog"
 import { Badge } from "@/components/primitives/Badge"
 
 export const metadata: Metadata = {
-  title: "Parques Nacionales de la Patagonia | Outdoor Patagonia",
+  title: "Parques Nacionales de la Patagonia",
   description:
     "Guía de parques nacionales patagónicos: torres del paine, los glaciares, nahuel huapi, tierra del fuego y más. Senderos, fauna, clima y cómo llegar.",
   alternates: {

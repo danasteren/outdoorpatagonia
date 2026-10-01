@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Use — Outdoor Patagonia",
+  title: "Terms of Use",
   description: "Terms and conditions for using the Outdoor Patagonia website.",
   alternates: {
     canonical: "https://outdoorpatagonia.com/en/terms",

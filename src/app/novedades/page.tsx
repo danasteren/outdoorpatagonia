@@ -4,7 +4,7 @@ import { PageHero } from "@/components/PageHero";
 import NovedadesAccordion from "./NovedadesAccordion";
 
 export const metadata: Metadata = {
-  title: "Novedades — Outdoor Patagonia",
+  title: "Novedades",
   description: "Todo lo que vamos sumando y mejorando en Outdoor Patagonia, versión a versión.",
   alternates: { canonical: "https://outdoorpatagonia.com/novedades" },
 };
