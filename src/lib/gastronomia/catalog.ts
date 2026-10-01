@@ -452,6 +452,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Por qué es tan cara?", respuesta: "Por la dificultad y estacionalidad de su captura, y por la veda que protege su reproducción durante buena parte del año." },
     ],
     pexelsQuery: "king crab seafood dish",
+    relacionados: [{ tipo: "destino", slug: "ushuaia" }],
   },
   {
     slug: "carnes-de-caza-patagonicas-guanaco-liebre",

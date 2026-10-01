@@ -256,6 +256,7 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
       { label: "Tren del Fin del Mundo", query: "ushuaia end of the world train" },
       { label: "Navegación Canal Beagle", query: "ushuaia beagle channel tour" },
     ],
+    relacionados: [{ tipo: "destino", slug: "ushuaia" }],
   },
   {
     slug: "vicente-perez-rosales",

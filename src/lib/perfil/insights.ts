@@ -5,6 +5,7 @@ import { VOLCANES_CATALOG } from "@/lib/volcanes/catalog"
 import { PARQUES_CATALOG } from "@/lib/parques/catalog"
 import { ARQUEOLOGIA_CATALOG } from "@/lib/arqueologia/catalog"
 import { TERMAS_CATALOG } from "@/lib/termas/catalog"
+import { DESTINOS_CATALOG } from "@/lib/destinos/catalog"
 import { GASTRONOMIA_CATALOG } from "@/lib/gastronomia/catalog"
 
 type SavedItinerary = {
@@ -68,6 +69,7 @@ const CATALOGS_WITH_RELACIONADOS: Record<string, { slug: string; relacionados?: 
   arqueologia: ARQUEOLOGIA_CATALOG,
   termas: TERMAS_CATALOG,
   gastronomia: GASTRONOMIA_CATALOG,
+  destinos: DESTINOS_CATALOG,
 }
 
 /** Sugerencias de contenido relacionado a lo que el usuario ya guardó (cross-links de catálogo). */

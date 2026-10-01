@@ -15,10 +15,25 @@ export interface VersionNovedades {
 
 export const novedades: VersionNovedades[] = [
   {
+    numero: "1.7",
+    fecha: "Octubre 2026",
+    titulo: "Guías de viaje por destino, empezando por Ushuaia",
+    esUltima: true,
+    cambios: [
+      {
+        tipo: "nuevo",
+        texto: "Guías de viaje por destino — qué hacer, clima mes a mes, cuándo ir, cómo llegar y cuántos días quedarse. La primera es Ushuaia, en español y en inglés",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Clima en cada guía — la temperatura de ahora y los promedios de cada mes, con las horas de luz, para elegir cuándo viajar",
+      },
+    ],
+  },
+  {
     numero: "1.6",
     fecha: "Septiembre 2026",
     titulo: "Termas en el menú, créditos de fotos y buscador más completo",
-    esUltima: true,
     cambios: [
       {
         tipo: "nuevo",

@@ -1,4 +1,4 @@
-// Cross-links entre catálogos estáticos (volcanes, parques, arqueología, escalada, termas).
+// Cross-links entre catálogos estáticos (volcanes, parques, arqueología, escalada, termas, senderos, destinos).
 // Ver AGENTS.md → "Ampliar contenido: entradas conectadas" para el workflow completo.
 
 import { VOLCANES_CATALOG } from "@/lib/volcanes/catalog"
@@ -8,8 +8,10 @@ import { ESCALADA_CATALOG } from "@/lib/escalada/catalog"
 import { TERMAS_CATALOG } from "@/lib/termas/catalog"
 import { GASTRONOMIA_CATALOG } from "@/lib/gastronomia/catalog"
 import { FAUNA_CATALOG } from "@/lib/fauna/catalog"
+import { SENDEROS_CATALOG } from "@/lib/senderos/catalog"
+import { DESTINOS_CATALOG } from "@/lib/destinos/catalog"
 
-export type RelacionadoTipo = "volcan" | "parque" | "arqueologia" | "escalada" | "termas" | "gastronomia" | "fauna"
+export type RelacionadoTipo = "volcan" | "parque" | "arqueologia" | "escalada" | "termas" | "gastronomia" | "fauna" | "sendero" | "destino"
 
 export type Relacionado = {
   tipo: RelacionadoTipo
@@ -51,6 +53,14 @@ export function resolveRelacionado(r: Relacionado): RelacionadoResuelto | null {
     case "fauna": {
       const e = FAUNA_CATALOG.find((f) => f.slug === r.slug)
       return e ? { nombre: e.commonNameEs, href: `/fauna/${e.slug}`, categoria: "Fauna" } : null
+    }
+    case "sendero": {
+      const e = SENDEROS_CATALOG.find((s) => s.slug === r.slug)
+      return e ? { nombre: e.title, href: `/senderos/${e.slug}`, categoria: "Sendero" } : null
+    }
+    case "destino": {
+      const e = DESTINOS_CATALOG.find((d) => d.slug === r.slug)
+      return e ? { nombre: `Guía de viaje: ${e.nombre}`, href: `/destinos/${e.slug}`, categoria: "Destino" } : null
     }
     default:
       return null

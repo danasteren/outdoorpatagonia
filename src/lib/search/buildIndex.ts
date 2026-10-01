@@ -6,6 +6,7 @@ import { VOLCANES_CATALOG } from '@/lib/volcanes/catalog'
 import { ESCALADA_CATALOG } from '@/lib/escalada/catalog'
 import { ARQUEOLOGIA_CATALOG, CATEGORIA_LABELS as ARQUE_LABELS } from '@/lib/arqueologia/catalog'
 import { TERMAS_CATALOG } from '@/lib/termas/catalog'
+import { DESTINOS_CATALOG } from '@/lib/destinos/catalog'
 import { GASTRONOMIA_CATALOG, CATEGORIA_LABELS as GASTRONOMIA_LABELS } from '@/lib/gastronomia/catalog'
 import type { SearchItem } from './types'
 
@@ -23,6 +24,7 @@ const STATIC_PAGES: SearchItem[] = [
   { type: 'pagina', title: 'Senderos y trekking', description: 'Los mejores senderos para hacer trekking en Patagonia', href: '/senderos', meta: 'Sección' },
   { type: 'pagina', title: 'Volcanes patagónicos', description: 'Volcanes activos y principales de la Patagonia', href: '/volcanes', meta: 'Sección' },
   { type: 'pagina', title: 'Arqueología patagónica', description: 'Dinosaurios, fósiles, sitios humanos y petroglifos de la Patagonia', href: '/arqueologia', meta: 'Sección' },
+  { type: 'pagina', title: 'Destinos de la Patagonia', description: 'Guías de viaje: qué hacer, clima, cuándo ir y cómo llegar', href: '/destinos', meta: 'Sección' },
   { type: 'pagina', title: 'Termas de la Patagonia', description: 'Termas naturales y complejos termales de Argentina y Chile', href: '/termas', meta: 'Sección' },
 ]
 
@@ -96,6 +98,15 @@ function buildStaticIndex(): SearchItem[] {
     meta: t.pais === 'AR' ? 'Argentina' : 'Chile',
   }))
 
+  const destinos: SearchItem[] = DESTINOS_CATALOG.map((d) => ({
+    type: 'pagina',
+    title: `${d.nombre}: guía de viaje`,
+    description: d.es.metaDescription,
+    href: `/destinos/${d.slug}`,
+    meta: 'Guía de viaje',
+    searchableText: d.es.queHacer.map((q) => q.nombre).join(' '),
+  }))
+
   const gastronomia: SearchItem[] = GASTRONOMIA_CATALOG.map((g) => ({
     type: 'gastronomia',
     title: g.nombre,
@@ -104,7 +115,7 @@ function buildStaticIndex(): SearchItem[] {
     meta: GASTRONOMIA_LABELS[g.categoria],
   }))
 
-  return [...STATIC_PAGES, ...fauna, ...flora, ...parques, ...senderos, ...volcanes, ...sectores, ...arqueologia, ...termas, ...gastronomia]
+  return [...STATIC_PAGES, ...fauna, ...flora, ...parques, ...senderos, ...volcanes, ...sectores, ...arqueologia, ...termas, ...destinos, ...gastronomia]
 }
 
 export const STATIC_SEARCH_INDEX: SearchItem[] = buildStaticIndex()

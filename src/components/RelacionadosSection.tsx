@@ -3,14 +3,20 @@ import { ArrowRight } from "lucide-react"
 import { resolveRelacionados, type Relacionado } from "@/lib/relacionados"
 import { Card } from "@/components/primitives/Card"
 
-export function RelacionadosSection({ items }: { items?: Relacionado[] }) {
+export function RelacionadosSection({
+  items,
+  heading = "También te puede interesar",
+}: {
+  items?: Relacionado[]
+  heading?: string
+}) {
   const resolved = resolveRelacionados(items)
   if (resolved.length === 0) return null
 
   return (
     <div>
       <h2 className="text-lg font-bold mb-4" style={{ fontFamily: "var(--font-playfair)" }}>
-        También te puede interesar
+        {heading}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {resolved.map((r) => (
