@@ -20,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const { data: articles } = await supabase
     .from("articles")
-    .select("slug, language, category, published_at")
+    .select("slug, language, category, published_at, updated_at")
     .eq("status", "published");
 
   const rows = articles ?? [];
@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         a.language === "en"
           ? `${BASE}/en/${cat}/${a.slug}`
           : `${BASE}/${cat}/${a.slug}`,
-      lastModified: a.published_at ? new Date(a.published_at) : new Date(),
+      lastModified: new Date(a.updated_at ?? a.published_at ?? Date.now()),
       changeFrequency: "monthly",
       priority: 0.8,
     };
