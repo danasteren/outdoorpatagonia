@@ -72,6 +72,10 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿El cordero patagónico tiene certificación de origen?", respuesta: "No existe una certificación de origen ni una Indicación Geográfica nacional que regule de forma uniforme el uso del nombre." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/12/cordero-patagonico-10.jpg",
+    relacionados: [
+      { tipo: "gastronomia", slug: "comprar-merken-en-la-patagonia" },
+      { tipo: "gastronomia", slug: "carnes-de-caza-patagonicas-guanaco-liebre" },
+    ],
   },
   {
     slug: "curanto-chilote-historia-receta",
@@ -153,6 +157,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Lleva alcohol la receta original?", respuesta: "Sí, tradicionalmente coñac u otro licor, aunque existen versiones sin alcohol." },
     ],
     urlFuente: "https://www.argentina.gob.ar/jefatura/turismo/viaja-por-argentina/torta-galesa",
+    relacionados: [{ tipo: "gastronomia", slug: "kuchen-chileno-historia-tradicion" }],
   },
   {
     slug: "descubri-el-mate-la-bebida-tradicional-de-sudamerica",
@@ -209,7 +214,10 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Daña a los árboles donde crece?", respuesta: "Genera tumores globosos que alteran la corteza y los conductos de savia, pero en general no pone en peligro la vida del árbol." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2024/10/hongo-llao-llao.jpeg",
-    relacionados: [{ tipo: "gastronomia", slug: "hongo-de-pino-recoleccion-secado-usos" }],
+    relacionados: [
+      { tipo: "gastronomia", slug: "hongo-de-pino-recoleccion-secado-usos" },
+      { tipo: "gastronomia", slug: "recoleccion-morillas-patagonia-consejos" },
+    ],
   },
   {
     slug: "comprar-merken-en-la-patagonia",
@@ -237,6 +245,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Cuánto tiempo lleva siendo parte de la cultura patagónica?", respuesta: "Ha sido parte de la cultura mapuche durante siglos y se ha integrado a la gastronomía patagónica de ambos lados de la cordillera." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2024/10/comprar-merken-en-la-patagonia.jpg",
+    relacionados: [{ tipo: "gastronomia", slug: "cordero-patagonico" }],
   },
   {
     slug: "recoleccion-morillas-patagonia-consejos",
@@ -265,6 +274,10 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Cuál es la mejor técnica para recolectarlas sin dañar el ecosistema?", respuesta: "Cortar con herramientas limpias, no recolectar en exceso y ser respetuoso con el bosque de ciprés donde crecen." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2024/06/hongo-morilla.jpg",
+    relacionados: [
+      { tipo: "gastronomia", slug: "hongo-de-pino-recoleccion-secado-usos" },
+      { tipo: "gastronomia", slug: "llao-llao-patagonia" },
+    ],
   },
   {
     slug: "hongo-de-pino-recoleccion-secado-usos",
@@ -296,7 +309,11 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Dónde exactamente hay que buscarlos en el bosque?", respuesta: "En bosques densos de coníferas, bajo los pinos y entre sus acículas, ya que crecen en simbiosis con estos árboles." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2024/06/patagonia-honos-de-pino-7.jpg",
-    relacionados: [{ tipo: "gastronomia", slug: "hongos-de-pino-en-escabeche" }],
+    relacionados: [
+      { tipo: "gastronomia", slug: "hongos-de-pino-en-escabeche" },
+      { tipo: "gastronomia", slug: "llao-llao-patagonia" },
+      { tipo: "gastronomia", slug: "recoleccion-morillas-patagonia-consejos" },
+    ],
   },
   {
     slug: "hongos-de-pino-en-escabeche",
@@ -360,22 +377,28 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     categoria: "postre",
     descripcion: [
       "El kuchen es un postre de origen alemán —tipo torta— que se convirtió en un símbolo gastronómico de la Patagonia chilena, con variantes como el plum kuchen (de ciruelas), el kaesekuchen (torta de queso) y el tradicional baum kuchen. Llegó de la mano de los colonos alemanes que se instalaron en la región durante el siglo XIX, y hoy conecta la identidad patagónica con esas raíces europeas.",
+      "La colonización alemana del sur de Chile se organizó formalmente a partir de un decreto del gobierno chileno del 27 de junio de 1853, que impulsó la llegada de inmigrantes a la cuenca del lago Llanquihue. Puerto Varas se fundó el 12 de febrero de 1854 con los primeros colonos alemanes instalados en el sector La Fábrica, y Frutillar se fundó el 23 de noviembre de 1856 con 47 familias alemanas asentadas a orillas del lago por orden del entonces presidente Manuel Montt. Esas comunidades trajeron consigo sus recetas de repostería, entre ellas el kuchen.",
       "La versión patagónica se adapta con frutos locales —ciruelas, murtillas, frambuesas— y técnicas propias de la región, aunque mantiene la base de masa y relleno del kuchen alemán original. Ciudades como Frutillar, Puerto Varas y Puerto Montt, todas de fuerte impronta de colonización alemana, son reconocidas por sus pastelerías y cafés especializados en kuchen.",
     ],
     datosExtra: [
       { label: "Origen", valor: "Colonización alemana, siglo XIX" },
+      { label: "Decreto de colonización", valor: "27 de junio de 1853" },
+      { label: "Fundación de Frutillar", valor: "23 de noviembre de 1856, 47 familias alemanas" },
       { label: "Variantes", valor: "Plum kuchen, kaesekuchen, baum kuchen" },
       { label: "Frutos locales usados", valor: "Ciruela, murtilla, frambuesa" },
       { label: "Dónde probarlo", valor: "Frutillar, Puerto Varas, Puerto Montt" },
     ],
     faq: [
       { pregunta: "¿Qué es el kuchen?", respuesta: "Es un postre alemán, tipo torta, muy popular en la Patagonia chilena, con variantes que incluyen frutas, quesos y masas dulces." },
-      { pregunta: "¿Por qué el kuchen es tan importante en la Patagonia chilena?", respuesta: "Por la fuerte influencia de la inmigración alemana que llegó en el siglo XIX, cuyas tradiciones gastronómicas se fusionaron con ingredientes locales." },
+      { pregunta: "¿Qué es un kuchen en Chile?", respuesta: "En el sur de Chile, particularmente en la zona de los lagos, \"kuchen\" es como se conoce a la torta alemana tradicional heredada de los colonos del siglo XIX, adaptada con frutos locales como ciruela, murtilla o frambuesa." },
+      { pregunta: "¿Por qué el kuchen es tan importante en la Patagonia chilena?", respuesta: "Por la fuerte influencia de la inmigración alemana que llegó a la cuenca del lago Llanquihue a partir de 1853, cuyas tradiciones gastronómicas se fusionaron con ingredientes locales." },
+      { pregunta: "¿Cuándo llegaron los colonos alemanes que trajeron el kuchen?", respuesta: "El proceso se formalizó con un decreto de 1853; Puerto Varas se fundó en 1854 y Frutillar en 1856, ambas por colonos alemanes que se instalaron a orillas del lago Llanquihue." },
       { pregunta: "¿Dónde probar el mejor kuchen en la Patagonia?", respuesta: "Ciudades como Frutillar, Puerto Varas y Puerto Montt son reconocidas por sus pastelerías y cafés con buen kuchen." },
       { pregunta: "¿El kuchen patagónico tiene variaciones respecto al original alemán?", respuesta: "Sí, se adapta con frutos locales como ciruelas, murtillas y frambuesas, con técnicas y sabores propios de la región." },
       { pregunta: "¿Se puede preparar kuchen en casa fácilmente?", respuesta: "Sí, existen recetas simples para horno casero con ingredientes accesibles." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/06/kuchen-de-Frutos-Rojos.jpg",
+    relacionados: [{ tipo: "gastronomia", slug: "torta-galesa-historia-receta-patagonia" }],
   },
   {
     slug: "trucha-patagonica-recetas-pesca",
@@ -454,7 +477,10 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Cómo se prepara la liebre a la patagónica?", respuesta: "Se macera la carne en vino tinto con laurel, perejil, zanahoria y apio durante unas 12 horas antes de cocinarla." },
     ],
     pexelsQuery: "grilled game meat dish",
-    relacionados: [{ tipo: "fauna", slug: "guanaco" }],
+    relacionados: [
+      { tipo: "fauna", slug: "guanaco" },
+      { tipo: "gastronomia", slug: "cordero-patagonico" },
+    ],
   },
   {
     slug: "tortas-fritas-patagonicas",
