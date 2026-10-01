@@ -184,34 +184,14 @@ export default async function SenderoPage({
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {gear.map((g) => (
-                    <a
-                      key={g.name}
-                      href={g.url}
-                      target="_blank"
-                      rel="noopener noreferrer sponsored"
-                      className="group block"
-                    >
-                      <Card variant="default" className="h-full hover:border-[var(--color-terracotta)] transition-colors">
-                        <CardBody className="p-4">
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              <p className="font-medium text-sm group-hover:text-[var(--color-terracotta)] transition-colors leading-snug">
-                                {g.name}
-                              </p>
-                              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                                {g.description.slice(0, 80)}…
-                              </p>
-                            </div>
-                            <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5" />
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </a>
+                    <Card key={g.name} variant="default" className="h-full">
+                      <CardBody className="p-4">
+                        <p className="font-medium text-sm leading-snug">{g.name}</p>
+                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{g.description}</p>
+                      </CardBody>
+                    </Card>
                   ))}
                 </div>
-                <p className="text-xs text-muted-foreground mt-3">
-                  Links de afiliado Amazon — el precio no varía para vos
-                </p>
               </section>
             )}
           </div>

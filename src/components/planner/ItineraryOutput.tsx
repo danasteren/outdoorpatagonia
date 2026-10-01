@@ -183,15 +183,6 @@ export function ItineraryOutput({ result, form, onReset, alreadySaved, backHref,
                 <CardBody className="p-4 space-y-1">
                   <p className="font-semibold text-sm text-foreground">{item.name}</p>
                   <p className="text-xs text-muted-foreground">{item.description}</p>
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-teal)] hover:underline mt-1"
-                  >
-                    Ver en Amazon
-                    <ExternalLink size={11} />
-                  </a>
                 </CardBody>
               </Card>
             ))}

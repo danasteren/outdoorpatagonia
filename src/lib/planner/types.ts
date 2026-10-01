@@ -38,7 +38,6 @@ export interface Tour {
 export interface GearItem {
   name: string;
   description: string;
-  url: string;
   interests: Interest[];
   seasons: Season[];
 }

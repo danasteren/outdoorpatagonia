@@ -13,7 +13,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 ## Key env vars
 - `NASA_FIRMS_KEY` — NASA FIRMS API key (already set in .env.local)
 - `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase
-- `NEXT_PUBLIC_BOOKING_AID`, `NEXT_PUBLIC_GYG_PARTNER_ID`, `NEXT_PUBLIC_AMAZON_TAG` — affiliate IDs
+- `NEXT_PUBLIC_GYG_PARTNER_ID` — GetYourGuide affiliate ID (único afiliado activo; Booking y Amazon fueron dados de baja)
 <!-- END:nextjs-agent-rules -->
 
 <!-- BEGIN:novedades-workflow -->
