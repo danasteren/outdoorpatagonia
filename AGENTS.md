@@ -190,4 +190,4 @@ Desde 2026-10 el foco de contenido son las guías de viaje por destino, en espa�
 - **`queHacer` con `gygQuery`** cuando hay excursiones en GetYourGuide (único afiliado activo).
 - **Relacionados simétricos** con parques, senderos, fauna y gastronomía del destino (tipos `destino` y `sendero` en `src/lib/relacionados.ts`).
 - Si ya hay artículos viejos de ese destino (ej. `/lugares/bariloche-argentina`), redirigirlos con 301 a la guía nueva en `src/proxy.ts` para no competir consigo mismos.
-- La sección entra al nav principal al llegar a ~6 destinos (regla de masa crítica de arriba).
+- **Al sumar la 6ª guía al catálogo, en ese mismo cambio agregar "Destinos" (`/destinos`) al nav de `src/components/HeaderShell.tsx`** (lista desktop y mobile, en sync) y un bloque en la home. Regla de masa crítica de arriba; con menos de 6 se descubre por buscador, relacionados y Google.
