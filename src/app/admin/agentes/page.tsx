@@ -32,10 +32,10 @@ const AGENTS: Record<
   { name: string; does: string; icon: ReactNode; routineUrl: string }
 > = {
   contenido: {
-    name: "Contenido",
-    does: "Busca qué se busca en Google y escribe o mejora entradas.",
+    name: "Guías de destino",
+    does: "Cada lunes escribe una guía de viaje nueva (español e inglés) siguiendo la lista de destinos prioritarios.",
     icon: <FileText className="w-5 h-5" />,
-    routineUrl: "https://claude.ai/code/routines/trig_01MtQzMw3yhGcjfLgNWQzfQC",
+    routineUrl: "https://claude.ai/code/routines/trig_01Gqz7Knx4E6Az4cLeQAhewY",
   },
   titulos: {
     name: "Títulos en Google",

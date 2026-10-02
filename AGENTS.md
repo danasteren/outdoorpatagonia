@@ -182,12 +182,12 @@ Cuando llegue el momento de sumarla, el nav vive en `src/components/HeaderShell.
 <!-- END:relacionados-workflow -->
 ## Guías de viaje por destino (`/destinos`) — prioridad #1 de contenido
 
-Desde 2026-10 el foco de contenido son las guías de viaje por destino, en español (`/destinos/[slug]`) e inglés (`/en/guides/[slug]`). Orden de producción y búsquedas a cubrir: `seo/destinos-prioridad.md`.
+Desde 2026-10 el foco de contenido son las guías de viaje por destino, en español (`/destinos/[slug]`) e inglés (`/en/guides/[slug]`). Orden de producción y búsquedas a cubrir: `seo/destinos-prioridad.md`. Las produce la rutina semanal "OP - Guía de destino semanal" (`trig_01Gqz7Knx4E6Az4cLeQAhewY`, lunes 08:30 ART) vía PR en ramas `seo/content-<fecha>-<slug>`, revisadas en `/admin/agentes`.
 
 - **Una entrada = un objeto en `src/lib/destinos/catalog.ts`** con contenido `es` y `en` completos (misma estructura que Ushuaia). La página, el clima, el JSON-LD, el sitemap y el buscador salen solos del catálogo.
 - **Datos solo de fuentes oficiales** (turismo municipal/provincial, APN/CONAF, sitio del atractivo, censo) y listadas en `fuentes`. Si no hay fuente, no va el dato.
 - **Títulos: nunca en formato pregunta.** `metaTitle` arranca con el nombre del destino + lo que se busca ("Ushuaia: Qué Hacer, Clima, Cuándo Ir y Cómo Llegar"), máx. ~50 caracteres (el layout suma "| Outdoor Patagonia").
 - **`queHacer` con `gygQuery`** cuando hay excursiones en GetYourGuide (único afiliado activo).
 - **Relacionados simétricos** con parques, senderos, fauna y gastronomía del destino (tipos `destino` y `sendero` en `src/lib/relacionados.ts`).
-- Si ya hay artículos viejos de ese destino (ej. `/lugares/bariloche-argentina`), redirigirlos con 301 a la guía nueva en `src/proxy.ts` para no competir consigo mismos.
+- Si ya hay artículos viejos de ese destino (ej. `/lugares/bariloche-argentina`), agregarlos a `LEGACY_TO_GUIDE` en `src/lib/destinos/redirects.ts` (proxy.ts responde 301 y el sitemap los excluye) para no competir consigo mismos.
 - **Al sumar la 6ª guía al catálogo, en ese mismo cambio agregar "Destinos" (`/destinos`) al nav de `src/components/HeaderShell.tsx`** (lista desktop y mobile, en sync) y un bloque en la home. Regla de masa crítica de arriba; con menos de 6 se descubre por buscador, relacionados y Google.
