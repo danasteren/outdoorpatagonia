@@ -1,10 +1,17 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { toCategorySlug } from "@/lib/category";
+import { LEGACY_TO_GUIDE } from "@/lib/destinos/redirects";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const segments = pathname.split("/").filter(Boolean);
+
+  // Artículos viejos absorbidos por una guía de /destinos (ver src/lib/destinos/redirects.ts)
+  const guide = LEGACY_TO_GUIDE[pathname.replace(/\/+$/, "")];
+  if (guide) {
+    return NextResponse.redirect(new URL(guide, request.url), 301);
+  }
 
   // /categoria/gastronomia moved to its own dedicated section at /gastronomia
   if (pathname.replace(/\/+$/, "") === "/categoria/gastronomia") {

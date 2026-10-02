@@ -9,6 +9,7 @@ import { VOLCANES_CATALOG } from "@/lib/volcanes/catalog";
 import { ARQUEOLOGIA_CATALOG } from "@/lib/arqueologia/catalog";
 import { TERMAS_CATALOG } from "@/lib/termas/catalog";
 import { DESTINOS_CATALOG } from "@/lib/destinos/catalog";
+import { LEGACY_TO_GUIDE } from "@/lib/destinos/redirects";
 import { GASTRONOMIA_CATALOG } from "@/lib/gastronomia/catalog";
 
 const BASE = "https://outdoorpatagonia.com";
@@ -28,6 +29,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const articleUrls: MetadataRoute.Sitemap = rows
     .filter((a) => !(a.language === "es" && toCategorySlug(a.category ?? "") === "gastronomia"))
+    .filter((a) => {
+      const cat = toCategorySlug(a.category ?? "");
+      const path = a.language === "en" ? `/en/${cat}/${a.slug}` : `/${cat}/${a.slug}`;
+      return !LEGACY_TO_GUIDE[path];
+    })
     .map((a) => {
     const cat = toCategorySlug(a.category ?? "");
     return {
