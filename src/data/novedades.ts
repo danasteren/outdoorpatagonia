@@ -28,6 +28,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "nuevo",
         texto: "Clima en cada guía — la temperatura de ahora y los promedios de cada mes, con las horas de luz, para elegir cuándo viajar",
       },
+      {
+        tipo: "nuevo",
+        texto: "Guía de viaje de El Calafate — qué hacer, clima, cuándo ir y cómo llegar, con el Glaciar Perito Moreno y las navegaciones por el Lago Argentino, en español y en inglés",
+      },
     ],
   },
   {
