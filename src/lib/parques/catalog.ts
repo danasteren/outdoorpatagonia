@@ -203,6 +203,8 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
       { label: "Trekking Fitz Roy — El Chaltén", query: "el chalten fitz roy trekking" },
       { label: "Safari náutico Lago Argentino", query: "el calafate lago argentino boat tour" },
     ],
+
+    relacionados: [{ tipo: "destino", slug: "el-calafate" }],
   },
   {
     slug: "monte-leon",
