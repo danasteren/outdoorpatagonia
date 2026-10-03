@@ -75,6 +75,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     relacionados: [
       { tipo: "gastronomia", slug: "comprar-merken-en-la-patagonia" },
       { tipo: "gastronomia", slug: "carnes-de-caza-patagonicas-guanaco-liebre" },
+      { tipo: "destino", slug: "el-calafate" },
     ],
   },
   {
