@@ -62,11 +62,11 @@ export const ESCALADA: MapFeature[] = ESCALADA_CATALOG.map((s) => ({
   properties: {
     País: s.pais === "AR" ? "Argentina" : "Chile",
     Región: s.region,
-    "Tipo de roca": s.tipoRoca.join(", "),
+    ...(s.tipoRoca.length > 0 && { "Tipo de roca": s.tipoRoca.join(", ") }),
     Estilos: s.estilos.join(", "),
     Grados: `${s.gradosMin} – ${s.gradosMax}`,
-    Temporada: s.temporada.join(", "),
-    Altitud: `${s.altitud} m`,
+    ...(s.temporada.length > 0 && { Temporada: s.temporada.join(", ") }),
+    ...(s.altitud !== null && { Altitud: `${s.altitud} m` }),
   },
 }));
 

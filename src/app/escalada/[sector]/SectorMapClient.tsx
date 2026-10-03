@@ -1,6 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
+import type { MapPunto } from "./SectorMapInner"
 
 const SectorMapInner = dynamic(
   () => import("./SectorMapInner").then((m) => m.SectorMapInner),
@@ -18,10 +19,12 @@ export function SectorMapClient({
   lat,
   lon,
   nombre,
+  puntos,
 }: {
   lat: number
   lon: number
   nombre: string
+  puntos?: MapPunto[]
 }) {
-  return <SectorMapInner lat={lat} lon={lon} nombre={nombre} />
+  return <SectorMapInner lat={lat} lon={lon} nombre={nombre} puntos={puntos} />
 }

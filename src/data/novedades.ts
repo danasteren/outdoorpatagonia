@@ -29,6 +29,18 @@ export const novedades: VersionNovedades[] = [
         texto: "Clima en cada guía — la temperatura de ahora y los promedios de cada mes, con las horas de luz, para elegir cuándo viajar",
       },
       {
+        tipo: "nuevo",
+        texto: "Escalada en Esquel, vía por vía — 73 vías en cuatro sectores (La Crux, El Badén, La Palestra y Cañadón de las Palomas) con grado, metros, chapas y aperturista, cargadas desde la guía local Esqala",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Escalada en la portada — un bloque nuevo con las vías por grado y las recomendadas de la guía",
+      },
+      {
+        tipo: "mejora",
+        texto: "Filtros de vías — por sector, nivel, desplome y recomendadas, cómodos de usar desde el celular",
+      },
+      {
         tipo: "correccion",
         texto: "Artículos de flora que no abrían — el calafate, la rosa mosqueta, la frutilla, el ciprés de la cordillera y otros cuatro mostraban \"Página no encontrada\"; ya se pueden leer de nuevo",
       },

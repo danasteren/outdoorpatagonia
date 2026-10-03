@@ -65,6 +65,7 @@
   --animate-twinkle: twinkle ease-in-out infinite;
   --animate-bounce-soft: bounce-soft 2.4s ease-in-out infinite;
   --animate-fade-in-up: fade-in-up 0.8s ease-out both;
+  --animate-marquee: marquee 45s linear infinite;
 }
 
 :root {
@@ -233,7 +234,14 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Cinta continua: el contenido va duplicado y se desplaza la mitad de su ancho */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
   .animate-hero-pan,
   .animate-drift,
   .animate-drift-slow,

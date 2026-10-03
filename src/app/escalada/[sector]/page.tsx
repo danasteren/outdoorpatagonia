@@ -13,6 +13,7 @@ import {
   Layers,
   Ticket,
   ExternalLink,
+  Navigation,
 } from "lucide-react"
 import {
   ESCALADA_CATALOG,
@@ -20,6 +21,9 @@ import {
   ESTILO_LABELS,
   PAIS_LABELS,
   totalVias,
+  gradeBuckets,
+  gradeIndex,
+  type Sector,
 } from "@/lib/escalada/catalog"
 import { gygSearchUrl } from "@/lib/affiliates/getyourguide"
 import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
@@ -29,6 +33,8 @@ import { Breadcrumb } from "@/components/primitives/Breadcrumb"
 import { FavoriteButton } from "@/components/FavoriteButton"
 import { SectorMapClient } from "./SectorMapClient"
 import { RoutesTable } from "./RoutesTable"
+import { GradeBars } from "@/components/escalada/GradeBars"
+import { FuenteCredito } from "@/components/escalada/FuenteCredito"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -37,6 +43,10 @@ export const dynamicParams = true
 
 export function generateStaticParams() {
   return ESCALADA_CATALOG.map((s) => ({ sector: s.slug }))
+}
+
+function hasFullRoutes(entry: Sector): boolean {
+  return entry.subareas.some((s) => s.rutas.length > 0)
 }
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
@@ -52,8 +62,16 @@ export async function generateMetadata({
 
   const vias = totalVias(entry)
   const estilosStr = entry.estilos.map((e) => ESTILO_LABELS[e]).join(", ")
-  const title = `Escalada ${entry.nombre} — rutas, grados y temporada`
-  const description = `${entry.nombre} (${entry.region}): ${estilosStr}${vias > 0 ? `, ${vias}+ vías` : ""}. Grados ${entry.gradosMin}–${entry.gradosMax}, ${entry.altitud} msnm. Cómo llegar, permisos y condiciones en vivo.`
+  const full = hasFullRoutes(entry)
+  const zonasStr = entry.zonas?.length
+    ? ` en ${entry.zonas.length} sectores (${entry.zonas.map((z) => z.nombre).join(", ")})`
+    : ""
+  const title = full
+    ? `Escalada en ${entry.nombre}: ${vias} vías, sectores y grados`
+    : `Escalada ${entry.nombre} — rutas, grados y temporada`
+  const description = full
+    ? `Escalada en ${entry.region}: ${vias} vías${zonasStr}. Grados ${entry.gradosMin} a ${entry.gradosMax}, cómo llegar, permisos y clima en vivo.`
+    : `${entry.nombre} (${entry.region}): ${estilosStr}${vias > 0 ? `, ${vias}+ vías` : ""}. Grados ${entry.gradosMin}–${entry.gradosMax}${entry.altitud !== null ? `, ${entry.altitud} msnm` : ""}. Cómo llegar, permisos y condiciones en vivo.`
 
   return {
     title,
@@ -73,7 +91,7 @@ export async function generateMetadata({
 
 // ─── JSON-LD helpers ──────────────────────────────────────────────────────────
 
-function buildJsonLd(entry: Awaited<ReturnType<typeof getSectorEntry>>) {
+function buildJsonLd(entry: Sector | null) {
   if (!entry) return null
   const url = `https://outdoorpatagonia.com/escalada/${entry.slug}`
   const vias = totalVias(entry)
@@ -88,7 +106,7 @@ function buildJsonLd(entry: Awaited<ReturnType<typeof getSectorEntry>>) {
       "@type": "GeoCoordinates",
       latitude: entry.lat,
       longitude: entry.lon,
-      elevation: entry.altitud,
+      ...(entry.altitud !== null && { elevation: entry.altitud }),
     },
     sport: "Rock Climbing",
     address: {
@@ -109,25 +127,37 @@ function buildJsonLd(entry: Awaited<ReturnType<typeof getSectorEntry>>) {
   }
   const temporadaStr = entry.temporada.map((m) => meses[m] ?? m).join(", ")
   const estilosStr = entry.estilos.map((e) => ESTILO_LABELS[e]).join(", ")
+  const full = hasFullRoutes(entry)
+  const rutas = entry.subareas.flatMap((s) => s.rutas)
+  const clasicas = rutas.filter((r) => r.estilo === "clasica").length
+  const nivelTxt = full
+    ? `De las ${vias} vías, ${vias - clasicas} son deportivas y ${clasicas} clásicas.`
+    : entry.estilos.includes("clasica")
+      ? "Las rutas clásicas requieren experiencia en glaciar y técnica en hielo o mixta."
+      : "Hay opciones para escaladores de todos los niveles."
 
   const faq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: [
-      {
-        "@type": "Question",
-        name: `¿Cuándo es la temporada de escalada en ${entry.nombre}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `La temporada recomendada para escalar en ${entry.nombre} es ${temporadaStr}. Las condiciones climáticas en la Patagonia pueden cambiar rápidamente; verificar el pronóstico local antes de salir.`,
-        },
-      },
+      ...(entry.temporada.length > 0
+        ? [
+            {
+              "@type": "Question",
+              name: `¿Cuándo es la temporada de escalada en ${entry.nombre}?`,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: `La temporada recomendada para escalar en ${entry.nombre} es ${temporadaStr}. Las condiciones climáticas en la Patagonia pueden cambiar rápidamente; verificar el pronóstico local antes de salir.`,
+              },
+            },
+          ]
+        : []),
       {
         "@type": "Question",
         name: `¿Qué nivel se necesita para escalar en ${entry.nombre}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `${entry.nombre} tiene vías desde grado ${entry.gradosMin} hasta ${entry.gradosMax} (escala francesa). Los estilos disponibles son: ${estilosStr}. ${entry.estilos.includes("clasica") ? "Las rutas clásicas requieren experiencia en glaciar y técnica en hielo o mixta." : "Hay opciones para escaladores de todos los niveles."}`,
+          text: `${entry.nombre} tiene vías desde grado ${entry.gradosMin} hasta ${entry.gradosMax} (escala francesa). Los estilos disponibles son: ${estilosStr}. ${nivelTxt}`,
         },
       },
       ...(entry.permisos
@@ -157,7 +187,9 @@ function buildJsonLd(entry: Awaited<ReturnType<typeof getSectorEntry>>) {
               name: `¿Cuántas rutas hay en ${entry.nombre}?`,
               acceptedAnswer: {
                 "@type": "Answer",
-                text: `${entry.nombre} cuenta con más de ${vias} vías documentadas en grados ${entry.gradosMin}–${entry.gradosMax}. El tipo de roca es ${entry.tipoRoca.join(" y ")}.`,
+                text: full
+                  ? `${entry.nombre} tiene ${vias} vías documentadas en grados ${entry.gradosMin}–${entry.gradosMax}${entry.zonas?.length ? `, repartidas en ${entry.zonas.length} sectores: ${entry.zonas.map((z) => z.nombre).join(", ")}` : ""}.${entry.fuente ? ` Fuente: ${entry.fuente.nombre} (${entry.fuente.edicion}).` : ""}`
+                  : `${entry.nombre} cuenta con más de ${vias} vías documentadas en grados ${entry.gradosMin}–${entry.gradosMax}. El tipo de roca es ${entry.tipoRoca.join(" y ")}.`,
               },
             },
           ]
@@ -192,7 +224,23 @@ export default async function SectorPage({
   const weather = await fetchWeatherForLocation(entry.lat, entry.lon, entry.nombre)
   const windAlert = weather && weather.windSpeed > 50
   const vias = totalVias(entry)
-  const hasFullRoutes = entry.subareas.length > 0 && entry.subareas.some((s) => s.rutas.length > 0)
+  const full = hasFullRoutes(entry)
+  const rutas = entry.subareas.flatMap((s) => s.rutas)
+  const buckets = gradeBuckets(rutas)
+  const zonas = (entry.zonas ?? []).map((z) => {
+    const delaZona = entry.subareas.filter((s) => s.zona === z.nombre)
+    const grados = delaZona
+      .flatMap((s) => s.rutas.map((r) => r.grado.split(/[ |]/)[0]))
+      .filter((g) => !g.includes("?"))
+      .sort((a, b) => gradeIndex(a) - gradeIndex(b))
+    return {
+      ...z,
+      subsectores: delaZona.length,
+      vias: delaZona.reduce((acc, s) => acc + s.rutas.length, 0),
+      gradosMin: grados[0],
+      gradosMax: grados[grados.length - 1],
+    }
+  })
   const jsonLd = buildJsonLd(entry)
 
   return (
@@ -245,7 +293,7 @@ export default async function SectorPage({
             className="text-3xl md:text-5xl font-bold text-white leading-tight"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
-            {entry.nombre}
+            {full ? `Escalada en ${entry.nombre}` : entry.nombre}
           </h1>
           <p className="text-white/60 mt-1.5 text-sm">{entry.region}</p>
         </div>
@@ -254,20 +302,30 @@ export default async function SectorPage({
       {/* Stats strip */}
       <div className="bg-[var(--color-forest)] text-[var(--color-cream)]">
         <div className="max-w-6xl mx-auto px-4 md:px-10 py-4 flex flex-wrap gap-5 text-sm">
-          <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 opacity-50" />
-            <span className="opacity-60 text-xs">Roca</span>
-            <span className="font-bold capitalize">{entry.tipoRoca.join(", ")}</span>
-          </div>
+          {entry.tipoRoca.length > 0 && (
+            <div className="flex items-center gap-2">
+              <Layers className="w-4 h-4 opacity-50" />
+              <span className="opacity-60 text-xs">Roca</span>
+              <span className="font-bold capitalize">{entry.tipoRoca.join(", ")}</span>
+            </div>
+          )}
           <div className="flex items-center gap-2">
             <Mountain className="w-4 h-4 opacity-50" />
             <span className="opacity-60 text-xs">Grados</span>
             <span className="font-bold font-mono">{entry.gradosMin}–{entry.gradosMax}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="opacity-60 text-xs">Altitud</span>
-            <span className="font-bold">{entry.altitud.toLocaleString("es-AR")} msnm</span>
-          </div>
+          {entry.altitud !== null && (
+            <div className="flex items-center gap-2">
+              <span className="opacity-60 text-xs">Altitud</span>
+              <span className="font-bold">{entry.altitud.toLocaleString("es-AR")} msnm</span>
+            </div>
+          )}
+          {zonas.length > 0 && (
+            <div className="flex items-center gap-2">
+              <span className="opacity-60 text-xs">Sectores</span>
+              <span className="font-bold">{zonas.length}</span>
+            </div>
+          )}
           {vias > 0 && (
             <div className="flex items-center gap-2">
               <span className="opacity-60 text-xs">Vías</span>
@@ -298,6 +356,65 @@ export default async function SectorPage({
                 {entry.descripcion}
               </p>
             </section>
+
+            {entry.fuente && <FuenteCredito fuente={entry.fuente} />}
+
+            {/* Vías por grado */}
+            {full && buckets.length > 1 && (
+              <section>
+                <h2 className="text-xl font-bold mb-1">Vías por grado</h2>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Cuántas vías hay de cada grado, de {entry.gradosMin} a {entry.gradosMax}.
+                </p>
+                <div className="rounded-xl border border-border bg-card p-4">
+                  <GradeBars buckets={buckets} />
+                </div>
+              </section>
+            )}
+
+            {/* Zonas */}
+            {zonas.length > 0 && (
+              <section>
+                <h2 className="text-xl font-bold mb-4">
+                  Los {zonas.length} sectores de {entry.nombre}
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {zonas.map((z) => (
+                    <div key={z.nombre} className="rounded-xl border border-border bg-card p-4 flex flex-col">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h3 className="font-heading font-bold text-base">{z.nombre}</h3>
+                        <span className="font-mono text-xs font-bold text-[var(--color-teal)] shrink-0">
+                          {z.gradosMin}–{z.gradosMax}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">
+                        {z.vias} vías · {z.subsectores} subsectores
+                      </p>
+                      <p className="text-xs text-muted-foreground leading-relaxed mt-2">{z.descripcion}</p>
+                      <p className="text-xs leading-relaxed mt-2">
+                        <span className="font-semibold">Acceso: </span>
+                        <span className="text-muted-foreground">{z.acceso}</span>
+                      </p>
+                      {z.advertencia && (
+                        <p className="flex items-start gap-1.5 text-xs text-amber-700 dark:text-amber-400 leading-relaxed mt-2">
+                          <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                          {z.advertencia}
+                        </p>
+                      )}
+                      <a
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${z.lat},${z.lon}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-auto pt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-teal)] hover:underline"
+                      >
+                        <Navigation className="w-3.5 h-3.5" />
+                        Cómo llegar en Google Maps
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Clima en vivo */}
             {weather && (
@@ -344,7 +461,7 @@ export default async function SectorPage({
             <section>
               <div className="flex items-center justify-between gap-4 mb-5">
                 <h2 className="text-xl font-bold">
-                  {hasFullRoutes ? "Vías" : "Rutas destacadas"}
+                  {full ? "Vías" : "Rutas destacadas"}
                 </h2>
                 {vias > 0 && (
                   <span className="text-sm text-muted-foreground">
@@ -353,8 +470,16 @@ export default async function SectorPage({
                 )}
               </div>
 
-              {hasFullRoutes ? (
-                <RoutesTable subareas={entry.subareas} />
+              {full ? (
+                <>
+                  <RoutesTable subareas={entry.subareas} />
+                  <p className="text-xs text-muted-foreground leading-relaxed mt-4">
+                    La escalada es una actividad de riesgo. Estos datos son de referencia
+                    {entry.fuente ? ` (${entry.fuente.nombre}, ${entry.fuente.edicion})` : ""} y no
+                    garantizan el estado de los anclajes ni de la roca: revisá el equipamiento en el
+                    lugar y usá casco.
+                  </p>
+                </>
               ) : (
                 <>
                   <div className="overflow-x-auto">
@@ -448,14 +573,16 @@ export default async function SectorPage({
                     {PAIS_LABELS[entry.pais]} · {entry.region}
                   </p>
                 </div>
-                <div>
-                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
-                    Tipo de roca
-                  </span>
-                  <p className="font-medium mt-0.5 text-sm capitalize">
-                    {entry.tipoRoca.join(", ")}
-                  </p>
-                </div>
+                {entry.tipoRoca.length > 0 && (
+                  <div>
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
+                      Tipo de roca
+                    </span>
+                    <p className="font-medium mt-0.5 text-sm capitalize">
+                      {entry.tipoRoca.join(", ")}
+                    </p>
+                  </div>
+                )}
                 <div>
                   <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
                     Estilos
@@ -471,21 +598,23 @@ export default async function SectorPage({
                     ))}
                   </div>
                 </div>
-                <div>
-                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
-                    Temporada
-                  </span>
-                  <div className="flex flex-wrap gap-1 mt-1.5">
-                    {entry.temporada.map((m) => (
-                      <span
-                        key={m}
-                        className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground font-medium capitalize"
-                      >
-                        {m}
-                      </span>
-                    ))}
+                {entry.temporada.length > 0 && (
+                  <div>
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
+                      Temporada
+                    </span>
+                    <div className="flex flex-wrap gap-1 mt-1.5">
+                      {entry.temporada.map((m) => (
+                        <span
+                          key={m}
+                          className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground font-medium capitalize"
+                        >
+                          {m}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="pt-2 border-t border-border grid grid-cols-2 gap-3 text-sm">
                   <div>
                     <span className="text-[10px] text-muted-foreground block font-semibold uppercase tracking-widest">
@@ -499,12 +628,14 @@ export default async function SectorPage({
                     </span>
                     <span className="font-bold font-mono text-[var(--color-teal)]">{entry.gradosMax}</span>
                   </div>
-                  <div>
-                    <span className="text-[10px] text-muted-foreground block font-semibold uppercase tracking-widest">
-                      Altitud
-                    </span>
-                    <span className="font-bold">{entry.altitud.toLocaleString("es-AR")} m</span>
-                  </div>
+                  {entry.altitud !== null && (
+                    <div>
+                      <span className="text-[10px] text-muted-foreground block font-semibold uppercase tracking-widest">
+                        Altitud
+                      </span>
+                      <span className="font-bold">{entry.altitud.toLocaleString("es-AR")} m</span>
+                    </div>
+                  )}
                   {vias > 0 && (
                     <div>
                       <span className="text-[10px] text-muted-foreground block font-semibold uppercase tracking-widest">
@@ -521,12 +652,21 @@ export default async function SectorPage({
             <section>
               <div className="flex items-center gap-2 mb-3">
                 <MapPin className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-bold">Ubicación del sector</span>
+                <span className="text-sm font-bold">
+                  {zonas.length > 0 ? "Ubicación de los sectores" : "Ubicación del sector"}
+                </span>
               </div>
-              <SectorMapClient lat={entry.lat} lon={entry.lon} nombre={entry.nombre} />
-              <p className="text-xs text-muted-foreground mt-2">
-                {entry.lat.toFixed(4)}°, {entry.lon.toFixed(4)}°
-              </p>
+              <SectorMapClient
+                lat={entry.lat}
+                lon={entry.lon}
+                nombre={entry.nombre}
+                puntos={zonas.map((z) => ({ lat: z.lat, lon: z.lon, nombre: z.nombre }))}
+              />
+              {zonas.length === 0 && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  {entry.lat.toFixed(4)}°, {entry.lon.toFixed(4)}°
+                </p>
+              )}
             </section>
 
             {/* Tours GYG */}

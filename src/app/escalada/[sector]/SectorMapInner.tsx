@@ -15,19 +15,29 @@ const icon = L.icon({
   shadowSize: [41, 41],
 })
 
+export type MapPunto = { lat: number; lon: number; nombre: string }
+
 export function SectorMapInner({
   lat,
   lon,
   nombre,
+  puntos,
 }: {
   lat: number
   lon: number
   nombre: string
+  puntos?: MapPunto[]
 }) {
+  // Con varias zonas el mapa encuadra todas; con un solo punto, vista regional
+  const markers = puntos && puntos.length > 0 ? puntos : [{ lat, lon, nombre }]
+  const view =
+    markers.length > 1
+      ? { bounds: L.latLngBounds(markers.map((p) => [p.lat, p.lon])).pad(0.25) }
+      : { center: [lat, lon] as [number, number], zoom: 11 }
+
   return (
     <MapContainer
-      center={[lat, lon]}
-      zoom={11}
+      {...view}
       style={{ height: "280px", width: "100%" }}
       className="rounded-xl overflow-hidden"
     >
@@ -35,9 +45,11 @@ export function SectorMapInner({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[lat, lon]} icon={icon}>
-        <Popup>{nombre}</Popup>
-      </Marker>
+      {markers.map((p) => (
+        <Marker key={p.nombre} position={[p.lat, p.lon]} icon={icon}>
+          <Popup>{p.nombre}</Popup>
+        </Marker>
+      ))}
     </MapContainer>
   )
 }

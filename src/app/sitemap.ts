@@ -8,6 +8,7 @@ import { SENDEROS_CATALOG } from "@/lib/senderos/catalog";
 import { VOLCANES_CATALOG } from "@/lib/volcanes/catalog";
 import { ARQUEOLOGIA_CATALOG } from "@/lib/arqueologia/catalog";
 import { TERMAS_CATALOG } from "@/lib/termas/catalog";
+import { ESCALADA_CATALOG } from "@/lib/escalada/catalog";
 import { DESTINOS_CATALOG } from "@/lib/destinos/catalog";
 import { LEGACY_TO_GUIDE } from "@/lib/destinos/redirects";
 import { GASTRONOMIA_CATALOG } from "@/lib/gastronomia/catalog";
@@ -133,6 +134,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const escaladaUrls: MetadataRoute.Sitemap = ESCALADA_CATALOG.map((s) => ({
+    url: `${BASE}/escalada/${s.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
   const destinosUrls: MetadataRoute.Sitemap = DESTINOS_CATALOG.flatMap((d) => [
     { url: `${BASE}/destinos/${d.slug}`, changeFrequency: "daily" as const, priority: 0.9 },
     { url: `${BASE}/en/guides/${d.slug}`, changeFrequency: "daily" as const, priority: 0.9 },
@@ -145,6 +152,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/gastronomia`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/volcanes`, changeFrequency: "daily", priority: 0.8 },
     { url: `${BASE}/termas`, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${BASE}/escalada`, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE}/destinos`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE}/en/guides`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE}/mapa`, changeFrequency: "monthly", priority: 0.7 },
@@ -161,6 +169,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...floraUrls,
     ...arqueologiaUrls,
     ...termasUrls,
+    ...escaladaUrls,
     ...destinosUrls,
     ...gastronomiaUrls,
     ...categoryUrls,

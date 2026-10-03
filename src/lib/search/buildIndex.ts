@@ -3,7 +3,7 @@ import { FLORA_CATALOG, CATEGORY_LABELS as FLORA_LABELS } from '@/lib/flora/cata
 import { PARQUES_CATALOG } from '@/lib/parques/catalog'
 import { SENDEROS_CATALOG, DIFICULTAD_LABELS } from '@/lib/senderos/catalog'
 import { VOLCANES_CATALOG } from '@/lib/volcanes/catalog'
-import { ESCALADA_CATALOG } from '@/lib/escalada/catalog'
+import { ESCALADA_CATALOG, totalVias } from '@/lib/escalada/catalog'
 import { ARQUEOLOGIA_CATALOG, CATEGORIA_LABELS as ARQUE_LABELS } from '@/lib/arqueologia/catalog'
 import { TERMAS_CATALOG } from '@/lib/termas/catalog'
 import { DESTINOS_CATALOG } from '@/lib/destinos/catalog'
@@ -76,9 +76,14 @@ function buildStaticIndex(): SearchItem[] {
   const sectores: SearchItem[] = ESCALADA_CATALOG.map((s) => ({
     type: 'sector',
     title: s.nombre,
-    description: `${s.region} · ${s.tipoRoca.join(', ')}`,
+    description: [s.region, s.tipoRoca.join(', ') || `${totalVias(s)} vías`].join(' · '),
     href: `/escalada/${s.slug}`,
     meta: s.pais === 'AR' ? 'Argentina' : 'Chile',
+    searchableText: [
+      'escalada',
+      ...(s.zonas ?? []).map((z) => z.nombre),
+      ...s.subareas.flatMap((sub) => [sub.nombre, ...sub.rutas.map((r) => r.nombre)]),
+    ].join(' '),
   }))
 
   const arqueologia: SearchItem[] = ARQUEOLOGIA_CATALOG.map((a) => ({

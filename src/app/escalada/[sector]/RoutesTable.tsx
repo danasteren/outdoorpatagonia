@@ -1,8 +1,14 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { ChevronDown, ChevronRight } from "lucide-react"
-import { type Subarea, gradeIndex, gradeColor, ESTILO_LABELS } from "@/lib/escalada/catalog"
+import { ChevronDown, ChevronRight, Compass, Heart } from "lucide-react"
+import {
+  type Subarea,
+  type Desplome,
+  gradeIndex,
+  ESTILO_LABELS,
+  DESPLOME_LABELS,
+} from "@/lib/escalada/catalog"
 
 const NIVELES = [
   { label: "Fácil", max: "5c", chip: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" },
@@ -11,6 +17,8 @@ const NIVELES = [
   { label: "Elite", min: "8a", chip: "bg-red-500/10 text-red-600 dark:text-red-400" },
 ] as const
 
+const DESPLOMES: Desplome[] = ["aplomada", "vertical", "desplomada"]
+
 function matchesNivel(grado: string, nivel: typeof NIVELES[number]): boolean {
   const idx = gradeIndex(grado)
   const minIdx = "min" in nivel && nivel.min ? gradeIndex(nivel.min) : 0
@@ -18,168 +26,273 @@ function matchesNivel(grado: string, nivel: typeof NIVELES[number]): boolean {
   return idx >= minIdx && idx <= maxIdx
 }
 
+function nivelChip(grado: string): string {
+  return NIVELES.find((n) => matchesNivel(grado, n))?.chip ?? "bg-muted text-muted-foreground"
+}
+
+const subareaKey = (s: Subarea) => `${s.zona ?? ""}/${s.nombre}`
+
+function Chip({
+  active,
+  activeClass = "bg-[var(--color-teal)] text-white",
+  onClick,
+  children,
+}: {
+  active: boolean
+  activeClass?: string
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={active}
+      className={`shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+        active ? activeClass : "bg-muted text-muted-foreground hover:text-foreground"
+      }`}
+    >
+      {children}
+    </button>
+  )
+}
+
 type Props = {
   subareas: Subarea[]
 }
 
 export function RoutesTable({ subareas }: Props) {
-  const [openSubareas, setOpenSubareas] = useState<Set<string>>(
-    () => new Set(subareas.map((s) => s.nombre))
-  )
+  const [closed, setClosed] = useState<Set<string>>(() => new Set())
   const [selectedNivel, setSelectedNivel] = useState<string | null>(null)
-  const [selectedSubarea, setSelectedSubarea] = useState<string | null>(null)
+  const [selectedZona, setSelectedZona] = useState<string | null>(null)
+  const [selectedDesplome, setSelectedDesplome] = useState<Desplome | null>(null)
+  const [soloRecomendadas, setSoloRecomendadas] = useState(false)
 
-  const totalCount = useMemo(
-    () => subareas.reduce((acc, s) => acc + s.rutas.length, 0),
-    [subareas]
-  )
+  const allRoutes = useMemo(() => subareas.flatMap((s) => s.rutas), [subareas])
+  const totalCount = allRoutes.length
+  const hasRecomendadas = allRoutes.some((r) => r.recomendada)
+  const hasDesplome = allRoutes.some((r) => r.desplome)
+  const hasChapas = allRoutes.some((r) => r.chapas)
+
+  // Zonas en el orden del catálogo, con su cantidad de vías
+  const zonas = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const s of subareas) {
+      if (!s.zona) continue
+      counts.set(s.zona, (counts.get(s.zona) ?? 0) + s.rutas.length)
+    }
+    return [...counts.entries()]
+  }, [subareas])
 
   const filteredSubareas = useMemo(() => {
+    const nivel = NIVELES.find((n) => n.label === selectedNivel)
     return subareas
-      .filter((sub) => !selectedSubarea || sub.nombre === selectedSubarea)
+      .filter((sub) => !selectedZona || sub.zona === selectedZona)
       .map((sub) => ({
         ...sub,
-        rutas: sub.rutas
-          .filter((r) => {
-            if (!selectedNivel) return true
-            const nivel = NIVELES.find((n) => n.label === selectedNivel)
-            return nivel ? matchesNivel(r.grado, nivel) : true
-          })
-          .sort((a, b) => gradeIndex(a.grado) - gradeIndex(b.grado)),
+        rutas: sub.rutas.filter(
+          (r) =>
+            (!nivel || matchesNivel(r.grado, nivel)) &&
+            (!selectedDesplome || r.desplome === selectedDesplome) &&
+            (!soloRecomendadas || r.recomendada)
+        ),
       }))
       .filter((sub) => sub.rutas.length > 0)
-  }, [subareas, selectedNivel, selectedSubarea])
+  }, [subareas, selectedNivel, selectedZona, selectedDesplome, soloRecomendadas])
 
   const filteredCount = filteredSubareas.reduce((acc, s) => acc + s.rutas.length, 0)
+  const hasFilters = selectedNivel || selectedZona || selectedDesplome || soloRecomendadas
 
-  function toggleSubarea(nombre: string) {
-    setOpenSubareas((prev) => {
+  function toggleSubarea(key: string) {
+    setClosed((prev) => {
       const next = new Set(prev)
-      next.has(nombre) ? next.delete(nombre) : next.add(nombre)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
       return next
     })
   }
 
+  function clearFilters() {
+    setSelectedNivel(null)
+    setSelectedZona(null)
+    setSelectedDesplome(null)
+    setSoloRecomendadas(false)
+  }
+
   return (
     <div>
+      {/* Zonas */}
+      {zonas.length > 1 && (
+        <div className="-mx-4 px-4 mb-3 flex gap-2 overflow-x-auto scrollbar-hide">
+          <Chip active={!selectedZona} onClick={() => setSelectedZona(null)}>
+            Todos los sectores
+          </Chip>
+          {zonas.map(([nombre, count]) => (
+            <Chip
+              key={nombre}
+              active={selectedZona === nombre}
+              onClick={() => setSelectedZona((v) => (v === nombre ? null : nombre))}
+            >
+              {nombre}
+              <span className="opacity-60 font-normal">{count}</span>
+            </Chip>
+          ))}
+        </div>
+      )}
+
       {/* Filtros */}
-      <div className="flex flex-wrap items-center gap-2 mb-5">
+      <div className="-mx-4 px-4 mb-3 flex gap-2 overflow-x-auto scrollbar-hide sm:flex-wrap">
         {NIVELES.map((n) => (
-          <button
+          <Chip
             key={n.label}
+            active={selectedNivel === n.label}
+            activeClass={`${n.chip} ring-1 ring-current`}
             onClick={() => setSelectedNivel((v) => (v === n.label ? null : n.label))}
-            className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
-              selectedNivel === n.label
-                ? n.chip + " ring-1 ring-current"
-                : "bg-muted text-muted-foreground hover:text-foreground"
-            }`}
           >
             {n.label}
-          </button>
+          </Chip>
         ))}
-
-        {subareas.length > 1 && (
-          <>
-            <div className="w-px h-4 bg-border mx-1" />
-            <select
-              value={selectedSubarea ?? ""}
-              onChange={(e) => setSelectedSubarea(e.target.value || null)}
-              className="text-xs bg-muted rounded-full px-3 py-1 text-muted-foreground border-none outline-none cursor-pointer"
-            >
-              <option value="">Todas las zonas</option>
-              {subareas.map((s) => (
-                <option key={s.nombre} value={s.nombre}>
-                  {s.nombre}
-                </option>
-              ))}
-            </select>
-          </>
+        {hasRecomendadas && (
+          <Chip
+            active={soloRecomendadas}
+            activeClass="bg-rose-500/10 text-rose-600 dark:text-rose-400 ring-1 ring-current"
+            onClick={() => setSoloRecomendadas((v) => !v)}
+          >
+            <Heart className="w-3 h-3" fill="currentColor" />
+            Recomendadas
+          </Chip>
         )}
-
-        <span className="ml-auto text-xs text-muted-foreground">
-          {filteredCount} de {totalCount} vías
-        </span>
+        {hasDesplome &&
+          DESPLOMES.map((d) => (
+            <Chip
+              key={d}
+              active={selectedDesplome === d}
+              onClick={() => setSelectedDesplome((v) => (v === d ? null : d))}
+            >
+              {DESPLOME_LABELS[d]}
+            </Chip>
+          ))}
       </div>
 
-      {/* Acordeón por subárea */}
+      <div className="flex items-center justify-between mb-4 text-xs text-muted-foreground">
+        <span aria-live="polite">
+          {filteredCount} de {totalCount} vías
+        </span>
+        {hasFilters && (
+          <button onClick={clearFilters} className="font-semibold text-[var(--color-teal)]">
+            Limpiar filtros
+          </button>
+        )}
+      </div>
+
+      {/* Acordeón por subsector, agrupado por zona */}
       <div className="space-y-3">
-        {filteredSubareas.map((sub) => {
-          const isOpen = openSubareas.has(sub.nombre)
+        {filteredSubareas.map((sub, i) => {
+          const key = subareaKey(sub)
+          const isOpen = !closed.has(key)
+          const showZona = sub.zona && sub.zona !== filteredSubareas[i - 1]?.zona
           return (
-            <div key={sub.nombre} className="border border-border rounded-xl overflow-hidden">
-              {/* Header subárea */}
-              <button
-                onClick={() => toggleSubarea(sub.nombre)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-muted/40 hover:bg-muted/60 transition-colors text-left"
-              >
-                <div className="flex items-center gap-3">
+            <div key={key}>
+              {showZona && (
+                <h3 className={`font-heading text-lg font-bold mb-2 ${i > 0 ? "mt-8" : ""}`}>
+                  {sub.zona}
+                </h3>
+              )}
+              <div className="border border-border rounded-xl overflow-hidden bg-card">
+                <button
+                  onClick={() => toggleSubarea(key)}
+                  aria-expanded={isOpen}
+                  className="w-full flex items-center gap-3 px-4 py-3 bg-muted/40 hover:bg-muted/60 transition-colors text-left"
+                >
                   {isOpen ? (
                     <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
                   ) : (
                     <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
                   )}
                   <span className="font-semibold text-sm">{sub.nombre}</span>
-                  {sub.descripcion && (
-                    <span className="hidden sm:block text-xs text-muted-foreground">
-                      — {sub.descripcion}
+                  {sub.orientacion && (
+                    <span
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground"
+                      title={`Orientación ${sub.orientacion}`}
+                    >
+                      <Compass className="w-3 h-3" />
+                      {sub.orientacion}
                     </span>
                   )}
-                </div>
-                <span className="text-xs text-muted-foreground shrink-0 ml-2">
-                  {sub.rutas.length} vías
-                </span>
-              </button>
+                  <span className="text-xs text-muted-foreground shrink-0 ml-auto">
+                    {sub.rutas.length} {sub.rutas.length === 1 ? "vía" : "vías"}
+                  </span>
+                </button>
 
-              {/* Tabla de rutas */}
-              {isOpen && (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm border-collapse">
-                    <thead>
-                      <tr className="border-b border-border/50">
-                        <th className="text-left py-2 px-4 text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">
-                          Vía
-                        </th>
-                        <th className="text-left py-2 px-4 text-[10px] text-muted-foreground font-semibold uppercase tracking-widest w-20">
-                          Grado
-                        </th>
-                        <th className="text-left py-2 px-4 text-[10px] text-muted-foreground font-semibold uppercase tracking-widest w-24 hidden sm:table-cell">
-                          Largo
-                        </th>
-                        <th className="text-left py-2 px-4 text-[10px] text-muted-foreground font-semibold uppercase tracking-widest hidden md:table-cell">
-                          Estilo
-                        </th>
-                        <th className="text-left py-2 px-4 text-[10px] text-muted-foreground font-semibold uppercase tracking-widest hidden lg:table-cell">
-                          Equipamiento
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sub.rutas.map((r, i) => (
-                        <tr
-                          key={i}
-                          className="border-b border-border/30 hover:bg-muted/30 transition-colors"
+                {isOpen && (
+                  <>
+                    {sub.descripcion && (
+                      <p className="px-4 py-2.5 text-xs text-muted-foreground leading-relaxed border-b border-border/50">
+                        {sub.descripcion}
+                      </p>
+                    )}
+                    <ul>
+                      {sub.rutas.map((r, j) => (
+                        <li
+                          key={j}
+                          className="flex items-start gap-3 px-4 py-3 border-b border-border/30 last:border-b-0"
                         >
-                          <td className="py-2.5 px-4 font-medium">{r.nombre}</td>
-                          <td className={`py-2.5 px-4 font-mono font-bold text-sm ${gradeColor(r.grado)}`}>
+                          <span
+                            className={`shrink-0 w-12 text-center rounded-md py-1 font-mono font-bold text-sm ${nivelChip(r.grado)}`}
+                          >
                             {r.grado}
-                          </td>
-                          <td className="py-2.5 px-4 text-muted-foreground text-xs hidden sm:table-cell">
-                            {r.largo}
-                          </td>
-                          <td className="py-2.5 px-4 hidden md:table-cell">
-                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-[var(--color-teal)]/10 text-[var(--color-teal)] font-medium">
-                              {ESTILO_LABELS[r.estilo]}
-                            </span>
-                          </td>
-                          <td className="py-2.5 px-4 text-xs text-muted-foreground capitalize hidden lg:table-cell">
-                            {r.equipamiento ?? "—"}
-                          </td>
-                        </tr>
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <p className="font-medium text-sm leading-snug">
+                              {r.numero !== undefined && (
+                                <span className="text-muted-foreground font-normal mr-1.5">{r.numero}.</span>
+                              )}
+                              {r.nombre}
+                              {r.recomendada && (
+                                <Heart
+                                  className="inline w-3.5 h-3.5 ml-1.5 -mt-0.5 text-rose-500"
+                                  fill="currentColor"
+                                  aria-label="Vía recomendada"
+                                />
+                              )}
+                            </p>
+                            {r.firstAscent && (
+                              <p className="text-[11px] text-muted-foreground mt-0.5">{r.firstAscent}</p>
+                            )}
+                            {(r.estilo === "clasica" || r.aleje || (r.desplome && r.desplome !== "vertical")) && (
+                              <div className="flex flex-wrap gap-1 mt-1.5">
+                                {r.estilo === "clasica" && (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--color-terracotta)]/15 text-[var(--color-terracotta)] font-semibold">
+                                    {ESTILO_LABELS[r.estilo]}
+                                  </span>
+                                )}
+                                {r.desplome && r.desplome !== "vertical" && (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-semibold">
+                                    {DESPLOME_LABELS[r.desplome]}
+                                  </span>
+                                )}
+                                {r.aleje && (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-400 font-semibold">
+                                    Aleje entre chapas
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                            {r.descripcion && (
+                              <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed">
+                                {r.descripcion}
+                              </p>
+                            )}
+                          </div>
+                          <div className="shrink-0 text-right text-xs text-muted-foreground leading-snug">
+                            <p className="font-semibold text-foreground/80">{r.largo}</p>
+                            {r.chapas && <p>{r.chapas} ch.</p>}
+                          </div>
+                        </li>
                       ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+                    </ul>
+                  </>
+                )}
+              </div>
             </div>
           )
         })}
@@ -190,6 +303,13 @@ export function RoutesTable({ subareas }: Props) {
           </p>
         )}
       </div>
+
+      {hasChapas && (
+        <p className="text-[11px] text-muted-foreground mt-4 leading-relaxed">
+          «ch.» son las chapas / cintas express de cada vía, tal como figuran en la guía de origen.
+          El número delante del nombre es el de la vía en el croquis de la guía.
+        </p>
+      )}
     </div>
   )
 }

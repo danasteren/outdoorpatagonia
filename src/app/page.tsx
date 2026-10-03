@@ -6,6 +6,7 @@ import { Section } from "@/components/layout";
 import { PageShell } from "@/components/layout";
 import { Hero } from "@/components/home/Hero";
 import { AhoraSection } from "@/components/home/AhoraSection";
+import { EscaladaSection } from "@/components/home/EscaladaSection";
 import {
   PawPrint,
   Leaf,
@@ -162,6 +163,9 @@ export default function Home() {
       {/* Estado en tiempo real */}
       <StatusBoard />
       <EstadoCTA />
+
+      {/* Escalada */}
+      <EscaladaSection />
 
       {/* Ozono */}
       <Section spacing="sm">

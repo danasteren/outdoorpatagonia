@@ -92,8 +92,12 @@ function SectorCard({ s }: { s: Sector }) {
           <span className="font-bold font-mono text-[var(--color-teal)]">
             {s.gradosMin}–{s.gradosMax}
           </span>
-          <span className="text-muted-foreground">·</span>
-          <span className="text-muted-foreground text-xs">{s.altitud.toLocaleString("es-AR")} msnm</span>
+          {s.altitud !== null && (
+            <>
+              <span className="text-muted-foreground">·</span>
+              <span className="text-muted-foreground text-xs">{s.altitud.toLocaleString("es-AR")} msnm</span>
+            </>
+          )}
           {vias > 0 && (
             <>
               <span className="text-muted-foreground">·</span>
