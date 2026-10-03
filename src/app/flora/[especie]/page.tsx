@@ -3,6 +3,8 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ExternalLink, MapPin, Calendar, Eye, Leaf } from "lucide-react"
 import { DetailHero } from "@/components/DetailHero"
+import { cache } from "react"
+import { createClient as createBuildClient } from "@supabase/supabase-js"
 import {
   FLORA_CATALOG,
   type FloraCategory,
@@ -21,12 +23,65 @@ import { fetchGbifByScientificName } from "@/lib/apis/gbif"
 import { FaunaSightingsMapClient } from "@/components/data/FaunaSightingsMapClient"
 import { FaunaSightingsClient } from "@/components/data/FaunaSightingsClient"
 import { Badge } from "@/components/primitives/Badge"
+import { ArticleLayout } from "@/components/ArticleLayout"
+import { toCategorySlug } from "@/lib/category"
 
 export const revalidate = 3600
 export const dynamicParams = true
 
+// ─── Flora article helpers ────────────────────────────────────────────────────
+// Los artículos con categoría "Flora" viven en /flora/<slug>, la misma ruta que
+// las fichas de especie. Si el slug no es una especie del catálogo, se sirve el
+// artículo (mismo patrón que fauna/[especie]).
+
+function buildClient() {
+  return createBuildClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
+
+const getFloraArticle = cache(async (slug: string) => {
+  const { data } = await buildClient()
+    .from("articles")
+    .select(
+      "title, excerpt, content, category, tags, reading_time_min, published_at, cover_image_url, cover_image_alt, language, slug, seo_title, seo_description, wp_id"
+    )
+    .eq("slug", slug)
+    .eq("language", "es")
+    .eq("status", "published")
+    .maybeSingle()
+  if (!data || toCategorySlug(data.category ?? "") !== "flora") return null
+  return data
+})
+
+async function getAltLangFloraArticle(slug: string) {
+  const { data } = await buildClient()
+    .from("articles")
+    .select("slug, category")
+    .eq("slug", slug)
+    .eq("language", "en")
+    .eq("status", "published")
+    .maybeSingle()
+  return data
+}
+
 export async function generateStaticParams() {
-  return FLORA_CATALOG.map((e) => ({ especie: e.slug }))
+  const { data } = await buildClient()
+    .from("articles")
+    .select("slug, category")
+    .eq("language", "es")
+    .eq("status", "published")
+
+  const catalogSlugs = new Set(FLORA_CATALOG.map((e) => e.slug))
+  const floraArticleSlugs = (data ?? [])
+    .filter((a) => toCategorySlug(a.category ?? "") === "flora" && !catalogSlugs.has(a.slug))
+    .map((a) => ({ especie: a.slug }))
+
+  return [
+    ...FLORA_CATALOG.map((e) => ({ especie: e.slug })),
+    ...floraArticleSlugs,
+  ]
 }
 
 export async function generateMetadata({
@@ -36,6 +91,25 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { especie } = await params
   const entry = getFloraEntry(especie)
+
+  const floraArticle = entry ? null : await getFloraArticle(especie)
+  if (floraArticle) {
+    const canonicalUrl = `https://outdoorpatagonia.com/flora/${especie}`
+    return {
+      title: floraArticle.seo_title || floraArticle.title,
+      description: floraArticle.seo_description || floraArticle.excerpt || undefined,
+      alternates: { canonical: canonicalUrl },
+      openGraph: {
+        title: floraArticle.seo_title || floraArticle.title,
+        description: floraArticle.seo_description || floraArticle.excerpt || undefined,
+        url: canonicalUrl,
+        images: floraArticle.cover_image_url ? [floraArticle.cover_image_url] : [],
+        locale: "es_AR",
+        type: "article",
+      },
+    }
+  }
+
   const name = entry?.commonNameEs ?? especie.replace(/-/g, " ")
   const sci = entry?.scientificName ?? ""
   const parksText = entry && entry.parquesRelacionados.length > 0
@@ -122,6 +196,34 @@ export default async function FloraEspeciePage({
 }) {
   const { especie } = await params
   const entry = getFloraEntry(especie)
+
+  // Las especies del catálogo siempre muestran la ficha con datos en vivo;
+  // el artículo viejo solo aparece cuando el slug no es una especie conocida
+  const floraArticle = entry ? null : await getFloraArticle(especie)
+  if (floraArticle) {
+    const altLang = await getAltLangFloraArticle(especie)
+    const altLangHref = altLang
+      ? `/en/${toCategorySlug(altLang.category ?? "")}/${especie}`
+      : null
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: floraArticle.title,
+      description: floraArticle.excerpt ?? undefined,
+      image: floraArticle.cover_image_url ?? undefined,
+      datePublished: floraArticle.published_at ?? undefined,
+      inLanguage: "es",
+      author: { "@type": "Organization", name: "Outdoor Patagonia" },
+      publisher: { "@type": "Organization", name: "Outdoor Patagonia", url: "https://outdoorpatagonia.com" },
+      url: `https://outdoorpatagonia.com/flora/${especie}`,
+    }
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <ArticleLayout article={floraArticle} altLangHref={altLangHref} />
+      </>
+    )
+  }
 
   const detail = entry?.taxonId
     ? await fetchSpeciesDetail(entry.taxonId)

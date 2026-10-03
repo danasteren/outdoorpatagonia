@@ -18,7 +18,7 @@ export async function generateStaticParams() {
   return (data ?? [])
     .filter((a) => {
       const cat = toCategorySlug(a.category ?? "");
-      return cat !== "fauna" && cat !== "recursos-descargables";
+      return cat !== "fauna" && cat !== "flora" && cat !== "recursos-descargables";
     })
     .map((a) => ({
       slug: toCategorySlug(a.category ?? "articulos"),
