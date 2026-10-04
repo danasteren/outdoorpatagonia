@@ -49,7 +49,7 @@ export async function StatusBoard() {
     fetchPatagoniaFauna(),
     fetchPatagoniaFlora(),
     fetchPatagoniaFungi(),
-    fetchPatagoniaPhotos(),
+    fetchPatagoniaPhotos(8),
     fetchImpactoData(),
   ])
 

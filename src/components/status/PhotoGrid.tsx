@@ -29,12 +29,15 @@ export function PhotoGrid({ photos }: Props) {
         <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-3">
           Fotografía — registros recientes en Patagonia
         </p>
-        <div className="grid grid-cols-3 gap-2">
-          {photos.map((p) => (
+        {/* Mobile: 2 por fila × 3 filas (6). Desktop: 4 por fila × 2 filas (8). */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          {photos.slice(0, 8).map((p, i) => (
             <button
               key={p.id}
               onClick={() => setSelected(p)}
-              className="relative aspect-square overflow-hidden rounded-lg group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className={`relative aspect-square overflow-hidden rounded-lg group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                i >= 6 ? "hidden md:block" : ""
+              }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

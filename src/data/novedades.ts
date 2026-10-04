@@ -45,6 +45,10 @@ export const novedades: VersionNovedades[] = [
         texto: "Filtros de vías — por sector, nivel, desplome y recomendadas, cómodos de usar desde el celular",
       },
       {
+        tipo: "mejora",
+        texto: "Fotos recientes de la portada — la grilla ahora muestra cuatro fotos por fila en la computadora y dos por fila, más grandes, en el celular",
+      },
+      {
         tipo: "correccion",
         texto: "Artículos de flora que no abrían — el calafate, la rosa mosqueta, la frutilla, el ciprés de la cordillera y otros cuatro mostraban \"Página no encontrada\"; ya se pueden leer de nuevo",
       },
