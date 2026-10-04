@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Clock, Calendar } from "lucide-react";
 import { toCategorySlug } from "@/lib/category";
+import { legacyImageUrl } from "@/lib/legacy-images";
 
 
 function categoryHref(category: string, language: string) {
@@ -36,6 +37,7 @@ export function ArticleCard({
   featured = false,
 }: ArticleCardProps) {
   const router = useRouter();
+  const coverImageUrl = legacyImageUrl(cover_image_url);
   const catSlug = category ? toCategorySlug(category) : "";
   const href =
     language === "en"
@@ -60,9 +62,9 @@ export function ArticleCard({
           featured ? "h-56 md:h-80" : "h-44"
         }`}
       >
-        {cover_image_url && (
+        {coverImageUrl && (
           <img
-            src={cover_image_url}
+            src={coverImageUrl}
             alt={title}
             className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
           />

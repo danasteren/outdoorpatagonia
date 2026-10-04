@@ -12,6 +12,7 @@ import {
 import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { fetchPexelsPhoto } from "@/lib/apis/pexels"
 import { truncateAtWord } from "@/lib/text"
+import { legacyImageUrl } from "@/lib/legacy-images"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
 import { RelacionadosSection } from "@/components/RelacionadosSection"
@@ -68,18 +69,20 @@ export default async function GastronomiaEntryPage({
   const entry = getGastronomiaEntry(slug)
   if (!entry) notFound()
 
+  const coverImageUrl = legacyImageUrl(entry.coverImageUrl)
+
   const pexelsPhoto =
-    !entry.coverImageUrl && entry.pexelsQuery
+    !coverImageUrl && entry.pexelsQuery
       ? await fetchPexelsPhoto(entry.pexelsQuery)
       : null
 
   const wikiImage =
-    !entry.coverImageUrl && !pexelsPhoto && entry.wikipediaTitle
+    !coverImageUrl && !pexelsPhoto && entry.wikipediaTitle
       ? await fetchWikipediaLeadImage(entry.wikipediaTitle)
       : null
 
-  const heroImage = entry.coverImageUrl
-    ? { url: entry.coverImageUrl, alt: entry.nombre }
+  const heroImage = coverImageUrl
+    ? { url: coverImageUrl, alt: entry.nombre }
     : pexelsPhoto
       ? { url: pexelsPhoto.url, alt: entry.nombre, credit: pexelsPhoto.photographer, creditUrl: pexelsPhoto.pageUrl }
       : wikiImage

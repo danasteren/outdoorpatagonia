@@ -25,6 +25,7 @@ import { FaunaSightingsClient } from "@/components/data/FaunaSightingsClient"
 import { Badge } from "@/components/primitives/Badge"
 import { ArticleLayout } from "@/components/ArticleLayout"
 import { toCategorySlug } from "@/lib/category"
+import { legacyImageUrl } from "@/lib/legacy-images"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -103,7 +104,7 @@ export async function generateMetadata({
         title: floraArticle.seo_title || floraArticle.title,
         description: floraArticle.seo_description || floraArticle.excerpt || undefined,
         url: canonicalUrl,
-        images: floraArticle.cover_image_url ? [floraArticle.cover_image_url] : [],
+        images: legacyImageUrl(floraArticle.cover_image_url) ? [legacyImageUrl(floraArticle.cover_image_url)!] : [],
         locale: "es_AR",
         type: "article",
       },
@@ -210,7 +211,7 @@ export default async function FloraEspeciePage({
       "@type": "Article",
       headline: floraArticle.title,
       description: floraArticle.excerpt ?? undefined,
-      image: floraArticle.cover_image_url ?? undefined,
+      image: legacyImageUrl(floraArticle.cover_image_url) ?? undefined,
       datePublished: floraArticle.published_at ?? undefined,
       inLanguage: "es",
       author: { "@type": "Organization", name: "Outdoor Patagonia" },

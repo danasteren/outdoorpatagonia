@@ -4,6 +4,7 @@ import { fixWpLazyLoad, addInstagramPhotoCredits, extractPhotoCredit } from "@/l
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { Breadcrumb } from "@/components/primitives/Breadcrumb";
 import { toCategorySlug } from "@/lib/category";
+import { legacyImageUrl, fixLegacyImages } from "@/lib/legacy-images";
 
 interface Article {
   title: string;
@@ -38,6 +39,7 @@ export function ArticleLayout({
   const altLangLabel = article.language === "es" ? "English" : "Español";
 
   const isEnglish = article.language === "en";
+  const coverImageUrl = legacyImageUrl(article.cover_image_url);
   const homeHref = isEnglish ? "/en" : "/";
   const bannerText = isEnglish
     ? "You're viewing an article carried over from our previous site."
@@ -140,10 +142,10 @@ export function ArticleLayout({
           </div>
 
           {/* Cover image */}
-          {article.cover_image_url && (
+          {coverImageUrl && (
             <div className="mb-10">
               <img
-                src={article.cover_image_url}
+                src={coverImageUrl}
                 alt={article.title}
                 className="w-full rounded-md object-cover max-h-[480px]"
               />
@@ -175,7 +177,7 @@ export function ArticleLayout({
           <div
             className="article-body overflow-x-hidden"
             dangerouslySetInnerHTML={{
-              __html: addInstagramPhotoCredits(fixWpLazyLoad(article.content ?? ""), isEnglish),
+              __html: addInstagramPhotoCredits(fixWpLazyLoad(fixLegacyImages(article.content ?? "")), isEnglish),
             }}
           />
 
