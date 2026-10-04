@@ -160,12 +160,12 @@ export default function Home() {
         </PageShell>
       </Section>
 
+      {/* Escalada */}
+      <EscaladaSection />
+
       {/* Estado en tiempo real */}
       <StatusBoard />
       <EstadoCTA />
-
-      {/* Escalada */}
-      <EscaladaSection />
 
       {/* Ozono */}
       <Section spacing="sm">
