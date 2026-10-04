@@ -52,6 +52,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "correccion",
         texto: "Artículos de flora que no abrían — el calafate, la rosa mosqueta, la frutilla, el ciprés de la cordillera y otros cuatro mostraban \"Página no encontrada\"; ya se pueden leer de nuevo",
       },
+      {
+        tipo: "correccion",
+        texto: "Fotos de los artículos — habían dejado de verse en todo el sitio; volvieron la mayoría de las portadas y buena parte de las fotos dentro de cada nota",
+      },
     ],
   },
   {
