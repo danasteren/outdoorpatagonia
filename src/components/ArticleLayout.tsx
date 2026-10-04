@@ -4,7 +4,7 @@ import { fixWpLazyLoad, addInstagramPhotoCredits, extractPhotoCredit } from "@/l
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { Breadcrumb } from "@/components/primitives/Breadcrumb";
 import { toCategorySlug } from "@/lib/category";
-import { legacyImageUrl, fixLegacyImages } from "@/lib/legacy-images";
+import { articleCover, fixLegacyImages } from "@/lib/legacy-images";
 
 interface Article {
   title: string;
@@ -39,7 +39,7 @@ export function ArticleLayout({
   const altLangLabel = article.language === "es" ? "English" : "Español";
 
   const isEnglish = article.language === "en";
-  const coverImageUrl = legacyImageUrl(article.cover_image_url);
+  const cover = articleCover(article);
   const homeHref = isEnglish ? "/en" : "/";
   const bannerText = isEnglish
     ? "You're viewing an article carried over from our previous site."
@@ -142,14 +142,30 @@ export function ArticleLayout({
           </div>
 
           {/* Cover image */}
-          {coverImageUrl && (
+          {cover && (
             <div className="mb-10">
               <img
-                src={coverImageUrl}
+                src={cover.url}
                 alt={article.title}
                 className="w-full rounded-md object-cover max-h-[480px]"
               />
+              {cover.credit && (
+                <p className="text-sm text-muted-foreground mt-2 text-center">
+                  {isEnglish ? "Photo" : "Foto"}:{" "}
+                  <a
+                    href={cover.credit.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="text-[var(--color-teal)] underline underline-offset-2 hover:text-[var(--color-teal-light)] transition-colors"
+                  >
+                    {cover.credit.author} / Wikimedia Commons
+                  </a>{" "}
+                  ({cover.credit.license ?? (isEnglish ? "public domain" : "dominio público")})
+                </p>
+              )}
               {(() => {
+                // El crédito de Instagram corresponde a la foto original, no a la de reemplazo
+                if (cover.credit) return null;
                 const credit = article.cover_image_alt
                   ? extractPhotoCredit(article.cover_image_alt)
                   : null;

@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createClient as createBuildClient } from "@supabase/supabase-js";
 import { ArticleLayout } from "@/components/ArticleLayout";
 import { toCategorySlug } from "@/lib/category";
-import { legacyImageUrl } from "@/lib/legacy-images";
+import { articleCover } from "@/lib/legacy-images";
 
 export async function generateStaticParams() {
   const supabase = createBuildClient(
@@ -78,7 +78,7 @@ export async function generateMetadata({
       title: articleData.seo_title || articleData.title,
       description: articleData.seo_description || articleData.excerpt || undefined,
       url: canonicalUrl,
-      images: legacyImageUrl(articleData.cover_image_url) ? [legacyImageUrl(articleData.cover_image_url)!] : [],
+      images: articleCover(articleData) ? [articleCover(articleData)!.url] : [],
       locale: "en_US",
       type: "article",
     },
@@ -113,7 +113,7 @@ export default async function ArticlePage({
     "@type": "Article",
     headline: articleData.title,
     description: articleData.excerpt ?? undefined,
-    image: legacyImageUrl(articleData.cover_image_url) ?? undefined,
+    image: articleCover(articleData)?.url,
     datePublished: articleData.published_at ?? undefined,
     inLanguage: "en",
     author: { "@type": "Organization", name: "Outdoor Patagonia" },

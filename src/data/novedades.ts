@@ -54,7 +54,7 @@ export const novedades: VersionNovedades[] = [
       },
       {
         tipo: "correccion",
-        texto: "Fotos de los artículos — habían dejado de verse en todo el sitio; volvieron la mayoría de las portadas y buena parte de las fotos dentro de cada nota",
+        texto: "Fotos de los artículos — habían dejado de verse en todo el sitio; todas las notas vuelven a tener portada y volvió buena parte de las fotos dentro del texto",
       },
     ],
   },

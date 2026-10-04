@@ -24,7 +24,7 @@ import { FaunaSightingsClient } from "@/components/data/FaunaSightingsClient"
 import { Badge } from "@/components/primitives/Badge"
 import { ArticleLayout } from "@/components/ArticleLayout"
 import { toCategorySlug } from "@/lib/category"
-import { legacyImageUrl } from "@/lib/legacy-images"
+import { articleCover } from "@/lib/legacy-images"
 
 export const revalidate = 3600
 // On-demand rendering for species not pre-built
@@ -103,7 +103,7 @@ export async function generateMetadata({
         title: faunaArticle.seo_title || faunaArticle.title,
         description: faunaArticle.seo_description || faunaArticle.excerpt || undefined,
         url: canonicalUrl,
-        images: legacyImageUrl(faunaArticle.cover_image_url) ? [legacyImageUrl(faunaArticle.cover_image_url)!] : [],
+        images: articleCover(faunaArticle) ? [articleCover(faunaArticle)!.url] : [],
         locale: "es_AR",
         type: "article",
       },
@@ -191,7 +191,7 @@ export default async function FaunaEspeciePage({
       "@type": "Article",
       headline: faunaArticle.title,
       description: faunaArticle.excerpt ?? undefined,
-      image: legacyImageUrl(faunaArticle.cover_image_url) ?? undefined,
+      image: articleCover(faunaArticle)?.url,
       datePublished: faunaArticle.published_at ?? undefined,
       inLanguage: "es",
       author: { "@type": "Organization", name: "Outdoor Patagonia" },

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Clock, Calendar } from "lucide-react";
 import { toCategorySlug } from "@/lib/category";
-import { legacyImageUrl } from "@/lib/legacy-images";
+import { articleCover } from "@/lib/legacy-images";
 
 
 function categoryHref(category: string, language: string) {
@@ -37,7 +37,7 @@ export function ArticleCard({
   featured = false,
 }: ArticleCardProps) {
   const router = useRouter();
-  const coverImageUrl = legacyImageUrl(cover_image_url);
+  const coverImageUrl = articleCover({ slug, cover_image_url })?.url;
   const catSlug = category ? toCategorySlug(category) : "";
   const href =
     language === "en"

@@ -1,4 +1,5 @@
 import { LEGACY_IMAGES } from "@/data/legacy-images";
+import { COVER_FALLBACKS, type CoverFallback } from "@/data/cover-fallbacks";
 
 // Las fotos de los artículos migrados de WordPress vivían en
 // outdoorpatagonia.dreamhosters.com, un hosting que ya no existe. Las que se
@@ -66,4 +67,14 @@ export function fixLegacyImages(html: string): string {
       return recovered ? ` href="${recovered}"` : "";
     })
     .replace(DEAD_URL, (url) => recover(url) ?? url);
+}
+
+export type ArticleCover = { url: string; credit: CoverFallback | null };
+
+/** Portada de un artículo: la propia si existe; si se perdió, la de reemplazo de Wikimedia Commons. */
+export function articleCover(article: { slug: string; cover_image_url: string | null }): ArticleCover | null {
+  const own = legacyImageUrl(article.cover_image_url);
+  if (own) return { url: own, credit: null };
+  const fallback = COVER_FALLBACKS[article.slug];
+  return fallback ? { url: STORAGE_BASE + fallback.path, credit: fallback } : null;
 }
