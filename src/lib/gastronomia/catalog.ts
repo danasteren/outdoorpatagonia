@@ -218,6 +218,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     relacionados: [
       { tipo: "gastronomia", slug: "hongo-de-pino-recoleccion-secado-usos" },
       { tipo: "gastronomia", slug: "recoleccion-morillas-patagonia-consejos" },
+      { tipo: "destino", slug: "bariloche" },
     ],
   },
   {
@@ -370,6 +371,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Se puede hacer sin azúcar?", respuesta: "Sí, se puede elaborar con miel o stevia manteniendo su sabor característico." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/10/rosa-mosqueta-1-1.jpg",
+    relacionados: [{ tipo: "destino", slug: "bariloche" }],
   },
   {
     slug: "kuchen-chileno-historia-tradicion",

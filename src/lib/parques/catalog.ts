@@ -68,6 +68,7 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
       { label: "Navegación Isla Victoria", query: "bariloche isla victoria tour" },
       { label: "Trekking Cerro Catedral", query: "bariloche cerro catedral trekking" },
     ],
+    relacionados: [{ tipo: "destino", slug: "bariloche" }],
   },
   {
     slug: "lanin",
