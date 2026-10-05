@@ -254,6 +254,9 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     nombre: "Morillas",
     pais: "AR/CL",
     categoria: "ingrediente",
+    metaTitle: "Morillas en la Patagonia: Dónde y Cuándo Recolectarlas",
+    metaDescription:
+      "Las morillas (género Morchella) crecen en bosques de ciprés de la Patagonia Andina entre septiembre y octubre. Dónde buscarlas y cómo recolectarlas bien.",
     descripcion: [
       "Las morillas (género Morchella) son hongos silvestres que en la Patagonia Andina crecen sobre todo en bosques de ciprés (Austrocedrus chilensis), emergiendo tras el calentamiento del suelo en primavera. En el hemisferio sur su temporada es corta, de mediados de septiembre a fines de octubre; en el hemisferio norte, de fines de marzo a principios de mayo.",
       "Se distinguen por un sabor terroso y una textura carnosa muy distinta a la de otros hongos más viscosos, lo que las vuelve muy codiciadas en la gastronomía. Su recolección manual en zonas libres de contaminación y la dificultad para encontrarlas explican que sean uno de los hongos silvestres más caros del mercado.",
@@ -286,7 +289,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     nombre: "Hongo de pino",
     pais: "AR",
     categoria: "ingrediente",
-    metaTitle: "Hongo de Pino Comestible: Cómo Identificarlo en Patagonia",
+    metaTitle: "Hongo de Pino Comestible en Patagonia: Cómo Identificarlo",
     metaDescription:
       "El hongo de pino (Suillus luteus) es comestible: sombrero viscoso ocre-castaño. Cómo identificarlo, recolectarlo en otoño y secarlo en bosques patagónicos.",
     descripcion: [
