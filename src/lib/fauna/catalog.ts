@@ -122,7 +122,7 @@ export const FAUNA_CATALOG: FaunaEntry[] = [
     commonNameEn: "South American Gray Fox",
     category: "mamifero",
     genero: "m",
-    metaTitle: "Zorro Gris de la Patagonia: Dónde Verlo y Cómo Identificarlo",
+    metaTitle: "Zorro Gris Patagónico: Dónde Verlo y Cómo Identificarlo",
     metaDescription:
       "El zorro gris patagónico (Lycalopex griseus) vive en Torres del Paine, Tierra del Fuego y Los Glaciares. Cómo identificarlo y dónde avistarlo en la Patagonia.",
     parquesRelacionados: [
