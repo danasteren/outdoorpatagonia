@@ -34,6 +34,10 @@ export const novedades: VersionNovedades[] = [
       },
       {
         tipo: "nuevo",
+        texto: "Guía de viaje de Bariloche — qué hacer, clima, cuándo ir y cómo llegar, con el Circuito Chico, el Cerro Catedral y las navegaciones por el lago Nahuel Huapi, en español y en inglés",
+      },
+      {
+        tipo: "nuevo",
         texto: "Escalada en Esquel, vía por vía — 73 vías en cuatro sectores (La Crux, El Badén, La Palestra y Cañadón de las Palomas) con grado, metros, chapas y aperturista, cargadas desde la guía local Esqala",
       },
       {

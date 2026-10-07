@@ -239,6 +239,9 @@ export const FLORA_CATALOG: FloraEntry[] = [
     commonNameEn: "Hummingbird fuchsia",
     category: "arbusto",
     genero: "m",
+    metaTitle: "Chilco Patagónico: Dónde y Cuándo Ver Sus Flores Rojas",
+    metaDescription:
+      "El chilco (Fuchsia magellanica) es un arbusto nativo de flor roja que atrae picaflores; se lo encuentra en Nahuel Huapi, Los Glaciares y Tierra del Fuego.",
     parquesRelacionados: [
       { nombre: "Nahuel Huapi", slug: "nahuel-huapi" },
       { nombre: "Los Glaciares", slug: "los-glaciares" },
