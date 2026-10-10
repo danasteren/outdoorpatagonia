@@ -21,7 +21,7 @@ export interface MapFeature {
   affiliateLink?: {
     label: string;
     url: string;
-    type: "booking" | "getyourguide";
+    type: "getyourguide";
   };
 }
 
