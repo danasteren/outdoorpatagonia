@@ -16,17 +16,23 @@ Formato:
 
 ---
 
+## 2026-10-10 — Code hace commit y push al terminar cada tarea
+**Decisión:** al cerrar cada tarea, Code commitea en main con los docs actualizados y pushea.
+**Motivo:** el Proyecto del chat sincroniza desde GitHub; sin push, el chat no ve el estado ni las decisiones nuevas. Flujo: chat decide → Code implementa → actualiza docs → commit + push → sincronizo el chat.
+**Detalle:** reemplaza a "commit sin push" (2026-09-24). Vercel deploya solo al pushear a main.
+**Estado:** Vigente
+
 ## 2026-10-10 — Code commitea, la usuaria pushea
 **Decisión:** al cerrar una tarea, Code hace commit en `main` (sin rama ni PR) y la usuaria hace el push. Las rutinas en la nube siguen abriendo PR.
 **Motivo:** la usuaria lo confirmó en la auditoría del contexto. Así queda la regla del 2026-09-24, que el workflow de 2026-10-07 había cambiado sin querer a "commit y push".
 **Detalle:** `CLAUDE.md` → Workflow, paso 5.
-**Estado:** Vigente
+**Estado:** Reemplazada por 2026-10-10 — Code hace commit y push
 
 ## 2026-10-07 — Contexto compartido entre el chat y Code
 **Decisión:** el repo es la única fuente de verdad. `CLAUDE.md` es el archivo real con lo general, los flujos temáticos van a `.claude/rules/`, y el estado y las decisiones a `docs/STATUS.md` y `docs/DECISIONS.md`. `AGENTS.md` queda como una línea que remite a `CLAUDE.md`.
 **Motivo:** el Proyecto del chat sincroniza desde GitHub solo `CLAUDE.md`, `docs/` y `.claude/rules/`. Antes, `CLAUDE.md` era `@AGENTS.md` y el chat no veía nada.
 **Detalle:** el flujo es: el chat decide → Code implementa → Code actualiza los docs → commit y push → se sincroniza el chat. El contenido de `AGENTS.md` se movió casi textual. Lo que era estado (foco actual, rutina) pasó a STATUS y a esta lista. El 2026-10-10 se auditó contra el código y se pasaron acá las decisiones que estaban solo en la memoria de Code.
-**Estado:** Vigente (el push: ver 2026-10-10)
+**Estado:** Vigente (el push: ver 2026-10-10 — Code hace commit y push)
 
 ## 2026-10-03 — Escalada: solo datos con fuente, cargados desde guías por zona
 **Decisión:** los sectores de escalada se cargan vía por vía desde guías publicadas, con crédito visible a la guía. Lo que no tiene fuente no se carga.
@@ -78,7 +84,7 @@ Formato:
 ## 2026-09-24 — Code commitea en main, sin PR
 **Decisión:** el trabajo local de Code va en commit directo a `main`, sin rama ni PR. El push lo hace la usuaria.
 **Motivo:** la usuaria lo pidió después de que se abrieran los PR #1 y #2 desde sesiones locales.
-**Estado:** Vigente (confirmada el 2026-10-10)
+**Estado:** Reemplazada por 2026-10-10 — Code hace commit y push
 
 ## 2026-09-14 — Newsletter propio en Supabase + Resend
 **Decisión:** se deja MailerLite y la lista pasa a la tabla `subscribers` de Supabase, con envío por Resend y composer de campañas en `/admin`.

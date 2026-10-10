@@ -31,7 +31,6 @@ _Última actualización: 2026-10-10_
 
 - Al sumar la 6ª guía: "Destinos" al nav y bloque en la home (regla en `.claude/rules/destinos.md`).
 - El Calafate: según `seo/destinos-prioridad.md` hay 2 artículos viejos y no están en `LEGACY_TO_GUIDE`. Identificar las URLs y redirigirlas.
-- `metaTitle` ES de Ushuaia (53 caracteres) y de Bariloche (55) pasan el máximo de unos 50 de `.claude/rules/destinos.md`.
 - **Seguridad (la usuaria)**: rotar la service role key de Supabase (y actualizarla en `.env.local` y Vercel). Estuvo en texto plano en `.claude/settings.local.json`; las reglas se sacaron el 2026-10-10. Si existe `NEXT_PUBLIC_AMAZON_TAG` en `.env.local` o Vercel, borrarla.
 - `ADMIN_EMAIL` está repetido en 10 archivos: centralizarlo en un helper.
 - `notification_preferences` (migración 006) existe pero nada lo consume.

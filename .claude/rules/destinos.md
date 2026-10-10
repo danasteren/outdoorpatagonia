@@ -12,7 +12,7 @@ Hay guías en español (`/destinos/[slug]`) y en inglés (`/en/guides/[slug]`). 
 
 - **Una entrada es un objeto en `src/lib/destinos/catalog.ts`**, con el contenido `es` y `en` completos y la misma estructura que Ushuaia. La página, el clima, el JSON-LD, el sitemap y el buscador salen solos del catálogo.
 - **Datos solo de fuentes oficiales** (turismo municipal o provincial, APN/CONAF, sitio del atractivo, censo), listadas en `fuentes`. Si no hay fuente, el dato no va.
-- **Títulos: nunca en formato pregunta.** `metaTitle` arranca con el nombre del destino y sigue con lo que se busca ("Ushuaia: Qué Hacer, Clima, Cuándo Ir y Cómo Llegar"). Máximo unos 50 caracteres, porque el layout suma "| Outdoor Patagonia".
+- **Títulos** (reglas generales en `.claude/rules/seo-geo.md`): `metaTitle` de ~55 caracteres como máximo, con el destino y la keyword al principio ("Ushuaia: Qué Hacer, Clima, Cuándo Ir y Cómo Llegar").
 - **`queHacer` lleva `gygQuery`** cuando hay excursiones en GetYourGuide.
 - **Clima mensual** (`src/lib/apis/climate.ts`, ERA5): publicar solo temperatura y horas de luz. La precipitación de ERA5 sale unas 2 veces la real en la Patagonia andina: no se publica.
 - En inglés la ruta es `/en/guides/`, no `/en/destinations/`, porque esa categoría ya existe en los artículos viejos.

@@ -12,15 +12,16 @@ El repo es la única fuente de verdad. El chat del Proyecto y Claude Code leen l
 ## Workflow (obligatorio)
 
 **Antes de empezar cualquier tarea**
-1. Leer `docs/STATUS.md` y `docs/DECISIONS.md`.
-2. Si la tarea contradice una decisión registrada, frenar y preguntar. No reinterpretar la decisión.
+1. `git pull`: las rutinas mergean PR en `main` y el local queda atrás.
+2. Leer `docs/STATUS.md` y `docs/DECISIONS.md`.
+3. Si la tarea contradice una decisión registrada, frenar y preguntar. No reinterpretar la decisión.
 
 **Al terminar cada tarea**
 1. `docs/STATUS.md`: mover lo terminado a "Hecho", actualizar "En curso" y "Próximo".
 2. `docs/DECISIONS.md`: agregar arriba de todo cada decisión nueva tomada durante la tarea, con el formato del archivo. Si una decisión reemplaza a otra, marcar la vieja como `Reemplazada por <fecha/título>`. No se borra nada.
 3. Si el cambio lo ve el lector: actualizar novedades (`.claude/rules/novedades.md`).
 4. Si cambió la arquitectura, un comando o una trampa: actualizar este archivo.
-5. Hacer commit de la tarea junto con los docs actualizados, directo en `main` y sin PR. **El push lo hace la usuaria**: avisarle que quedó listo. (Las rutinas en la nube sí abren PR.)
+5. Commit en `main` (sin PR) con los docs actualizados, y push. Antes del push, `npm run build` si hubo cambios de código. (Las rutinas en la nube sí abren PR.)
 
 **Reglas de documentación**
 - No hacer inventarios de rutas, tablas, componentes o env vars completos. Documentar la estructura, las reglas y lo que no se deduce del código, y remitir al archivo fuente.
