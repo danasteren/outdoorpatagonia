@@ -13,6 +13,7 @@ _Última actualización: 2026-10-10_
 - Monetización: GetYourGuide, AdSense, página `/anunciar` con fichas destacadas para operadores.
 - SEO: research semanal de keywords, reescritura de títulos con CTR bajo, sitemap con `lastmod` real y redirección de artículos viejos a las guías.
 - Panel `/admin/agentes` para revisar y publicar los PR de las rutinas.
+- 2026-10-10: artículos viejos del Perito Moreno (ES y EN) → 301 a la guía de El Calafate.
 - 2026-10-10: auditoría del contexto (CLAUDE.md, rules y docs contra el código) y decisiones de la memoria de Code pasadas a DECISIONS.
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
@@ -30,7 +31,6 @@ _Última actualización: 2026-10-10_
 ## Pendiente
 
 - Al sumar la 6ª guía: "Destinos" al nav y bloque en la home (regla en `.claude/rules/destinos.md`).
-- El Calafate: según `seo/destinos-prioridad.md` hay 2 artículos viejos y no están en `LEGACY_TO_GUIDE`. Identificar las URLs y redirigirlas.
 - **Seguridad (la usuaria)**: rotar la service role key de Supabase (y actualizarla en `.env.local` y Vercel). Estuvo en texto plano en `.claude/settings.local.json`; las reglas se sacaron el 2026-10-10. Si existe `NEXT_PUBLIC_AMAZON_TAG` en `.env.local` o Vercel, borrarla.
 - `ADMIN_EMAIL` está repetido en 10 archivos: centralizarlo en un helper.
 - `notification_preferences` (migración 006) existe pero nada lo consume.
