@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-10-10_
+_Última actualización: 2026-10-19_
 
 ## Hecho (a grandes rasgos)
 
@@ -26,7 +26,7 @@ _Última actualización: 2026-10-10_
 - Guía de destino: `trig_01Gqz7Knx4E6Az4cLeQAhewY`, ver `.claude/rules/destinos.md`.
 - Auditoría SEO/CTR (abre PR con metadata): `trig_018sMnZzcAJD4dg42NabCZov`.
 - Borrador de newsletter: `trig_01Acb1XD3UHgbZXLb5EuA1E7`.
-- ⚠️ 2026-10-10: desde la sesión local de Code, `RemoteTrigger` da 404 para estos IDs y la lista vuelve vacía. Los PR #5 a #7 (3 y 5 de octubre) prueban que andaban. Confirmar en claude.ai → Routines si siguen activas o si cambiaron de ID.
+- ⛔ **Caídas desde el cambio de plan Pro → Enterprise (mismo mail).** Las rutinas vivían en la organización Pro y no pasaron a la Enterprise: `RemoteTrigger` da 404 y claude.ai/code redirige a `/code/onboarding`. Último PR de una rutina: #7 (2026-10-05). Para volver: hacer el onboarding de Code web en la org Enterprise (conectar GitHub y crear el entorno con la credencial de Search Console) y recrear las 3 rutinas. Los IDs de arriba ya no sirven.
 
 ## Pendiente
 
