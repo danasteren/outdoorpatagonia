@@ -19,7 +19,7 @@ _Última actualización: 2026-10-20_
 
 ## En curso
 
-- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate y Bariloche (#7). En PR: Torres del Paine + Puerto Natales (#8) y El Chaltén (rama `seo/content-2026-10-20-el-chalten`). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
+- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8) y El Chaltén (#9). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
 
 ## Rutinas en la nube (lunes)
 

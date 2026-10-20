@@ -76,6 +76,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { tipo: "gastronomia", slug: "comprar-merken-en-la-patagonia" },
       { tipo: "gastronomia", slug: "carnes-de-caza-patagonicas-guanaco-liebre" },
       { tipo: "destino", slug: "el-calafate" },
+      { tipo: "destino", slug: "puerto-natales" },
     ],
   },
   {
@@ -458,7 +459,10 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Por qué es tan cara?", respuesta: "Por la dificultad y estacionalidad de su captura, y por la veda que protege su reproducción durante buena parte del año." },
     ],
     pexelsQuery: "king crab seafood dish",
-    relacionados: [{ tipo: "destino", slug: "ushuaia" }],
+    relacionados: [
+      { tipo: "destino", slug: "ushuaia" },
+      { tipo: "destino", slug: "puerto-natales" },
+    ],
   },
   {
     slug: "carnes-de-caza-patagonicas-guanaco-liebre",

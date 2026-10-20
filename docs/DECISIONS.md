@@ -22,6 +22,12 @@ Formato:
 **Detalle:** `src/lib/destinos/redirects.ts`. La guía no publica la población: la cifra del censo 2022 no se pudo confirmar en el INDEC y la de INPROTUR (1.627) es del censo 2010.
 **Estado:** Vigente
 
+## 2026-10-19 — Guía #4 con slug `puerto-natales`, no `torres-del-paine`
+**Decisión:** la guía #4 de `seo/destinos-prioridad.md` (Torres del Paine + Puerto Natales) se publica como `/destinos/puerto-natales` y `/en/guides/puerto-natales`, con "Torres del Paine" en el título y el contenido. Los artículos viejos `/lugares/torres-del-paine-patagonia` y `/en/destinations/torres-del-paine-patagonia` van con 301 a esa guía.
+**Motivo:** `/parques/torres-del-paine` ya apunta a "Torres del Paine" como parque; la guía apunta a la intención de viaje (qué hacer, cómo llegar, cuántos días) desde la ciudad base, y así no compiten dos páginas con el mismo nombre. Los artículos viejos se redirigen como el del Perito Moreno a la guía de El Calafate.
+**Detalle:** decidido por la rutina diaria sin supervisión; revisable en el PR. Archivos: `src/lib/destinos/catalog.ts`, `src/lib/destinos/redirects.ts`. Alternativa descartada: redirigir los artículos viejos a `/parques/torres-del-paine`.
+**Estado:** Vigente
+
 ## 2026-10-10 — Code hace commit y push al terminar cada tarea
 **Decisión:** al cerrar cada tarea, Code commitea en main con los docs actualizados y pushea.
 **Motivo:** el Proyecto del chat sincroniza desde GitHub; sin push, el chat no ve el estado ni las decisiones nuevas. Flujo: chat decide → Code implementa → actualiza docs → commit + push → sincronizo el chat.

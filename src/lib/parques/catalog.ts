@@ -390,6 +390,7 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
       { label: "Tour de día desde Puerto Natales", query: "torres del paine day tour" },
       { label: "Kayak Glaciar Grey", query: "torres del paine kayak glacier grey" },
     ],
+    relacionados: [{ tipo: "destino", slug: "puerto-natales" }],
   },
   {
     slug: "bernardo-ohiggins",
@@ -413,6 +414,7 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.conaf.cl/parques/parque-nacional-bernardo-ohiggins/",
     faunaEspecies: ["condor-andino", "huemul"],
     senderosEnElParque: [],
+    relacionados: [{ tipo: "destino", slug: "puerto-natales" }],
   },
 
   // ─── Argentina — parques faltantes ───────────────────────────────────────────
