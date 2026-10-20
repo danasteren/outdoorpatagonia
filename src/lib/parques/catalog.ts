@@ -205,7 +205,10 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
       { label: "Safari náutico Lago Argentino", query: "el calafate lago argentino boat tour" },
     ],
 
-    relacionados: [{ tipo: "destino", slug: "el-calafate" }],
+    relacionados: [
+      { tipo: "destino", slug: "el-calafate" },
+      { tipo: "destino", slug: "el-chalten" },
+    ],
   },
   {
     slug: "monte-leon",

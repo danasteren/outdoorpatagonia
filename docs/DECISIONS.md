@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-20 — Guía de El Chaltén: qué artículos viejos se redirigen
+**Decisión:** solo las guías generales viejas de El Chaltén (`/lugares/chalten-patagonia-argentina` y `/en/destinations/el-chalten-patagonia-argentina`) pasan con 301 a `/destinos/el-chalten`. Los artículos de campings (ES y EN) siguen vivos.
+**Motivo:** los de campings responden a otra búsqueda (dónde acampar) que la guía no cubre; redirigirlos perdería ese tráfico.
+**Detalle:** `src/lib/destinos/redirects.ts`. La guía no publica la población: la cifra del censo 2022 no se pudo confirmar en el INDEC y la de INPROTUR (1.627) es del censo 2010.
+**Estado:** Vigente
+
 ## 2026-10-10 — Code hace commit y push al terminar cada tarea
 **Decisión:** al cerrar cada tarea, Code commitea en main con los docs actualizados y pushea.
 **Motivo:** el Proyecto del chat sincroniza desde GitHub; sin push, el chat no ve el estado ni las decisiones nuevas. Flujo: chat decide → Code implementa → actualiza docs → commit + push → sincronizo el chat.
