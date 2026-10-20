@@ -9,4 +9,6 @@ export const LEGACY_TO_GUIDE: Record<string, string> = {
   "/en/destinations/perito-moreno-glacier": "/en/guides/el-calafate",
   "/lugares/torres-del-paine-patagonia": "/destinos/puerto-natales",
   "/en/destinations/torres-del-paine-patagonia": "/en/guides/puerto-natales",
+  "/lugares/chalten-patagonia-argentina": "/destinos/el-chalten",
+  "/en/destinations/el-chalten-patagonia-argentina": "/en/guides/el-chalten",
 }
