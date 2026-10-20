@@ -7,4 +7,6 @@ export const LEGACY_TO_GUIDE: Record<string, string> = {
   "/en/destinations/bariloche-travel-guide": "/en/guides/bariloche",
   "/lugares/visitar-glaciar-perito-moreno-guia": "/destinos/el-calafate",
   "/en/destinations/perito-moreno-glacier": "/en/guides/el-calafate",
+  "/lugares/torres-del-paine-patagonia": "/destinos/puerto-natales",
+  "/en/destinations/torres-del-paine-patagonia": "/en/guides/puerto-natales",
 }
