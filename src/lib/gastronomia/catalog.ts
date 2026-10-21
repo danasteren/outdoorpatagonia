@@ -159,7 +159,10 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Lleva alcohol la receta original?", respuesta: "Sí, tradicionalmente coñac u otro licor, aunque existen versiones sin alcohol." },
     ],
     urlFuente: "https://www.argentina.gob.ar/jefatura/turismo/viaja-por-argentina/torta-galesa",
-    relacionados: [{ tipo: "gastronomia", slug: "kuchen-chileno-historia-tradicion" }],
+    relacionados: [
+      { tipo: "gastronomia", slug: "kuchen-chileno-historia-tradicion" },
+      { tipo: "destino", slug: "puerto-madryn" },
+    ],
   },
   {
     slug: "descubri-el-mate-la-bebida-tradicional-de-sudamerica",

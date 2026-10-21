@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-10-20_
+_Última actualización: 2026-10-21_
 
 ## Hecho (a grandes rasgos)
 
@@ -19,7 +19,7 @@ _Última actualización: 2026-10-20_
 
 ## En curso
 
-- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8) y El Chaltén (#9). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
+- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9) y Puerto Madryn + Península Valdés (PR abierto, con "Destinos" en el nav y bloque en la home). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
 
 ## Rutinas en la nube (lunes)
 
@@ -30,7 +30,6 @@ _Última actualización: 2026-10-20_
 
 ## Pendiente
 
-- Al sumar la 6ª guía: "Destinos" al nav y bloque en la home (regla en `.claude/rules/destinos.md`).
 - **Seguridad (la usuaria)**: rotar la service role key de Supabase (y actualizarla en `.env.local` y Vercel). Estuvo en texto plano en `.claude/settings.local.json`; las reglas se sacaron el 2026-10-10. Si existe `NEXT_PUBLIC_AMAZON_TAG` en `.env.local` o Vercel, borrarla.
 - `ADMIN_EMAIL` está repetido en 10 archivos: centralizarlo en un helper.
 - `notification_preferences` (migración 006) existe pero nada lo consume.
@@ -39,5 +38,5 @@ _Última actualización: 2026-10-20_
 
 ## Próximo
 
-- Guía #6: Puerto Madryn + Península Valdés (según `seo/destinos-prioridad.md`). Es la 6ª: suma "Destinos" al nav y el bloque en la home.
+- Guía #7: Punta Arenas (según `seo/destinos-prioridad.md`).
 - `senderos/catalog.ts` dice que la Laguna de los Tres es "completamente gratuito", pero la APN cobra el acceso a los senderos desde El Chaltén (pase "Portada El Chaltén"). Corregirlo.

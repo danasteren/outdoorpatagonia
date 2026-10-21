@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-21 — Guía de Puerto Madryn + Península Valdés y entrada de "Destinos" al nav
+**Decisión:** la guía #6 se publica como `/destinos/puerto-madryn` y `/en/guides/puerto-madryn`, con Península Valdés en el nombre y el contenido. Con ella, "Destinos" entra al menú Explorar (desktop y mobile), a las tarjetas "Explorá por tema" y a un bloque propio en la home (`src/components/home/DestinosSection.tsx`). No se redirige ningún artículo viejo.
+**Motivo:** Puerto Madryn es la ciudad base (alojamiento, aeropuerto, excursiones); Península Valdés no tiene página en `parques` y queda dentro de la guía. Los artículos viejos relacionados (excursión de crías de lobos marinos, Punta Tombo, galeses, fauna) responden a búsquedas puntuales que la guía no reemplaza, igual que los de campings de El Chaltén. El nav y la home siguen la regla de la 6ª guía de `.claude/rules/destinos.md`.
+**Detalle:** decidido por la rutina diaria sin supervisión; revisable en el PR. La guía no publica montos de la entrada a la península (cambian por resolución), ni población, ni la distancia al aeropuerto de Trelew. Fauna no tiene campo `relacionados`, así que la simetría solo se hizo con la torta galesa.
+**Estado:** Vigente
+
 ## 2026-10-20 — Guía de El Chaltén: qué artículos viejos se redirigen
 **Decisión:** solo las guías generales viejas de El Chaltén (`/lugares/chalten-patagonia-argentina` y `/en/destinations/el-chalten-patagonia-argentina`) pasan con 301 a `/destinos/el-chalten`. Los artículos de campings (ES y EN) siguen vivos.
 **Motivo:** los de campings responden a otra búsqueda (dónde acampar) que la guía no cubre; redirigirlos perdería ese tráfico.

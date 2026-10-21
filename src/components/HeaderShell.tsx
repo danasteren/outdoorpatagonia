@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
   PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe, Telescope,
-  User, LogOut, Backpack, ShieldCheck, Flame, Bone, ChefHat, Droplets,
+  User, LogOut, Backpack, ShieldCheck, Flame, Bone, ChefHat, Droplets, Signpost,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
@@ -159,6 +159,7 @@ export function HeaderShell({
                   {[
                     { href: '/arqueologia', label: 'Arqueología', Icon: Bone },
                     { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
+                    { href: '/destinos', label: 'Destinos', Icon: Signpost },
                     { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
                     { href: '/estado', label: 'Estado', Icon: Activity },
                     { href: '/fauna', label: 'Fauna', Icon: PawPrint },
@@ -385,6 +386,7 @@ export function HeaderShell({
             {[
               { href: '/arqueologia', label: 'Arqueología', Icon: Bone },
               { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
+              { href: '/destinos', label: 'Destinos', Icon: Signpost },
               { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
               { href: '/estado', label: 'Estado', Icon: Activity },
               { href: '/fauna', label: 'Fauna', Icon: PawPrint },

@@ -7,6 +7,7 @@ import { PageShell } from "@/components/layout";
 import { Hero } from "@/components/home/Hero";
 import { AhoraSection } from "@/components/home/AhoraSection";
 import { EscaladaSection } from "@/components/home/EscaladaSection";
+import { DestinosSection } from "@/components/home/DestinosSection";
 import {
   PawPrint,
   Leaf,
@@ -21,6 +22,7 @@ import {
   Compass,
   Backpack,
   Flame,
+  Signpost,
 } from "lucide-react";
 
 export const revalidate = 3600;
@@ -32,6 +34,13 @@ const CATEGORIES = [
     icon: Telescope,
     description: "Cielos oscuros, luna y meteoros",
     color: "from-[#0f1d2e] to-[#1a2a4a]",
+  },
+  {
+    label: "Destinos",
+    href: "/destinos",
+    icon: Signpost,
+    description: "Guías de viaje por destino",
+    color: "from-[#0a2233] to-[#103a4d]",
   },
   {
     label: "Escalada",
@@ -159,6 +168,9 @@ export default function Home() {
           </div>
         </PageShell>
       </Section>
+
+      {/* Guías de destino */}
+      <DestinosSection />
 
       {/* Escalada */}
       <EscaladaSection />
