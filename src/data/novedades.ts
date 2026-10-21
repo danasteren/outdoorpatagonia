@@ -46,6 +46,14 @@ export const novedades: VersionNovedades[] = [
       },
       {
         tipo: "nuevo",
+        texto: "Guía de viaje de Puerto Madryn y Península Valdés — qué hacer, clima, cuándo ir y cómo llegar, con el avistaje de ballenas, los pingüinos de Punta Tombo y las orcas de Punta Norte, en español y en inglés",
+      },
+      {
+        tipo: "mejora",
+        texto: "Las guías de destino ya están en el menú Explorar y en la página de inicio",
+      },
+      {
+        tipo: "nuevo",
         texto: "Escalada en Esquel, vía por vía — 73 vías en cuatro sectores (La Crux, El Badén, La Palestra y Cañadón de las Palomas) con grado, metros, chapas y aperturista, cargadas desde la guía local Esqala",
       },
       {
