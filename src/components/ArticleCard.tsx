@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Clock, Calendar } from "lucide-react";
 import { toCategorySlug } from "@/lib/category";
 import { articleCover } from "@/lib/legacy-images";
@@ -36,7 +33,6 @@ export function ArticleCard({
   language,
   featured = false,
 }: ArticleCardProps) {
-  const router = useRouter();
   const coverImageUrl = articleCover({ slug, cover_image_url })?.url;
   const catSlug = category ? toCategorySlug(category) : "";
   const href =
@@ -52,13 +48,13 @@ export function ArticleCard({
       }).format(new Date(published_at))
     : null;
 
+  // La tarjeta entera es clickeable con un "stretched link": el ::after del
+  // <Link> del título cubre la tarjeta. El badge de categoría queda encima
+  // (relative z-10) para no anidar <a> dentro de <a>.
   return (
-    <div
-      onClick={() => router.push(href)}
-      className="group block rounded-2xl border border-border bg-card overflow-hidden hover:border-[var(--color-teal)] hover:shadow-xl transition-all duration-200 cursor-pointer"
-    >
+    <div className="group relative h-full flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:border-[var(--color-teal)] hover:shadow-xl transition-all duration-200">
       <div
-        className={`overflow-hidden bg-gradient-to-br from-[var(--color-forest)] to-[var(--color-teal)] ${
+        className={`shrink-0 overflow-hidden bg-gradient-to-br from-[var(--color-forest)] to-[var(--color-teal)] ${
           featured ? "h-56 md:h-80" : "h-44"
         }`}
       >
@@ -71,30 +67,34 @@ export function ArticleCard({
         )}
       </div>
 
-      <div className="p-5">
+      <div className="p-5 flex-1 flex flex-col">
         {category && (
           <Link
             href={categoryHref(category, language)}
-            onClick={(e) => e.stopPropagation()}
-            className="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded bg-[var(--color-terracotta)] text-white mb-3 hover:opacity-80 transition-opacity"
+            className="relative z-10 self-start inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded bg-[var(--color-terracotta)] text-white mb-3 hover:opacity-80 transition-opacity"
           >
             {category}
           </Link>
         )}
         <h2
-          className={`font-bold leading-snug mb-2 group-hover:text-[var(--color-teal)] transition-colors ${
+          className={`font-bold leading-snug mb-2 line-clamp-2 group-hover:text-[var(--color-teal)] transition-colors ${
             featured ? "text-xl md:text-2xl" : "text-base md:text-lg"
           }`}
           style={{ fontFamily: "var(--font-playfair)" }}
         >
-          {title}
+          <Link
+            href={href}
+            className="outline-none after:absolute after:inset-0 after:rounded-2xl focus-visible:after:ring-2 focus-visible:after:ring-inset focus-visible:after:ring-[var(--color-teal)]"
+          >
+            {title}
+          </Link>
         </h2>
         {excerpt && (
           <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4">
             {excerpt}
           </p>
         )}
-        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+        <div className="mt-auto flex items-center gap-4 text-xs text-muted-foreground">
           {date && (
             <span className="inline-flex items-center gap-1">
               <Calendar size={11} strokeWidth={1.5} />

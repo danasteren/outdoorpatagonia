@@ -84,6 +84,14 @@ export const novedades: VersionNovedades[] = [
         tipo: "correccion",
         texto: "Fotos de los artículos — habían dejado de verse en todo el sitio; todas las notas vuelven a tener portada y volvió buena parte de las fotos dentro del texto",
       },
+      {
+        tipo: "mejora",
+        texto: "Tarjetas de artículos más prolijas — en los listados y en las categorías, la fecha y los minutos de lectura quedan a la misma altura en todas las tarjetas de una fila",
+      },
+      {
+        tipo: "mejora",
+        texto: "Las tarjetas de artículos ahora son enlaces de verdad — se pueden abrir en otra pestaña y recorrer con el teclado",
+      },
     ],
   },
   {

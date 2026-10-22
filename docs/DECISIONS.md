@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-22 — Las tarjetas de artículo son links reales
+**Decisión:** Toda tarjeta que lleve a un artículo usa <a href> (next/link) para navegar. No se usa onClick + router.push.
+**Motivo:** Google solo sigue enlaces <a href>. Con el div clickeable, las páginas de categoría y los listados no le pasaban enlaces internos a los artículos.
+**Detalle:** El link de categoría que va adentro de la tarjeta no puede quedar anidado dentro de otro <a>. Se resuelve con el patrón de link estirado (stretched link). Aplicado en `src/components/ArticleCard.tsx`, que pasó a server component; al 2026-10-22 ningún otro componente de tarjeta navega con `router.push` (solo el Enter del buscador, `SearchOverlay.tsx`).
+**Estado:** Vigente
+
 ## 2026-10-22 — Tulipanes de Trevelin: artículo nuevo en `articles` (flora), sin sección propia
 **Decisión:** el campo de tulipanes de Trevelin se publica como dos filas nuevas de `articles` (categoría `Flora`): `/flora/tulipanes-trevelin` y `/en/flora/trevelin-tulip-fields`. Slugs sin año; el año va solo en el texto ("temporada 2026"). Datos solo de la página oficial de entradas de Tulipanes Patagonia (temporada estimada 7/10 al 7/11/2026, $45.000 por persona, pago en el lugar, sin reserva, RN 259 km 50). Sin sección ni catálogo nuevo y sin tocar el nav.
 **Motivo:** búsqueda de temporada con fecha límite (termina el 7/11). El horario, la gratuidad para menores, la cantidad de bulbos y las novedades de la temporada solo salieron en la prensa, así que no van.
