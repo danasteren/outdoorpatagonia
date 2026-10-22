@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-22 — Home en inglés con el diseño del sitio
+**Decisión:** `/en` deja de ser un listado de blog y se arma como la home en español con lo que existe en inglés: `PageHero`, "Explore by topic" con las categorías de los artículos en inglés (`/en/category/*`), el bloque de guías de viaje y los últimos 12 artículos con `ArticleTile`.
+**Motivo:** la usuaria pidió pasar también la home en inglés al diseño del sitio. La home en español usa secciones que solo existen en español (hero con datos del día, estado en vivo, escalada), así que no se tradujo tal cual.
+**Detalle:** las tarjetas de tema salieron a `src/components/home/TopicCard.tsx` (las usan las dos homes) y `DestinosSection` recibe `lang`. "Sin categorizar" no aparece como tema. Los temas se ordenan por cantidad de artículos y no cuentan los que redirigen a una guía. `ArticleCard` se borró porque ya no lo usaba nadie. El header del sitio sigue en español en las páginas en inglés (no se tocó).
+**Estado:** Vigente
+
 ## 2026-10-22 — Los artículos se ven como el resto del sitio
 **Decisión:** la página de artículo deja el formato de blog (badge, título suelto, portada en el cuerpo) y usa el de las fichas de catálogo: `DetailHero` con la portada, columna principal con el texto y sidebar con datos (categoría, fecha, lectura), idioma y tags. Los listados de artículos usan `ArticleTile`, la tarjeta compacta de los catálogos, en lugar de `ArticleCard`.
 **Motivo:** la usuaria pidió que todo se vea como el sitio: con "una sola página por temática", los artículos quedaban debajo del catálogo con un estilo de blog que no combinaba.

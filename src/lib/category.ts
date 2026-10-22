@@ -10,7 +10,7 @@ export function toCategorySlug(category: string): string {
 // Categorías de `articles` (ES) que tienen sección propia: sus artículos se
 // listan debajo del catálogo de la sección y /categoria/{slug} redirige ahí
 // con 301 (proxy.ts). Solo entran slugs que coinciden exacto con la ruta de
-// la sección. Lo leen proxy.ts, ArticleCard, ArticleLayout y el sitemap.
+// la sección. Lo leen proxy.ts, ArticleLayout y el sitemap.
 export const CATEGORY_SECTIONS: Record<string, string> = {
   fauna: "/fauna",
   flora: "/flora",

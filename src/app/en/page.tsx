@@ -1,6 +1,30 @@
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
-import { ArticleCard } from "@/components/ArticleCard";
+import type { LucideIcon } from "lucide-react";
+import {
+  BookOpen,
+  ChefHat,
+  Download,
+  Landmark,
+  Leaf,
+  Lightbulb,
+  Mountain,
+  PawPrint,
+  Recycle,
+  ScrollText,
+  Signpost,
+  Sprout,
+  Tent,
+} from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
+import { PageHero } from "@/components/PageHero";
+import { ArticleTile } from "@/components/ArticleTile";
+import { TopicCard } from "@/components/home/TopicCard";
+import { DestinosSection } from "@/components/home/DestinosSection";
+import { Section, PageShell } from "@/components/layout";
+import { toCategorySlug } from "@/lib/category";
+import { articleRedirect } from "@/lib/article-redirects";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: { absolute: "Outdoor Patagonia — Nature, culture and stories from the south" },
@@ -12,8 +36,28 @@ export const metadata: Metadata = {
   },
 };
 
+// Ícono y color de cada categoría en inglés para "Explore by topic"; el resto usa el default
+const TOPIC_STYLES: Record<string, { icon: LucideIcon; color: string }> = {
+  fauna: { icon: PawPrint, color: "from-[var(--color-forest)] to-[var(--color-teal)]" },
+  flora: { icon: Leaf, color: "from-[var(--color-teal)] to-[var(--color-teal-light)]" },
+  fungi: { icon: Sprout, color: "from-[#5a4a3a] to-[var(--color-forest)]" },
+  gastronomy: { icon: ChefHat, color: "from-[#2a1508] to-[#4d2e10]" },
+  destinations: { icon: Signpost, color: "from-[#0a2233] to-[#103a4d]" },
+  landscapes: { icon: Mountain, color: "from-[var(--color-charcoal)] to-[var(--color-forest)]" },
+  history: { icon: ScrollText, color: "from-[#8a4d22] to-[var(--color-charcoal)]" },
+  culture: { icon: Landmark, color: "from-[var(--color-terracotta)] to-[#8a4d22]" },
+  tips: { icon: Lightbulb, color: "from-[#1a6a8a] to-[var(--color-charcoal)]" },
+  "environmental-impact": { icon: Recycle, color: "from-[#3a5a2a] to-[var(--color-forest)]" },
+  dome: { icon: Tent, color: "from-[var(--color-charcoal)] to-[#3a322f]" },
+  "downloadable-resources": { icon: Download, color: "from-[var(--color-teal)] to-[#1a6a8a]" },
+};
+const DEFAULT_TOPIC = { icon: BookOpen, color: "from-[var(--color-forest)] to-[var(--color-teal)]" };
+
 async function getArticles() {
-  const supabase = await createClient();
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
   const { data } = await supabase
     .from("articles")
     .select(
@@ -21,38 +65,74 @@ async function getArticles() {
     )
     .eq("language", "en")
     .eq("status", "published")
-    .order("published_at", { ascending: false })
-    .limit(12);
-  return data ?? [];
+    .order("published_at", { ascending: false });
+  // Sin los artículos absorbidos por una guía (301 en proxy.ts)
+  return (data ?? []).filter(
+    (a) => !articleRedirect(`/en/${toCategorySlug(a.category ?? "")}/${a.slug}`)
+  );
 }
 
 export default async function HomeEN() {
   const articles = await getArticles();
-  const [featured, ...rest] = articles;
+
+  const counts = new Map<string, { label: string; count: number }>();
+  for (const a of articles) {
+    if (!a.category) continue;
+    const slug = toCategorySlug(a.category);
+    if (slug === "sin-categorizar") continue;
+    const entry = counts.get(slug) ?? { label: a.category, count: 0 };
+    entry.count++;
+    counts.set(slug, entry);
+  }
+  const topics = [...counts.entries()]
+    .sort((a, b) => b[1].count - a[1].count)
+    .map(([slug, { label, count }]) => ({
+      label,
+      href: `/en/category/${slug}`,
+      description: `${count} ${count === 1 ? "article" : "articles"}`,
+      ...(TOPIC_STYLES[slug] ?? DEFAULT_TOPIC),
+    }));
+  const latest = articles.slice(0, 12);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <h1
-        className="text-3xl md:text-5xl font-bold text-foreground leading-tight mb-10"
-        style={{ fontFamily: "var(--font-playfair)" }}
-      >
-        Nature, culture and stories
-        <br className="hidden md:block" /> from Patagonia.
-      </h1>
+    <div>
+      <PageHero
+        icon={Mountain}
+        eyebrow="Outdoor Patagonia"
+        title="Nature, culture and stories from Patagonia"
+        description="Travel guides, wildlife, plants, food and history from southern Argentina and Chile."
+      />
 
-      {articles.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {featured && (
-            <div className="md:col-span-2">
-              <ArticleCard {...featured} featured />
+      {topics.length > 0 && (
+        <Section spacing="lg">
+          <PageShell>
+            <h2 className="text-2xl font-bold mb-6" style={{ fontFamily: "var(--font-playfair)" }}>
+              Explore by topic
+            </h2>
+            <div className="flex flex-wrap justify-center gap-3">
+              {topics.map((t, i) => (
+                <TopicCard key={t.href} {...t} index={i} />
+              ))}
             </div>
-          )}
-          {rest.map((article) => (
-            <ArticleCard key={article.slug} {...article} />
-          ))}
-        </div>
-      ) : (
-        <p className="text-muted-foreground text-center py-20">No published articles yet.</p>
+          </PageShell>
+        </Section>
+      )}
+
+      <DestinosSection lang="en" />
+
+      {latest.length > 0 && (
+        <Section spacing="md">
+          <PageShell>
+            <h2 className="text-2xl font-bold mb-6" style={{ fontFamily: "var(--font-playfair)" }}>
+              Latest articles
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {latest.map((article) => (
+                <ArticleTile key={article.slug} {...article} headingLevel="h3" />
+              ))}
+            </div>
+          </PageShell>
+        </Section>
       )}
     </div>
   );

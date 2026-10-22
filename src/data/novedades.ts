@@ -104,6 +104,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "mejora",
         texto: "Los artículos se ven como el resto del sitio — portada grande con el título encima, el texto en la columna principal y los datos (fecha, lectura, categoría) al costado; los listados de artículos usan las mismas tarjetas que las especies",
       },
+      {
+        tipo: "mejora",
+        texto: "Nueva portada en inglés — temas para explorar, guías de viaje y los últimos artículos, con el mismo diseño que el resto del sitio",
+      },
     ],
   },
   {
