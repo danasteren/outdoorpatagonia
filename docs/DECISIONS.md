@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-22 — Guía de Punta Arenas: alcance y datos que no se publican
+**Decisión:** la guía #7 se publica como `/destinos/punta-arenas` y `/en/guides/punta-arenas`. No se redirige ningún artículo viejo (no hay ninguno de Punta Arenas; el del Estrecho de Magallanes es de historia y sigue vivo). Los parques Alberto de Agostini y Cabo de Hornos suman el campo `relacionados` hacia la guía.
+**Motivo:** no hay artículos que compitan con la guía. Pali Aike, la Reserva Nacional Magallanes y el Monumento Natural Los Pingüinos no tienen página en `parques`, así que quedan dentro de la guía.
+**Detalle:** decidido por la rutina diaria sin supervisión; revisable en el PR. No se publican: precios de entradas ni del ferry, la pingüinera de Seno Otway (sin fuente oficial), la duración del cruce a Porvenir, ni los meses exactos de la temporada de ballenas. Fuerte Bulnes figura a 58 km (Consejo de Monumentos Nacionales); Sernatur dice 52 km. El Museo Regional de Magallanes se menciona como cerrado por restauración (Serpat, diciembre de 2025).
+**Estado:** Vigente
+
 ## 2026-10-21 — Guía de Puerto Madryn + Península Valdés y entrada de "Destinos" al nav
 **Decisión:** la guía #6 se publica como `/destinos/puerto-madryn` y `/en/guides/puerto-madryn`, con Península Valdés en el nombre y el contenido. Con ella, "Destinos" entra al menú Explorar (desktop y mobile), a las tarjetas "Explorá por tema" y a un bloque propio en la home (`src/components/home/DestinosSection.tsx`). No se redirige ningún artículo viejo.
 **Motivo:** Puerto Madryn es la ciudad base (alojamiento, aeropuerto, excursiones); Península Valdés no tiene página en `parques` y queda dentro de la guía. Los artículos viejos relacionados (excursión de crías de lobos marinos, Punta Tombo, galeses, fauna) responden a búsquedas puntuales que la guía no reemplaza, igual que los de campings de El Chaltén. El nav y la home siguen la regla de la 6ª guía de `.claude/rules/destinos.md`.

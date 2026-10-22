@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-10-21_
+_Última actualización: 2026-10-22_
 
 ## Hecho (a grandes rasgos)
 
@@ -19,7 +19,7 @@ _Última actualización: 2026-10-21_
 
 ## En curso
 
-- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9) y Puerto Madryn + Península Valdés (PR abierto, con "Destinos" en el nav y bloque en la home). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
+- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9), Puerto Madryn + Península Valdés (#10, con "Destinos" en el nav y bloque en la home) y Punta Arenas (PR abierto). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
 
 ## Rutinas en la nube (lunes)
 
@@ -38,5 +38,5 @@ _Última actualización: 2026-10-21_
 
 ## Próximo
 
-- Guía #7: Punta Arenas (según `seo/destinos-prioridad.md`).
+- Guía #8: Puerto Varas + Puerto Montt (según `seo/destinos-prioridad.md`).
 - `senderos/catalog.ts` dice que la Laguna de los Tres es "completamente gratuito", pero la APN cobra el acceso a los senderos desde El Chaltén (pase "Portada El Chaltén"). Corregirlo.
