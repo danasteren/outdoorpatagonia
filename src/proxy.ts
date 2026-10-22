@@ -1,29 +1,27 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { toCategorySlug } from "@/lib/category";
-import { LEGACY_TO_GUIDE } from "@/lib/destinos/redirects";
+import { categorySection, toCategorySlug } from "@/lib/category";
+import { articleRedirect } from "@/lib/article-redirects";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const segments = pathname.split("/").filter(Boolean);
 
-  // Artículos viejos absorbidos por una guía de /destinos (ver src/lib/destinos/redirects.ts)
-  const guide = LEGACY_TO_GUIDE[pathname.replace(/\/+$/, "")];
-  if (guide) {
-    return NextResponse.redirect(new URL(guide, request.url), 301);
+  // Artículos viejos absorbidos por una guía de /destinos o una ficha de
+  // catálogo (ver src/lib/article-redirects.ts). Real HTTP 301: redirect()
+  // inside a page component only produces a 200 + meta-refresh in this
+  // Next.js version.
+  const absorbedBy = articleRedirect(pathname.replace(/\/+$/, ""));
+  if (absorbedBy) {
+    return NextResponse.redirect(new URL(absorbedBy, request.url), 301);
   }
 
-  // /categoria/gastronomia moved to its own dedicated section at /gastronomia
-  if (pathname.replace(/\/+$/, "") === "/categoria/gastronomia") {
-    return NextResponse.redirect(new URL("/gastronomia", request.url), 301);
-  }
-
-  // Orphan backlinked URL with no matching flora catalog entry or iNaturalist
-  // match — real HTTP 301 to the actual entry, since redirect() from inside
-  // the [especie] page component only produces a 200 + meta-refresh, not a
-  // true redirect, in this Next.js version.
-  if (pathname.replace(/\/+$/, "") === "/flora/frutos-rojos-patagonia") {
-    return NextResponse.redirect(new URL("/flora/calafate", request.url), 301);
+  // /categoria/{slug} de una categoría con sección propia → la sección
+  // (mapa en src/lib/category.ts)
+  const categoryMatch = pathname.match(/^\/categoria\/([^/]+)\/*$/);
+  const section = categoryMatch && categorySection(categoryMatch[1]);
+  if (section) {
+    return NextResponse.redirect(new URL(section, request.url), 301);
   }
 
   // Redirect old flat-slug article URLs: /{slug} or /en/{slug}

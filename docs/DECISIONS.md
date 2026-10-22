@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-22 — Una sola página por temática
+**Decisión:** las categorías de artículos que tienen sección propia se muestran dentro de esa sección (catálogo arriba y artículos del blog abajo), y /categoria/{slug} redirige con 301 a la sección. Las categorías sin sección, y todas las de /en/category/, se quedan en su URL con el mismo diseño que las secciones.
+**Motivo:** convivían dos páginas por temática: la sección con catálogo (la que enlaza el menú) y un listado genérico de artículos al que solo se llegaba desde la etiqueta de categoría. Eso partía el contenido, dejaba los artículos sin enlaces desde las secciones y se veía distinto al resto del sitio.
+**Detalle:** generaliza lo que ya se hizo con gastronomía (redirect en proxy.ts, categoryHref, exclusión en el sitemap). El emparejamiento categoría → sección vive en un solo lugar (src/lib/category.ts). Solo entran las coincidencias exactas de slug; las dudosas quedan pendientes en STATUS. Las URLs de los artículos no cambian. Implementación: entraron fauna, flora y gastronomía. El bloque "Artículos" (`src/components/SectionArticles.tsx`) deja afuera los artículos con el mismo slug que una ficha del catálogo (la ruta muestra la ficha, no el artículo), así que en gastronomía no aparece: sus 9 artículos ES son fichas. También deja afuera los que redirigen; esos 301 (guías y fichas, como frutos rojos → calafate) pasaron a `src/lib/article-redirects.ts`, que leen proxy.ts, el sitemap, las secciones y las páginas de categoría. El sitemap dejó de listar artículos con la misma URL que una ficha (antes solo se hacía con gastronomía). Con barra final, `/categoria/flora/` hace 308 (Next) y después el 301. Encabezado de las categorías: `PageHero`, con `CollectionPage` en JSON-LD.
+**Estado:** Vigente
+
 ## 2026-10-22 — Las tarjetas de artículo son links reales
 **Decisión:** Toda tarjeta que lleve a un artículo usa <a href> (next/link) para navegar. No se usa onClick + router.push.
 **Motivo:** Google solo sigue enlaces <a href>. Con el div clickeable, las páginas de categoría y los listados no le pasaban enlaces internos a los artículos.

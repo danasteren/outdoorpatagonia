@@ -92,6 +92,14 @@ export const novedades: VersionNovedades[] = [
         tipo: "mejora",
         texto: "Las tarjetas de artículos ahora son enlaces de verdad — se pueden abrir en otra pestaña y recorrer con el teclado",
       },
+      {
+        tipo: "mejora",
+        texto: "Flora y fauna en una sola página — debajo de la guía de especies ahora están todos los artículos del tema, y la etiqueta de categoría de cada nota lleva directo ahí",
+      },
+      {
+        tipo: "mejora",
+        texto: "Las páginas de categoría (historia, cultura, consejos y las demás) ahora tienen el mismo encabezado que el resto de las secciones, en español y en inglés",
+      },
     ],
   },
   {

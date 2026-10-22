@@ -54,6 +54,7 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 - **Dos fuentes de contenido:**
   - **Supabase, tabla `articles`**: los artículos que vinieron del WordPress (ES y EN, `slug` + `language` únicos). Se ven en `/[categoria]/[slug]` y `/en/[categoria]/[slug]`, igual que las URLs de WordPress (carpetas `src/app/[slug]/[article]` y `src/app/en/[slug]/[article]`). Los artículos nuevos (sin `wp_id`) se escriben en `seo/articles/` y se cargan con `scripts/upsert_articles.py`.
   - **Catálogos estáticos en TypeScript** (`src/lib/<seccion>/catalog.ts`): destinos, parques, senderos, volcanes, termas, arqueología, escalada, fauna, flora, gastronomía. De cada catálogo salen solas la página, el JSON-LD, el sitemap y el buscador.
+- **Categorías de artículos con sección propia** (`CATEGORY_SECTIONS` en `src/lib/category.ts`): sus artículos se listan debajo del catálogo de la sección y `/categoria/{slug}` redirige ahí con 301. Los links de categoría se arman siempre con `categoryHref`. Los artículos que redirigen (absorbidos por una guía o una ficha) están en `src/lib/article-redirects.ts`.
 - **Conexiones entre catálogos**: el campo `relacionados`, resuelto en `src/lib/relacionados.ts` (ver `.claude/rules/relacionados.md`).
 - **Datos en vivo**: una API por archivo en `src/lib/apis/`, mostradas en el StatusBoard y en `/estado` (ver `.claude/rules/statusboard.md`).
 - **Inglés**: todo lo que está en inglés cuelga de `src/app/en/`. Los catálogos tienen contenido `es` y `en` en el mismo objeto.

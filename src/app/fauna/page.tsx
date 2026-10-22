@@ -9,6 +9,7 @@ import {
   type FaunaCategory,
 } from "@/lib/fauna/catalog"
 import { Badge } from "@/components/primitives/Badge"
+import { SectionArticles } from "@/components/SectionArticles"
 import { fetchTaxonPhotos } from "@/lib/apis/inaturalist"
 
 export const metadata: Metadata = {
@@ -176,6 +177,11 @@ export default async function FaunaIndexPage({
           </div>
         </section>
       </div>
+
+      <SectionArticles
+        categorySlug="fauna"
+        catalogSlugs={FAUNA_CATALOG.map((e) => e.slug)}
+      />
     </div>
   )
 }

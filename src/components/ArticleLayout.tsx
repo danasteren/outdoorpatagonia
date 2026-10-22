@@ -3,7 +3,7 @@ import { Calendar, Clock, Hash, Sparkles } from "lucide-react";
 import { fixWpLazyLoad, addInstagramPhotoCredits, extractPhotoCredit } from "@/lib/utils";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { Breadcrumb } from "@/components/primitives/Breadcrumb";
-import { toCategorySlug } from "@/lib/category";
+import { categoryHref as categoryHrefFor } from "@/lib/category";
 import { articleCover, fixLegacyImages } from "@/lib/legacy-images";
 
 interface Article {
@@ -46,13 +46,8 @@ export function ArticleLayout({
     : "Estás viendo un artículo que quedó del sitio anterior.";
   const bannerCta = isEnglish ? "See what's new" : "Ver lo nuevo del sitio";
 
-  const categorySlug = article.category ? toCategorySlug(article.category) : null;
-  const categoryHref = categorySlug
-    ? isEnglish
-      ? `/en/category/${categorySlug}`
-      : categorySlug === "gastronomia"
-        ? "/gastronomia"
-        : `/categoria/${categorySlug}`
+  const categoryHref = article.category
+    ? categoryHrefFor(article.category, article.language)
     : null;
   const isLegacy = article.wp_id != null;
   const breadcrumbItems = [
