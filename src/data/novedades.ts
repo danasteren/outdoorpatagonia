@@ -110,7 +110,7 @@ export const novedades: VersionNovedades[] = [
       },
       {
         tipo: "mejora",
-        texto: "En las páginas en inglés, el menú y el buscador ahora también están en inglés",
+        texto: "En las páginas en inglés, el menú, el buscador y el pie de página ahora también están en inglés",
       },
       {
         tipo: "correccion",

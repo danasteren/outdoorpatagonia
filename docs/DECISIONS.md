@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-22 — Footer en inglés en las páginas /en
+**Decisión:** en las páginas `/en` el footer se muestra en inglés. Los links van a la versión en inglés cuando existe (sobre nosotros, contacto, privacidad, términos, recursos de viaje, guías) y a la de español cuando no (mapa, astronomía, operadores, novedades). "Artículos" lleva a `/en`, que lista los últimos artículos, porque no hay índice de artículos en inglés.
+**Motivo:** la usuaria lo pidió, siguiendo con el header.
+**Detalle:** `src/components/Footer.tsx` (recibe `lang` desde `layout.tsx`), `NewsletterForm` y `subscribeNewsletter` (los errores se traducen según un campo oculto `lang`). En la columna Explorar del inglés, "Arqueología" se cambió por las guías de viaje, que sí tienen versión en inglés. Los suscriptores siguen sin idioma guardado (ver STATUS).
+**Estado:** Vigente
+
 ## 2026-10-22 — Header en inglés en las páginas /en
 **Decisión:** en las páginas `/en` el header y el buscador se muestran en inglés. Las secciones del menú que no tienen versión en inglés llevan igual a la página en español (con el nombre traducido); Destinos lleva a `/en/guides`.
 **Motivo:** la usuaria lo pidió: el menú en español en las páginas en inglés no tenía sentido para ese lector.
