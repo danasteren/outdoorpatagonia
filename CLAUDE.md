@@ -52,7 +52,7 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 ## Arquitectura
 
 - **Dos fuentes de contenido:**
-  - **Supabase, tabla `articles`**: los artículos que vinieron del WordPress (ES y EN, `slug` + `language` únicos). Se ven en `/[categoria]/[slug]` y `/en/[categoria]/[slug]`, igual que las URLs de WordPress (carpetas `src/app/[slug]/[article]` y `src/app/en/[slug]/[article]`).
+  - **Supabase, tabla `articles`**: los artículos que vinieron del WordPress (ES y EN, `slug` + `language` únicos). Se ven en `/[categoria]/[slug]` y `/en/[categoria]/[slug]`, igual que las URLs de WordPress (carpetas `src/app/[slug]/[article]` y `src/app/en/[slug]/[article]`). Los artículos nuevos (sin `wp_id`) se escriben en `seo/articles/` y se cargan con `scripts/upsert_articles.py`.
   - **Catálogos estáticos en TypeScript** (`src/lib/<seccion>/catalog.ts`): destinos, parques, senderos, volcanes, termas, arqueología, escalada, fauna, flora, gastronomía. De cada catálogo salen solas la página, el JSON-LD, el sitemap y el buscador.
 - **Conexiones entre catálogos**: el campo `relacionados`, resuelto en `src/lib/relacionados.ts` (ver `.claude/rules/relacionados.md`).
 - **Datos en vivo**: una API por archivo en `src/lib/apis/`, mostradas en el StatusBoard y en `/estado` (ver `.claude/rules/statusboard.md`).
@@ -84,4 +84,5 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 - Las fotos de los artículos se sirven desde Supabase Storage. El fallback de portadas está en `src/data/cover-fallbacks.ts`.
 - En `fauna/[especie]` y `flora/[especie]`, si existe un artículo de Supabase con el mismo slug, su `seo_title` le gana al `metaTitle` del catálogo. Antes de editar títulos en el catálogo, fijarse si hay artículo.
 - Mapas: `react-leaflet` + OSM. `maplibre-gl` sigue en `package.json` pero se descartó (pantalla gris): no reintroducirlo.
+- Hreflang de `articles`: ES y EN se emparejan solo si comparten slug. Si el slug cambia según el idioma, cargar el par en `src/lib/article-translations.ts`.
 - `.claude/settings.local.json` no se versiona y puede tener secretos en permisos viejos. Nunca commitearlo.

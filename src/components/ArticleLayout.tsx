@@ -144,9 +144,11 @@ export function ArticleLayout({
           {/* Cover image */}
           {cover && (
             <div className="mb-10">
+              {/* En los migrados, cover_image_alt es el texto de WordPress (a veces solo un crédito);
+                  en los nuevos describe la portada */}
               <img
                 src={cover.url}
-                alt={article.title}
+                alt={(!isLegacy && article.cover_image_alt) || article.title}
                 className="w-full rounded-md object-cover max-h-[480px]"
               />
               {cover.credit && (

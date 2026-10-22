@@ -54,6 +54,14 @@ export const novedades: VersionNovedades[] = [
       },
       {
         tipo: "nuevo",
+        texto: "Campo de tulipanes de Trevelin — fechas de la temporada 2026, precio de la entrada, cómo pagar y cómo llegar, en español y en inglés",
+      },
+      {
+        tipo: "correccion",
+        texto: "El artículo de los lupinos ahora tiene el botón para pasar al inglés (y al revés)",
+      },
+      {
+        tipo: "nuevo",
         texto: "Escalada en Esquel, vía por vía — 73 vías en cuatro sectores (La Crux, El Badén, La Palestra y Cañadón de las Palomas) con grado, metros, chapas y aperturista, cargadas desde la guía local Esqala",
       },
       {

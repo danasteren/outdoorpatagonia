@@ -1,7 +1,9 @@
-// Portadas de reemplazo para los artículos cuya foto original se perdió con el
-// hosting viejo (ver src/lib/legacy-images.ts). Son fotos de Wikimedia Commons
-// con licencia libre, copiadas a 1280 px al bucket "wp-uploads" (carpeta
-// wikimedia/). La licencia exige atribución: ArticleLayout muestra el crédito.
+// Portadas de Wikimedia Commons para artículos de la tabla `articles`: las de
+// reemplazo de los migrados cuya foto original se perdió con el hosting viejo
+// (ver src/lib/legacy-images.ts) y las de los artículos nuevos (sin wp_id), que
+// dejan cover_image_url vacío. Son fotos con licencia libre, copiadas a 1280 px
+// al bucket "wp-uploads" (carpeta wikimedia/). La licencia exige atribución:
+// ArticleLayout muestra el crédito.
 // Clave: slug del artículo (español e inglés comparten foto).
 
 export type CoverFallback = {
@@ -105,6 +107,13 @@ const ROSANEGRA: CoverFallback = {
   sourceUrl: "https://commons.wikimedia.org/wiki/File:Ameghiniella_australis_340230192.jpg",
 };
 
+const TULIPANES: CoverFallback = {
+  path: "wikimedia/tulipanes-trevelin.jpg",
+  author: "Polarcito",
+  license: "CC BY-SA 4.0",
+  sourceUrl: "https://commons.wikimedia.org/wiki/File:Campo_de_Tulipanes.jpg",
+};
+
 const VISON: CoverFallback = {
   path: "wikimedia/vison-americano.jpg",
   author: "Christian Fischer",
@@ -139,4 +148,6 @@ export const COVER_FALLBACKS: Record<string, CoverFallback> = {
   "black-rose": ROSANEGRA,
   "vison-americano": VISON,
   "american-mink": VISON,
+  "tulipanes-trevelin": TULIPANES,
+  "trevelin-tulip-fields": TULIPANES,
 };

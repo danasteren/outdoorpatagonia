@@ -16,6 +16,18 @@ Formato:
 
 ---
 
+## 2026-10-22 — Tulipanes de Trevelin: artículo nuevo en `articles` (flora), sin sección propia
+**Decisión:** el campo de tulipanes de Trevelin se publica como dos filas nuevas de `articles` (categoría `Flora`): `/flora/tulipanes-trevelin` y `/en/flora/trevelin-tulip-fields`. Slugs sin año; el año va solo en el texto ("temporada 2026"). Datos solo de la página oficial de entradas de Tulipanes Patagonia (temporada estimada 7/10 al 7/11/2026, $45.000 por persona, pago en el lugar, sin reserva, RN 259 km 50). Sin sección ni catálogo nuevo y sin tocar el nav.
+**Motivo:** búsqueda de temporada con fecha límite (termina el 7/11). El horario, la gratuidad para menores, la cantidad de bulbos y las novedades de la temporada solo salieron en la prensa, así que no van.
+**Detalle:** primer artículo creado directo en la tabla (hasta ahora todas las filas venían de WordPress). Se carga con `scripts/upsert_articles.py` (upsert por `slug, language`, idempotente) desde `seo/articles/` (JSON con los campos + un HTML por idioma); se eligió el script en vez de un SQL porque el cuerpo es HTML largo y se edita mejor en archivo. El FAQPage JSON-LD va dentro del contenido, como en los artículos de WordPress (el script lo arma desde `<section class="faq">`). La portada es "Campo de Tulipanes.jpg" de Polarcito (CC BY-SA 4.0) en `wp-uploads/wikimedia/`, con el crédito en `src/data/cover-fallbacks.ts` (`cover_image_url` queda vacío). El link en el tip "Visitar Trevelin en primavera" de los galeses se hizo con `seo/updates/2026-10-22-galeses-link-tulipanes.sql` (ya aplicado por la API). Ese tip sigue diciendo "mediados a finales de octubre": no se tocó.
+**Estado:** Vigente
+
+## 2026-10-22 — Pares ES ↔ EN de artículos con slug distinto
+**Decisión:** los artículos cuyo slug cambia según el idioma se emparejan en `src/lib/article-translations.ts`. Las rutas de artículos (`[slug]/[article]`, `en/[slug]/[article]` y los artículos de `flora/[especie]`) lo usan para el hreflang y el botón de idioma. Arranca con tulipanes y lupinos.
+**Motivo:** `getAltLang` solo busca el mismo slug en el otro idioma, así que los pares con slug distinto quedaban sin hreflang (el de lupinos, que se tomó como antecedente, no tenía). Además, `flora/[especie]` no emitía hreflang en la metadata de sus artículos.
+**Detalle:** un mapa en código y no una columna nueva para no sumar una migración manual. `fauna/[especie]` no se tocó. Los demás pares de WordPress con slug distinto siguen sin emparejar (ver STATUS → Próximo).
+**Estado:** Vigente
+
 ## 2026-10-21 — Guía de Puerto Madryn + Península Valdés y entrada de "Destinos" al nav
 **Decisión:** la guía #6 se publica como `/destinos/puerto-madryn` y `/en/guides/puerto-madryn`, con Península Valdés en el nombre y el contenido. Con ella, "Destinos" entra al menú Explorar (desktop y mobile), a las tarjetas "Explorá por tema" y a un bloque propio en la home (`src/components/home/DestinosSection.tsx`). No se redirige ningún artículo viejo.
 **Motivo:** Puerto Madryn es la ciudad base (alojamiento, aeropuerto, excursiones); Península Valdés no tiene página en `parques` y queda dentro de la guía. Los artículos viejos relacionados (excursión de crías de lobos marinos, Punta Tombo, galeses, fauna) responden a búsquedas puntuales que la guía no reemplaza, igual que los de campings de El Chaltén. El nav y la home siguen la regla de la 6ª guía de `.claude/rules/destinos.md`.
