@@ -13,8 +13,6 @@ interface ArticleCardProps {
   slug: string;
   language: string;
   featured?: boolean;
-  /** h3 cuando la grilla va debajo de un h2 (bloque "Artículos" de las secciones). */
-  headingLevel?: "h2" | "h3";
 }
 
 export function ArticleCard({
@@ -27,9 +25,7 @@ export function ArticleCard({
   slug,
   language,
   featured = false,
-  headingLevel = "h2",
 }: ArticleCardProps) {
-  const Heading = headingLevel;
   const coverImageUrl = articleCover({ slug, cover_image_url })?.url;
   const catSlug = category ? toCategorySlug(category) : "";
   const href =
@@ -73,7 +69,7 @@ export function ArticleCard({
             {category}
           </Link>
         )}
-        <Heading
+        <h2
           className={`font-bold leading-snug mb-2 line-clamp-2 group-hover:text-[var(--color-teal)] transition-colors ${
             featured ? "text-xl md:text-2xl" : "text-base md:text-lg"
           }`}
@@ -85,7 +81,7 @@ export function ArticleCard({
           >
             {title}
           </Link>
-        </Heading>
+        </h2>
         {excerpt && (
           <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4">
             {excerpt}

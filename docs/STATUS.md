@@ -18,6 +18,7 @@ _Última actualización: 2026-10-22_
 - 2026-10-22: artículo del campo de tulipanes de Trevelin (`/flora/tulipanes-trevelin` y `/en/flora/trevelin-tulip-fields`), el primero creado directo en la tabla `articles` (ver DECISIONS). Link agregado en el tip de Trevelin del artículo de los galeses (ES y EN).
 - 2026-10-22: `ArticleCard` con link real (stretched link, rastreable por Google) y fecha/minutos alineados abajo en la grilla.
 - 2026-10-22: una sola página por temática. Las categorías con sección propia (fauna, flora, gastronomía) muestran sus artículos debajo del catálogo y `/categoria/{slug}` redirige con 301 a la sección (mapa en `src/lib/category.ts`). Las categorías que quedan (ES y EN) usan el encabezado de las secciones. Gastronomía no muestra bloque: sus 9 artículos ES ya son fichas del catálogo.
+- 2026-10-22: artículos con el diseño del sitio. La página de artículo usa `DetailHero` + columna principal y sidebar, como las fichas, y los listados de artículos (bloque de las secciones, categorías ES/EN y `/articulos`) usan `ArticleTile`, igual que las tarjetas de especies. La home en inglés (`/en`) sigue con las tarjetas viejas (`ArticleCard`).
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 ## En curso
@@ -39,7 +40,7 @@ _Última actualización: 2026-10-22_
 - Fines de octubre de 2026: medir el CTR de los títulos reescritos el 30/09 y el RPM real de AdSense.
 - **Categorías sin emparejar (decide la usuaria)**: solo se emparejaron los slugs idénticos a una sección. Dudosas: `lugares` (10) ↔ `/destinos`; `hongo` (3) ↔ `/flora` (los hongos no son flora); `historia` (9) y `cultura` (2) ↔ `/arqueologia` (solo en parte). Sin candidata: `consejos`, `domo`, `impacto-ambiental`, `paisajes`, `recursos-descargables`. Si se empareja alguna, se suma a `CATEGORY_SECTIONS`.
 - Hreflang de las páginas de categoría: ES y EN se emparejan por el mismo slug, pero casi todos difieren (`historia` ↔ `history`, `gastronomia` ↔ `gastronomy`…), así que apuntan a URLs que no existen. Solo `flora` y `fauna` coinciden.
-- Títulos de artículos con entidades HTML sin decodificar (`&#8211;`, `&#8217;`), p. ej. lupinos y Julius Popper: se ven así en las tarjetas.
+- Títulos de artículos con entidades HTML sin decodificar en la base (`&#8211;`, `&#8217;`): las tarjetas y la página de artículo ya los decodifican (`decodeEntities`), pero siguen así en `<title>`, buscador y la home en inglés. Lo prolijo es corregirlos en la tabla.
 - _(Lo que se defina en el chat del Proyecto.)_
 
 ## Próximo

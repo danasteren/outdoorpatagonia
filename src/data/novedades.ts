@@ -100,6 +100,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "mejora",
         texto: "Las páginas de categoría (historia, cultura, consejos y las demás) ahora tienen el mismo encabezado que el resto de las secciones, en español y en inglés",
       },
+      {
+        tipo: "mejora",
+        texto: "Los artículos se ven como el resto del sitio — portada grande con el título encima, el texto en la columna principal y los datos (fecha, lectura, categoría) al costado; los listados de artículos usan las mismas tarjetas que las especies",
+      },
     ],
   },
   {

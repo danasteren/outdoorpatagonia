@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createBuildClient } from "@supabase/supabase-js";
 import { BookOpen } from "lucide-react";
-import { ArticleCard } from "@/components/ArticleCard";
+import { ArticleTile } from "@/components/ArticleTile";
 import { PageHero } from "@/components/PageHero";
 import { categorySection, toCategorySlug } from "@/lib/category";
 import { articleRedirect } from "@/lib/article-redirects";
@@ -108,9 +108,9 @@ export default async function CategoryPage({
       />
 
       <div className="max-w-6xl mx-auto px-4 md:px-10 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {articles.map((article) => (
-            <ArticleCard key={article.slug} {...article} />
+            <ArticleTile key={article.slug} {...article} />
           ))}
         </div>
       </div>

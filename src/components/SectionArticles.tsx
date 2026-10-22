@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js"
-import { ArticleCard } from "@/components/ArticleCard"
+import { ArticleTile } from "@/components/ArticleTile"
 import { toCategorySlug } from "@/lib/category"
 import { articleRedirect } from "@/lib/article-redirects"
 
@@ -46,9 +46,9 @@ export async function SectionArticles({ categorySlug, catalogSlugs }: SectionArt
             {articles.length} {articles.length === 1 ? "artículo" : "artículos"}
           </span>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {articles.map((article) => (
-            <ArticleCard key={article.slug} {...article} headingLevel="h3" />
+            <ArticleTile key={article.slug} {...article} headingLevel="h3" />
           ))}
         </div>
       </div>

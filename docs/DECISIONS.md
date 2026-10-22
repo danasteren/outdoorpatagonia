@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-22 — Los artículos se ven como el resto del sitio
+**Decisión:** la página de artículo deja el formato de blog (badge, título suelto, portada en el cuerpo) y usa el de las fichas de catálogo: `DetailHero` con la portada, columna principal con el texto y sidebar con datos (categoría, fecha, lectura), idioma y tags. Los listados de artículos usan `ArticleTile`, la tarjeta compacta de los catálogos, en lugar de `ArticleCard`.
+**Motivo:** la usuaria pidió que todo se vea como el sitio: con "una sola página por temática", los artículos quedaban debajo del catálogo con un estilo de blog que no combinaba.
+**Detalle:** `src/components/ArticleLayout.tsx` (lo usan las cuatro rutas de artículos) y `src/components/ArticleTile.tsx` (bloque de las secciones, `/categoria`, `/en/category` y `/articulos`). En los artículos migrados no se muestra el excerpt: es el corte automático de WordPress y repite el primer párrafo. El aviso de "artículo del sitio anterior" pasó abajo del hero porque los botones fijos de `HeroActions` lo tapaban. `DetailHero`: alto mínimo en vez de fijo (los títulos de artículo son largos) y crédito de foto debajo del título en celular. `ArticleCard` queda solo en la home en inglés.
+**Estado:** Vigente
+
 ## 2026-10-22 — Una sola página por temática
 **Decisión:** las categorías de artículos que tienen sección propia se muestran dentro de esa sección (catálogo arriba y artículos del blog abajo), y /categoria/{slug} redirige con 301 a la sección. Las categorías sin sección, y todas las de /en/category/, se quedan en su URL con el mismo diseño que las secciones.
 **Motivo:** convivían dos páginas por temática: la sección con catálogo (la que enlaza el menú) y un listado genérico de artículos al que solo se llegaba desde la etiqueta de categoría. Eso partía el contenido, dejaba los artículos sin enlaces desde las secciones y se veía distinto al resto del sitio.
