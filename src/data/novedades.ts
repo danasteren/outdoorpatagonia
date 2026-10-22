@@ -108,6 +108,14 @@ export const novedades: VersionNovedades[] = [
         tipo: "mejora",
         texto: "Nueva portada en inglés — temas para explorar, guías de viaje y los últimos artículos, con el mismo diseño que el resto del sitio",
       },
+      {
+        tipo: "mejora",
+        texto: "En las páginas en inglés, el menú y el buscador ahora también están en inglés",
+      },
+      {
+        tipo: "correccion",
+        texto: "El acceso al mapa desde las páginas en inglés llevaba a una página que no existía",
+      },
     ],
   },
   {

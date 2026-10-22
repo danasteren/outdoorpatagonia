@@ -17,6 +17,44 @@ export type AuthUser = { name: string; email: string; avatarUrl: string | null }
 
 const ADMIN_EMAIL = 'danasteren@gmail.com'
 
+type Lang = 'es' | 'en'
+type Label = Record<Lang, string>
+
+// Lista única del menú: la usan el dropdown de desktop y el drawer de mobile.
+// Las secciones solo existen en español, salvo Destinos (hrefEn).
+const EXPLORE_ITEMS: { href: string; hrefEn?: string; label: Label; Icon: React.ElementType }[] = [
+  { href: '/arqueologia', label: { es: 'Arqueología', en: 'Archaeology' }, Icon: Bone },
+  { href: '/astronomia', label: { es: 'Astronomía', en: 'Astronomy' }, Icon: Telescope },
+  { href: '/destinos', hrefEn: '/en/guides', label: { es: 'Destinos', en: 'Destinations' }, Icon: Signpost },
+  { href: '/escalada', label: { es: 'Escalada', en: 'Climbing' }, Icon: Pickaxe },
+  { href: '/estado', label: { es: 'Estado', en: 'Conditions' }, Icon: Activity },
+  { href: '/fauna', label: { es: 'Fauna', en: 'Fauna' }, Icon: PawPrint },
+  { href: '/flora', label: { es: 'Flora', en: 'Flora' }, Icon: Leaf },
+  { href: '/gastronomia', label: { es: 'Gastronomía', en: 'Gastronomy' }, Icon: ChefHat },
+  { href: '/parques', label: { es: 'Parques', en: 'Parks' }, Icon: Mountain },
+  { href: '/senderos', label: { es: 'Senderos', en: 'Trails' }, Icon: MapPin },
+  { href: '/termas', label: { es: 'Termas', en: 'Hot springs' }, Icon: Droplets },
+  { href: '/volcanes', label: { es: 'Volcanes', en: 'Volcanoes' }, Icon: Flame },
+]
+
+const PLAN_ITEMS: { href: string; label: Label; Icon: React.ElementType }[] = [
+  { href: '/planear', label: { es: 'Itinerario', en: 'Itinerary' }, Icon: Compass },
+  { href: '/planear/que-llevar', label: { es: 'Qué llevar', en: 'What to pack' }, Icon: Backpack },
+]
+
+const T = {
+  es: {
+    explore: 'Explorar', tools: 'Herramientas', plan: 'Planear', map: 'Mapa', mapLong: 'Mapa interactivo',
+    operators: 'Operadores', search: 'Buscar', userMenu: 'Menú de usuario', myProfile: 'Mi perfil',
+    signIn: 'Iniciar sesión', signOut: 'Cerrar sesión', menu: 'Menú', openMenu: 'Abrir menú', closeMenu: 'Cerrar menú',
+  },
+  en: {
+    explore: 'Explore', tools: 'Tools', plan: 'Plan', map: 'Map', mapLong: 'Interactive map',
+    operators: 'Tour operators', search: 'Search', userMenu: 'User menu', myProfile: 'My profile',
+    signIn: 'Sign in', signOut: 'Sign out', menu: 'Menu', openMenu: 'Open menu', closeMenu: 'Close menu',
+  },
+} satisfies Record<Lang, Record<string, string>>
+
 
 function UserAvatar({ user, size = 7 }: { user: AuthUser & object; size?: number }) {
   const cls = `w-${size} h-${size} rounded-full object-cover`
@@ -35,7 +73,7 @@ export function HeaderShell({
   user,
   articleItems,
 }: {
-  lang: string
+  lang: Lang
   user: AuthUser
   articleItems: SearchItem[]
 }) {
@@ -85,8 +123,11 @@ export function HeaderShell({
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  const mapaHref = lang === 'en' ? '/en/mapa' : '/mapa'
-  const operadoresHref = '/operadores'
+  const t = T[lang]
+  const exploreItems = EXPLORE_ITEMS
+    .map(({ href, hrefEn, label, Icon }) => ({ href: lang === 'en' ? hrefEn ?? href : href, label: label[lang], Icon }))
+    .sort((a, b) => a.label.localeCompare(b.label, lang))
+  const planItems = PLAN_ITEMS.map(({ href, label, Icon }) => ({ href, label: label[lang], Icon }))
 
   async function handleSignIn() {
     const codeVerifier = generateRandomBase64url(32)
@@ -105,7 +146,7 @@ export function HeaderShell({
 
   return (
     <>
-      {searchOpen && <SearchOverlay onClose={closeSearch} articleItems={articleItems} />}
+      {searchOpen && <SearchOverlay onClose={closeSearch} articleItems={articleItems} lang={lang} />}
       <header
         style={{
           backgroundColor: `color-mix(in oklch, var(--color-background) ${scrolled ? '75%' : '15%'}, transparent)`,
@@ -141,7 +182,7 @@ export function HeaderShell({
                   }`}
               >
                 <Globe size={15} strokeWidth={1.75} />
-                Explorar
+                {t.explore}
                 <ChevronDown
                   size={13}
                   strokeWidth={2}
@@ -156,20 +197,7 @@ export function HeaderShell({
                   }`}
               >
                 <div className="grid grid-cols-2 gap-0.5">
-                  {[
-                    { href: '/arqueologia', label: 'Arqueología', Icon: Bone },
-                    { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
-                    { href: '/destinos', label: 'Destinos', Icon: Signpost },
-                    { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
-                    { href: '/estado', label: 'Estado', Icon: Activity },
-                    { href: '/fauna', label: 'Fauna', Icon: PawPrint },
-                    { href: '/flora', label: 'Flora', Icon: Leaf },
-                    { href: '/gastronomia', label: 'Gastronomía', Icon: ChefHat },
-                    { href: '/parques', label: 'Parques', Icon: Mountain },
-                    { href: '/senderos', label: 'Senderos', Icon: MapPin },
-                    { href: '/termas', label: 'Termas', Icon: Droplets },
-                    { href: '/volcanes', label: 'Volcanes', Icon: Flame },
-                  ].map(({ href, label, Icon }) => (
+                  {exploreItems.map(({ href, label, Icon }) => (
                     <Link
                       key={href}
                       href={href}
@@ -183,12 +211,12 @@ export function HeaderShell({
                 </div>
                 <div className="mt-2 pt-2 border-t border-border">
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-3 mb-1">
-                    Herramientas
+                    {t.tools}
                   </p>
                   <div className="grid grid-cols-2 gap-0.5">
                     {[
-                      { href: mapaHref, label: 'Mapa', Icon: Map },
-                      { href: operadoresHref, label: 'Operadores', Icon: Users },
+                      { href: '/mapa', label: t.map, Icon: Map },
+                      { href: '/operadores', label: t.operators, Icon: Users },
                     ].map(({ href, label, Icon }) => (
                       <Link
                         key={href}
@@ -204,13 +232,10 @@ export function HeaderShell({
                 </div>
                 <div className="mt-2 pt-2 border-t border-border">
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-3 mb-1">
-                    Planear
+                    {t.plan}
                   </p>
                   <div className="grid grid-cols-2 gap-0.5">
-                    {[
-                      { href: '/planear', label: 'Itinerario', Icon: Compass },
-                      { href: '/planear/que-llevar', label: 'Qué llevar', Icon: Backpack },
-                    ].map(({ href, label, Icon }) => (
+                    {planItems.map(({ href, label, Icon }) => (
                       <Link
                         key={href}
                         href={href}
@@ -229,7 +254,7 @@ export function HeaderShell({
             <div className="w-px h-3.5 bg-border" />
             <button
               onClick={() => setSearchOpen(true)}
-              aria-label="Buscar"
+              aria-label={t.search}
               className="flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <Search size={16} strokeWidth={1.75} />
@@ -241,7 +266,7 @@ export function HeaderShell({
               <div ref={userMenuRef} className="relative">
                 <button
                   onClick={() => setUserMenuOpen((v) => !v)}
-                  aria-label="Menú de usuario"
+                  aria-label={t.userMenu}
                   className="flex items-center justify-center w-8 h-8 rounded-full overflow-hidden ring-2 ring-transparent hover:ring-border transition-all"
                 >
                   {user.avatarUrl ? (
@@ -269,7 +294,7 @@ export function HeaderShell({
                     className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                   >
                     <User size={13} strokeWidth={1.75} />
-                    Mi perfil
+                    {t.myProfile}
                   </Link>
                   {user.email === ADMIN_EMAIL && (
                     <Link
@@ -287,7 +312,7 @@ export function HeaderShell({
                       className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors text-left"
                     >
                       <LogOut size={13} strokeWidth={1.75} />
-                      Cerrar sesión
+                      {t.signOut}
                     </button>
                   </form>
                 </div>
@@ -297,27 +322,27 @@ export function HeaderShell({
                 onClick={handleSignIn}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
-                Iniciar sesión
+                {t.signIn}
               </button>
             )}
 
             <div className="w-px h-3.5 bg-border" />
-            <DarkModeToggle />
+            <DarkModeToggle lang={lang} />
           </div>
 
           {/* Mobile: lupa + dark mode + hamburger */}
           <div className="md:hidden flex items-center gap-1 ml-auto">
             <button
               onClick={() => setSearchOpen(true)}
-              aria-label="Buscar"
+              aria-label={t.search}
               className="flex items-center justify-center w-9 h-9 rounded-lg text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
             >
               <Search size={18} strokeWidth={1.75} />
             </button>
-            <DarkModeToggle />
+            <DarkModeToggle lang={lang} />
             <button
               onClick={() => setMenuOpen((v) => !v)}
-              aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-label={menuOpen ? t.closeMenu : t.openMenu}
               aria-expanded={menuOpen}
               className="flex items-center justify-center w-9 h-9 rounded-lg text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
             >
@@ -345,10 +370,11 @@ export function HeaderShell({
           {/* Drawer header */}
           <div className="h-16 flex items-center justify-between px-5 border-b border-border shrink-0">
             <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">
-              Menú
+              {t.menu}
             </span>
             <button
               onClick={() => setMenuOpen(false)}
+              aria-label={t.closeMenu}
               className="w-8 h-8 flex items-center justify-center rounded-lg text-foreground/60 hover:text-foreground hover:bg-muted transition-colors"
             >
               <X size={17} strokeWidth={1.75} />
@@ -358,21 +384,21 @@ export function HeaderShell({
           {/* Tools */}
           <div className="px-3 pt-4 pb-2 shrink-0">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-2 mb-1.5">
-              Herramientas
+              {t.tools}
             </p>
             <Link
-              href={mapaHref}
+              href="/mapa"
               className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <Map size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-              Mapa interactivo
+              {t.mapLong}
             </Link>
             <Link
-              href={operadoresHref}
+              href="/operadores"
               className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <Users size={16} strokeWidth={1.75} className="text-[var(--color-teal)] shrink-0" />
-              Operadores
+              {t.operators}
             </Link>
           </div>
 
@@ -381,22 +407,9 @@ export function HeaderShell({
           {/* Explorar */}
           <div className="flex-1 overflow-y-auto px-3 pt-3 pb-2">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-2 mb-1.5">
-              Explorar
+              {t.explore}
             </p>
-            {[
-              { href: '/arqueologia', label: 'Arqueología', Icon: Bone },
-              { href: '/astronomia', label: 'Astronomía', Icon: Telescope },
-              { href: '/destinos', label: 'Destinos', Icon: Signpost },
-              { href: '/escalada', label: 'Escalada', Icon: Pickaxe },
-              { href: '/estado', label: 'Estado', Icon: Activity },
-              { href: '/fauna', label: 'Fauna', Icon: PawPrint },
-              { href: '/flora', label: 'Flora', Icon: Leaf },
-              { href: '/gastronomia', label: 'Gastronomía', Icon: ChefHat },
-              { href: '/parques', label: 'Parques', Icon: Mountain },
-              { href: '/senderos', label: 'Senderos', Icon: MapPin },
-              { href: '/termas', label: 'Termas', Icon: Droplets },
-              { href: '/volcanes', label: 'Volcanes', Icon: Flame },
-            ].map(({ href, label, Icon }) => (
+            {exploreItems.map(({ href, label, Icon }) => (
               <Link
                 key={href}
                 href={href}
@@ -408,12 +421,9 @@ export function HeaderShell({
             ))}
             <div className="mt-3 pt-3 border-t border-border">
               <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-2 mb-1.5">
-                Planear
+                {t.plan}
               </p>
-              {[
-                { href: '/planear', label: 'Itinerario', Icon: Compass },
-                { href: '/planear/que-llevar', label: 'Qué llevar', Icon: Backpack },
-              ].map(({ href, label, Icon }) => (
+              {planItems.map(({ href, label, Icon }) => (
                 <Link
                   key={href}
                   href={href}
@@ -458,7 +468,7 @@ export function HeaderShell({
                     className="w-full flex items-center gap-3 px-2 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                   >
                     <LogOut size={15} strokeWidth={1.75} className="shrink-0" />
-                    Cerrar sesión
+                    {t.signOut}
                   </button>
                 </form>
               </>
@@ -468,7 +478,7 @@ export function HeaderShell({
                 className="w-full flex items-center gap-3 px-2 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               >
                 <User size={15} strokeWidth={1.75} className="shrink-0" />
-                Iniciar sesión
+                {t.signIn}
               </button>
             )}
           </div>

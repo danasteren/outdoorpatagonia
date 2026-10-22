@@ -81,7 +81,7 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 
 - `redirect()` dentro de un page component devuelve **200 + meta-refresh**, no un 301 real. Para un 301 real, hacerlo en `src/proxy.ts`.
 - `generateStaticParams` tiene que usar un cliente de Supabase **sin cookies**. Con el cliente de servidor normal falla el build.
-- El nav está duplicado en `src/components/HeaderShell.tsx`, una lista para desktop y otra para mobile. Hay que mantenerlas sincronizadas.
+- Nav: las secciones de "Explorar" y "Planear" salen de una sola lista (`EXPLORE_ITEMS` y `PLAN_ITEMS` en `src/components/HeaderShell.tsx`, con el texto en ES y EN) que usan desktop y mobile. "Herramientas" (Mapa, Operadores) sigue escrito dos veces: mantenerlo sincronizado. El idioma del header sale de la ruta (`/en…`).
 - Las fotos de los artículos se sirven desde Supabase Storage. El fallback de portadas está en `src/data/cover-fallbacks.ts`.
 - En `fauna/[especie]` y `flora/[especie]`, si existe un artículo de Supabase con el mismo slug, su `seo_title` le gana al `metaTitle` del catálogo. Antes de editar títulos en el catálogo, fijarse si hay artículo.
 - Mapas: `react-leaflet` + OSM. `maplibre-gl` sigue en `package.json` pero se descartó (pantalla gris): no reintroducirlo.

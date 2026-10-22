@@ -26,15 +26,26 @@ const TYPE_META: Record<SearchResultType, { Icon: React.ElementType; color: stri
 }
 
 const QUICK_LINKS = [
-  { href: '/parques',    label: 'Parques',    Icon: Mountain,  color: 'text-emerald-500' },
-  { href: '/senderos',   label: 'Senderos',   Icon: MapPin,    color: 'text-orange-500' },
-  { href: '/fauna',      label: 'Fauna',      Icon: PawPrint,  color: 'text-violet-500' },
-  { href: '/flora',      label: 'Flora',      Icon: Leaf,      color: 'text-green-500' },
-  { href: '/volcanes',   label: 'Volcanes',   Icon: Flame,     color: 'text-red-500' },
-  { href: '/escalada',   label: 'Escalada',   Icon: Pickaxe,   color: 'text-sky-500' },
-  { href: '/estado',     label: 'Estado',     Icon: Activity,  color: 'text-[var(--color-teal)]' },
-  { href: '/astronomia', label: 'Astronomía', Icon: Telescope, color: 'text-[var(--color-teal)]' },
+  { href: '/parques',    label: { es: 'Parques',    en: 'Parks' },      Icon: Mountain,  color: 'text-emerald-500' },
+  { href: '/senderos',   label: { es: 'Senderos',   en: 'Trails' },     Icon: MapPin,    color: 'text-orange-500' },
+  { href: '/fauna',      label: { es: 'Fauna',      en: 'Fauna' },      Icon: PawPrint,  color: 'text-violet-500' },
+  { href: '/flora',      label: { es: 'Flora',      en: 'Flora' },      Icon: Leaf,      color: 'text-green-500' },
+  { href: '/volcanes',   label: { es: 'Volcanes',   en: 'Volcanoes' },  Icon: Flame,     color: 'text-red-500' },
+  { href: '/escalada',   label: { es: 'Escalada',   en: 'Climbing' },   Icon: Pickaxe,   color: 'text-sky-500' },
+  { href: '/estado',     label: { es: 'Estado',     en: 'Conditions' }, Icon: Activity,  color: 'text-[var(--color-teal)]' },
+  { href: '/astronomia', label: { es: 'Astronomía', en: 'Astronomy' },  Icon: Telescope, color: 'text-[var(--color-teal)]' },
 ]
+
+const T = {
+  es: {
+    placeholder: 'Buscá parques, fauna, senderos, volcanes…', close: 'Cerrar búsqueda', explore: 'Explorar',
+    noResults: 'Sin resultados para', seeAll: 'Ver todos los resultados', keys: '↑↓ navegar · Enter abrir · Esc cerrar',
+  },
+  en: {
+    placeholder: 'Search parks, wildlife, trails, volcanoes…', close: 'Close search', explore: 'Explore',
+    noResults: 'No results for', seeAll: 'See all results', keys: '↑↓ navigate · Enter open · Esc close',
+  },
+}
 
 function buildFuse(items: SearchItem[]) {
   return new Fuse(items, {
@@ -71,7 +82,16 @@ function Highlighted({ text, indices }: { text: string; indices?: readonly [numb
 
 type SearchFuseResult = ReturnType<Fuse<SearchItem>['search']>[number]
 
-export function SearchOverlay({ onClose, articleItems }: { onClose: () => void; articleItems: SearchItem[] }) {
+export function SearchOverlay({
+  onClose,
+  articleItems,
+  lang = 'es',
+}: {
+  onClose: () => void
+  articleItems: SearchItem[]
+  lang?: 'es' | 'en'
+}) {
+  const t = T[lang]
   const [query, setQuery] = useState('')
   const [selectedIdx, setSelectedIdx] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -152,7 +172,7 @@ export function SearchOverlay({ onClose, articleItems }: { onClose: () => void; 
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Buscá parques, fauna, senderos, volcanes…"
+            placeholder={t.placeholder}
             className="flex-1 bg-transparent text-base md:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
             autoComplete="off"
             autoCorrect="off"
@@ -160,7 +180,7 @@ export function SearchOverlay({ onClose, articleItems }: { onClose: () => void; 
           />
           <button
             onClick={onClose}
-            aria-label="Cerrar búsqueda"
+            aria-label={t.close}
             className="flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
           >
             <X size={16} strokeWidth={1.75} />
@@ -176,7 +196,7 @@ export function SearchOverlay({ onClose, articleItems }: { onClose: () => void; 
           {!showResults && (
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 mb-3">
-                Explorar
+                {t.explore}
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                 {QUICK_LINKS.map(({ href, label, Icon, color }) => (
@@ -186,7 +206,7 @@ export function SearchOverlay({ onClose, articleItems }: { onClose: () => void; 
                     className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border hover:border-[var(--color-teal)]/30 hover:bg-muted/50 transition-all text-sm text-muted-foreground hover:text-foreground"
                   >
                     <Icon size={14} strokeWidth={1.75} className={`${color} shrink-0`} />
-                    <span className="font-medium truncate">{label}</span>
+                    <span className="font-medium truncate">{label[lang]}</span>
                   </Link>
                 ))}
               </div>
@@ -196,7 +216,7 @@ export function SearchOverlay({ onClose, articleItems }: { onClose: () => void; 
           {/* No results */}
           {showResults && fuseResults.length === 0 && (
             <p className="text-sm text-muted-foreground py-2">
-              Sin resultados para <strong className="text-foreground">"{trimmed}"</strong>.
+              {t.noResults} <strong className="text-foreground">"{trimmed}"</strong>.
             </p>
           )}
 
@@ -255,11 +275,11 @@ export function SearchOverlay({ onClose, articleItems }: { onClose: () => void; 
                 onClick={onClose}
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
               >
-                Ver todos los resultados
+                {t.seeAll}
                 <ArrowRight size={11} strokeWidth={1.75} />
               </Link>
               <span className="text-[11px] text-muted-foreground/40 hidden sm:block">
-                ↑↓ navegar · Enter abrir · Esc cerrar
+                {t.keys}
               </span>
             </div>
           )}

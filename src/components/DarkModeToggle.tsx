@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 
-export function DarkModeToggle() {
+export function DarkModeToggle({ lang = 'es' }: { lang?: 'es' | 'en' }) {
   const [dark, setDark] = useState(false)
 
   useEffect(() => {
@@ -21,7 +21,11 @@ export function DarkModeToggle() {
   return (
     <button
       onClick={toggle}
-      aria-label={dark ? 'Activar modo claro' : 'Activar modo oscuro'}
+      aria-label={
+        lang === 'en'
+          ? dark ? 'Switch to light mode' : 'Switch to dark mode'
+          : dark ? 'Activar modo claro' : 'Activar modo oscuro'
+      }
       className="flex items-center justify-center w-8 h-8 rounded-full text-foreground/60 hover:text-[var(--color-teal)] transition-colors"
     >
       {dark ? (

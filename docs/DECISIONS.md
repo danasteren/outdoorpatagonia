@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-22 — Header en inglés en las páginas /en
+**Decisión:** en las páginas `/en` el header y el buscador se muestran en inglés. Las secciones del menú que no tienen versión en inglés llevan igual a la página en español (con el nombre traducido); Destinos lleva a `/en/guides`.
+**Motivo:** la usuaria lo pidió: el menú en español en las páginas en inglés no tenía sentido para ese lector.
+**Detalle:** `src/components/HeaderShell.tsx` pasó a una sola lista de secciones (`EXPLORE_ITEMS`, `PLAN_ITEMS`) con el texto en los dos idiomas, que usan desktop y mobile (antes estaban duplicadas). En inglés se ordenan por el nombre en inglés. `SearchOverlay` y `DarkModeToggle` reciben `lang`. El link al mapa en inglés apuntaba a `/en/mapa`, que no existe (404): ahora va a `/mapa`. El footer no se tocó.
+**Estado:** Vigente
+
 ## 2026-10-22 — Home en inglés con el diseño del sitio
 **Decisión:** `/en` deja de ser un listado de blog y se arma como la home en español con lo que existe en inglés: `PageHero`, "Explore by topic" con las categorías de los artículos en inglés (`/en/category/*`), el bloque de guías de viaje y los últimos 12 artículos con `ArticleTile`.
 **Motivo:** la usuaria pidió pasar también la home en inglés al diseño del sitio. La home en español usa secciones que solo existen en español (hero con datos del día, estado en vivo, escalada), así que no se tradujo tal cual.
