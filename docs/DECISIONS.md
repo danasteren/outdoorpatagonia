@@ -22,6 +22,54 @@ Formato:
 **Detalle:** decidido por la rutina diaria sin supervisión; revisable en el PR. No se publican: precios de entradas ni del ferry, la pingüinera de Seno Otway (sin fuente oficial), la duración del cruce a Porvenir, ni los meses exactos de la temporada de ballenas. Fuerte Bulnes figura a 58 km (Consejo de Monumentos Nacionales); Sernatur dice 52 km. El Museo Regional de Magallanes se menciona como cerrado por restauración (Serpat, diciembre de 2025).
 **Estado:** Vigente
 
+## 2026-10-22 — Footer en inglés en las páginas /en
+**Decisión:** en las páginas `/en` el footer se muestra en inglés. Los links van a la versión en inglés cuando existe (sobre nosotros, contacto, privacidad, términos, recursos de viaje, guías) y a la de español cuando no (mapa, astronomía, operadores, novedades). "Artículos" lleva a `/en`, que lista los últimos artículos, porque no hay índice de artículos en inglés.
+**Motivo:** la usuaria lo pidió, siguiendo con el header.
+**Detalle:** `src/components/Footer.tsx` (recibe `lang` desde `layout.tsx`), `NewsletterForm` y `subscribeNewsletter` (los errores se traducen según un campo oculto `lang`). En la columna Explorar del inglés, "Arqueología" se cambió por las guías de viaje, que sí tienen versión en inglés. Los suscriptores siguen sin idioma guardado (ver STATUS).
+**Estado:** Vigente
+
+## 2026-10-22 — Header en inglés en las páginas /en
+**Decisión:** en las páginas `/en` el header y el buscador se muestran en inglés. Las secciones del menú que no tienen versión en inglés llevan igual a la página en español (con el nombre traducido); Destinos lleva a `/en/guides`.
+**Motivo:** la usuaria lo pidió: el menú en español en las páginas en inglés no tenía sentido para ese lector.
+**Detalle:** `src/components/HeaderShell.tsx` pasó a una sola lista de secciones (`EXPLORE_ITEMS`, `PLAN_ITEMS`) con el texto en los dos idiomas, que usan desktop y mobile (antes estaban duplicadas). En inglés se ordenan por el nombre en inglés. `SearchOverlay` y `DarkModeToggle` reciben `lang`. El link al mapa en inglés apuntaba a `/en/mapa`, que no existe (404): ahora va a `/mapa`. El footer no se tocó.
+**Estado:** Vigente
+
+## 2026-10-22 — Home en inglés con el diseño del sitio
+**Decisión:** `/en` deja de ser un listado de blog y se arma como la home en español con lo que existe en inglés: `PageHero`, "Explore by topic" con las categorías de los artículos en inglés (`/en/category/*`), el bloque de guías de viaje y los últimos 12 artículos con `ArticleTile`.
+**Motivo:** la usuaria pidió pasar también la home en inglés al diseño del sitio. La home en español usa secciones que solo existen en español (hero con datos del día, estado en vivo, escalada), así que no se tradujo tal cual.
+**Detalle:** las tarjetas de tema salieron a `src/components/home/TopicCard.tsx` (las usan las dos homes) y `DestinosSection` recibe `lang`. "Sin categorizar" no aparece como tema. Los temas se ordenan por cantidad de artículos y no cuentan los que redirigen a una guía. `ArticleCard` se borró porque ya no lo usaba nadie. El header del sitio sigue en español en las páginas en inglés (no se tocó).
+**Estado:** Vigente
+
+## 2026-10-22 — Los artículos se ven como el resto del sitio
+**Decisión:** la página de artículo deja el formato de blog (badge, título suelto, portada en el cuerpo) y usa el de las fichas de catálogo: `DetailHero` con la portada, columna principal con el texto y sidebar con datos (categoría, fecha, lectura), idioma y tags. Los listados de artículos usan `ArticleTile`, la tarjeta compacta de los catálogos, en lugar de `ArticleCard`.
+**Motivo:** la usuaria pidió que todo se vea como el sitio: con "una sola página por temática", los artículos quedaban debajo del catálogo con un estilo de blog que no combinaba.
+**Detalle:** `src/components/ArticleLayout.tsx` (lo usan las cuatro rutas de artículos) y `src/components/ArticleTile.tsx` (bloque de las secciones, `/categoria`, `/en/category` y `/articulos`). En los artículos migrados no se muestra el excerpt: es el corte automático de WordPress y repite el primer párrafo. El aviso de "artículo del sitio anterior" pasó abajo del hero porque los botones fijos de `HeroActions` lo tapaban. `DetailHero`: alto mínimo en vez de fijo (los títulos de artículo son largos) y crédito de foto debajo del título en celular. `ArticleCard` queda solo en la home en inglés.
+**Estado:** Vigente
+
+## 2026-10-22 — Una sola página por temática
+**Decisión:** las categorías de artículos que tienen sección propia se muestran dentro de esa sección (catálogo arriba y artículos del blog abajo), y /categoria/{slug} redirige con 301 a la sección. Las categorías sin sección, y todas las de /en/category/, se quedan en su URL con el mismo diseño que las secciones.
+**Motivo:** convivían dos páginas por temática: la sección con catálogo (la que enlaza el menú) y un listado genérico de artículos al que solo se llegaba desde la etiqueta de categoría. Eso partía el contenido, dejaba los artículos sin enlaces desde las secciones y se veía distinto al resto del sitio.
+**Detalle:** generaliza lo que ya se hizo con gastronomía (redirect en proxy.ts, categoryHref, exclusión en el sitemap). El emparejamiento categoría → sección vive en un solo lugar (src/lib/category.ts). Solo entran las coincidencias exactas de slug; las dudosas quedan pendientes en STATUS. Las URLs de los artículos no cambian. Implementación: entraron fauna, flora y gastronomía. El bloque "Artículos" (`src/components/SectionArticles.tsx`) deja afuera los artículos con el mismo slug que una ficha del catálogo (la ruta muestra la ficha, no el artículo), así que en gastronomía no aparece: sus 9 artículos ES son fichas. También deja afuera los que redirigen; esos 301 (guías y fichas, como frutos rojos → calafate) pasaron a `src/lib/article-redirects.ts`, que leen proxy.ts, el sitemap, las secciones y las páginas de categoría. El sitemap dejó de listar artículos con la misma URL que una ficha (antes solo se hacía con gastronomía). Con barra final, `/categoria/flora/` hace 308 (Next) y después el 301. Encabezado de las categorías: `PageHero`, con `CollectionPage` en JSON-LD.
+**Estado:** Vigente
+
+## 2026-10-22 — Las tarjetas de artículo son links reales
+**Decisión:** Toda tarjeta que lleve a un artículo usa <a href> (next/link) para navegar. No se usa onClick + router.push.
+**Motivo:** Google solo sigue enlaces <a href>. Con el div clickeable, las páginas de categoría y los listados no le pasaban enlaces internos a los artículos.
+**Detalle:** El link de categoría que va adentro de la tarjeta no puede quedar anidado dentro de otro <a>. Se resuelve con el patrón de link estirado (stretched link). Aplicado en `src/components/ArticleCard.tsx`, que pasó a server component; al 2026-10-22 ningún otro componente de tarjeta navega con `router.push` (solo el Enter del buscador, `SearchOverlay.tsx`).
+**Estado:** Vigente
+
+## 2026-10-22 — Tulipanes de Trevelin: artículo nuevo en `articles` (flora), sin sección propia
+**Decisión:** el campo de tulipanes de Trevelin se publica como dos filas nuevas de `articles` (categoría `Flora`): `/flora/tulipanes-trevelin` y `/en/flora/trevelin-tulip-fields`. Slugs sin año; el año va solo en el texto ("temporada 2026"). Datos solo de la página oficial de entradas de Tulipanes Patagonia (temporada estimada 7/10 al 7/11/2026, $45.000 por persona, pago en el lugar, sin reserva, RN 259 km 50). Sin sección ni catálogo nuevo y sin tocar el nav.
+**Motivo:** búsqueda de temporada con fecha límite (termina el 7/11). El horario, la gratuidad para menores, la cantidad de bulbos y las novedades de la temporada solo salieron en la prensa, así que no van.
+**Detalle:** primer artículo creado directo en la tabla (hasta ahora todas las filas venían de WordPress). Se carga con `scripts/upsert_articles.py` (upsert por `slug, language`, idempotente) desde `seo/articles/` (JSON con los campos + un HTML por idioma); se eligió el script en vez de un SQL porque el cuerpo es HTML largo y se edita mejor en archivo. El FAQPage JSON-LD va dentro del contenido, como en los artículos de WordPress (el script lo arma desde `<section class="faq">`). La portada es "Campo de Tulipanes.jpg" de Polarcito (CC BY-SA 4.0) en `wp-uploads/wikimedia/`, con el crédito en `src/data/cover-fallbacks.ts` (`cover_image_url` queda vacío). El link en el tip "Visitar Trevelin en primavera" de los galeses se hizo con `seo/updates/2026-10-22-galeses-link-tulipanes.sql` (ya aplicado por la API). Ese tip sigue diciendo "mediados a finales de octubre": no se tocó.
+**Estado:** Vigente
+
+## 2026-10-22 — Pares ES ↔ EN de artículos con slug distinto
+**Decisión:** los artículos cuyo slug cambia según el idioma se emparejan en `src/lib/article-translations.ts`. Las rutas de artículos (`[slug]/[article]`, `en/[slug]/[article]` y los artículos de `flora/[especie]`) lo usan para el hreflang y el botón de idioma. Arranca con tulipanes y lupinos.
+**Motivo:** `getAltLang` solo busca el mismo slug en el otro idioma, así que los pares con slug distinto quedaban sin hreflang (el de lupinos, que se tomó como antecedente, no tenía). Además, `flora/[especie]` no emitía hreflang en la metadata de sus artículos.
+**Detalle:** un mapa en código y no una columna nueva para no sumar una migración manual. `fauna/[especie]` no se tocó. Los demás pares de WordPress con slug distinto siguen sin emparejar (ver STATUS → Próximo).
+**Estado:** Vigente
+
 ## 2026-10-21 — Guía de Puerto Madryn + Península Valdés y entrada de "Destinos" al nav
 **Decisión:** la guía #6 se publica como `/destinos/puerto-madryn` y `/en/guides/puerto-madryn`, con Península Valdés en el nombre y el contenido. Con ella, "Destinos" entra al menú Explorar (desktop y mobile), a las tarjetas "Explorá por tema" y a un bloque propio en la home (`src/components/home/DestinosSection.tsx`). No se redirige ningún artículo viejo.
 **Motivo:** Puerto Madryn es la ciudad base (alojamiento, aeropuerto, excursiones); Península Valdés no tiene página en `parques` y queda dentro de la guía. Los artículos viejos relacionados (excursión de crías de lobos marinos, Punta Tombo, galeses, fauna) responden a búsquedas puntuales que la guía no reemplaza, igual que los de campings de El Chaltén. El nav y la home siguen la regla de la 6ª guía de `.claude/rules/destinos.md`.

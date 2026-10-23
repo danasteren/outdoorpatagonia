@@ -52,8 +52,9 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 ## Arquitectura
 
 - **Dos fuentes de contenido:**
-  - **Supabase, tabla `articles`**: los artículos que vinieron del WordPress (ES y EN, `slug` + `language` únicos). Se ven en `/[categoria]/[slug]` y `/en/[categoria]/[slug]`, igual que las URLs de WordPress (carpetas `src/app/[slug]/[article]` y `src/app/en/[slug]/[article]`).
+  - **Supabase, tabla `articles`**: los artículos que vinieron del WordPress (ES y EN, `slug` + `language` únicos). Se ven en `/[categoria]/[slug]` y `/en/[categoria]/[slug]`, igual que las URLs de WordPress (carpetas `src/app/[slug]/[article]` y `src/app/en/[slug]/[article]`). Los artículos nuevos (sin `wp_id`) se escriben en `seo/articles/` y se cargan con `scripts/upsert_articles.py`.
   - **Catálogos estáticos en TypeScript** (`src/lib/<seccion>/catalog.ts`): destinos, parques, senderos, volcanes, termas, arqueología, escalada, fauna, flora, gastronomía. De cada catálogo salen solas la página, el JSON-LD, el sitemap y el buscador.
+- **Categorías de artículos con sección propia** (`CATEGORY_SECTIONS` en `src/lib/category.ts`): sus artículos se listan (con `ArticleTile`) debajo del catálogo de la sección y `/categoria/{slug}` redirige ahí con 301. Los links de categoría se arman siempre con `categoryHref`. Los artículos que redirigen (absorbidos por una guía o una ficha) están en `src/lib/article-redirects.ts`.
 - **Conexiones entre catálogos**: el campo `relacionados`, resuelto en `src/lib/relacionados.ts` (ver `.claude/rules/relacionados.md`).
 - **Datos en vivo**: una API por archivo en `src/lib/apis/`, mostradas en el StatusBoard y en `/estado` (ver `.claude/rules/statusboard.md`).
 - **Inglés**: todo lo que está en inglés cuelga de `src/app/en/`. Los catálogos tienen contenido `es` y `en` en el mismo objeto.
@@ -80,8 +81,9 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 
 - `redirect()` dentro de un page component devuelve **200 + meta-refresh**, no un 301 real. Para un 301 real, hacerlo en `src/proxy.ts`.
 - `generateStaticParams` tiene que usar un cliente de Supabase **sin cookies**. Con el cliente de servidor normal falla el build.
-- El nav está duplicado en `src/components/HeaderShell.tsx`, una lista para desktop y otra para mobile. Hay que mantenerlas sincronizadas.
+- Nav: las secciones de "Explorar" y "Planear" salen de una sola lista (`EXPLORE_ITEMS` y `PLAN_ITEMS` en `src/components/HeaderShell.tsx`, con el texto en ES y EN) que usan desktop y mobile. "Herramientas" (Mapa, Operadores) sigue escrito dos veces: mantenerlo sincronizado. El idioma del header sale de la ruta (`/en…`).
 - Las fotos de los artículos se sirven desde Supabase Storage. El fallback de portadas está en `src/data/cover-fallbacks.ts`.
 - En `fauna/[especie]` y `flora/[especie]`, si existe un artículo de Supabase con el mismo slug, su `seo_title` le gana al `metaTitle` del catálogo. Antes de editar títulos en el catálogo, fijarse si hay artículo.
 - Mapas: `react-leaflet` + OSM. `maplibre-gl` sigue en `package.json` pero se descartó (pantalla gris): no reintroducirlo.
+- Hreflang de `articles`: ES y EN se emparejan solo si comparten slug. Si el slug cambia según el idioma, cargar el par en `src/lib/article-translations.ts`.
 - `.claude/settings.local.json` no se versiona y puede tener secretos en permisos viejos. Nunca commitearlo.

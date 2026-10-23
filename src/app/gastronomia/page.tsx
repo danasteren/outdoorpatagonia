@@ -7,6 +7,7 @@ import {
   PAIS_LABELS,
   type GastronomiaCategoria,
 } from "@/lib/gastronomia/catalog"
+import { SectionArticles } from "@/components/SectionArticles"
 
 const BASE = "https://outdoorpatagonia.com"
 
@@ -129,6 +130,11 @@ export default async function GastronomiaPage({
             ))}
           </div>
         </div>
+
+        <SectionArticles
+          categorySlug="gastronomia"
+          catalogSlugs={GASTRONOMIA_CATALOG.map((e) => e.slug)}
+        />
       </div>
     </>
   )

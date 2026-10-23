@@ -14,7 +14,7 @@ export async function Header() {
   const { data: { user: rawUser } } = await supabase.auth.getUser();
 
   const authUser: AuthUser = rawUser ? {
-    name: (rawUser.user_metadata?.full_name as string | undefined) ?? rawUser.email ?? 'Usuario',
+    name: (rawUser.user_metadata?.full_name as string | undefined) ?? rawUser.email ?? (lang === 'en' ? 'User' : 'Usuario'),
     email: rawUser.email ?? '',
     avatarUrl: (rawUser.user_metadata?.avatar_url as string | undefined) ?? null,
   } : null;

@@ -9,6 +9,7 @@ import {
   type FloraCategory,
 } from "@/lib/flora/catalog"
 import { Badge } from "@/components/primitives/Badge"
+import { SectionArticles } from "@/components/SectionArticles"
 import { fetchTaxonPhotos } from "@/lib/apis/inaturalist"
 
 export const metadata: Metadata = {
@@ -175,6 +176,11 @@ export default async function FloraIndexPage({
           </div>
         </section>
       </div>
+
+      <SectionArticles
+        categorySlug="flora"
+        catalogSlugs={FLORA_CATALOG.map((e) => e.slug)}
+      />
     </div>
   )
 }

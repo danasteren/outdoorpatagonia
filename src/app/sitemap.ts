@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
-import { toCategorySlug } from "@/lib/category";
+import { categorySection, toCategorySlug } from "@/lib/category";
 import { FAUNA_CATALOG } from "@/lib/fauna/catalog";
 import { FLORA_CATALOG } from "@/lib/flora/catalog";
 import { PARQUES_CATALOG } from "@/lib/parques/catalog";
@@ -10,7 +10,7 @@ import { ARQUEOLOGIA_CATALOG } from "@/lib/arqueologia/catalog";
 import { TERMAS_CATALOG } from "@/lib/termas/catalog";
 import { ESCALADA_CATALOG } from "@/lib/escalada/catalog";
 import { DESTINOS_CATALOG } from "@/lib/destinos/catalog";
-import { LEGACY_TO_GUIDE } from "@/lib/destinos/redirects";
+import { articleRedirect } from "@/lib/article-redirects";
 import { GASTRONOMIA_CATALOG } from "@/lib/gastronomia/catalog";
 
 const BASE = "https://outdoorpatagonia.com";
@@ -28,12 +28,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const rows = articles ?? [];
 
+  // Artículos con el mismo slug que una entrada de catálogo: la ruta muestra
+  // la ficha del catálogo, que ya está en el sitemap.
+  const catalogPaths = new Set([
+    ...FAUNA_CATALOG.map((e) => `/fauna/${e.slug}`),
+    ...FLORA_CATALOG.map((e) => `/flora/${e.slug}`),
+    ...GASTRONOMIA_CATALOG.map((e) => `/gastronomia/${e.slug}`),
+  ]);
+
   const articleUrls: MetadataRoute.Sitemap = rows
-    .filter((a) => !(a.language === "es" && toCategorySlug(a.category ?? "") === "gastronomia"))
     .filter((a) => {
       const cat = toCategorySlug(a.category ?? "");
       const path = a.language === "en" ? `/en/${cat}/${a.slug}` : `/${cat}/${a.slug}`;
-      return !LEGACY_TO_GUIDE[path];
+      return !articleRedirect(path) && !catalogPaths.has(path);
     })
     .map((a) => {
     const cat = toCategorySlug(a.category ?? "");
@@ -54,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         .filter((a) => a.language === "es" && a.category)
         .map((a) => toCategorySlug(a.category as string))
     ),
-  ].filter((cat) => cat !== "gastronomia");
+  ].filter((cat) => !categorySection(cat));
   const enCategories = [
     ...new Set(
       rows

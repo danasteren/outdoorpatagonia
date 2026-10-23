@@ -53,8 +53,20 @@ export const novedades: VersionNovedades[] = [
         texto: "Guía de viaje de Punta Arenas — qué hacer, clima, cuándo ir y cómo llegar, con los pingüinos de Isla Magdalena, Fuerte Bulnes, la Reserva Nacional Magallanes y las ballenas del Estrecho, en español y en inglés",
       },
       {
+        tipo: "nuevo",
+        texto: "Guía de viaje de Puerto Varas y Puerto Montt — qué hacer, clima, cuándo ir y cómo llegar, con el lago Llanquihue, el volcán Osorno, los Saltos del Petrohué y el Cruce Andino a Bariloche, en español y en inglés",
+      },
+      {
         tipo: "mejora",
         texto: "Las guías de destino ya están en el menú Explorar y en la página de inicio",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Campo de tulipanes de Trevelin — fechas de la temporada 2026, precio de la entrada, cómo pagar y cómo llegar, en español y en inglés",
+      },
+      {
+        tipo: "correccion",
+        texto: "El artículo de los lupinos ahora tiene el botón para pasar al inglés (y al revés)",
       },
       {
         tipo: "nuevo",
@@ -79,6 +91,42 @@ export const novedades: VersionNovedades[] = [
       {
         tipo: "correccion",
         texto: "Fotos de los artículos — habían dejado de verse en todo el sitio; todas las notas vuelven a tener portada y volvió buena parte de las fotos dentro del texto",
+      },
+      {
+        tipo: "mejora",
+        texto: "Tarjetas de artículos más prolijas — en los listados y en las categorías, la fecha y los minutos de lectura quedan a la misma altura en todas las tarjetas de una fila",
+      },
+      {
+        tipo: "mejora",
+        texto: "Las tarjetas de artículos ahora son enlaces de verdad — se pueden abrir en otra pestaña y recorrer con el teclado",
+      },
+      {
+        tipo: "mejora",
+        texto: "Flora y fauna en una sola página — debajo de la guía de especies ahora están todos los artículos del tema, y la etiqueta de categoría de cada nota lleva directo ahí",
+      },
+      {
+        tipo: "mejora",
+        texto: "Las páginas de categoría (historia, cultura, consejos y las demás) ahora tienen el mismo encabezado que el resto de las secciones, en español y en inglés",
+      },
+      {
+        tipo: "mejora",
+        texto: "Los artículos se ven como el resto del sitio — portada grande con el título encima, el texto en la columna principal y los datos (fecha, lectura, categoría) al costado; los listados de artículos usan las mismas tarjetas que las especies",
+      },
+      {
+        tipo: "mejora",
+        texto: "Nueva portada en inglés — temas para explorar, guías de viaje y los últimos artículos, con el mismo diseño que el resto del sitio",
+      },
+      {
+        tipo: "mejora",
+        texto: "En las páginas en inglés, el menú, el buscador y el pie de página ahora también están en inglés",
+      },
+      {
+        tipo: "correccion",
+        texto: "El acceso al mapa desde las páginas en inglés llevaba a una página que no existía",
+      },
+      {
+        tipo: "correccion",
+        texto: "En la portada, los temas de \"Explorá por tema\" quedan en filas parejas en computadora, sin una tarjeta suelta al final",
       },
     ],
   },

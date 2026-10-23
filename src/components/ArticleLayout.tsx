@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { Calendar, Clock, Hash, Sparkles } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { BookOpen, ChefHat, Globe, Hash, Leaf, PawPrint, Sparkles } from "lucide-react";
 import { fixWpLazyLoad, addInstagramPhotoCredits, extractPhotoCredit } from "@/lib/utils";
-import { FavoriteButton } from "@/components/FavoriteButton";
-import { Breadcrumb } from "@/components/primitives/Breadcrumb";
-import { toCategorySlug } from "@/lib/category";
+import { DetailHero } from "@/components/DetailHero";
+import { Card, CardBody } from "@/components/primitives/Card";
+import { categoryHref as categoryHrefFor, toCategorySlug } from "@/lib/category";
 import { articleCover, fixLegacyImages } from "@/lib/legacy-images";
+import { decodeEntities } from "@/lib/text";
 
 interface Article {
   title: string;
@@ -21,6 +23,15 @@ interface Article {
   wp_id: number | null;
 }
 
+// Ícono del hero según la categoría; el resto usa BookOpen
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  flora: Leaf,
+  fauna: PawPrint,
+  gastronomia: ChefHat,
+  gastronomy: ChefHat,
+};
+
+/** Página de artículo con el diseño de las fichas de catálogo: DetailHero + columna principal y sidebar. */
 export function ArticleLayout({
   article,
   altLangHref,
@@ -28,17 +39,16 @@ export function ArticleLayout({
   article: Article;
   altLangHref: string | null;
 }) {
+  const isEnglish = article.language === "en";
+  const title = decodeEntities(article.title);
   const publishedDate = article.published_at
-    ? new Intl.DateTimeFormat(article.language === "en" ? "en-US" : "es-AR", {
+    ? new Intl.DateTimeFormat(isEnglish ? "en-US" : "es-AR", {
         year: "numeric",
         month: "long",
         day: "numeric",
       }).format(new Date(article.published_at))
     : null;
 
-  const altLangLabel = article.language === "es" ? "English" : "Español";
-
-  const isEnglish = article.language === "en";
   const cover = articleCover(article);
   const homeHref = isEnglish ? "/en" : "/";
   const bannerText = isEnglish
@@ -46,177 +56,167 @@ export function ArticleLayout({
     : "Estás viendo un artículo que quedó del sitio anterior.";
   const bannerCta = isEnglish ? "See what's new" : "Ver lo nuevo del sitio";
 
-  const categorySlug = article.category ? toCategorySlug(article.category) : null;
-  const categoryHref = categorySlug
-    ? isEnglish
-      ? `/en/category/${categorySlug}`
-      : categorySlug === "gastronomia"
-        ? "/gastronomia"
-        : `/categoria/${categorySlug}`
+  const categoryHref = article.category
+    ? categoryHrefFor(article.category, article.language)
     : null;
   const isLegacy = article.wp_id != null;
-  const breadcrumbItems = [
-    { label: isEnglish ? "Home" : "Inicio", href: homeHref },
-    ...(article.category && categoryHref
-      ? [{ label: article.category, href: categoryHref }]
-      : []),
-    { label: article.title },
-  ];
+  const Icon = (article.category && CATEGORY_ICONS[toCategorySlug(article.category)]) || BookOpen;
+
+  // Crédito de la portada: Wikimedia (reemplazos) o Instagram (foto original de WordPress)
+  const igCredit = !cover?.credit && article.cover_image_alt
+    ? extractPhotoCredit(article.cover_image_alt)
+    : null;
+  const heroImage = cover
+    ? {
+        url: cover.url,
+        // En los migrados, cover_image_alt es el texto de WordPress (a veces solo un crédito);
+        // en los nuevos describe la portada
+        alt: (!isLegacy && article.cover_image_alt) || title,
+        creditLabel: isEnglish ? "Photo" : "Foto",
+        ...(cover.credit
+          ? {
+              credit: `${cover.credit.author} / Wikimedia Commons (${cover.credit.license ?? (isEnglish ? "public domain" : "dominio público")})`,
+              creditUrl: cover.credit.sourceUrl,
+            }
+          : igCredit
+            ? {
+                credit: igCredit.name ? `${igCredit.name} (@${igCredit.handle})` : `@${igCredit.handle}`,
+                creditUrl: `https://www.instagram.com/${igCredit.handle}/`,
+              }
+            : {}),
+      }
+    : null;
+
+  const meta = [publishedDate, article.reading_time_min ? `${article.reading_time_min} min` : null]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Legacy content banner — only for articles migrated from the old WordPress site */}
-      <header className="sticky top-0 z-10 border-b border-border">
-        {isLegacy && (
-          <Link
-            href={homeHref}
-            className="flex items-center justify-center gap-2 bg-[var(--color-teal)] px-4 py-2 text-center text-xs md:text-sm text-white hover:bg-[var(--color-teal)]/90 transition-colors"
-          >
-            <Sparkles size={14} strokeWidth={1.75} className="shrink-0" />
-            <span>
-              {bannerText} <span className="font-semibold underline underline-offset-2">{bannerCta}</span>
-            </span>
-          </Link>
-        )}
-        {altLangHref && (
-          <div className="bg-background/90 backdrop-blur">
-            <div className="max-w-4xl mx-auto px-4 h-10 flex items-center justify-end">
-              <Link
-                href={altLangHref}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {altLangLabel}
-              </Link>
-            </div>
-          </div>
-        )}
-      </header>
+    <div className="min-h-screen">
+      <DetailHero
+        image={heroImage}
+        fallbackGradient="linear-gradient(135deg, var(--color-forest) 0%, var(--color-teal) 100%)"
+        breadcrumb={[
+          { label: isEnglish ? "Home" : "Inicio", href: homeHref },
+          ...(article.category && categoryHref
+            ? [{ label: article.category, href: categoryHref }]
+            : []),
+          { label: title },
+        ]}
+        icon={Icon}
+        eyebrow={article.category ?? (isEnglish ? "Article" : "Artículo")}
+        title={title}
+        subtitle={meta || undefined}
+        save={{ slug: article.slug, title: article.title, category: article.category ?? "" }}
+      />
 
-      <div className="max-w-3xl mx-auto px-4 py-10">
-      <article>
-          {/* Breadcrumb — links to the current site's home/category pages */}
-          <Breadcrumb items={breadcrumbItems} variant="dark" className="mb-4" />
+      {/* Aviso de artículo migrado del WordPress; va debajo del hero para que no lo tapen los botones fijos de HeroActions */}
+      {isLegacy && (
+        <Link
+          href={homeHref}
+          className="flex items-center justify-center gap-2 bg-[var(--color-teal)] px-4 py-2 text-center text-xs md:text-sm text-white hover:bg-[var(--color-teal)]/90 transition-colors"
+        >
+          <Sparkles size={14} strokeWidth={1.75} className="shrink-0" />
+          <span>
+            {bannerText} <span className="font-semibold underline underline-offset-2">{bannerCta}</span>
+          </span>
+        </Link>
+      )}
 
-          {/* Category badge */}
-          {article.category && categoryHref && (
-            <Link
-              href={categoryHref}
-              className="inline-block text-xs font-semibold uppercase tracking-widest px-2.5 py-1 rounded-sm bg-[var(--color-terracotta)] text-white mb-6 hover:opacity-80 transition-opacity"
-            >
-              {article.category}
-            </Link>
-          )}
-
-          {/* Title */}
-          <h1
-            className="text-3xl md:text-5xl font-bold leading-tight mb-6"
-            style={{ fontFamily: "var(--font-playfair)" }}
-          >
-            {article.title}
-          </h1>
-
-          {/* Excerpt */}
-          {article.excerpt && (
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 border-l-4 border-[var(--color-teal)] pl-4">
-              {article.excerpt}
-            </p>
-          )}
-
-          {/* Meta row */}
-          <div className="flex items-center gap-5 text-sm text-muted-foreground mb-10 pb-8 border-b border-border">
-            {publishedDate && (
-              <span className="inline-flex items-center gap-1.5">
-                <Calendar size={13} strokeWidth={1.5} />
-                {publishedDate}
-              </span>
+      <div className="max-w-6xl mx-auto px-6 md:px-10 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Columna principal */}
+          <article className="lg:col-span-2 min-w-0">
+            {/* En los migrados, el excerpt es el corte automático de WordPress: repite el primer párrafo */}
+            {!isLegacy && article.excerpt && (
+              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                {article.excerpt}
+              </p>
             )}
-            {article.reading_time_min && (
-              <span className="inline-flex items-center gap-1.5">
-                <Clock size={13} strokeWidth={1.5} />
-                {article.reading_time_min} min
-              </span>
+            <div
+              className="article-body overflow-x-hidden"
+              dangerouslySetInnerHTML={{
+                __html: addInstagramPhotoCredits(fixWpLazyLoad(fixLegacyImages(article.content ?? "")), isEnglish),
+              }}
+            />
+          </article>
+
+          {/* Sidebar */}
+          <aside className="space-y-5">
+            <Card variant="elevated">
+              <CardBody className="p-5">
+                <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-4">
+                  {isEnglish ? "Details" : "Datos"}
+                </h2>
+                <dl className="space-y-2.5">
+                  {article.category && categoryHref && (
+                    <div className="flex flex-col gap-0.5">
+                      <dt className="text-[11px] text-muted-foreground/70 uppercase tracking-wider">
+                        {isEnglish ? "Category" : "Categoría"}
+                      </dt>
+                      <dd className="text-sm font-medium">
+                        <Link href={categoryHref} className="text-[var(--color-teal)] hover:underline">
+                          {article.category}
+                        </Link>
+                      </dd>
+                    </div>
+                  )}
+                  {publishedDate && (
+                    <div className="flex flex-col gap-0.5">
+                      <dt className="text-[11px] text-muted-foreground/70 uppercase tracking-wider">
+                        {isEnglish ? "Published" : "Publicado"}
+                      </dt>
+                      <dd className="text-sm font-medium text-foreground">{publishedDate}</dd>
+                    </div>
+                  )}
+                  {article.reading_time_min && (
+                    <div className="flex flex-col gap-0.5">
+                      <dt className="text-[11px] text-muted-foreground/70 uppercase tracking-wider">
+                        {isEnglish ? "Reading time" : "Lectura"}
+                      </dt>
+                      <dd className="text-sm font-medium text-foreground">{article.reading_time_min} min</dd>
+                    </div>
+                  )}
+                </dl>
+              </CardBody>
+            </Card>
+
+            {altLangHref && (
+              <Card variant="elevated">
+                <CardBody className="p-5">
+                  <Link
+                    href={altLangHref}
+                    className="flex items-center gap-2 text-sm text-[var(--color-teal)] hover:underline"
+                  >
+                    <Globe size={14} strokeWidth={1.5} />
+                    {isEnglish ? "Leer en español" : "Read in English"}
+                  </Link>
+                </CardBody>
+              </Card>
             )}
-            <span className="ml-auto">
-              <FavoriteButton slug={article.slug} title={article.title} category={article.category} />
-            </span>
-          </div>
 
-          {/* Cover image */}
-          {cover && (
-            <div className="mb-10">
-              <img
-                src={cover.url}
-                alt={article.title}
-                className="w-full rounded-md object-cover max-h-[480px]"
-              />
-              {cover.credit && (
-                <p className="text-sm text-muted-foreground mt-2 text-center">
-                  {isEnglish ? "Photo" : "Foto"}:{" "}
-                  <a
-                    href={cover.credit.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    className="text-[var(--color-teal)] underline underline-offset-2 hover:text-[var(--color-teal-light)] transition-colors"
-                  >
-                    {cover.credit.author} / Wikimedia Commons
-                  </a>{" "}
-                  ({cover.credit.license ?? (isEnglish ? "public domain" : "dominio público")})
-                </p>
-              )}
-              {(() => {
-                // El crédito de Instagram corresponde a la foto original, no a la de reemplazo
-                if (cover.credit) return null;
-                const credit = article.cover_image_alt
-                  ? extractPhotoCredit(article.cover_image_alt)
-                  : null;
-                if (!credit) return null;
-                const text = credit.name ? `${credit.name} (@${credit.handle})` : `@${credit.handle}`;
-                const label = isEnglish ? "Photo" : "Foto";
-                return (
-                  <p className="text-sm text-muted-foreground mt-2 text-center">
-                    {label}:{" "}
-                    <a
-                      href={`https://www.instagram.com/${credit.handle}/`}
-                      target="_blank"
-                      rel="noopener noreferrer nofollow"
-                      className="text-[var(--color-teal)] underline underline-offset-2 hover:text-[var(--color-teal-light)] transition-colors"
-                    >
-                      {text}
-                    </a>
-                  </p>
-                );
-              })()}
-            </div>
-          )}
-
-          {/* Body */}
-          <div
-            className="article-body overflow-x-hidden"
-            dangerouslySetInnerHTML={{
-              __html: addInstagramPhotoCredits(fixWpLazyLoad(fixLegacyImages(article.content ?? "")), isEnglish),
-            }}
-          />
-
-          {/* Tags */}
-          {article.tags && article.tags.length > 0 && (
-            <div className="mt-12 pt-6 border-t border-border">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
-                <Hash size={12} strokeWidth={1.5} />
-                <span className="uppercase tracking-widest font-medium">Tags</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {article.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-      </article>
+            {article.tags && article.tags.length > 0 && (
+              <Card variant="elevated">
+                <CardBody className="p-5">
+                  <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-1.5">
+                    <Hash size={14} strokeWidth={1.5} />
+                    Tags
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {article.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </CardBody>
+              </Card>
+            )}
+          </aside>
+        </div>
       </div>
     </div>
   );

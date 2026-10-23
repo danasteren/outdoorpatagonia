@@ -5,6 +5,7 @@ import { createClient as createBuildClient } from "@supabase/supabase-js";
 import { ArticleLayout } from "@/components/ArticleLayout";
 import { toCategorySlug } from "@/lib/category";
 import { articleCover } from "@/lib/legacy-images";
+import { altLangSlug } from "@/lib/article-translations";
 
 export async function generateStaticParams() {
   const supabase = createBuildClient(
@@ -46,7 +47,7 @@ async function getAltLang(article: string) {
   const { data } = await supabase
     .from("articles")
     .select("slug, category")
-    .eq("slug", article)
+    .eq("slug", altLangSlug(article, "en"))
     .eq("language", "en")
     .eq("status", "published")
     .maybeSingle();
@@ -73,7 +74,7 @@ export async function generateMetadata({
       canonical: canonicalUrl,
       ...(altLang && {
         languages: {
-          en: `https://outdoorpatagonia.com/en/${toCategorySlug(altLang.category ?? "")}/${article}`,
+          en: `https://outdoorpatagonia.com/en/${toCategorySlug(altLang.category ?? "")}/${altLang.slug}`,
         },
       }),
     },
@@ -108,7 +109,7 @@ export default async function ArticlePage({
   }
 
   const altLangHref = altLang
-    ? `/en/${toCategorySlug(altLang.category ?? "")}/${article}`
+    ? `/en/${toCategorySlug(altLang.category ?? "")}/${altLang.slug}`
     : null;
 
   const jsonLd = {

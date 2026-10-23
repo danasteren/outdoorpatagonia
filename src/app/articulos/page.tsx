@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { createClient as createBuildClient } from "@supabase/supabase-js";
-import { ArticleCard } from "@/components/ArticleCard";
+import { ArticleTile } from "@/components/ArticleTile";
 import { toCategorySlug } from "@/lib/category";
 import {
   PawPrint,
@@ -175,9 +175,9 @@ export default async function ArticulosPage() {
         {articles.length === 0 ? (
           <p className="text-muted-foreground">No hay artículos disponibles.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {articles.map((article) => (
-              <ArticleCard key={article.slug} {...article} />
+              <ArticleTile key={article.slug} {...article} headingLevel="h3" />
             ))}
           </div>
         )}

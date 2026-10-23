@@ -26,6 +26,7 @@ import { Badge } from "@/components/primitives/Badge"
 import { ArticleLayout } from "@/components/ArticleLayout"
 import { toCategorySlug } from "@/lib/category"
 import { articleCover } from "@/lib/legacy-images"
+import { altLangSlug } from "@/lib/article-translations"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -60,7 +61,7 @@ async function getAltLangFloraArticle(slug: string) {
   const { data } = await buildClient()
     .from("articles")
     .select("slug, category")
-    .eq("slug", slug)
+    .eq("slug", altLangSlug(slug, "en"))
     .eq("language", "en")
     .eq("status", "published")
     .maybeSingle()
@@ -96,10 +97,18 @@ export async function generateMetadata({
   const floraArticle = entry ? null : await getFloraArticle(especie)
   if (floraArticle) {
     const canonicalUrl = `https://outdoorpatagonia.com/flora/${especie}`
+    const altLang = await getAltLangFloraArticle(especie)
     return {
       title: floraArticle.seo_title || floraArticle.title,
       description: floraArticle.seo_description || floraArticle.excerpt || undefined,
-      alternates: { canonical: canonicalUrl },
+      alternates: {
+        canonical: canonicalUrl,
+        ...(altLang && {
+          languages: {
+            en: `https://outdoorpatagonia.com/en/${toCategorySlug(altLang.category ?? "")}/${altLang.slug}`,
+          },
+        }),
+      },
       openGraph: {
         title: floraArticle.seo_title || floraArticle.title,
         description: floraArticle.seo_description || floraArticle.excerpt || undefined,
@@ -204,7 +213,7 @@ export default async function FloraEspeciePage({
   if (floraArticle) {
     const altLang = await getAltLangFloraArticle(especie)
     const altLangHref = altLang
-      ? `/en/${toCategorySlug(altLang.category ?? "")}/${especie}`
+      ? `/en/${toCategorySlug(altLang.category ?? "")}/${altLang.slug}`
       : null
     const jsonLd = {
       "@context": "https://schema.org",

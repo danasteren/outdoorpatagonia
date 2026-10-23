@@ -8,6 +8,8 @@ interface DetailHeroImage {
   alt: string
   credit?: string
   creditUrl?: string
+  /** "Foto" por defecto; "Photo" en las páginas en inglés. */
+  creditLabel?: string
 }
 
 interface DetailHeroProps {
@@ -36,7 +38,7 @@ export function DetailHero({
   save,
 }: DetailHeroProps) {
   return (
-    <div className="relative h-72 md:h-96 flex flex-col justify-end overflow-hidden">
+    <div className="relative min-h-72 md:min-h-96 flex flex-col justify-end overflow-hidden">
       {image && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -64,10 +66,10 @@ export function DetailHero({
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       <HeroActions imageUrl={image?.url} imageAlt={image?.alt} title={title} save={save} />
-      <div className="relative px-6 md:px-10 pb-8">
+      <div className="relative px-6 md:px-10 pt-16 pb-8">
         <div className="max-w-6xl mx-auto">
           <Breadcrumb items={breadcrumb} className="mb-3 text-white/60" />
-          <div className="flex items-end gap-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:gap-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <Icon size={16} className="text-white/70" strokeWidth={1.5} />
@@ -86,9 +88,9 @@ export function DetailHero({
                 href={image.creditUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] text-white/40 hover:text-white/70 transition-colors flex-shrink-0"
+                className="text-[10px] text-white/40 hover:text-white/70 transition-colors sm:flex-shrink-0 sm:max-w-[40%] sm:text-right"
               >
-                Foto: {image.credit}
+                {image.creditLabel ?? "Foto"}: {image.credit}
               </a>
             )}
           </div>

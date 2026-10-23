@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-10-22_
+_Última actualización: 2026-10-23_
 
 ## Hecho (a grandes rasgos)
 
@@ -15,11 +15,17 @@ _Última actualización: 2026-10-22_
 - Panel `/admin/agentes` para revisar y publicar los PR de las rutinas.
 - 2026-10-10: artículos viejos del Perito Moreno (ES y EN) → 301 a la guía de El Calafate.
 - 2026-10-10: auditoría del contexto (CLAUDE.md, rules y docs contra el código) y decisiones de la memoria de Code pasadas a DECISIONS.
+- 2026-10-22: artículo del campo de tulipanes de Trevelin (`/flora/tulipanes-trevelin` y `/en/flora/trevelin-tulip-fields`), el primero creado directo en la tabla `articles` (ver DECISIONS). Link agregado en el tip de Trevelin del artículo de los galeses (ES y EN).
+- 2026-10-22: `ArticleCard` con link real (stretched link, rastreable por Google) y fecha/minutos alineados abajo en la grilla.
+- 2026-10-22: una sola página por temática. Las categorías con sección propia (fauna, flora, gastronomía) muestran sus artículos debajo del catálogo y `/categoria/{slug}` redirige con 301 a la sección (mapa en `src/lib/category.ts`). Las categorías que quedan (ES y EN) usan el encabezado de las secciones. Gastronomía no muestra bloque: sus 9 artículos ES ya son fichas del catálogo.
+- 2026-10-22: artículos con el diseño del sitio. La página de artículo usa `DetailHero` + columna principal y sidebar, como las fichas, y los listados de artículos (bloque de las secciones, categorías ES/EN y `/articulos`) usan `ArticleTile`, igual que las tarjetas de especies. La home en inglés (`/en`) pasó al mismo diseño: encabezado, "Explore by topic" con las categorías en inglés, guías de viaje y últimos artículos. `ArticleCard` se borró.
+- 2026-10-22: header y buscador en inglés en las páginas `/en` (menú, iniciar sesión, buscador, modo oscuro). Destinos apunta a `/en/guides`; el resto de las secciones sigue llevando a la versión en español porque no existe en inglés. El footer también está en inglés (links a `/en/…` donde existe la página, newsletter con mensajes en inglés).
+- 2026-10-23: grilla "Explorá por tema" de la home (ES y EN): 7 por fila en desktop, 5 en tablet y, en celular, la última tarjeta a lo ancho si queda sola (`TopicCard`).
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 ## En curso
 
-- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9), Puerto Madryn + Península Valdés (#10, con "Destinos" en el nav y bloque en la home) y Punta Arenas (PR abierto). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
+- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9), Puerto Madryn + Península Valdés (#10, con "Destinos" en el nav y bloque en la home), Punta Arenas (#11) y Puerto Varas + Puerto Montt (#12). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
 
 ## Rutinas en la nube (lunes)
 
@@ -34,9 +40,16 @@ _Última actualización: 2026-10-22_
 - `ADMIN_EMAIL` está repetido en 10 archivos: centralizarlo en un helper.
 - `notification_preferences` (migración 006) existe pero nada lo consume.
 - Fines de octubre de 2026: medir el CTR de los títulos reescritos el 30/09 y el RPM real de AdSense.
+- **Categorías sin emparejar (decide la usuaria)**: solo se emparejaron los slugs idénticos a una sección. Dudosas: `lugares` (10) ↔ `/destinos`; `hongo` (3) ↔ `/flora` (los hongos no son flora); `historia` (9) y `cultura` (2) ↔ `/arqueologia` (solo en parte). Sin candidata: `consejos`, `domo`, `impacto-ambiental`, `paisajes`, `recursos-descargables`. Si se empareja alguna, se suma a `CATEGORY_SECTIONS`.
+- Hreflang de las páginas de categoría: ES y EN se emparejan por el mismo slug, pero casi todos difieren (`historia` ↔ `history`, `gastronomia` ↔ `gastronomy`…), así que apuntan a URLs que no existen. Solo `flora` y `fauna` coinciden.
+- Títulos de artículos con entidades HTML sin decodificar en la base (`&#8211;`, `&#8217;`): las tarjetas y la página de artículo ya los decodifican (`decodeEntities`), pero siguen así en `<title>`, buscador y la home en inglés. Lo prolijo es corregirlos en la tabla.
+- Newsletter: los suscriptores no guardan idioma, así que quien se suscribe desde una página en inglés recibe el mismo mail que el resto. Si el newsletter es solo en español, avisarlo en el footer en inglés o sumar idioma a `subscribers`.
 - _(Lo que se defina en el chat del Proyecto.)_
 
 ## Próximo
 
-- Guía #8: Puerto Varas + Puerto Montt (según `seo/destinos-prioridad.md`).
+- **Tulipanes de Trevelin, después del 7/11/2026**: el artículo dice "temporada 2026" y $45.000. Para 2027, revisar la página oficial de entradas y actualizar fechas y precio en `seo/articles/` + `scripts/upsert_articles.py`.
+- Hreflang de los artículos migrados: ES y EN solo se emparejan si comparten slug. Los pares con slug distinto (p. ej. galeses ↔ `welsh-patagonia`) no tienen hreflang ni botón de idioma hasta cargarlos en `src/lib/article-translations.ts`.
+- Próxima guía: Pucón (#9 de `seo/destinos-prioridad.md`).
+- `volcanes/catalog.ts` dice que la última erupción del Osorno fue en 1869; la ficha del SERNAGEOMIN dice 1835. Revisar contra la fuente.
 - `senderos/catalog.ts` dice que la Laguna de los Tres es "completamente gratuito", pero la APN cobra el acceso a los senderos desde El Chaltén (pase "Portada El Chaltén"). Corregirlo.
