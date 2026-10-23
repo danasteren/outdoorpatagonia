@@ -734,6 +734,7 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.conaf.cl/parques/parque-nacional-alberto-de-agostini/",
     faunaEspecies: ["lobo-marino-del-sur", "delfin-austral", "pinguino-de-magallanes", "condor-andino"],
     senderosEnElParque: [],
+    relacionados: [{ tipo: "destino", slug: "punta-arenas" }],
   },
   {
     slug: "cabo-de-hornos",
@@ -757,6 +758,7 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.conaf.cl/parques/parque-nacional-cabo-de-hornos/",
     faunaEspecies: ["lobo-marino-del-sur", "delfin-austral", "pinguino-de-magallanes"],
     senderosEnElParque: [],
+    relacionados: [{ tipo: "destino", slug: "punta-arenas" }],
   },
 ]
 

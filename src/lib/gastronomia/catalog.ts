@@ -77,6 +77,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { tipo: "gastronomia", slug: "carnes-de-caza-patagonicas-guanaco-liebre" },
       { tipo: "destino", slug: "el-calafate" },
       { tipo: "destino", slug: "puerto-natales" },
+      { tipo: "destino", slug: "punta-arenas" },
     ],
   },
   {
@@ -466,6 +467,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     relacionados: [
       { tipo: "destino", slug: "ushuaia" },
       { tipo: "destino", slug: "puerto-natales" },
+      { tipo: "destino", slug: "punta-arenas" },
     ],
   },
   {

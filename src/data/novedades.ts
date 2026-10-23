@@ -50,6 +50,10 @@ export const novedades: VersionNovedades[] = [
       },
       {
         tipo: "nuevo",
+        texto: "Guía de viaje de Punta Arenas — qué hacer, clima, cuándo ir y cómo llegar, con los pingüinos de Isla Magdalena, Fuerte Bulnes, la Reserva Nacional Magallanes y las ballenas del Estrecho, en español y en inglés",
+      },
+      {
+        tipo: "nuevo",
         texto: "Guía de viaje de Puerto Varas y Puerto Montt — qué hacer, clima, cuándo ir y cómo llegar, con el lago Llanquihue, el volcán Osorno, los Saltos del Petrohué y el Cruce Andino a Bariloche, en español y en inglés",
       },
       {

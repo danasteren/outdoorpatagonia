@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-22 — Guía de Punta Arenas: alcance y datos que no se publican
+**Decisión:** la guía #7 se publica como `/destinos/punta-arenas` y `/en/guides/punta-arenas`. No se redirige ningún artículo viejo (no hay ninguno de Punta Arenas; el del Estrecho de Magallanes es de historia y sigue vivo). Los parques Alberto de Agostini y Cabo de Hornos suman el campo `relacionados` hacia la guía.
+**Motivo:** no hay artículos que compitan con la guía. Pali Aike, la Reserva Nacional Magallanes y el Monumento Natural Los Pingüinos no tienen página en `parques`, así que quedan dentro de la guía.
+**Detalle:** decidido por la rutina diaria sin supervisión; revisable en el PR. No se publican: precios de entradas ni del ferry, la pingüinera de Seno Otway (sin fuente oficial), la duración del cruce a Porvenir, ni los meses exactos de la temporada de ballenas. Fuerte Bulnes figura a 58 km (Consejo de Monumentos Nacionales); Sernatur dice 52 km. El Museo Regional de Magallanes se menciona como cerrado por restauración (Serpat, diciembre de 2025).
+**Estado:** Vigente
+
 ## 2026-10-22 — Footer en inglés en las páginas /en
 **Decisión:** en las páginas `/en` el footer se muestra en inglés. Los links van a la versión en inglés cuando existe (sobre nosotros, contacto, privacidad, términos, recursos de viaje, guías) y a la de español cuando no (mapa, astronomía, operadores, novedades). "Artículos" lleva a `/en`, que lista los últimos artículos, porque no hay índice de artículos en inglés.
 **Motivo:** la usuaria lo pidió, siguiendo con el header.
