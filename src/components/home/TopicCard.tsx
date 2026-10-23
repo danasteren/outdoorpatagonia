@@ -19,7 +19,7 @@ export function TopicCard({ label, href, icon: Icon, description, color, index }
     <Link
       href={href}
       style={{ animationDelay: `${index * 70}ms` }}
-      className="animate-fade-in-up group relative flex flex-none flex-col items-center basis-[calc((100%-0.75rem)/2)] md:basis-[calc((100%-1.5rem)/3)] lg:basis-[calc((100%-3.75rem)/6)] rounded-2xl border border-border bg-card px-4 py-6 text-center overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-teal)]/50 hover:shadow-hover"
+      className="animate-fade-in-up group relative flex flex-none flex-col items-center basis-[calc((100%-0.75rem)/2)] max-md:last:odd:basis-full md:basis-[calc((100%-3rem)/5)] lg:basis-[calc((100%-4.5rem)/7)] rounded-2xl border border-border bg-card px-3 py-6 text-center overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-teal)]/50 hover:shadow-hover"
     >
       <div
         className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-[0.07] transition-opacity duration-300`}

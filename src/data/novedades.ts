@@ -116,6 +116,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "correccion",
         texto: "El acceso al mapa desde las páginas en inglés llevaba a una página que no existía",
       },
+      {
+        tipo: "correccion",
+        texto: "En la portada, los temas de \"Explorá por tema\" quedan en filas parejas en computadora, sin una tarjeta suelta al final",
+      },
     ],
   },
   {
