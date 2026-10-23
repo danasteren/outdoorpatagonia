@@ -104,6 +104,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Dónde se puede comer curanto en la Patagonia chilena?", respuesta: "En Chiloé (Ancud, Castro, Dalcahue) y en restaurantes de Puerto Montt." },
       { pregunta: "¿Qué son el milcao y el chapalele?", respuesta: "Panes de papa tradicionales de Chiloé que acompañan el curanto: el milcao se hace con papa rallada y papa cocida, el chapalele es una masa de papa cocida al vapor." },
     ],
+    relacionados: [{ tipo: "destino", slug: "puerto-varas" }],
     wikipediaTitle: "Curanto",
   },
   {
@@ -408,7 +409,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Se puede preparar kuchen en casa fácilmente?", respuesta: "Sí, existen recetas simples para horno casero con ingredientes accesibles." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/06/kuchen-de-Frutos-Rojos.jpg",
-    relacionados: [{ tipo: "gastronomia", slug: "torta-galesa-historia-receta-patagonia" }],
+    relacionados: [{ tipo: "gastronomia", slug: "torta-galesa-historia-receta-patagonia" }, { tipo: "destino", slug: "puerto-varas" }],
   },
   {
     slug: "trucha-patagonica-recetas-pesca",
