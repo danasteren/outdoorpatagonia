@@ -224,6 +224,7 @@ export const VOLCANES_CATALOG: VolcanEntry[] = [
       { tipo: "termas", slug: "geometricas" },
       { tipo: "termas", slug: "pucon-indomito" },
       { tipo: "termas", slug: "huife" },
+      { tipo: "destino", slug: "pucon" },
     ],
   },
   {
@@ -268,6 +269,7 @@ export const VOLCANES_CATALOG: VolcanEntry[] = [
     ],
     urlFuente: "https://www.sernageomin.cl/?s=Lan%C3%ADn+alerta",
     wikipediaTitle: "Volcán Lanín",
+    relacionados: [{ tipo: "destino", slug: "pucon" }],
   },
   {
     slug: "mocho-choshuenco",

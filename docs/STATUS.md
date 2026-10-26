@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-10-23_
+_Última actualización: 2026-10-26_
 
 ## Hecho (a grandes rasgos)
 
@@ -25,7 +25,7 @@ _Última actualización: 2026-10-23_
 
 ## En curso
 
-- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9), Puerto Madryn + Península Valdés (#10, con "Destinos" en el nav y bloque en la home), Punta Arenas (#11) y Puerto Varas + Puerto Montt (#12). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
+- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9), Puerto Madryn + Península Valdés (#10, con "Destinos" en el nav y bloque en la home), Punta Arenas (#11), Puerto Varas + Puerto Montt (#12) y Pucón (PR de la rutina, 2026-10-26, pendiente de revisión). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
 
 ## Rutinas en la nube (lunes)
 
@@ -50,6 +50,7 @@ _Última actualización: 2026-10-23_
 
 - **Tulipanes de Trevelin, después del 7/11/2026**: el artículo dice "temporada 2026" y $45.000. Para 2027, revisar la página oficial de entradas y actualizar fechas y precio en `seo/articles/` + `scripts/upsert_articles.py`.
 - Hreflang de los artículos migrados: ES y EN solo se emparejan si comparten slug. Los pares con slug distinto (p. ej. galeses ↔ `welsh-patagonia`) no tienen hreflang ni botón de idioma hasta cargarlos en `src/lib/article-translations.ts`.
-- Próxima guía: Pucón (#9 de `seo/destinos-prioridad.md`).
+- Próxima guía: Chiloé (#10 de `seo/destinos-prioridad.md`).
+- `volcanes/catalog.ts` (Villarrica) dice que el volcán está en la Región de Los Ríos (está entre La Araucanía y Los Ríos, según SERNAGEOMIN) y que Pucón tiene aeropuerto con vuelos desde Santiago (la DGAC no había habilitado vuelos comerciales al aeródromo de Pucón a 2025; los vuelos llegan al Aeropuerto La Araucanía, ZCO). Corregirlo.
 - `volcanes/catalog.ts` dice que la última erupción del Osorno fue en 1869; la ficha del SERNAGEOMIN dice 1835. Revisar contra la fuente.
 - `senderos/catalog.ts` dice que la Laguna de los Tres es "completamente gratuito", pero la APN cobra el acceso a los senderos desde El Chaltén (pase "Portada El Chaltén"). Corregirlo.

@@ -58,7 +58,7 @@ export const TERMAS_CATALOG: TermaEntry[] = [
     ],
     urlFuente: "https://www.termasgeometricas.cl/",
     wikipediaTitle: "Termas Geométricas",
-    relacionados: [{ tipo: "volcan", slug: "villarrica" }],
+    relacionados: [{ tipo: "volcan", slug: "villarrica" }, { tipo: "destino", slug: "pucon" }],
   },
   {
     slug: "puyehue",
@@ -139,7 +139,7 @@ export const TERMAS_CATALOG: TermaEntry[] = [
       },
     ],
     urlFuente: "https://termaspuconindomito.cl/",
-    relacionados: [{ tipo: "volcan", slug: "villarrica" }],
+    relacionados: [{ tipo: "volcan", slug: "villarrica" }, { tipo: "destino", slug: "pucon" }],
   },
   {
     slug: "copahue",
@@ -300,7 +300,7 @@ export const TERMAS_CATALOG: TermaEntry[] = [
     ],
     urlFuente: "https://termashuife.cl/",
     wikipediaTitle: "Termas Huife",
-    relacionados: [{ tipo: "volcan", slug: "villarrica" }],
+    relacionados: [{ tipo: "volcan", slug: "villarrica" }, { tipo: "destino", slug: "pucon" }],
   },
   {
     slug: "puyuhuapi",

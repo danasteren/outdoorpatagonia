@@ -253,7 +253,7 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Cuánto tiempo lleva siendo parte de la cultura patagónica?", respuesta: "Ha sido parte de la cultura mapuche durante siglos y se ha integrado a la gastronomía patagónica de ambos lados de la cordillera." },
     ],
     coverImageUrl: "https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2024/10/comprar-merken-en-la-patagonia.jpg",
-    relacionados: [{ tipo: "gastronomia", slug: "cordero-patagonico" }],
+    relacionados: [{ tipo: "gastronomia", slug: "cordero-patagonico" }, { tipo: "destino", slug: "pucon" }],
   },
   {
     slug: "recoleccion-morillas-patagonia-consejos",
