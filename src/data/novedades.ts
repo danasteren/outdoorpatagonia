@@ -57,6 +57,10 @@ export const novedades: VersionNovedades[] = [
         texto: "Guía de viaje de Puerto Varas y Puerto Montt — qué hacer, clima, cuándo ir y cómo llegar, con el lago Llanquihue, el volcán Osorno, los Saltos del Petrohué y el Cruce Andino a Bariloche, en español y en inglés",
       },
       {
+        tipo: "nuevo",
+        texto: "Guía de viaje de Pucón — qué hacer, clima, cuándo ir y cómo llegar, con el volcán Villarrica, el Parque Nacional Huerquehue, los Ojos del Caburgua, las termas y el rafting en el Trancura, en español y en inglés",
+      },
+      {
         tipo: "mejora",
         texto: "Las guías de destino ya están en el menú Explorar y en la página de inicio",
       },
