@@ -334,6 +334,7 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.conaf.cl/parques/parque-nacional-chiloe/",
     faunaEspecies: ["pinguino-de-magallanes"],
     senderosEnElParque: [],
+    relacionados: [{ tipo: "destino", slug: "chiloe" }],
   },
   {
     slug: "queulat",

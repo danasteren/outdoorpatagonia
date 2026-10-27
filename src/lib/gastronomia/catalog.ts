@@ -105,7 +105,10 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
       { pregunta: "¿Dónde se puede comer curanto en la Patagonia chilena?", respuesta: "En Chiloé (Ancud, Castro, Dalcahue) y en restaurantes de Puerto Montt." },
       { pregunta: "¿Qué son el milcao y el chapalele?", respuesta: "Panes de papa tradicionales de Chiloé que acompañan el curanto: el milcao se hace con papa rallada y papa cocida, el chapalele es una masa de papa cocida al vapor." },
     ],
-    relacionados: [{ tipo: "destino", slug: "puerto-varas" }],
+    relacionados: [
+      { tipo: "destino", slug: "puerto-varas" },
+      { tipo: "destino", slug: "chiloe" },
+    ],
     wikipediaTitle: "Curanto",
   },
   {
