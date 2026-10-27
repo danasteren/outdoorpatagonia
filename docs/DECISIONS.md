@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-27 — Selector de idioma en el header
+**Decisión:** el header muestra ES | EN en todas las páginas. Lleva al par de la página actual (el mismo que su hreflang). Si no hay par, lleva a la home del otro idioma.
+**Motivo:** hoy solo se puede cambiar de idioma desde el sidebar de los artículos. El resto del sitio no tiene forma de llegar a la otra versión.
+**Detalle:** se reutiliza src/components/LangToggle.tsx. El par sale de la misma fuente que alternates.languages (incluye article-translations.ts y destinos ↔ /en/guides). Implementación: `src/lib/lang-alternate.ts` no tiene mapa propio; lee en el navegador el `<link rel="alternate" hreflang>` que ya renderiza la metadata de la página (y lo vuelve a leer en cada navegación, porque la metadata se streamea). Sin par, va a `/en#sin-traduccion` o `/#sin-traduccion`, y `LangFallbackNotice` muestra un aviso cerrable debajo del header. Excepción: en `/categoria/*` y `/en/category/*` se ignora el hreflang porque apunta a URLs que dan 404 (ver STATUS); el hreflang de categorías no se tocó. El link al otro idioma es un `<a>` (carga completa) y no un `<Link>`, porque el layout toma el idioma de la ruta en el servidor y una navegación del cliente dejaba header y footer en el idioma anterior. Se sumó el hreflang `en` que faltaba en `/`, `/contacto`, `/privacidad` y `/terminos` (las versiones en inglés ya apuntaban a ellas). El link "Read in English" del sidebar de los artículos queda como estaba.
+**Estado:** Vigente
+
 ## 2026-10-27 — Se restaura /recursos-viaje-patagonia
 **Decisión:** vuelve la página de recursos en español, como par de /en/resources-traveling-patagonia.
 **Motivo:** el footer la linkea y el hreflang de la versión en inglés apunta a ella. Hoy da 404. El borrado del 19/06 dejó la versión en inglés sin par.

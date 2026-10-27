@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { StatusBoard } from "@/components/status/StatusBoard";
 import { EstadoCTA } from "@/components/status/EstadoCTA";
 import { OzoneSection } from "@/components/status/OzoneSection";
@@ -25,6 +26,10 @@ import {
 } from "lucide-react";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  alternates: { languages: { en: "https://outdoorpatagonia.com/en" } },
+};
 
 const CATEGORIES = [
   {

@@ -7,7 +7,10 @@ export const metadata: Metadata = {
   title: "Contacto",
   description:
     "¿Tenés una consulta, sugerencia o propuesta? Escribinos a Outdoor Patagonia.",
-  alternates: { canonical: "https://outdoorpatagonia.com/contacto" },
+  alternates: {
+    canonical: "https://outdoorpatagonia.com/contacto",
+    languages: { en: "https://outdoorpatagonia.com/en/contact" },
+  },
 };
 
 export default function ContactoPage() {

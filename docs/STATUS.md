@@ -22,6 +22,7 @@ _Última actualización: 2026-10-27_
 - 2026-10-22: header y buscador en inglés en las páginas `/en` (menú, iniciar sesión, buscador, modo oscuro). Destinos apunta a `/en/guides`; el resto de las secciones sigue llevando a la versión en español porque no existe en inglés. El footer también está en inglés (links a `/en/…` donde existe la página, newsletter con mensajes en inglés).
 - 2026-10-23: grilla "Explorá por tema" de la home (ES y EN): 7 por fila en desktop, 5 en tablet y, en celular, la última tarjeta a lo ancho si queda sola (`TopicCard`).
 - 2026-10-27: vuelve `/recursos-viaje-patagonia` (daba 404 desde el 19/06), con el mismo contenido que `/en/resources-traveling-patagonia` desde `src/lib/recursos.ts`, hreflang recíproco y las dos en el sitemap. Links del footer ES y EN verificados: todos dan 200.
+- 2026-10-27: selector de idioma ES | EN en el header (desktop y mobile), en todas las páginas. Lee el hreflang de la página; sin par va a la home del otro idioma con un aviso. Probado en 24 páginas de muestra: ningún link da 404. Las ES legales y la home suman el hreflang `en` que les faltaba.
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 ## En curso
@@ -42,9 +43,10 @@ _Última actualización: 2026-10-27_
 - `notification_preferences` (migración 006) existe pero nada lo consume.
 - Fines de octubre de 2026: medir el CTR de los títulos reescritos el 30/09 y el RPM real de AdSense.
 - **Categorías sin emparejar (decide la usuaria)**: solo se emparejaron los slugs idénticos a una sección. Dudosas: `lugares` (10) ↔ `/destinos`; `hongo` (3) ↔ `/flora` (los hongos no son flora); `historia` (9) y `cultura` (2) ↔ `/arqueologia` (solo en parte). Sin candidata: `consejos`, `domo`, `impacto-ambiental`, `paisajes`, `recursos-descargables`. Si se empareja alguna, se suma a `CATEGORY_SECTIONS`.
-- Hreflang de las páginas de categoría: ES y EN se emparejan por el mismo slug, pero casi todos difieren (`historia` ↔ `history`, `gastronomia` ↔ `gastronomy`…), así que apuntan a URLs que no existen. Solo `flora` y `fauna` coinciden.
+- Hreflang de las páginas de categoría: ES y EN se emparejan por el mismo slug, pero casi todos difieren (`historia` ↔ `history`, `gastronomia` ↔ `gastronomy`…), así que apuntan a URLs que no existen. Solo `flora` y `fauna` coinciden. Mientras tanto, el selector de idioma del header lo ignora (`UNRELIABLE_HREFLANG` en `src/lib/lang-alternate.ts`): al arreglarlo, sacar esa excepción.
 - Títulos de artículos con entidades HTML sin decodificar en la base (`&#8211;`, `&#8217;`): las tarjetas y la página de artículo ya los decodifican (`decodeEntities`), pero siguen así en `<title>`, buscador y la home en inglés. Lo prolijo es corregirlos en la tabla.
 - Newsletter: los suscriptores no guardan idioma, así que quien se suscribe desde una página en inglés recibe el mismo mail que el resto. Si el newsletter es solo en español, avisarlo en el footer en inglés o sumar idioma a `subscribers`.
+- El link "Read in English / Leer en español" del sidebar de los artículos es un `<Link>`: al usarlo, header y footer quedan en el idioma anterior hasta recargar. Pasarlo a `<a>` como el selector del header (o sacarlo, ya que el header lo cubre).
 - _(Lo que se defina en el chat del Proyecto.)_
 
 ## Próximo

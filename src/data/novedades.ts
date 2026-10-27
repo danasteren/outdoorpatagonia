@@ -140,6 +140,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "correccion",
         texto: "Vuelve la página de recursos de viaje (link en el pie de página), con los sitios oficiales de parques, clima, rutas y emergencias de Argentina y Chile, en español y en inglés",
       },
+      {
+        tipo: "nuevo",
+        texto: "Selector de idioma ES | EN arriba en todas las páginas, también en el celular — lleva a la misma página en el otro idioma y, si todavía no está traducida, a la portada en ese idioma con un aviso",
+      },
     ],
   },
   {

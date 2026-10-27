@@ -9,6 +9,9 @@ import {
   User, LogOut, Backpack, ShieldCheck, Flame, Bone, ChefHat, Droplets, Signpost,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
+import { LangToggle } from './LangToggle'
+import { LangFallbackNotice } from './LangFallbackNotice'
+import { useAltLang } from '@/lib/lang-alternate'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
 import { SearchOverlay } from './SearchOverlay'
 import type { SearchItem } from '@/lib/search/types'
@@ -78,6 +81,7 @@ export function HeaderShell({
   articleItems: SearchItem[]
 }) {
   const pathname = usePathname()
+  const altLang = useAltLang()
   const [menuOpen, setMenuOpen] = useState(false)
   const [exploreOpen, setExploreOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
@@ -128,6 +132,15 @@ export function HeaderShell({
     .map(({ href, hrefEn, label, Icon }) => ({ href: lang === 'en' ? hrefEn ?? href : href, label: label[lang], Icon }))
     .sort((a, b) => a.label.localeCompare(b.label, lang))
   const planItems = PLAN_ITEMS.map(({ href, label, Icon }) => ({ href, label: label[lang], Icon }))
+  // El idioma del selector sale de la ruta del cliente (`lang` viene del servidor
+  // y no cambia en las navegaciones del cliente).
+  const langToggle = (
+    <LangToggle
+      currentLang={altLang.current}
+      esHref={altLang.current === 'es' ? altLang.pathname : altLang.href}
+      enHref={altLang.current === 'en' ? altLang.pathname : altLang.href}
+    />
+  )
 
   async function handleSignIn() {
     const codeVerifier = generateRandomBase64url(32)
@@ -328,10 +341,13 @@ export function HeaderShell({
 
             <div className="w-px h-3.5 bg-border" />
             <DarkModeToggle lang={lang} />
+            <div className="w-px h-3.5 bg-border" />
+            <div className="px-1">{langToggle}</div>
           </div>
 
-          {/* Mobile: lupa + dark mode + hamburger */}
+          {/* Mobile: idioma + lupa + dark mode + hamburger */}
           <div className="md:hidden flex items-center gap-1 ml-auto">
+            <div className="px-1.5">{langToggle}</div>
             <button
               onClick={() => setSearchOpen(true)}
               aria-label={t.search}
@@ -351,6 +367,7 @@ export function HeaderShell({
           </div>
         </div>
       </header>
+      <LangFallbackNotice />
 
       {/* Mobile overlay + drawer */}
       <div

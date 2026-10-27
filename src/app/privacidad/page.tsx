@@ -6,7 +6,10 @@ export const metadata: Metadata = {
   title: "Política de Privacidad",
   description:
     "Cómo recopilamos, usamos y protegemos tu información personal en Outdoor Patagonia.",
-  alternates: { canonical: "https://outdoorpatagonia.com/privacidad" },
+  alternates: {
+    canonical: "https://outdoorpatagonia.com/privacidad",
+    languages: { en: "https://outdoorpatagonia.com/en/privacy" },
+  },
 };
 
 export default function PrivacidadPage() {
