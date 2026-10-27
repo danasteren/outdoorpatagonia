@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-27 — Se restaura /recursos-viaje-patagonia
+**Decisión:** vuelve la página de recursos en español, como par de /en/resources-traveling-patagonia.
+**Motivo:** el footer la linkea y el hreflang de la versión en inglés apunta a ella. Hoy da 404. El borrado del 19/06 dejó la versión en inglés sin par.
+**Detalle:** se toma de la historia de git (276e364^) y se adapta al diseño actual (PageHero). Los links son solo de organismos o sitios oficiales. Los links y textos de las dos páginas salen de un solo archivo (`src/lib/recursos.ts`, renderizado por `src/components/TravelResources.tsx`), así ES y EN no se desalinean. Criterio aplicado: para información (parques, clima, turismo, emergencias), solo organismos; para herramientas (Waze, Maps.me, iNaturalist, Wikiloc, Ruta 0) y la Guía Esqala, su sitio propio. Se sacaron Visit Chile (sitio comercial de tours; en su lugar va chile.travel, el oficial) y Comarca Una (guía privada, sin respaldo oficial a la vista). Gendarmería pasa a `argentina.gob.ar/gendarmeria` porque `gendarmeria.gob.ar` no responde. `patagonia-chile.com` se queda: es sitio de Sernatur.
+**Estado:** Vigente
+
 ## 2026-10-22 — Guía de Punta Arenas: alcance y datos que no se publican
 **Decisión:** la guía #7 se publica como `/destinos/punta-arenas` y `/en/guides/punta-arenas`. No se redirige ningún artículo viejo (no hay ninguno de Punta Arenas; el del Estrecho de Magallanes es de historia y sigue vivo). Los parques Alberto de Agostini y Cabo de Hornos suman el campo `relacionados` hacia la guía.
 **Motivo:** no hay artículos que compitan con la guía. Pali Aike, la Reserva Nacional Magallanes y el Monumento Natural Los Pingüinos no tienen página en `parques`, así que quedan dentro de la guía.

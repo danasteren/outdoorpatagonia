@@ -136,6 +136,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "correccion",
         texto: "En la portada, los temas de \"Explorá por tema\" quedan en filas parejas en computadora, sin una tarjeta suelta al final",
       },
+      {
+        tipo: "correccion",
+        texto: "Vuelve la página de recursos de viaje (link en el pie de página), con los sitios oficiales de parques, clima, rutas y emergencias de Argentina y Chile, en español y en inglés",
+      },
     ],
   },
   {

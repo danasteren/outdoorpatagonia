@@ -21,11 +21,12 @@ _Última actualización: 2026-10-27_
 - 2026-10-22: artículos con el diseño del sitio. La página de artículo usa `DetailHero` + columna principal y sidebar, como las fichas, y los listados de artículos (bloque de las secciones, categorías ES/EN y `/articulos`) usan `ArticleTile`, igual que las tarjetas de especies. La home en inglés (`/en`) pasó al mismo diseño: encabezado, "Explore by topic" con las categorías en inglés, guías de viaje y últimos artículos. `ArticleCard` se borró.
 - 2026-10-22: header y buscador en inglés en las páginas `/en` (menú, iniciar sesión, buscador, modo oscuro). Destinos apunta a `/en/guides`; el resto de las secciones sigue llevando a la versión en español porque no existe en inglés. El footer también está en inglés (links a `/en/…` donde existe la página, newsletter con mensajes en inglés).
 - 2026-10-23: grilla "Explorá por tema" de la home (ES y EN): 7 por fila en desktop, 5 en tablet y, en celular, la última tarjeta a lo ancho si queda sola (`TopicCard`).
+- 2026-10-27: vuelve `/recursos-viaje-patagonia` (daba 404 desde el 19/06), con el mismo contenido que `/en/resources-traveling-patagonia` desde `src/lib/recursos.ts`, hreflang recíproco y las dos en el sitemap. Links del footer ES y EN verificados: todos dan 200.
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 ## En curso
 
-- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9), Puerto Madryn + Península Valdés (#10, con "Destinos" en el nav y bloque en la home), Punta Arenas (#11), Puerto Varas + Puerto Montt (#12) Pucón (#13) y Chiloé (PR de la rutina, 2026-10-27, pendiente de revisión). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
+- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9), Puerto Madryn + Península Valdés (#10, con "Destinos" en el nav y bloque en la home), Punta Arenas (#11), Puerto Varas + Puerto Montt (#12) Pucón (#13) y Chiloé (#14). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
 
 ## Rutinas en la nube (lunes)
 

@@ -167,6 +167,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/operadores`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/anunciar`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${BASE}/novedades`, changeFrequency: "weekly", priority: 0.5 },
+    { url: `${BASE}/recursos-viaje-patagonia`, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${BASE}/en/resources-traveling-patagonia`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${BASE}/ahora`, changeFrequency: "hourly", priority: 0.6 },
     ...operatorUrls,
     ...parquesUrls,
