@@ -4,12 +4,33 @@
 
 import { PARQUES_CATALOG } from "@/lib/parques/catalog"
 import { SENDEROS_CATALOG } from "@/lib/senderos/catalog"
-import { DESTINOS_CATALOG } from "@/lib/destinos/catalog"
+import { DESTINOS_CATALOG, type DestinoEntry } from "@/lib/destinos/catalog"
 
 export function getDayOfYear(date: Date): number {
   const start = Date.UTC(date.getUTCFullYear(), 0, 0)
   const diff = date.getTime() - start
   return Math.floor(diff / 86_400_000)
+}
+
+// Día del año según el calendario de Argentina (UTC-3, sin horario de verano):
+// el destino del día cambia a medianoche de Argentina, no a medianoche UTC.
+export function getDayOfYearAR(date: Date): number {
+  const [year, month, day] = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Argentina/Buenos_Aires",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  })
+    .format(date)
+    .split("-")
+    .map(Number)
+  return getDayOfYear(new Date(Date.UTC(year, month - 1, day)))
+}
+
+// Guía de destino del hero de la home. Rota sobre todas las guías publicadas,
+// así que cada guía nueva entra sola. Es la misma en ES y EN.
+export function getDestinoDelDia(date: Date = new Date()): DestinoEntry {
+  return DESTINOS_CATALOG[getDayOfYearAR(date) % DESTINOS_CATALOG.length]
 }
 
 // Leading excerpt of a longer description, cut at the last full sentence
@@ -58,7 +79,9 @@ const HIGHLIGHTS_EN: DailyHighlight[] = DESTINOS_CATALOG.map((d) => ({
 
 export function getDailyHighlight(lang: "es" | "en" = "es"): DailyHighlight {
   const highlights = lang === "en" ? HIGHLIGHTS_EN : HIGHLIGHTS
-  const dayOfYear = getDayOfYear(new Date())
+  // En inglés el dato también sale de las guías: se corre uno para que no
+  // repita el destino del día del título.
+  const dayOfYear = getDayOfYearAR(new Date()) + (lang === "en" ? 1 : 0)
   return highlights[dayOfYear % highlights.length]
 }
 

@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-27 — Título del hero: destino del día con clima en vivo
+**Decisión:** el título fijo de la home se reemplaza por un "destino del día". Rota cada día entre las guías publicadas y muestra el clima actual de ese lugar, con un botón a la guía. Igual en ES y EN.
+**Motivo:** la usuaria quería un título que cambie todos los días. De las opciones (destino, especie o cielo del día), es la única que lleva tráfico a las guías, que es donde está la monetización (GetYourGuide).
+**Detalle:** la rotación sale del día del año (hora de Argentina) sobre DESTINOS_CATALOG, así que cada guía nueva entra sola. El clima viene de Open-Meteo (fetchWeatherForLocation). Si la API falla, el título queda sin el dato del clima. El <title> y la description de la home no cambian. Implementación (2026-10-28): `getDestinoDelDia()` y `getDayOfYearAR()` en `src/lib/dailyContent.ts` (cambia a medianoche de Argentina, no UTC). `Hero.tsx`: `h1` "Hoy en {destino}: X °C, viento de Y km/h" / "Today in {destino}: X °C (Y °F), Z km/h winds" (en inglés, " y " del nombre pasa a " and "), con espacios duros entre número y unidad; debajo el `subtitulo` de la guía y "Ver la guía" / "See the guide" como botón principal (mapa y planear pasan a botón con borde). El clima es la misma llamada que la guía (mismo caché de 1 h). Fondo: la portada de Wikipedia de la guía, con su crédito, pedida como miniatura de 1920 px (`wikipediaImageAt`); si el original mide menos de 1200 px de ancho (El Calafate, Punta Arenas, Pucón y Chiloé tienen portadas chicas o montajes), sigue la foto de iNaturalist. El crédito de la foto ahora se ve también en el celular. En inglés, el dato del día (que también sale de las guías) se corre un día para no repetir el destino del título; el dato del día también pasó a la fecha de Argentina.
+**Estado:** Vigente
+
 ## 2026-10-28 — Las rutinas de SEO/CTR y newsletter vuelven como tareas locales
 **Decisión:** la auditoría SEO/CTR y el borrador del newsletter se recrean como tareas programadas locales de la app de escritorio (lunes 09:30 y 10:00), igual que `guia-destino-diaria`. La de CTR abre PR; la del newsletter es de solo lectura.
 **Motivo:** las rutinas en la nube ya no existían (la lista de `RemoteTrigger` está vacía) y la de guías funciona bien como tarea local. La usuaria pidió recrearlas.

@@ -156,6 +156,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "mejora",
         texto: "La portada en inglés es la misma que la de español: el dato del día, los temas, las guías, la escalada, el estado de la Patagonia en vivo y el ozono, todo en inglés, con los últimos artículos al final",
       },
+      {
+        tipo: "nuevo",
+        texto: "Destino del día en la portada — cada día el título presenta una de las guías de viaje con su clima de ahora (temperatura y viento) y un botón para abrir la guía, en español y en inglés",
+      },
     ],
   },
   {
