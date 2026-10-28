@@ -331,7 +331,7 @@ export function DestinoGuide({
               </div>
             </section>
 
-            <RelacionadosSection items={entry.relacionados} heading={t.relacionados} />
+            <RelacionadosSection items={entry.relacionados} self={{ tipo: "destino", slug: entry.slug }} heading={t.relacionados} />
           </div>
 
           {/* Sidebar */}

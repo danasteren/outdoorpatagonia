@@ -67,6 +67,20 @@ export function resolveRelacionado(r: Relacionado): RelacionadoResuelto | null {
   }
 }
 
+/**
+ * Relacionados de una entrada más las guías de destino que la nombran. La simetría con las guías
+ * se calcula acá: una guía nueva no edita los catálogos que lista, así sus PR no chocan entre sí.
+ */
+export function conGuiasQueLaListan(self: Relacionado, items: Relacionado[] | undefined): Relacionado[] {
+  const guias: Relacionado[] = DESTINOS_CATALOG.filter(
+    (d) =>
+      !(self.tipo === "destino" && d.slug === self.slug) &&
+      d.relacionados?.some((r) => r.tipo === self.tipo && r.slug === self.slug),
+  ).map((d) => ({ tipo: "destino", slug: d.slug }))
+  const all = [...(items ?? []), ...guias]
+  return all.filter((r, i) => all.findIndex((o) => o.tipo === r.tipo && o.slug === r.slug) === i)
+}
+
 export function resolveRelacionados(items: Relacionado[] | undefined): RelacionadoResuelto[] {
   if (!items) return []
   return items

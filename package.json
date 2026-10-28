@@ -3,7 +3,9 @@
   "version": "1.7.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/gen-destinos.mjs",
     "dev": "next dev --port 3006",
+    "prebuild": "node scripts/gen-destinos.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

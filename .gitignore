@@ -42,3 +42,6 @@ next-env.d.ts
 
 # claude code (local-only, may contain secrets in old permission entries)
 .claude/settings.local.json
+
+# índices de las guías de destino (los arma scripts/gen-destinos.mjs)
+src/lib/destinos/*.generated.ts

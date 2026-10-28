@@ -134,7 +134,7 @@ export default async function TermaPage({
               </div>
             </div>
 
-            <RelacionadosSection items={entry.relacionados} />
+            <RelacionadosSection items={entry.relacionados} self={{ tipo: "termas", slug: entry.slug }} />
           </div>
 
           {/* Sidebar */}

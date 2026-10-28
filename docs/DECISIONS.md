@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-28 — Aprobar contenido no pasa por archivos compartidos
+**Decisión:** publicar contenido desde `/admin/agentes` sigue siendo mergear un PR, pero cada pieza de contenido es un archivo propio y los PR de contenido no tocan `docs/STATUS.md`, `docs/DECISIONS.md` ni `src/data/novedades.ts`. Esos tres quedan solo para cambios de código.
+**Motivo:** cada aprobación era un PR que tocaba archivos compartidos y los PR pendientes quedaban con merge conflicts (el #15, Coyhaique, chocaba en STATUS). Una guía tocaba siempre el final del array de `destinos/catalog.ts`, `destinos/redirects.ts`, STATUS, novedades y los `relacionados` de parques, termas, volcanes y gastronomía.
+**Detalle:** se descartó pasar el contenido a Supabase (borrador → publicado, sin PR): las guías son objetos tipados de ~370 líneas conectados con los demás catálogos, que también son estáticos, y migrarlas implicaba rehacer páginas, sitemap, buscador, relacionados, home y destino del día, más una migración manual. Queda como regla: el repo es para código; si un contenido sigue en archivos, va uno por pieza y sin índices editados a mano. Implementación: una guía es `src/lib/destinos/guias/<slug>.ts` (con `prioridad` = su número en `seo/destinos-prioridad.md`, que ordena los listados y la rotación del destino del día) y sus redirecciones van en `src/lib/destinos/legacy/<slug>.ts`. `scripts/gen-destinos.mjs` arma los índices (`*.generated.ts`, no versionados) en `predev` y `prebuild`. La vuelta de los relacionados desde las guías se calcula sola (`conGuiasQueLaListan`), así una guía no edita otros catálogos. El panel publica con squash y reintenta si main acaba de cambiar (GitHub responde 405 cuando se publican varios seguidos), avisa claro si un PR tiene conflictos y borra la rama al publicar o al descartar. No se actualiza la rama contra main antes de mergear: el squash ya se arma contra el main de ese momento. Reglas: `CLAUDE.md` (Workflow) y `.claude/rules/destinos.md`; prompts de las rutinas en `~/.claude/scheduled-tasks/`.
+**Estado:** Vigente
+
 ## 2026-10-27 — Título del hero: destino del día con clima en vivo
 **Decisión:** el título fijo de la home se reemplaza por un "destino del día". Rota cada día entre las guías publicadas y muestra el clima actual de ese lugar, con un botón a la guía. Igual en ES y EN.
 **Motivo:** la usuaria quería un título que cambie todos los días. De las opciones (destino, especie o cielo del día), es la única que lleva tráfico a las guías, que es donde está la monetización (GetYourGuide).

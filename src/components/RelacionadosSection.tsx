@@ -1,16 +1,19 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { resolveRelacionados, type Relacionado } from "@/lib/relacionados"
+import { conGuiasQueLaListan, resolveRelacionados, type Relacionado } from "@/lib/relacionados"
 import { Card } from "@/components/primitives/Card"
 
 export function RelacionadosSection({
   items,
+  self,
   heading = "También te puede interesar",
 }: {
   items?: Relacionado[]
+  /** La entrada de la página: suma las guías de destino que la listan. */
+  self?: Relacionado
   heading?: string
 }) {
-  const resolved = resolveRelacionados(items)
+  const resolved = resolveRelacionados(self ? conGuiasQueLaListan(self, items) : items)
   if (resolved.length === 0) return null
 
   return (

@@ -165,7 +165,7 @@ export default async function GastronomiaEntryPage({
               </div>
             </div>
 
-            <RelacionadosSection items={entry.relacionados} />
+            <RelacionadosSection items={entry.relacionados} self={{ tipo: "gastronomia", slug: entry.slug }} />
           </div>
 
           {/* Sidebar */}

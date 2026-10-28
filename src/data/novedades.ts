@@ -160,6 +160,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "nuevo",
         texto: "Destino del día en la portada — cada día el título presenta una de las guías de viaje con su clima de ahora (temperatura y viento) y un botón para abrir la guía, en español y en inglés",
       },
+      {
+        tipo: "mejora",
+        texto: "Las fichas de parques, volcanes, termas y platos típicos muestran siempre las guías de viaje que los mencionan, en \"También te puede interesar\"",
+      },
     ],
   },
   {
