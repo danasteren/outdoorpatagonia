@@ -144,6 +144,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "nuevo",
         texto: "Selector de idioma ES | EN arriba en todas las páginas, también en el celular — lleva a la misma página en el otro idioma y, si todavía no está traducida, a la portada en ese idioma con un aviso",
       },
+      {
+        tipo: "correccion",
+        texto: "Al pasar un artículo al otro idioma desde el costado de la nota, el menú y el pie de página quedaban en el idioma anterior",
+      },
     ],
   },
   {
