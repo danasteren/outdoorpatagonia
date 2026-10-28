@@ -13,4 +13,6 @@ export const LEGACY_TO_GUIDE: Record<string, string> = {
   "/en/destinations/el-chalten-patagonia-argentina": "/en/guides/el-chalten",
   "/lugares/puerto-montt-chile": "/destinos/puerto-varas",
   "/en/destinations/puerto-montt-travel-guide-chile": "/en/guides/puerto-varas",
+  "/lugares/carretera-austral-patagonia-chilena": "/destinos/coyhaique",
+  "/en/destinations/carretera-austral-chilean-patagonia": "/en/guides/coyhaique",
 }

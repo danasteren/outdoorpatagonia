@@ -65,6 +65,10 @@ export const novedades: VersionNovedades[] = [
         texto: "Guía de viaje de Chiloé — qué hacer, clima, cuándo ir y cómo llegar, con las iglesias Patrimonio de la Humanidad, los palafitos de Castro, los pingüinos de Puñihuil y el Parque Nacional Chiloé, en español y en inglés",
       },
       {
+        tipo: "nuevo",
+        texto: "Guía de viaje de Coyhaique y la Carretera Austral — qué hacer, clima, cuándo ir y cómo llegar, con las Capillas de Mármol, el Parque Nacional Cerro Castillo, el Ventisquero Colgante de Queulat y el glaciar San Rafael, en español y en inglés",
+      },
+      {
         tipo: "mejora",
         texto: "Las guías de destino ya están en el menú Explorar y en la página de inicio",
       },

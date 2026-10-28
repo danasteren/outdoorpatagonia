@@ -341,7 +341,10 @@ export const TERMAS_CATALOG: TermaEntry[] = [
     ],
     urlFuente: "https://www.puyuhuapilodge.com/",
     wikipediaTitle: "Termas de Puyuhuapi",
-    relacionados: [{ tipo: "parque", slug: "queulat" }],
+    relacionados: [
+      { tipo: "parque", slug: "queulat" },
+      { tipo: "destino", slug: "coyhaique" },
+    ],
   },
 ]
 
