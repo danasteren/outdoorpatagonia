@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-27 — /mapa a pantalla completa, sin footer
+**Decisión:** `/mapa` ocupa exactamente el viewport: header con su alto real arriba y el mapa llenando el resto, sin footer. En mobile no se ve el hero (el `h1` queda con `sr-only`). Con la ficha de un punto abierta, los controles quedan debajo del backdrop.
+**Motivo:** en mobile el mapa era `fixed` con `top: 8rem`: por el hueco se veían el hero y el footer, la página scrolleaba y los controles de capas y zoom (z-1000) tapaban la ficha (z-800).
+**Detalle:** el alto sale de CSS y no de medir el header: `body:has([data-map-fullscreen])` pasa a `height: 100dvh` + `overflow: hidden` y `main` a flex columna (`globals.css`); `MapPageClient` lleva el atributo. Así funciona también al llegar con `<Link>`, donde el layout no se vuelve a renderizar. Por el mismo motivo el footer se oculta con `HideOnPaths` (componente cliente con `usePathname`) y no leyendo `x-pathname` en el layout. El contenedor del mapa tiene `isolate` (los z-index de Leaflet, hasta 1000, quedan adentro y no pasan por encima del header ni de la ficha) y `overflow-hidden` (el bottom sheet cerrado, con `translate-y-full`, agregaba 23px de scroll). Capas: controles z-10, backdrop y panel desktop z-20, bottom sheet z-30. Zoom y capas suman `env(safe-area-inset-*)`. Desktop no cambia: hero compacto, panel lateral y controles en el mismo lugar.
+**Estado:** Vigente
+
 ## 2026-10-27 — Selector de idioma en el header
 **Decisión:** el header muestra ES | EN en todas las páginas. Lleva al par de la página actual (el mismo que su hreflang). Si no hay par, lleva a la home del otro idioma.
 **Motivo:** hoy solo se puede cambiar de idioma desde el sidebar de los artículos. El resto del sitio no tiene forma de llegar a la otra versión.

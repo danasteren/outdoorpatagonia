@@ -27,7 +27,7 @@ export function MapInfoPanel({ feature, open, onClose }: MapInfoPanelProps) {
       {/* Desktop: side panel */}
       <div
         className={[
-          "hidden md:flex flex-col absolute top-4 right-14 bottom-4 z-[800]",
+          "hidden md:flex flex-col absolute top-4 right-14 bottom-4 z-20",
           "w-80 bg-card border border-border rounded-xl shadow-modal",
           "transition-all duration-300 ease-out",
           open && feature
@@ -41,7 +41,7 @@ export function MapInfoPanel({ feature, open, onClose }: MapInfoPanelProps) {
       {/* Mobile: backdrop */}
       <div
         className={[
-          "md:hidden absolute inset-0 z-[799] bg-black/40 backdrop-blur-[1px]",
+          "md:hidden absolute inset-0 z-20 bg-black/40 backdrop-blur-[1px]",
           "transition-opacity duration-300",
           open && feature ? "opacity-100" : "opacity-0 pointer-events-none",
         ].join(" ")}
@@ -51,7 +51,7 @@ export function MapInfoPanel({ feature, open, onClose }: MapInfoPanelProps) {
       {/* Mobile: bottom drawer */}
       <div
         className={[
-          "md:hidden absolute inset-x-0 bottom-0 z-[800]",
+          "md:hidden absolute inset-x-0 bottom-0 z-30",
           "bg-card border-t border-border rounded-t-2xl shadow-modal overflow-hidden",
           "transition-transform duration-300 ease-out",
           open && feature ? "translate-y-0" : "translate-y-full",

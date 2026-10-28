@@ -148,6 +148,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "correccion",
         texto: "Al pasar un artículo al otro idioma desde el costado de la nota, el menú y el pie de página quedaban en el idioma anterior",
       },
+      {
+        tipo: "correccion",
+        texto: "El mapa en el celular ocupa toda la pantalla debajo del menú, sin franjas ni el pie de página asomando, y al tocar un punto la ficha ya no queda tapada por los botones de capas y de zoom",
+      },
     ],
   },
   {

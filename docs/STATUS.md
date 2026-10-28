@@ -23,6 +23,7 @@ _Última actualización: 2026-10-27_
 - 2026-10-23: grilla "Explorá por tema" de la home (ES y EN): 7 por fila en desktop, 5 en tablet y, en celular, la última tarjeta a lo ancho si queda sola (`TopicCard`).
 - 2026-10-27: vuelve `/recursos-viaje-patagonia` (daba 404 desde el 19/06), con el mismo contenido que `/en/resources-traveling-patagonia` desde `src/lib/recursos.ts`, hreflang recíproco y las dos en el sitemap. Links del footer ES y EN verificados: todos dan 200.
 - 2026-10-27: selector de idioma ES | EN en el header (desktop y mobile), en todas las páginas. Lee el hreflang de la página; sin par va a la home del otro idioma con un aviso. Probado en 24 páginas de muestra: ningún link da 404. Las ES legales y la home suman el hreflang `en` que les faltaba. El link "Read in English / Leer en español" del sidebar de los artículos también pasó a carga completa (antes dejaba header y footer en el idioma anterior).
+- 2026-10-27: `/mapa` prolijo en mobile. El mapa llena justo el viewport debajo del header (100dvh, sin número mágico), sin footer ni franjas; en mobile el hero queda solo como `h1` para lectores de pantalla. Con la ficha de un punto abierta, los controles de capas, zoom y la atribución de Leaflet quedan debajo del backdrop. Probado a 375×667, 390×844 y desktop (igual que antes), también entrando y saliendo con `<Link>`.
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 ## En curso

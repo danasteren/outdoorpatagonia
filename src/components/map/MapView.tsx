@@ -132,11 +132,12 @@ export function MapView() {
   const { url: tileUrl, attribution } = BASEMAP_TILES[basemap];
 
   return (
-    <div
-      className="fixed left-0 right-0 bottom-0 z-40"
-      style={{ top: "8rem" }}
-    >
+    // isolate: los z-index de Leaflet (hasta 1000) quedan adentro del mapa y no
+    // pasan por encima del header ni del panel de un punto. overflow-hidden: el
+    // bottom sheet cerrado (translate-y-full) no agrega scroll a la página.
+    <div className="relative flex-1 min-h-0 isolate overflow-hidden">
       <MapContainer
+        className="isolate"
         center={CENTER}
         zoom={ZOOM}
         minZoom={3}
@@ -246,8 +247,14 @@ export function MapView() {
         <MapController mapRef={mapRef} />
       </MapContainer>
 
-      {/* Layer controls — top left */}
-      <div className="absolute top-4 left-4 z-[1000]">
+      {/* Layer controls — top left (debajo del backdrop del panel en mobile) */}
+      <div
+        className="absolute z-10"
+        style={{
+          top: "1rem",
+          left: "calc(1rem + env(safe-area-inset-left))",
+        }}
+      >
         <LayerControls
           activeLayers={activeLayers}
           onToggle={toggleLayer}
@@ -260,7 +267,13 @@ export function MapView() {
       </div>
 
       {/* Zoom controls — bottom right */}
-      <div className="absolute bottom-8 right-4 z-[1000] flex flex-col gap-1">
+      <div
+        className="absolute z-10 flex flex-col gap-1"
+        style={{
+          bottom: "calc(2rem + env(safe-area-inset-bottom))",
+          right: "calc(1rem + env(safe-area-inset-right))",
+        }}
+      >
         <button
           onClick={() => mapRef.current?.zoomIn()}
           className="w-9 h-9 flex items-center justify-center bg-card/95 backdrop-blur-sm border border-border rounded-lg shadow-card text-foreground hover:bg-muted transition-colors"

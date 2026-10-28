@@ -5,6 +5,7 @@ import Script from "next/script";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { HideOnPaths } from "@/components/HideOnPaths";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -100,7 +101,10 @@ export default async function RootLayout({
         <main className="flex-1">
           {children}
         </main>
-        <Footer lang={lang} />
+        {/* /mapa ocupa todo el viewport: sin footer */}
+        <HideOnPaths paths={["/mapa"]}>
+          <Footer lang={lang} />
+        </HideOnPaths>
       </body>
     </html>
   );

@@ -341,3 +341,19 @@
     @apply bg-transparent p-0;
   }
 }
+
+/* /mapa: la página ocupa justo el viewport. El header queda en el flujo
+   con su alto real y el mapa llena lo que sobra (main → flex-1). */
+body:has([data-map-fullscreen]) {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+body:has([data-map-fullscreen]) > main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+[data-map-fullscreen] .leaflet-bottom {
+  margin-bottom: env(safe-area-inset-bottom);
+}
