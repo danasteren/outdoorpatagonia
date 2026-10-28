@@ -7,7 +7,7 @@ import {
   Wind,
 } from "lucide-react"
 import { Card } from "@/components/primitives"
-import type { WeatherData } from "@/lib/apis/openmeteo"
+import { wmoToCondition, type WeatherData } from "@/lib/apis/openmeteo"
 
 function WeatherIcon({
   code,
@@ -39,7 +39,7 @@ function uvColor(uv: number): string {
   return "text-violet-500"
 }
 
-function WeatherCard({ data }: { data: WeatherData }) {
+function WeatherCard({ data, lang }: { data: WeatherData; lang: "es" | "en" }) {
   return (
     <Card variant="elevated" className="p-4">
       <div className="flex items-center justify-between mb-3">
@@ -52,7 +52,7 @@ function WeatherCard({ data }: { data: WeatherData }) {
         <span className="text-3xl font-bold font-heading leading-none">
           {data.temperature}°
         </span>
-        <span className="text-xs text-muted-foreground pb-0.5">{data.condition}</span>
+        <span className="text-xs text-muted-foreground pb-0.5">{wmoToCondition(data.weatherCode, lang)}</span>
       </div>
       <div className="flex items-center justify-between text-xs text-muted-foreground">
         <span className="flex items-center gap-1">
@@ -70,22 +70,23 @@ function WeatherCard({ data }: { data: WeatherData }) {
 
 interface Props {
   data: WeatherData[]
+  lang?: "es" | "en"
 }
 
-export function WeatherSection({ data }: Props) {
+export function WeatherSection({ data, lang = "es" }: Props) {
   if (data.length === 0) return null
   return (
     <div>
       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-3">
-        Clima en puntos clave
+        {lang === "en" ? "Weather at key spots" : "Clima en puntos clave"}
       </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {data.map((w) => (
-          <WeatherCard key={w.location} data={w} />
+          <WeatherCard key={w.location} data={w} lang={lang} />
         ))}
       </div>
       <p className="text-[10px] text-muted-foreground mt-2 text-right">
-        Fuente:{" "}
+        {lang === "en" ? "Source" : "Fuente"}:{" "}
         <a
           href="https://open-meteo.com"
           target="_blank"

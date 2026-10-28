@@ -4,9 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import {
-  Menu, X, Map, Globe, Compass, ChevronDown, Users, Search,
-  PawPrint, Leaf, MapPin, Mountain, Activity, Pickaxe, Telescope,
-  User, LogOut, Backpack, ShieldCheck, Flame, Bone, ChefHat, Droplets, Signpost,
+  Menu, X, Map, Globe, ChevronDown, Users, Search, User, LogOut, ShieldCheck,
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { LangToggle } from './LangToggle'
@@ -15,44 +13,20 @@ import { useAltLang } from '@/lib/lang-alternate'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
 import { SearchOverlay } from './SearchOverlay'
 import type { SearchItem } from '@/lib/search/types'
+import { EXPLORE_ITEMS, PLAN_ITEMS, TOOL_ITEMS, localizeNavItem, type Lang } from '@/lib/nav-items'
 
 export type AuthUser = { name: string; email: string; avatarUrl: string | null } | null
 
 const ADMIN_EMAIL = 'danasteren@gmail.com'
 
-type Lang = 'es' | 'en'
-type Label = Record<Lang, string>
-
-// Lista única del menú: la usan el dropdown de desktop y el drawer de mobile.
-// Las secciones solo existen en español, salvo Destinos (hrefEn).
-const EXPLORE_ITEMS: { href: string; hrefEn?: string; label: Label; Icon: React.ElementType }[] = [
-  { href: '/arqueologia', label: { es: 'Arqueología', en: 'Archaeology' }, Icon: Bone },
-  { href: '/astronomia', label: { es: 'Astronomía', en: 'Astronomy' }, Icon: Telescope },
-  { href: '/destinos', hrefEn: '/en/guides', label: { es: 'Destinos', en: 'Destinations' }, Icon: Signpost },
-  { href: '/escalada', label: { es: 'Escalada', en: 'Climbing' }, Icon: Pickaxe },
-  { href: '/estado', label: { es: 'Estado', en: 'Conditions' }, Icon: Activity },
-  { href: '/fauna', label: { es: 'Fauna', en: 'Fauna' }, Icon: PawPrint },
-  { href: '/flora', label: { es: 'Flora', en: 'Flora' }, Icon: Leaf },
-  { href: '/gastronomia', label: { es: 'Gastronomía', en: 'Gastronomy' }, Icon: ChefHat },
-  { href: '/parques', label: { es: 'Parques', en: 'Parks' }, Icon: Mountain },
-  { href: '/senderos', label: { es: 'Senderos', en: 'Trails' }, Icon: MapPin },
-  { href: '/termas', label: { es: 'Termas', en: 'Hot springs' }, Icon: Droplets },
-  { href: '/volcanes', label: { es: 'Volcanes', en: 'Volcanoes' }, Icon: Flame },
-]
-
-const PLAN_ITEMS: { href: string; label: Label; Icon: React.ElementType }[] = [
-  { href: '/planear', label: { es: 'Itinerario', en: 'Itinerary' }, Icon: Compass },
-  { href: '/planear/que-llevar', label: { es: 'Qué llevar', en: 'What to pack' }, Icon: Backpack },
-]
-
 const T = {
   es: {
-    explore: 'Explorar', tools: 'Herramientas', plan: 'Planear', map: 'Mapa', mapLong: 'Mapa interactivo',
+    explore: 'Explorar', tools: 'Herramientas', plan: 'Planear', mapLong: 'Mapa interactivo',
     operators: 'Operadores', search: 'Buscar', userMenu: 'Menú de usuario', myProfile: 'Mi perfil',
     signIn: 'Iniciar sesión', signOut: 'Cerrar sesión', menu: 'Menú', openMenu: 'Abrir menú', closeMenu: 'Cerrar menú',
   },
   en: {
-    explore: 'Explore', tools: 'Tools', plan: 'Plan', map: 'Map', mapLong: 'Interactive map',
+    explore: 'Explore', tools: 'Tools', plan: 'Plan', mapLong: 'Interactive map',
     operators: 'Tour operators', search: 'Search', userMenu: 'User menu', myProfile: 'My profile',
     signIn: 'Sign in', signOut: 'Sign out', menu: 'Menu', openMenu: 'Open menu', closeMenu: 'Close menu',
   },
@@ -129,9 +103,10 @@ export function HeaderShell({
 
   const t = T[lang]
   const exploreItems = EXPLORE_ITEMS
-    .map(({ href, hrefEn, label, Icon }) => ({ href: lang === 'en' ? hrefEn ?? href : href, label: label[lang], Icon }))
+    .map((item) => localizeNavItem(item, lang))
     .sort((a, b) => a.label.localeCompare(b.label, lang))
-  const planItems = PLAN_ITEMS.map(({ href, label, Icon }) => ({ href, label: label[lang], Icon }))
+  const planItems = PLAN_ITEMS.map((item) => localizeNavItem(item, lang))
+  const toolItems = TOOL_ITEMS.map((item) => localizeNavItem(item, lang))
   // El idioma del selector sale de la ruta del cliente (`lang` viene del servidor
   // y no cambia en las navegaciones del cliente).
   const langToggle = (
@@ -227,10 +202,7 @@ export function HeaderShell({
                     {t.tools}
                   </p>
                   <div className="grid grid-cols-2 gap-0.5">
-                    {[
-                      { href: '/mapa', label: t.map, Icon: Map },
-                      { href: '/operadores', label: t.operators, Icon: Users },
-                    ].map(({ href, label, Icon }) => (
+                    {toolItems.map(({ href, label, Icon }) => (
                       <Link
                         key={href}
                         href={href}

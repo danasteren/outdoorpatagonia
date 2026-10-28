@@ -65,10 +65,6 @@ export const novedades: VersionNovedades[] = [
         texto: "Guía de viaje de Chiloé — qué hacer, clima, cuándo ir y cómo llegar, con las iglesias Patrimonio de la Humanidad, los palafitos de Castro, los pingüinos de Puñihuil y el Parque Nacional Chiloé, en español y en inglés",
       },
       {
-        tipo: "nuevo",
-        texto: "Guía de viaje de Coyhaique y la Carretera Austral — qué hacer, clima, cuándo ir y cómo llegar, con las Capillas de Mármol, el Parque Nacional Cerro Castillo, el Ventisquero Colgante de Queulat y el glaciar San Rafael, en español y en inglés",
-      },
-      {
         tipo: "mejora",
         texto: "Las guías de destino ya están en el menú Explorar y en la página de inicio",
       },
@@ -155,6 +151,18 @@ export const novedades: VersionNovedades[] = [
       {
         tipo: "correccion",
         texto: "El mapa en el celular ocupa toda la pantalla debajo del menú, sin franjas ni el pie de página asomando, y al tocar un punto la ficha ya no queda tapada por los botones de capas y de zoom",
+      },
+      {
+        tipo: "mejora",
+        texto: "La portada en inglés es la misma que la de español: el dato del día, los temas, las guías, la escalada, el estado de la Patagonia en vivo y el ozono, todo en inglés, con los últimos artículos al final",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Destino del día en la portada — cada día el título presenta una de las guías de viaje con su clima de ahora (temperatura y viento) y un botón para abrir la guía, en español y en inglés",
+      },
+      {
+        tipo: "mejora",
+        texto: "Las fichas de parques, volcanes, termas y platos típicos muestran siempre las guías de viaje que los mencionan, en \"También te puede interesar\"",
       },
     ],
   },

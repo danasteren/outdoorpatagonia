@@ -8,7 +8,7 @@ import {
   CloudLightning,
 } from "lucide-react"
 import { Card } from "@/components/primitives"
-import type { GlacierData } from "@/lib/apis/openmeteo"
+import { wmoToCondition, type GlacierData } from "@/lib/apis/openmeteo"
 
 function WeatherIcon({ code, className }: { code: number; className?: string }) {
   const props = { size: 16, strokeWidth: 1.5, className }
@@ -20,7 +20,7 @@ function WeatherIcon({ code, className }: { code: number; className?: string }) 
   return <CloudLightning {...props} />
 }
 
-function GlacierCard({ data }: { data: GlacierData }) {
+function GlacierCard({ data, lang }: { data: GlacierData; lang: "es" | "en" }) {
   return (
     <Card variant="elevated" className="p-4">
       <div className="flex items-center justify-between mb-2">
@@ -28,7 +28,7 @@ function GlacierCard({ data }: { data: GlacierData }) {
           <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground truncate">
             {data.location}
           </p>
-          <p className="text-[9px] text-muted-foreground">{data.sublabel}</p>
+          <p className="text-[9px] text-muted-foreground">{lang === "en" ? data.sublabelEn : data.sublabel}</p>
         </div>
         <WeatherIcon code={data.weatherCode} className="text-primary flex-shrink-0" />
       </div>
@@ -36,7 +36,7 @@ function GlacierCard({ data }: { data: GlacierData }) {
         <span className="text-2xl font-bold font-heading leading-none">
           {data.temperature}°
         </span>
-        <span className="text-xs text-muted-foreground pb-0.5">{data.condition}</span>
+        <span className="text-xs text-muted-foreground pb-0.5">{wmoToCondition(data.weatherCode, lang)}</span>
       </div>
       <div className="flex items-center gap-3 text-xs text-muted-foreground">
         <span className="flex items-center gap-1">
@@ -56,22 +56,23 @@ function GlacierCard({ data }: { data: GlacierData }) {
 
 interface Props {
   data: GlacierData[]
+  lang?: "es" | "en"
 }
 
-export function GlacierSection({ data }: Props) {
+export function GlacierSection({ data, lang = "es" }: Props) {
   if (data.length === 0) return null
   return (
     <div>
       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-3">
-        Glaciares — temperatura actual
+        {lang === "en" ? "Glaciers — current temperature" : "Glaciares — temperatura actual"}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {data.map((g) => (
-          <GlacierCard key={g.location} data={g} />
+          <GlacierCard key={g.location} data={g} lang={lang} />
         ))}
       </div>
       <p className="text-[10px] text-muted-foreground mt-2 text-right">
-        Fuente:{" "}
+        {lang === "en" ? "Source" : "Fuente"}:{" "}
         <a
           href="https://open-meteo.com"
           target="_blank"

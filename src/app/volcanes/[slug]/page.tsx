@@ -203,7 +203,7 @@ export default async function VolcanPage({
               </div>
             </div>
 
-            <RelacionadosSection items={entry.relacionados} />
+            <RelacionadosSection items={entry.relacionados} self={{ tipo: "volcan", slug: entry.slug }} />
 
           </div>
 

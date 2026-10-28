@@ -320,7 +320,7 @@ export default async function ParqueNacionalPage({
               </p>
             </section>
 
-            <RelacionadosSection items={entry.relacionados} />
+            <RelacionadosSection items={entry.relacionados} self={{ tipo: "parque", slug: entry.slug }} />
           </div>
 
           {/* Right col — 2/5 */}

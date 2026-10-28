@@ -358,10 +358,7 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.conaf.cl/parques/parque-nacional-queulat/",
     faunaEspecies: [],
     senderosEnElParque: [],
-    relacionados: [
-      { tipo: "termas", slug: "puyuhuapi" },
-      { tipo: "destino", slug: "coyhaique" },
-    ],
+    relacionados: [{ tipo: "termas", slug: "puyuhuapi" }],
   },
   {
     slug: "torres-del-paine",
@@ -641,7 +638,6 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
       { label: "Glaciar San Rafael en zodiac", query: "laguna san rafael glacier tour" },
       { label: "Ferry Puerto Montt — Campos de Hielo", query: "puerto montt san rafael glacier navigation" },
     ],
-    relacionados: [{ tipo: "destino", slug: "coyhaique" }],
   },
   {
     slug: "cerro-castillo",
@@ -669,7 +665,6 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
       { label: "Trekking Cerro Castillo (4 días)", query: "cerro castillo trekking patagonia" },
       { label: "Tour desde Coyhaique", query: "coyhaique patagonia day tour" },
     ],
-    relacionados: [{ tipo: "destino", slug: "coyhaique" }],
   },
   {
     slug: "patagonia-cl",
@@ -694,7 +689,6 @@ export const PARQUES_CATALOG: ParqueEntry[] = [
     website: "https://www.conaf.cl/parques/parque-nacional-patagonia/",
     faunaEspecies: ["huemul", "puma", "guanaco", "condor-andino", "choique", "flamenco-austral"],
     senderosEnElParque: [],
-    relacionados: [{ tipo: "destino", slug: "coyhaique" }],
   },
   {
     slug: "kawesqar",

@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 import type { DestinoEntry, DestinoLang } from "@/lib/destinos/catalog"
 import type { ClimateNormals } from "@/lib/apis/climate"
-import type { WeatherData } from "@/lib/apis/openmeteo"
+import { wmoToCondition, type WeatherData } from "@/lib/apis/openmeteo"
 import type { WikipediaImage } from "@/lib/apis/wikipedia"
 import { gygSearchUrl } from "@/lib/affiliates/getyourguide"
 import { Card, CardBody } from "@/components/primitives/Card"
@@ -90,20 +90,6 @@ const T = {
     pais: { AR: "Argentina", CL: "Chile" },
   },
 } as const
-
-// Mismo corte que wmoToCondition (openmeteo.ts), en inglés.
-function conditionEn(code: number): string {
-  if (code === 0) return "Clear"
-  if (code <= 2) return "Partly cloudy"
-  if (code === 3) return "Overcast"
-  if (code <= 48) return "Fog"
-  if (code <= 57) return "Drizzle"
-  if (code <= 67) return "Rain"
-  if (code <= 77) return "Snow"
-  if (code <= 82) return "Showers"
-  if (code <= 86) return "Snow showers"
-  return "Thunderstorm"
-}
 
 const toF = (c: number) => Math.round((c * 9) / 5 + 32)
 
@@ -242,7 +228,7 @@ export function DestinoGuide({
                       {weather.temperature}°C
                       {lang === "en" && <span className="text-base font-normal text-muted-foreground"> / {toF(weather.temperature)}°F</span>}
                     </span>
-                    <span className="text-foreground">{lang === "es" ? weather.condition : conditionEn(weather.weatherCode)}</span>
+                    <span className="text-foreground">{lang === "es" ? weather.condition : wmoToCondition(weather.weatherCode, "en")}</span>
                     <span className="flex items-center gap-1 text-sm text-muted-foreground">
                       <Wind size={13} strokeWidth={1.5} />
                       {weather.windSpeed} km/h {t.viento}
@@ -345,7 +331,7 @@ export function DestinoGuide({
               </div>
             </section>
 
-            <RelacionadosSection items={entry.relacionados} heading={t.relacionados} />
+            <RelacionadosSection items={entry.relacionados} self={{ tipo: "destino", slug: entry.slug }} heading={t.relacionados} />
           </div>
 
           {/* Sidebar */}

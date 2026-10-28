@@ -75,12 +75,14 @@ interface Props {
   sightings: Sighting[]
   sourceUrl?: string
   sourceName?: string
+  lang?: "es" | "en"
 }
 
 export function SightingList({
   sightings,
   sourceUrl = "https://www.inaturalist.org",
   sourceName = "iNaturalist",
+  lang = "es",
 }: Props) {
   const [selected, setSelected] = useState<Sighting | null>(null)
 
@@ -96,7 +98,7 @@ export function SightingList({
 
       {sourceUrl && (
         <p className="text-[10px] text-muted-foreground mt-2 text-right">
-          Fuente:{" "}
+          {lang === "en" ? "Source" : "Fuente"}:{" "}
           <a
             href={sourceUrl}
             target="_blank"
@@ -160,7 +162,7 @@ export function SightingList({
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
                 >
-                  Ver en {sourceName}
+                  {lang === "en" ? "View on" : "Ver en"} {sourceName}
                   <ExternalLink size={13} strokeWidth={1.5} />
                 </a>
               </div>

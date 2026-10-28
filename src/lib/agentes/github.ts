@@ -98,26 +98,59 @@ export async function getAgentPrs(): Promise<AgentPrs> {
   }
 }
 
-export async function publishPr(number: number): Promise<void> {
-  const res = await fetch(`${API}/pulls/${number}/merge`, {
-    method: "PUT",
-    headers: headers(),
-    body: JSON.stringify({ merge_method: "squash" }),
-  });
-  if (!res.ok) {
-    const data = (await res.json().catch(() => ({}))) as { message?: string };
-    throw new Error(data.message ?? `GitHub respondió ${res.status}`);
+async function ghError(res: Response): Promise<Error> {
+  const data = (await res.json().catch(() => ({}))) as { message?: string };
+  return new Error(data.message ?? `GitHub respondió ${res.status}`);
+}
+
+async function getPull(number: number): Promise<GhPull & { mergeable: boolean | null }> {
+  const res = await fetch(`${API}/pulls/${number}`, { headers: headers(), cache: "no-store" });
+  if (!res.ok) throw await ghError(res);
+  return res.json();
+}
+
+// La rama de una rutina no sirve después de publicar o descartar: se borra para no dejarla colgada.
+async function deleteBranch(ref: string): Promise<void> {
+  if (ref === "main") return;
+  const res = await fetch(`${API}/git/refs/heads/${encodeURIComponent(ref)}`, { method: "DELETE", headers: headers() });
+  // 422/404: ya no existe (por ejemplo, la borró GitHub al mergear). Otro error no frena la
+  // publicación, que ya se hizo: queda en el log de Vercel.
+  if (!res.ok && res.status !== 404 && res.status !== 422) {
+    console.error(`No se pudo borrar la rama ${ref}:`, (await ghError(res)).message);
   }
 }
 
+export async function publishPr(number: number): Promise<void> {
+  const pr = await getPull(number);
+  if (pr.mergeable === false) {
+    throw new Error("El PR tiene conflictos con main. Hay que rehacerlo sobre main antes de publicarlo.");
+  }
+  // El squash se arma contra el main de ese momento, así que no hace falta actualizar la rama antes.
+  // Si se publican varios seguidos, GitHub puede responder 405 ("Base branch was modified")
+  // mientras procesa el anterior: se reintenta.
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(`${API}/pulls/${number}/merge`, {
+      method: "PUT",
+      headers: headers(),
+      body: JSON.stringify({ merge_method: "squash", sha: pr.head.sha }),
+    });
+    if (res.ok) break;
+    if (res.status === 405 && attempt < 3) {
+      await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+      continue;
+    }
+    throw await ghError(res);
+  }
+  await deleteBranch(pr.head.ref);
+}
+
 export async function discardPr(number: number): Promise<void> {
+  const pr = await getPull(number);
   const res = await fetch(`${API}/pulls/${number}`, {
     method: "PATCH",
     headers: headers(),
     body: JSON.stringify({ state: "closed" }),
   });
-  if (!res.ok) {
-    const data = (await res.json().catch(() => ({}))) as { message?: string };
-    throw new Error(data.message ?? `GitHub respondió ${res.status}`);
-  }
+  if (!res.ok) throw await ghError(res);
+  await deleteBranch(pr.head.ref);
 }

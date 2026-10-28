@@ -1,18 +1,6 @@
 // Artículos viejos (migrados de WordPress) que pasan a vivir dentro de una guía de destino.
 // Clave: ruta vieja exacta. Valor: guía nueva. proxy.ts responde 301 y sitemap.ts los excluye,
 // así Google concentra todo en la guía en vez de tener dos páginas compitiendo.
-// Sin imports a propósito: lo carga proxy.ts en cada request.
-export const LEGACY_TO_GUIDE: Record<string, string> = {
-  "/lugares/bariloche-argentina": "/destinos/bariloche",
-  "/en/destinations/bariloche-travel-guide": "/en/guides/bariloche",
-  "/lugares/visitar-glaciar-perito-moreno-guia": "/destinos/el-calafate",
-  "/en/destinations/perito-moreno-glacier": "/en/guides/el-calafate",
-  "/lugares/torres-del-paine-patagonia": "/destinos/puerto-natales",
-  "/en/destinations/torres-del-paine-patagonia": "/en/guides/puerto-natales",
-  "/lugares/chalten-patagonia-argentina": "/destinos/el-chalten",
-  "/en/destinations/el-chalten-patagonia-argentina": "/en/guides/el-chalten",
-  "/lugares/puerto-montt-chile": "/destinos/puerto-varas",
-  "/en/destinations/puerto-montt-travel-guide-chile": "/en/guides/puerto-varas",
-  "/lugares/carretera-austral-patagonia-chilena": "/destinos/coyhaique",
-  "/en/destinations/carretera-austral-chilean-patagonia": "/en/guides/coyhaique",
-}
+// Cada guía con artículos viejos tiene su archivo en ./legacy/<slug>.ts; el mapa lo arma
+// scripts/gen-destinos.mjs. Sin contenido de las guías a propósito: lo carga proxy.ts en cada request.
+export { LEGACY_TO_GUIDE } from "@/lib/destinos/legacy.generated"

@@ -21,7 +21,9 @@ El repo es la única fuente de verdad. El chat del Proyecto y Claude Code leen l
 2. `docs/DECISIONS.md`: agregar arriba de todo cada decisión nueva tomada durante la tarea, con el formato del archivo. Si una decisión reemplaza a otra, marcar la vieja como `Reemplazada por <fecha/título>`. No se borra nada.
 3. Si el cambio lo ve el lector: actualizar novedades (`.claude/rules/novedades.md`).
 4. Si cambió la arquitectura, un comando o una trampa: actualizar este archivo.
-5. Commit en `main` (sin PR) con los docs actualizados, y push. Antes del push, `npm run build` si hubo cambios de código. (Las rutinas en la nube sí abren PR.)
+5. Commit en `main` (sin PR) con los docs actualizados, y push. Antes del push, `npm run build` si hubo cambios de código. (Las rutinas sí abren PR.)
+
+**Los pasos 1 a 3 son solo para cambios de código.** Los PR de contenido (guías, títulos SEO y todo lo que abren las rutinas para publicar desde `/admin/agentes`) **no tocan** `docs/STATUS.md`, `docs/DECISIONS.md` ni `src/data/novedades.ts`: solo agregan o editan los archivos de cada pieza, y lo que haya que contar va en la descripción del PR. Así varios PR pendientes no chocan entre sí.
 
 **Reglas de documentación**
 - No hacer inventarios de rutas, tablas, componentes o env vars completos. Documentar la estructura, las reglas y lo que no se deduce del código, y remitir al archivo fuente.
@@ -43,6 +45,7 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 
 - `npm run dev`: dev server en el **puerto 3006** (está en `package.json` y en `.claude/launch.json`).
 - `npm run build`: usarlo para verificar antes de dar algo por terminado.
+- `predev` y `prebuild` corren `scripts/gen-destinos.mjs`, que arma `src/lib/destinos/*.generated.ts` (no se versionan). Si TypeScript no encuentra esos archivos, correr `node scripts/gen-destinos.mjs`.
 - `npm run lint`
 - Scripts Python en `scripts/`. Cada uno documenta su uso en el docstring. El de research semanal es `scripts/keyword_research.py`.
 - Migraciones SQL en `supabase/migrations/` (numeradas; 005 y 006 están repetidas). **Se corren a mano en el SQL Editor de Supabase**: no hay CLI linkeado ni `supabase/config.toml`. Las nuevas tienen que poder correrse más de una vez (`if not exists`, `drop … if exists`, como `008`). Las 001 a 007 no son idempotentes: no volver a correrlas.
@@ -53,12 +56,12 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 
 - **Dos fuentes de contenido:**
   - **Supabase, tabla `articles`**: los artículos que vinieron del WordPress (ES y EN, `slug` + `language` únicos). Se ven en `/[categoria]/[slug]` y `/en/[categoria]/[slug]`, igual que las URLs de WordPress (carpetas `src/app/[slug]/[article]` y `src/app/en/[slug]/[article]`). Los artículos nuevos (sin `wp_id`) se escriben en `seo/articles/` y se cargan con `scripts/upsert_articles.py`.
-  - **Catálogos estáticos en TypeScript** (`src/lib/<seccion>/catalog.ts`): destinos, parques, senderos, volcanes, termas, arqueología, escalada, fauna, flora, gastronomía. De cada catálogo salen solas la página, el JSON-LD, el sitemap y el buscador.
+  - **Catálogos estáticos en TypeScript** (`src/lib/<seccion>/catalog.ts`): destinos, parques, senderos, volcanes, termas, arqueología, escalada, fauna, flora, gastronomía. De cada catálogo salen solas la página, el JSON-LD, el sitemap y el buscador. Destinos es un archivo por guía (`src/lib/destinos/guias/<slug>.ts`) y el índice lo arma `scripts/gen-destinos.mjs` (ver `.claude/rules/destinos.md`).
 - **Categorías de artículos con sección propia** (`CATEGORY_SECTIONS` en `src/lib/category.ts`): sus artículos se listan (con `ArticleTile`) debajo del catálogo de la sección y `/categoria/{slug}` redirige ahí con 301. Los links de categoría se arman siempre con `categoryHref`. Los artículos que redirigen (absorbidos por una guía o una ficha) están en `src/lib/article-redirects.ts`.
 - **Conexiones entre catálogos**: el campo `relacionados`, resuelto en `src/lib/relacionados.ts` (ver `.claude/rules/relacionados.md`).
 - **Datos en vivo**: una API por archivo en `src/lib/apis/`, mostradas en el StatusBoard y en `/estado` (ver `.claude/rules/statusboard.md`).
 - **Inglés**: todo lo que está en inglés cuelga de `src/app/en/`. Los catálogos tienen contenido `es` y `en` en el mismo objeto.
-- **Admin** en `src/app/admin/` y `src/app/api/admin/`. `/admin/agentes` muestra los PR que abren las rutinas y permite publicarlos con `GITHUB_TOKEN` (`src/lib/agentes/github.ts`). **Protección**: cada page y cada route compara el mail del usuario de Supabase con una constante `ADMIN_EMAIL` local (`proxy.ts` no protege `/admin`). Una ruta de admin nueva tiene que repetir ese chequeo.
+- **Admin** en `src/app/admin/` y `src/app/api/admin/`. `/admin/agentes` muestra los PR que abren las rutinas y permite publicarlos (squash merge) o descartarlos con `GITHUB_TOKEN` (`src/lib/agentes/github.ts`); en los dos casos se borra la rama. **Protección**: cada page y cada route compara el mail del usuario de Supabase con una constante `ADMIN_EMAIL` local (`proxy.ts` no protege `/admin`). Una ruta de admin nueva tiene que repetir ese chequeo.
 - **Usuarios**: perfil, favoritos, itinerarios guardados (`/planear`) y notificaciones. Newsletter propio en Supabase, con mails por Resend.
 - **Guardar contenido**: todo usa `saved_articles`. Para los catálogos, la columna `category` lleva el prefijo de ruta (`"parques"`, `"fauna"`…). Para sumar guardado a un catálogo, pasar `save={{ slug, title, category }}` a `DetailHero`.
 - **Supabase Storage**: bucket `wp-uploads` (fotos migradas de WordPress; las portadas de reemplazo están en `wikimedia/` y exigen atribución) y bucket `ahora` (subidas del admin con URL firmada).
@@ -81,7 +84,7 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 
 - `redirect()` dentro de un page component devuelve **200 + meta-refresh**, no un 301 real. Para un 301 real, hacerlo en `src/proxy.ts`.
 - `generateStaticParams` tiene que usar un cliente de Supabase **sin cookies**. Con el cliente de servidor normal falla el build.
-- Nav: las secciones de "Explorar" y "Planear" salen de una sola lista (`EXPLORE_ITEMS` y `PLAN_ITEMS` en `src/components/HeaderShell.tsx`, con el texto en ES y EN) que usan desktop y mobile. "Herramientas" (Mapa, Operadores) sigue escrito dos veces: mantenerlo sincronizado. El idioma del header sale de la ruta (`/en…`). El layout lo calcula en el servidor, así que un `<Link>` que cambia de idioma deja header y footer en el idioma anterior: los links entre idiomas van con `<a>`. Por lo mismo, para sacar algo del layout en una ruta se usa `HideOnPaths` (cliente, con `usePathname`), como el footer en `/mapa`. El selector ES | EN (`src/lib/lang-alternate.ts`) lee el hreflang de la página: el par de una página nueva se declara solo en `alternates.languages`.
+- Nav: las secciones de "Explorar", "Planear" y "Herramientas" salen de una sola lista (`EXPLORE_ITEMS`, `PLAN_ITEMS` y `TOOL_ITEMS` en `src/lib/nav-items.ts`, con el texto en ES y EN). La usan el header (desktop y mobile) y las tarjetas de tema de las dos homes (`src/lib/home-topics.ts`). Excepción: "Herramientas" del drawer mobile sigue escrito a mano en `HeaderShell.tsx` (usa "Mapa interactivo"): mantenerlo sincronizado. El idioma del header sale de la ruta (`/en…`). El layout lo calcula en el servidor, así que un `<Link>` que cambia de idioma deja header y footer en el idioma anterior: los links entre idiomas van con `<a>` (`src/components/SiteLink.tsx` lo decide solo según el idioma de la página y del destino). Por lo mismo, para sacar algo del layout en una ruta se usa `HideOnPaths` (cliente, con `usePathname`), como el footer en `/mapa`. El selector ES | EN (`src/lib/lang-alternate.ts`) lee el hreflang de la página: el par de una página nueva se declara solo en `alternates.languages`.
 - Las fotos de los artículos se sirven desde Supabase Storage. El fallback de portadas está en `src/data/cover-fallbacks.ts`.
 - En `fauna/[especie]` y `flora/[especie]`, si existe un artículo de Supabase con el mismo slug, su `seo_title` le gana al `metaTitle` del catálogo. Antes de editar títulos en el catálogo, fijarse si hay artículo.
 - Mapas: `react-leaflet` + OSM. `maplibre-gl` sigue en `package.json` pero se descartó (pantalla gris): no reintroducirlo.

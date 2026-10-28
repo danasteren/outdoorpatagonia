@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { SiteLink } from "@/components/SiteLink"
 import { ChevronRight, ChevronDown, Camera } from "lucide-react"
 import { PageShell } from "@/components/layout"
 import { getMoonData } from "@/lib/astronomy"
@@ -6,26 +6,41 @@ import {
   getCurrentTimeLabel,
   getDailyHighlight,
   getDayOfYear,
+  getDestinoDelDia,
   getTimeOfDay,
   getTodayLabel,
   type TimeOfDay,
 } from "@/lib/dailyContent"
-import { fetchPatagoniaPhotos, type PhotoSighting } from "@/lib/apis/inaturalist"
+import type { DestinoEntry } from "@/lib/destinos/catalog"
+import { fetchPatagoniaPhotos } from "@/lib/apis/inaturalist"
+import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
+import { fetchWikipediaLeadImage, wikipediaImageAt } from "@/lib/apis/wikipedia"
 
-// Real, recent Patagonia wildlife photo as the hero backdrop — rotates daily.
-// Falls back to null (gradient-only hero) if iNaturalist is unreachable.
-async function getHeroPhoto(): Promise<PhotoSighting | null> {
+type HeroPhoto = { src: string; credit: string; creditUrl: string }
+
+// Fondo del hero: la portada de la guía del día (Wikipedia, con su crédito),
+// igual que en la guía. Si no hay, o es muy chica para el ancho de la pantalla
+// (algunas son montajes de 300 px), una foto reciente de fauna de iNaturalist
+// que rota por día. Si tampoco hay, queda solo el degradé.
+const MIN_COVER_WIDTH = 1200
+
+async function getHeroPhoto(destino: DestinoEntry, lang: "es" | "en"): Promise<HeroPhoto | null> {
+  const cover = destino.wikipediaTitle ? await fetchWikipediaLeadImage(destino.wikipediaTitle) : null
+  if (cover && (cover.width ?? 0) >= MIN_COVER_WIDTH) {
+    return { src: wikipediaImageAt(cover, 1920), credit: `${destino.nombre} · Wikipedia`, creditUrl: cover.pageUrl }
+  }
   try {
-    const photos = await fetchPatagoniaPhotos(8)
+    const photos = await fetchPatagoniaPhotos(8, lang)
     if (photos.length === 0) return null
-    return photos[getDayOfYear(new Date()) % photos.length]
+    const photo = photos[getDayOfYear(new Date()) % photos.length]
+    return {
+      src: photo.photoUrl.replace(/\/small\b/, "/large"),
+      credit: `${photo.commonName ?? photo.speciesName} ${TEXT[lang].by} @${photo.observerLogin} · iNaturalist`,
+      creditUrl: photo.uri,
+    }
   } catch {
     return null
   }
-}
-
-function largeUrl(url: string): string {
-  return url.replace(/\/small\b/, "/large")
 }
 
 const TIME_STYLES: Record<
@@ -69,26 +84,64 @@ const PARTICLES = [
   { left: "92%", size: 2, delay: "0.8s", duration: "8s" },
 ] as const
 
-export async function Hero() {
+const TEXT = {
+  es: {
+    now: (today: string, time: string) => `Patagonia · Hoy ${today} · ${time} hs ARG/CHI`,
+    title: (n: string) => `Hoy en ${n}`,
+    // Espacios duros: que el número no quede en otra línea que su unidad.
+    weather: (temp: number, wind: number) => `: ${temp}\u00a0°C, viento de ${wind}\u00a0km/h`,
+    guide: "Ver la guía",
+    guideHref: (slug: string) => `/destinos/${slug}`,
+    map: "Ver el mapa",
+    plan: "Planear un viaje",
+    highlight: "Dato del día",
+    by: "por",
+    scrollLabel: "Bajar a la sección de categorías",
+    scroll: "Descubrí más",
+  },
+  en: {
+    now: (today: string, time: string) => `Patagonia · Today, ${today} · ${time} ARG/CHI time`,
+    // Algunas guías son de dos lugares ("Puerto Varas y Puerto Montt").
+    title: (n: string) => `Today in ${n.replace(" y ", " and ")}`,
+    weather: (temp: number, wind: number) =>
+      `: ${temp}\u00a0°C (${Math.round((temp * 9) / 5 + 32)}\u00a0°F), ${wind}\u00a0km/h winds`,
+    guide: "See the guide",
+    guideHref: (slug: string) => `/en/guides/${slug}`,
+    map: "Explore the map",
+    plan: "Plan a trip",
+    highlight: "Fact of the day",
+    by: "by",
+    scrollLabel: "Scroll down to the topics",
+    scroll: "Discover more",
+  },
+}
+
+export async function Hero({ lang = "es" }: { lang?: "es" | "en" }) {
+  const t = TEXT[lang]
   const timeOfDay = getTimeOfDay()
   const { gradient, particles, mountains } = TIME_STYLES[timeOfDay]
   const moon = getMoonData()
-  const highlight = getDailyHighlight()
-  const today = getTodayLabel()
+  const highlight = getDailyHighlight(lang)
+  const today = getTodayLabel(lang)
   const time = getCurrentTimeLabel()
-  const photo = await getHeroPhoto()
+  // Mismo destino en ES y EN; el clima es la misma consulta (y caché) que la guía.
+  const destino = getDestinoDelDia()
+  const [photo, weather] = await Promise.all([
+    getHeroPhoto(destino, lang),
+    fetchWeatherForLocation(destino.lat, destino.lng, destino.nombre),
+  ])
 
   return (
     <section
       className={`relative isolate overflow-hidden text-[var(--color-cream)] min-h-[92svh] sm:min-h-[88vh] flex flex-col ${photo ? "bg-[var(--color-forest)]" : `bg-gradient-to-br ${gradient} bg-[length:200%_200%] animate-hero-pan`
         }`}
     >
-      {/* Real Patagonia photo backdrop (iNaturalist), rotates daily */}
+      {/* Foto del destino del día (o de iNaturalist), rota por día */}
       {photo && (
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={largeUrl(photo.photoUrl)}
+            src={photo.src}
             alt=""
             fetchPriority="high"
             className="absolute inset-0 w-full h-full object-cover brightness-[0.55] saturate-[1.1]"
@@ -153,7 +206,7 @@ export async function Hero() {
               <span className="relative inline-flex size-2 rounded-full bg-[var(--color-teal-light)]" />
             </span>
             <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-teal-light)]">
-              Patagonia · Hoy {today} · {time} hs ARG/CHI
+              {t.now(today, time)}
             </p>
           </div>
 
@@ -161,56 +214,67 @@ export async function Hero() {
             className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
-            Senderos, flora, fauna, volcanes, glaciares y muchos más, todo en un solo lugar: la Patagonia.
+            {t.title(destino.nombre)}
+            {weather && <span className="opacity-90">{t.weather(weather.temperature, weather.windSpeed)}</span>}
           </h1>
 
           <p className="text-lg text-[var(--color-cream)] opacity-80 mb-6 leading-relaxed">
-            Datos en tiempo real, guías de campo y herramientas para explorar la Patagonia.
+            {destino[lang].subtitulo}
           </p>
 
           <div className="flex flex-wrap gap-3 mb-10">
-            <Link
-              href="/mapa"
+            <SiteLink
+              lang={lang}
+              href={t.guideHref(destino.slug)}
               className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--color-teal)] text-white font-semibold text-sm hover:opacity-90 hover:scale-105 transition-all"
             >
-              Ver el mapa
+              {t.guide}
               <ChevronRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-            </Link>
-            <Link
+            </SiteLink>
+            <SiteLink
+              lang={lang}
+              href="/mapa"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[var(--color-cream)] border-opacity-40 text-[var(--color-cream)] font-semibold text-sm hover:bg-white/10 hover:scale-105 transition-all"
+            >
+              {t.map}
+            </SiteLink>
+            <SiteLink
+              lang={lang}
               href="/planear"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[var(--color-cream)] border-opacity-40 text-[var(--color-cream)] font-semibold text-sm hover:bg-white/10 hover:scale-105 transition-all"
             >
-              Planear un viaje
-            </Link>
+              {t.plan}
+            </SiteLink>
           </div>
 
-          <Link
+          <SiteLink
+            lang={lang}
             href={highlight.href}
             className="group inline-flex items-start gap-2.5 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 px-4 py-3 max-w-md hover:bg-white/15 hover:border-white/25 transition-colors"
           >
             <span className="text-lg leading-none mt-0.5">{moon.phaseEmoji}</span>
             <span className="text-sm text-[var(--color-cream)] opacity-90 leading-snug">
-              <span className="font-semibold">Dato del día · {highlight.source}: </span>
+              <span className="font-semibold">{t.highlight} · {highlight.source}: </span>
               {highlight.text}
               <ChevronRight
                 size={13}
                 className="inline-block ml-1 -mb-0.5 opacity-70 transition-transform group-hover:translate-x-0.5"
               />
             </span>
-          </Link>
+          </SiteLink>
         </div>
       </PageShell>
 
       {/* Photo credit */}
       {photo && (
         <a
-          href={photo.uri}
+          href={photo.creditUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="relative z-10 hidden sm:inline-flex items-center gap-1.5 self-end mr-4 mb-2 text-[10px] text-[var(--color-cream)] opacity-50 hover:opacity-90 transition-opacity"
+          className="relative z-10 inline-flex items-center gap-1.5 self-end mr-4 mb-2 text-[10px] text-[var(--color-cream)] opacity-50 hover:opacity-90 transition-opacity"
         >
           <Camera size={11} strokeWidth={1.5} />
-          {photo.commonName ?? photo.speciesName} por @{photo.observerLogin} · iNaturalist
+          {photo.credit}
         </a>
       )}
 
@@ -218,10 +282,10 @@ export async function Hero() {
       <a
         href="#categorias"
         className="relative z-10 hidden sm:flex justify-center pb-6 animate-bounce-soft"
-        aria-label="Bajar a la sección de categorías"
+        aria-label={t.scrollLabel}
       >
         <div className="flex flex-col items-center gap-1 text-[var(--color-cream)] opacity-70 hover:opacity-100 transition-opacity">
-          <span className="text-[11px] font-medium uppercase tracking-widest">Descubrí más</span>
+          <span className="text-[11px] font-medium uppercase tracking-widest">{t.scroll}</span>
           <ChevronDown size={18} />
         </div>
       </a>

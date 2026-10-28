@@ -16,28 +16,44 @@ export type MoonData = {
   stargazingNote: string
 }
 
-function phaseFromAge(age: number): { name: string; emoji: string } {
-  if (age < 1.85) return { name: "Luna nueva", emoji: "🌑" }
-  if (age < 7.38) return { name: "Creciente cóncava", emoji: "🌒" }
-  if (age < 9.22) return { name: "Cuarto creciente", emoji: "🌓" }
-  if (age < 14.77) return { name: "Creciente gibosa", emoji: "🌔" }
-  if (age < 16.61) return { name: "Luna llena", emoji: "🌕" }
-  if (age < 22.15) return { name: "Menguante gibosa", emoji: "🌖" }
-  if (age < 23.99) return { name: "Cuarto menguante", emoji: "🌗" }
-  return { name: "Menguante cóncava", emoji: "🌘" }
+type Lang = "es" | "en"
+
+function phaseFromAge(age: number, lang: Lang): { name: string; emoji: string } {
+  const en = lang === "en"
+  if (age < 1.85) return { name: en ? "New moon" : "Luna nueva", emoji: "🌑" }
+  if (age < 7.38) return { name: en ? "Waxing crescent" : "Creciente cóncava", emoji: "🌒" }
+  if (age < 9.22) return { name: en ? "First quarter" : "Cuarto creciente", emoji: "🌓" }
+  if (age < 14.77) return { name: en ? "Waxing gibbous" : "Creciente gibosa", emoji: "🌔" }
+  if (age < 16.61) return { name: en ? "Full moon" : "Luna llena", emoji: "🌕" }
+  if (age < 22.15) return { name: en ? "Waning gibbous" : "Menguante gibosa", emoji: "🌖" }
+  if (age < 23.99) return { name: en ? "Last quarter" : "Cuarto menguante", emoji: "🌗" }
+  return { name: en ? "Waning crescent" : "Menguante cóncava", emoji: "🌘" }
 }
 
-function stargazingFromIllumination(pct: number): {
+const STARGAZING_NOTES: Record<StargazingQuality, Record<Lang, string>> = {
+  excelente: { es: "Cielos oscuros — ideal para la Vía Láctea", en: "Dark skies — ideal for the Milky Way" },
+  buena: { es: "Buena visibilidad nocturna", en: "Good night-sky visibility" },
+  regular: { es: "La luna reduce la visibilidad", en: "The moon reduces visibility" },
+  mala: { es: "Luna brillante — difícil observar estrellas", en: "Bright moon — hard to see stars" },
+}
+
+export const STARGAZING_LABELS: Record<StargazingQuality, Record<Lang, string>> = {
+  excelente: { es: "Excelente", en: "Excellent" },
+  buena: { es: "Buena", en: "Good" },
+  regular: { es: "Regular", en: "Fair" },
+  mala: { es: "Mala", en: "Poor" },
+}
+
+function stargazingFromIllumination(pct: number, lang: Lang): {
   quality: StargazingQuality
   note: string
 } {
-  if (pct < 20) return { quality: "excelente", note: "Cielos oscuros — ideal para la Vía Láctea" }
-  if (pct < 45) return { quality: "buena", note: "Buena visibilidad nocturna" }
-  if (pct < 70) return { quality: "regular", note: "La luna reduce la visibilidad" }
-  return { quality: "mala", note: "Luna brillante — difícil observar estrellas" }
+  const quality: StargazingQuality =
+    pct < 20 ? "excelente" : pct < 45 ? "buena" : pct < 70 ? "regular" : "mala"
+  return { quality, note: STARGAZING_NOTES[quality][lang] }
 }
 
-export function getMoonData(): MoonData {
+export function getMoonData(lang: Lang = "es"): MoonData {
   const now = Date.now()
   const elapsedDays = (now - KNOWN_NEW_MOON) / 86_400_000
   const ageDays = ((elapsedDays % LUNATION_DAYS) + LUNATION_DAYS) % LUNATION_DAYS
@@ -50,14 +66,14 @@ export function getMoonData(): MoonData {
   const daysUntilFull = ageDays <= halfCycle ? halfCycle - ageDays : LUNATION_DAYS - ageDays + halfCycle
 
   const nextFullMs = now + daysUntilFull * 86_400_000
-  const nextFullDate = new Date(nextFullMs).toLocaleDateString("es-AR", {
+  const nextFullDate = new Date(nextFullMs).toLocaleDateString(lang === "en" ? "en-US" : "es-AR", {
     day: "numeric",
     month: "long",
   })
 
-  const { name: phaseName, emoji: phaseEmoji } = phaseFromAge(ageDays)
+  const { name: phaseName, emoji: phaseEmoji } = phaseFromAge(ageDays, lang)
   const { quality: stargazingQuality, note: stargazingNote } =
-    stargazingFromIllumination(illumination)
+    stargazingFromIllumination(illumination, lang)
 
   return {
     phaseName,

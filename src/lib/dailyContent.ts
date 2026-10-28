@@ -4,11 +4,33 @@
 
 import { PARQUES_CATALOG } from "@/lib/parques/catalog"
 import { SENDEROS_CATALOG } from "@/lib/senderos/catalog"
+import { DESTINOS_CATALOG, type DestinoEntry } from "@/lib/destinos/catalog"
 
 export function getDayOfYear(date: Date): number {
   const start = Date.UTC(date.getUTCFullYear(), 0, 0)
   const diff = date.getTime() - start
   return Math.floor(diff / 86_400_000)
+}
+
+// Día del año según el calendario de Argentina (UTC-3, sin horario de verano):
+// el destino del día cambia a medianoche de Argentina, no a medianoche UTC.
+export function getDayOfYearAR(date: Date): number {
+  const [year, month, day] = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Argentina/Buenos_Aires",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  })
+    .format(date)
+    .split("-")
+    .map(Number)
+  return getDayOfYear(new Date(Date.UTC(year, month - 1, day)))
+}
+
+// Guía de destino del hero de la home. Rota sobre todas las guías publicadas,
+// así que cada guía nueva entra sola. Es la misma en ES y EN.
+export function getDestinoDelDia(date: Date = new Date()): DestinoEntry {
+  return DESTINOS_CATALOG[getDayOfYearAR(date) % DESTINOS_CATALOG.length]
 }
 
 // Leading excerpt of a longer description, cut at the last full sentence
@@ -47,9 +69,20 @@ const HIGHLIGHTS: DailyHighlight[] = [
   })),
 ]
 
-export function getDailyHighlight(): DailyHighlight {
-  const dayOfYear = getDayOfYear(new Date())
-  return HIGHLIGHTS[dayOfYear % HIGHLIGHTS.length]
+// Parques y senderos solo tienen texto en español: en inglés el dato sale de
+// la intro de las guías de destino, que sí tienen versión en inglés.
+const HIGHLIGHTS_EN: DailyHighlight[] = DESTINOS_CATALOG.map((d) => ({
+  text: leadingExcerpt(d.en.intro[0]),
+  href: `/en/guides/${d.slug}`,
+  source: d.nombre,
+}))
+
+export function getDailyHighlight(lang: "es" | "en" = "es"): DailyHighlight {
+  const highlights = lang === "en" ? HIGHLIGHTS_EN : HIGHLIGHTS
+  // En inglés el dato también sale de las guías: se corre uno para que no
+  // repita el destino del día del título.
+  const dayOfYear = getDayOfYearAR(new Date()) + (lang === "en" ? 1 : 0)
+  return highlights[dayOfYear % highlights.length]
 }
 
 export type TimeOfDay = "amanecer" | "dia" | "atardecer" | "noche"
@@ -68,8 +101,8 @@ export function getTimeOfDay(): TimeOfDay {
   return "noche"
 }
 
-export function getTodayLabel(): string {
-  return new Intl.DateTimeFormat("es-AR", {
+export function getTodayLabel(lang: "es" | "en" = "es"): string {
+  return new Intl.DateTimeFormat(lang === "en" ? "en-US" : "es-AR", {
     timeZone: "America/Argentina/Buenos_Aires",
     day: "numeric",
     month: "long",
