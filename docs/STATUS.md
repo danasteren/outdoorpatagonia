@@ -33,10 +33,11 @@ _Última actualización: 2026-10-28_
 
 ## Rutinas
 
-Verificado el 2026-10-28: `RemoteTrigger` (rutinas en la nube de esta cuenta) devuelve la lista vacía. La única rutina que existe es una tarea programada **local** de la app de escritorio, así que solo corre con la Mac prendida y la app abierta.
+No hay rutinas en la nube (`RemoteTrigger` devuelve la lista vacía, verificado el 2026-10-28). Las tres son tareas programadas **locales** de la app de escritorio: solo corren con la Mac prendida y la app abierta (si la app estaba cerrada, corren al abrirla). Cada prompt está en `~/.claude/scheduled-tasks/<id>/SKILL.md`. Horarios en hora de la Mac, más unos minutos al azar.
 
-- **Guía de destino**: `guia-destino-diaria`, lunes a viernes 08:30 + hasta 12 min al azar (hora de la Mac). Funciona: abrió del #8 al #14 (del 19 al 27/10) y el 28/10 estaba corriendo. Prompt en `~/.claude/scheduled-tasks/guia-destino-diaria/SKILL.md`. Trabaja en una worktree propia (`.claude/worktrees/`, no se versiona) y deja una por corrida: hay 8 acumuladas, se pueden borrar las de PR ya mergeados.
-- **Faltan** (no existen ni en la nube ni locales; los IDs viejos `trig_018sMnZzcAJD4dg42NabCZov` y `trig_01Acb1XD3UHgbZXLb5EuA1E7` ya no sirven): auditoría SEO/CTR (abría PR con metadata; último: #6, 2026-10-05) y borrador de newsletter. Si se recrean como tareas locales, la de CTR necesita la credencial de Search Console (`GSC_SERVICE_ACCOUNT_FILE`).
+- **Guía de destino**: `guia-destino-diaria`, lunes a viernes 08:30. Funciona: abrió del #8 al #15 (del 19 al 28/10). Trabaja en una worktree propia (`.claude/worktrees/`, no se versiona) y deja una por corrida: se pueden borrar las de PR ya mergeados.
+- **Auditoría SEO/CTR**: `auditoria-ctr-semanal`, lunes 09:30, recreada el 2026-10-28 (primera corrida: 2/11). Toma hasta 10 páginas de "CTR bajo en top 10" de `scripts/keyword_research.py` (Search Console con `~/.config/outdoorpatagonia/gsc.json`), saltea las que cambiaron hace menos de 28 días y abre un PR en `seo/ctr-titles-<fecha>`. Los artículos de Supabase van en un SQL de `seo/updates/` para correr a mano.
+- **Borrador del newsletter**: `borrador-newsletter-semanal`, lunes 10:00, recreada el 2026-10-28. Solo lectura: deja el borrador (asunto, preheader y cuerpo) en el mensaje final de la corrida. El envío sigue siendo manual desde `/admin`.
 
 ## Pendiente
 

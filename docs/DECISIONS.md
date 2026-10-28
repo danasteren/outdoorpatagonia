@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-28 — Las rutinas de SEO/CTR y newsletter vuelven como tareas locales
+**Decisión:** la auditoría SEO/CTR y el borrador del newsletter se recrean como tareas programadas locales de la app de escritorio (lunes 09:30 y 10:00), igual que `guia-destino-diaria`. La de CTR abre PR; la del newsletter es de solo lectura.
+**Motivo:** las rutinas en la nube ya no existían (la lista de `RemoteTrigger` está vacía) y la de guías funciona bien como tarea local. La usuaria pidió recrearlas.
+**Detalle:** prompts en `~/.claude/scheduled-tasks/auditoria-ctr-semanal/` y `borrador-newsletter-semanal/`, adaptados de los viejos a las reglas actuales (`CLAUDE.md`, `.claude/rules/`). Search Console se lee con la cuenta de servicio local (`GSC_SERVICE_ACCOUNT_FILE`), probada el 2026-10-28. Cambio respecto de la rutina vieja: los títulos de artículos de Supabase ya no quedan solo como propuesta en el PR, sino en un SQL de `seo/updates/` para correr a mano. Las propuestas del PR #6 para 6 artículos (ciervo colorado, liebre europea, tero, monito del monte, loica, estrecho de Magallanes) nunca se aplicaron. La rutina las va a volver a tomar porque siguen con CTR bajo.
+**Estado:** Vigente
+
 ## 2026-10-27 — La home en inglés es la misma que la de español
 **Decisión:** /en usa la misma estructura y los mismos componentes que la home en español, con los textos en inglés. Las secciones sin versión en inglés llevan a la página en español con el nombre traducido, igual que el header. Al final se suman los últimos artículos en inglés.
 **Motivo:** la home en inglés se veía como otro sitio. Desde que el header en inglés enlaza a las secciones en español, ya no hace falta limitarla a lo que existe en inglés.
