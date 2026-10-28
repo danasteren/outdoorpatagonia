@@ -184,13 +184,16 @@ export function ArticleLayout({
             {altLangHref && (
               <Card variant="elevated">
                 <CardBody className="p-5">
-                  <Link
+                  {/* <a> y no <Link>: el layout toma el idioma de la ruta en el servidor (ver LangToggle) */}
+                  <a
                     href={altLangHref}
+                    hrefLang={isEnglish ? "es" : "en"}
+                    lang={isEnglish ? "es" : "en"}
                     className="flex items-center gap-2 text-sm text-[var(--color-teal)] hover:underline"
                   >
                     <Globe size={14} strokeWidth={1.5} />
                     {isEnglish ? "Leer en español" : "Read in English"}
-                  </Link>
+                  </a>
                 </CardBody>
               </Card>
             )}
