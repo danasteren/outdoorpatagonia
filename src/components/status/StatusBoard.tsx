@@ -34,7 +34,25 @@ function SightingPanel({
   )
 }
 
-export async function StatusBoard() {
+const TEXT = {
+  es: {
+    title: "Estado de la Patagonia",
+    updated: "Actualizado cada hora",
+    fauna: "Fauna avistada — últimos 14 días",
+    flora: "Flora observada — últimos 14 días",
+    fungi: "Hongos registrados — últimos 14 días",
+  },
+  en: {
+    title: "Patagonia right now",
+    updated: "Updated hourly",
+    fauna: "Wildlife sighted — last 14 days",
+    flora: "Plants observed — last 14 days",
+    fungi: "Fungi recorded — last 14 days",
+  },
+}
+
+export async function StatusBoard({ lang = "es" }: { lang?: "es" | "en" }) {
+  const t = TEXT[lang]
   const [
     weatherResult,
     glacierResult,
@@ -46,10 +64,10 @@ export async function StatusBoard() {
   ] = await Promise.allSettled([
     fetchWeather(),
     fetchGlacierData(),
-    fetchPatagoniaFauna(),
-    fetchPatagoniaFlora(),
-    fetchPatagoniaFungi(),
-    fetchPatagoniaPhotos(8),
+    fetchPatagoniaFauna(lang),
+    fetchPatagoniaFlora(lang),
+    fetchPatagoniaFungi(lang),
+    fetchPatagoniaPhotos(8, lang),
     fetchImpactoData(),
   ])
 
@@ -61,7 +79,7 @@ export async function StatusBoard() {
   const photos = photosResult.status === "fulfilled" ? photosResult.value : []
   const impacto   = impactoResult.status === "fulfilled" ? impactoResult.value : { readings: [], lastDate: "" }
 
-  const moon = getMoonData()
+  const moon = getMoonData(lang)
 
   const hasAnyData =
     weather.length > 0 ||
@@ -78,30 +96,30 @@ export async function StatusBoard() {
       <PageShell>
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold font-heading">Estado de la Patagonia</h2>
-          <Badge variant="outline" size="sm">Actualizado cada hora</Badge>
+          <h2 className="text-lg font-bold font-heading">{t.title}</h2>
+          <Badge variant="outline" size="sm">{t.updated}</Badge>
         </div>
 
         <div className="space-y-8">
           {/* Clima */}
-          <WeatherSection data={weather} />
+          <WeatherSection data={weather} lang={lang} />
 
           {/* Naturaleza — 3 columnas */}
           {(fauna.length > 0 || flora.length > 0 || fungi.length > 0) && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {fauna.length > 0 && (
-                <SightingPanel title="Fauna avistada — últimos 14 días">
-                  <SightingList sightings={fauna} />
+                <SightingPanel title={t.fauna}>
+                  <SightingList sightings={fauna} lang={lang} />
                 </SightingPanel>
               )}
               {flora.length > 0 && (
-                <SightingPanel title="Flora observada — últimos 14 días">
-                  <SightingList sightings={flora} />
+                <SightingPanel title={t.flora}>
+                  <SightingList sightings={flora} lang={lang} />
                 </SightingPanel>
               )}
               {fungi.length > 0 && (
-                <SightingPanel title="Hongos registrados — últimos 14 días">
-                  <SightingList sightings={fungi} />
+                <SightingPanel title={t.fungi}>
+                  <SightingList sightings={fungi} lang={lang} />
                 </SightingPanel>
               )}
             </div>
@@ -110,16 +128,16 @@ export async function StatusBoard() {
           {/* Glaciares + Astronomía — 2 columnas */}
           {(glaciers.length > 0 || moon) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <GlacierSection data={glaciers} />
-              <MoonSection moon={moon} />
+              <GlacierSection data={glaciers} lang={lang} />
+              <MoonSection moon={moon} lang={lang} />
             </div>
           )}
 
           {/* Fotografía */}
-          {photos.length > 0 && <PhotoGrid photos={photos} />}
+          {photos.length > 0 && <PhotoGrid photos={photos} lang={lang} />}
 
           {/* Impacto industrial — solo cuando hay datos */}
-          <ImpactoSection data={impacto} />
+          <ImpactoSection data={impacto} lang={lang} />
         </div>
       </PageShell>
     </Section>

@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-10-27_
+_Última actualización: 2026-10-28_
 
 ## Hecho (a grandes rasgos)
 
@@ -24,18 +24,19 @@ _Última actualización: 2026-10-27_
 - 2026-10-27: vuelve `/recursos-viaje-patagonia` (daba 404 desde el 19/06), con el mismo contenido que `/en/resources-traveling-patagonia` desde `src/lib/recursos.ts`, hreflang recíproco y las dos en el sitemap. Links del footer ES y EN verificados: todos dan 200.
 - 2026-10-27: selector de idioma ES | EN en el header (desktop y mobile), en todas las páginas. Lee el hreflang de la página; sin par va a la home del otro idioma con un aviso. Probado en 24 páginas de muestra: ningún link da 404. Las ES legales y la home suman el hreflang `en` que les faltaba. El link "Read in English / Leer en español" del sidebar de los artículos también pasó a carga completa (antes dejaba header y footer en el idioma anterior).
 - 2026-10-27: `/mapa` prolijo en mobile. El mapa llena justo el viewport debajo del header (100dvh, sin número mágico), sin footer ni franjas; en mobile el hero queda solo como `h1` para lectores de pantalla. Con la ficha de un punto abierta, los controles de capas, zoom y la atribución de Leaflet quedan debajo del backdrop. Probado a 375×667, 390×844 y desktop (igual que antes), también entrando y saliendo con `<Link>`.
+- 2026-10-28: `/en` es la misma home que `/` en inglés: Hero, "Explore by topic", guías, escalada, StatusBoard + EstadoCTA y ozono, con "Latest articles" al final (sin `/ahora`, que es solo en español). Los componentes de la home y del StatusBoard reciben `lang` (español por defecto). Las tarjetas de tema salen de `src/lib/home-topics.ts`, que toma nombre, ícono y link de las listas del menú (pasaron a `src/lib/nav-items.ts`). El dato del día en inglés sale de la intro de las guías de destino (parques y senderos solo tienen texto en español) y los nombres de iNaturalist se piden en inglés. Probado: los 47 links de `/en` dan 200; mismos bloques y misma grilla que `/` a 1024 y a 375 px.
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 ## En curso
 
-- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9), Puerto Madryn + Península Valdés (#10, con "Destinos" en el nav y bloque en la home), Punta Arenas (#11), Puerto Varas + Puerto Montt (#12) Pucón (#13) y Chiloé (#14). Orden: `seo/destinos-prioridad.md`. Las produce la rutina semanal (ver `.claude/rules/destinos.md`).
+- **Guías de destino** (prioridad #1 de contenido). Hechas: Ushuaia, El Calafate, Bariloche (#7), Puerto Natales + Torres del Paine (#8), El Chaltén (#9), Puerto Madryn + Península Valdés (#10, con "Destinos" en el nav y bloque en la home), Punta Arenas (#11), Puerto Varas + Puerto Montt (#12), Pucón (#13) y Chiloé (#14). Orden: `seo/destinos-prioridad.md`. Las produce la rutina `guia-destino-diaria` (ver abajo).
 
-## Rutinas en la nube (lunes)
+## Rutinas
 
-- Guía de destino: `trig_01Gqz7Knx4E6Az4cLeQAhewY`, ver `.claude/rules/destinos.md`.
-- Auditoría SEO/CTR (abre PR con metadata): `trig_018sMnZzcAJD4dg42NabCZov`.
-- Borrador de newsletter: `trig_01Acb1XD3UHgbZXLb5EuA1E7`.
-- ⛔ **Caídas desde el cambio de plan Pro → Enterprise (mismo mail).** Las rutinas vivían en la organización Pro y no pasaron a la Enterprise: `RemoteTrigger` da 404 y claude.ai/code redirige a `/code/onboarding`. Último PR de una rutina: #7 (2026-10-05). Para volver: hacer el onboarding de Code web en la org Enterprise (conectar GitHub y crear el entorno con la credencial de Search Console) y recrear las 3 rutinas. Los IDs de arriba ya no sirven.
+Verificado el 2026-10-28: `RemoteTrigger` (rutinas en la nube de esta cuenta) devuelve la lista vacía. La única rutina que existe es una tarea programada **local** de la app de escritorio, así que solo corre con la Mac prendida y la app abierta.
+
+- **Guía de destino**: `guia-destino-diaria`, lunes a viernes 08:30 + hasta 12 min al azar (hora de la Mac). Funciona: abrió del #8 al #14 (del 19 al 27/10) y el 28/10 estaba corriendo. Prompt en `~/.claude/scheduled-tasks/guia-destino-diaria/SKILL.md`. Trabaja en una worktree propia (`.claude/worktrees/`, no se versiona) y deja una por corrida: hay 8 acumuladas, se pueden borrar las de PR ya mergeados.
+- **Faltan** (no existen ni en la nube ni locales; los IDs viejos `trig_018sMnZzcAJD4dg42NabCZov` y `trig_01Acb1XD3UHgbZXLb5EuA1E7` ya no sirven): auditoría SEO/CTR (abría PR con metadata; último: #6, 2026-10-05) y borrador de newsletter. Si se recrean como tareas locales, la de CTR necesita la credencial de Search Console (`GSC_SERVICE_ACCOUNT_FILE`).
 
 ## Pendiente
 

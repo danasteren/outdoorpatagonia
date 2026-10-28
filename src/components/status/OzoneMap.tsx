@@ -4,14 +4,19 @@ import { MapContainer, TileLayer, Circle, CircleMarker, Tooltip } from "react-le
 import "leaflet/dist/leaflet.css"
 
 const CITIES = [
-  { name: "Ushuaia", lat: -54.8, lng: -68.3, note: "Dentro del área típica del agujero" },
-  { name: "Punta Arenas", lat: -53.16, lng: -70.91, note: "Dentro del área típica del agujero" },
-  { name: "Río Gallegos", lat: -51.62, lng: -69.22, note: "Dentro del área típica del agujero" },
-  { name: "El Calafate", lat: -50.34, lng: -72.27, note: "Dentro del área típica del agujero" },
-  { name: "Comodoro Rivadavia", lat: -45.86, lng: -67.48, note: "Solo alcanzada en eventos extremos" },
+  { name: "Ushuaia", lat: -54.8, lng: -68.3, extreme: false },
+  { name: "Punta Arenas", lat: -53.16, lng: -70.91, extreme: false },
+  { name: "Río Gallegos", lat: -51.62, lng: -69.22, extreme: false },
+  { name: "El Calafate", lat: -50.34, lng: -72.27, extreme: false },
+  { name: "Comodoro Rivadavia", lat: -45.86, lng: -67.48, extreme: true },
 ]
 
-export function OzoneMap() {
+const NOTES = {
+  es: { typical: "Dentro del área típica del agujero", extreme: "Solo alcanzada en eventos extremos" },
+  en: { typical: "Inside the hole's typical area", extreme: "Only reached in extreme events" },
+}
+
+export function OzoneMap({ lang = "es" }: { lang?: "es" | "en" }) {
   return (
     <MapContainer
       center={[-50.5, -69]}
@@ -52,7 +57,7 @@ export function OzoneMap() {
             <span style={{ fontSize: 12 }}>
               <strong>{c.name}</strong>
               <br />
-              {c.note}
+              {c.extreme ? NOTES[lang].extreme : NOTES[lang].typical}
             </span>
           </Tooltip>
         </CircleMarker>

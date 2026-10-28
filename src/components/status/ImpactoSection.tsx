@@ -3,6 +3,7 @@ import type { ImpactoData } from "@/lib/apis/openaq"
 
 interface Props {
   data: ImpactoData
+  lang?: "es" | "en"
 }
 
 function levelFor(value: number, limit: number) {
@@ -18,9 +19,33 @@ const LEVEL_STYLES = {
   ok:       { card: "border-green-500/40 bg-green-500/5", text: "text-green-600", badge: "text-green-600 bg-green-500/10" },
 }
 
-const LEVEL_LABEL = { alta: "Supera OMS", moderada: "Cerca del límite", ok: "Dentro del límite" }
+const TEXT = {
+  es: {
+    level: { alta: "Supera OMS", moderada: "Cerca del límite", ok: "Dentro del límite" },
+    title: "Impacto — calidad del aire en zonas extractivas",
+    monitoring: "Monitoreo de contaminantes · comparado con límites OMS 2021",
+    limit: "límite OMS",
+    high: "Niveles que superan recomendaciones OMS — riesgo para personas sensibles",
+    moderate: "Niveles en zona de precaución según OMS",
+    ok: "Todos los parámetros dentro de los límites recomendados por la OMS",
+    source: "Fuente",
+    whoLimits: "Límites OMS 2021",
+  },
+  en: {
+    level: { alta: "Above WHO", moderada: "Near the limit", ok: "Within the limit" },
+    title: "Impact — air quality in extraction areas",
+    monitoring: "Pollutant monitoring · compared with the 2021 WHO limits",
+    limit: "WHO limit",
+    high: "Levels above WHO guidelines — a risk for sensitive people",
+    moderate: "Levels in the WHO caution range",
+    ok: "Every reading within the limits recommended by the WHO",
+    source: "Source",
+    whoLimits: "WHO limits 2021",
+  },
+}
 
-export function ImpactoSection({ data }: Props) {
+export function ImpactoSection({ data, lang = "es" }: Props) {
+  const t = TEXT[lang]
   if (!data.readings.length) return null
 
   const zones = [...new Set(data.readings.map((r) => r.zone))]
@@ -33,7 +58,7 @@ export function ImpactoSection({ data }: Props) {
   return (
     <div>
       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-3">
-        Impacto — calidad del aire en zonas extractivas
+        {t.title}
       </p>
 
       <div className={`rounded-xl border p-4 ${LEVEL_STYLES[worstLevel].card}`}>
@@ -48,7 +73,7 @@ export function ImpactoSection({ data }: Props) {
               {zones.join(" · ")}
             </p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Monitoreo de contaminantes · comparado con límites OMS 2021
+              {t.monitoring}
             </p>
           </div>
         </div>
@@ -63,7 +88,7 @@ export function ImpactoSection({ data }: Props) {
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-foreground">{r.label}</span>
                   <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${style.badge}`}>
-                    {LEVEL_LABEL[level]}
+                    {t.level[level]}
                   </span>
                 </div>
                 <div className="flex items-baseline gap-1">
@@ -79,7 +104,7 @@ export function ImpactoSection({ data }: Props) {
                   />
                 </div>
                 <p className="text-[10px] text-muted-foreground">
-                  {r.zone} · límite OMS: {r.whoLimit} {r.unit}
+                  {r.zone} · {t.limit}: {r.whoLimit} {r.unit}
                 </p>
               </div>
             )
@@ -90,9 +115,7 @@ export function ImpactoSection({ data }: Props) {
           <div className="flex items-center gap-1.5 mt-3 text-xs text-muted-foreground">
             <AlertTriangle size={11} strokeWidth={1.5} />
             <span>
-              {worstLevel === "alta"
-                ? "Niveles que superan recomendaciones OMS — riesgo para personas sensibles"
-                : "Niveles en zona de precaución según OMS"}
+              {worstLevel === "alta" ? t.high : t.moderate}
             </span>
           </div>
         )}
@@ -100,13 +123,13 @@ export function ImpactoSection({ data }: Props) {
         {worstLevel === "ok" && (
           <div className="flex items-center gap-1.5 mt-3 text-xs text-muted-foreground">
             <CheckCircle size={11} strokeWidth={1.5} />
-            <span>Todos los parámetros dentro de los límites recomendados por la OMS</span>
+            <span>{t.ok}</span>
           </div>
         )}
       </div>
 
       <p className="text-[10px] text-muted-foreground mt-2 text-right">
-        Fuente:{" "}
+        {t.source}:{" "}
         <a
           href="https://explore.openaq.org"
           target="_blank"
@@ -122,7 +145,7 @@ export function ImpactoSection({ data }: Props) {
           rel="noopener noreferrer"
           className="hover:text-foreground transition-colors"
         >
-          Límites OMS 2021
+          {t.whoLimits}
         </a>
       </p>
     </div>

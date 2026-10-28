@@ -11,9 +11,10 @@ function largeUrl(smallUrl: string): string {
 
 interface Props {
   photos: PhotoSighting[]
+  lang?: "es" | "en"
 }
 
-export function PhotoGrid({ photos }: Props) {
+export function PhotoGrid({ photos, lang = "es" }: Props) {
   const [selected, setSelected] = useState<PhotoSighting | null>(null)
 
   if (photos.length === 0) return null
@@ -27,7 +28,7 @@ export function PhotoGrid({ photos }: Props) {
     <>
       <div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-3">
-          Fotografía — registros recientes en Patagonia
+          {lang === "en" ? "Photos — recent records in Patagonia" : "Fotografía — registros recientes en Patagonia"}
         </p>
         {/* Mobile: 2 por fila × 3 filas (6). Desktop: 4 por fila × 2 filas (8). */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -53,7 +54,7 @@ export function PhotoGrid({ photos }: Props) {
           ))}
         </div>
         <p className="text-[10px] text-muted-foreground mt-2 text-right">
-          Fuente:{" "}
+          {lang === "en" ? "Source" : "Fuente"}:{" "}
           <a
             href="https://www.inaturalist.org"
             target="_blank"
@@ -92,7 +93,7 @@ export function PhotoGrid({ photos }: Props) {
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
                 >
                   <Camera size={13} strokeWidth={1.5} />
-                  Ver en iNaturalist
+                  {lang === "en" ? "View on iNaturalist" : "Ver en iNaturalist"}
                   <ExternalLink size={13} strokeWidth={1.5} />
                 </a>
               </div>

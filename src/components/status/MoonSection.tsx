@@ -1,7 +1,7 @@
 import { Star } from "lucide-react"
 import { Card } from "@/components/primitives"
 import { Badge } from "@/components/primitives"
-import type { MoonData, StargazingQuality } from "@/lib/astronomy"
+import { STARGAZING_LABELS, type MoonData, type StargazingQuality } from "@/lib/astronomy"
 
 const QUALITY_COLORS: Record<StargazingQuality, string> = {
   excelente: "text-emerald-500",
@@ -17,17 +17,24 @@ const QUALITY_BADGE: Record<StargazingQuality, "default" | "outline"> = {
   mala: "outline",
 }
 
-interface Props {
-  moon: MoonData
+const TEXT = {
+  es: { title: "Astronomía — cielos de Patagonia", illumination: "Iluminación", nextFull: "Próxima luna llena", days: "días" },
+  en: { title: "Astronomy — Patagonian skies", illumination: "Illumination", nextFull: "Next full moon", days: "days" },
 }
 
-export function MoonSection({ moon }: Props) {
+interface Props {
+  moon: MoonData
+  lang?: "es" | "en"
+}
+
+export function MoonSection({ moon, lang = "es" }: Props) {
+  const t = TEXT[lang]
   const qualityColor = QUALITY_COLORS[moon.stargazingQuality]
 
   return (
     <div>
       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-3">
-        Astronomía — cielos de Patagonia
+        {t.title}
       </p>
       <Card variant="elevated" className="p-5">
         <div className="flex items-start gap-4">
@@ -46,7 +53,7 @@ export function MoonSection({ moon }: Props) {
             {/* Iluminación */}
             <div className="mb-3">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs text-muted-foreground">Iluminación</span>
+                <span className="text-xs text-muted-foreground">{t.illumination}</span>
                 <span className="text-xs font-semibold">{moon.illumination}%</span>
               </div>
               <div className="h-1.5 bg-muted rounded-full overflow-hidden">
@@ -59,11 +66,11 @@ export function MoonSection({ moon }: Props) {
 
             {/* Luna llena */}
             <p className="text-xs text-muted-foreground mb-3">
-              Próxima luna llena:{" "}
+              {t.nextFull}:{" "}
               <span className="text-foreground font-medium">{moon.nextFullDate}</span>
               {moon.daysUntilFull > 0 && (
                 <span className="text-muted-foreground">
-                  {" "}({moon.daysUntilFull} días)
+                  {" "}({moon.daysUntilFull} {t.days})
                 </span>
               )}
             </p>
@@ -71,8 +78,8 @@ export function MoonSection({ moon }: Props) {
             {/* Calidad de observación */}
             <div className="flex items-center gap-2">
               <Star size={12} strokeWidth={1.5} className={qualityColor} />
-              <span className={`text-xs font-medium capitalize ${qualityColor}`}>
-                {moon.stargazingQuality}
+              <span className={`text-xs font-medium ${qualityColor}`}>
+                {STARGAZING_LABELS[moon.stargazingQuality][lang]}
               </span>
             </div>
             <p className="text-[11px] text-muted-foreground mt-1">{moon.stargazingNote}</p>

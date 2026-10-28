@@ -4,6 +4,7 @@
 
 import { PARQUES_CATALOG } from "@/lib/parques/catalog"
 import { SENDEROS_CATALOG } from "@/lib/senderos/catalog"
+import { DESTINOS_CATALOG } from "@/lib/destinos/catalog"
 
 export function getDayOfYear(date: Date): number {
   const start = Date.UTC(date.getUTCFullYear(), 0, 0)
@@ -47,9 +48,18 @@ const HIGHLIGHTS: DailyHighlight[] = [
   })),
 ]
 
-export function getDailyHighlight(): DailyHighlight {
+// Parques y senderos solo tienen texto en español: en inglés el dato sale de
+// la intro de las guías de destino, que sí tienen versión en inglés.
+const HIGHLIGHTS_EN: DailyHighlight[] = DESTINOS_CATALOG.map((d) => ({
+  text: leadingExcerpt(d.en.intro[0]),
+  href: `/en/guides/${d.slug}`,
+  source: d.nombre,
+}))
+
+export function getDailyHighlight(lang: "es" | "en" = "es"): DailyHighlight {
+  const highlights = lang === "en" ? HIGHLIGHTS_EN : HIGHLIGHTS
   const dayOfYear = getDayOfYear(new Date())
-  return HIGHLIGHTS[dayOfYear % HIGHLIGHTS.length]
+  return highlights[dayOfYear % highlights.length]
 }
 
 export type TimeOfDay = "amanecer" | "dia" | "atardecer" | "noche"
@@ -68,8 +78,8 @@ export function getTimeOfDay(): TimeOfDay {
   return "noche"
 }
 
-export function getTodayLabel(): string {
-  return new Intl.DateTimeFormat("es-AR", {
+export function getTodayLabel(lang: "es" | "en" = "es"): string {
+  return new Intl.DateTimeFormat(lang === "en" ? "en-US" : "es-AR", {
     timeZone: "America/Argentina/Buenos_Aires",
     day: "numeric",
     month: "long",

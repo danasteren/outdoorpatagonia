@@ -26,7 +26,19 @@ const LOCATIONS: { name: string; lat: number; lon: number; region: "AR" | "CL" }
   { name: "Coyhaique", lat: -45.5712, lon: -72.0658, region: "CL" },
 ]
 
-export function wmoToCondition(code: number): string {
+export function wmoToCondition(code: number, lang: "es" | "en" = "es"): string {
+  if (lang === "en") {
+    if (code === 0) return "Clear"
+    if (code <= 2) return "Partly cloudy"
+    if (code === 3) return "Overcast"
+    if (code <= 48) return "Fog"
+    if (code <= 57) return "Drizzle"
+    if (code <= 67) return "Rain"
+    if (code <= 77) return "Snow"
+    if (code <= 82) return "Showers"
+    if (code <= 86) return "Snow showers"
+    return "Thunderstorm"
+  }
   if (code === 0) return "Despejado"
   if (code <= 2) return "Algo de nubes"
   if (code === 3) return "Nublado"
@@ -44,6 +56,7 @@ export function wmoToCondition(code: number): string {
 export type GlacierData = {
   location: string
   sublabel: string
+  sublabelEn: string
   temperature: number
   snowfall: number
   windSpeed: number
@@ -60,15 +73,15 @@ type OpenMeteoGlacierResponse = {
   }
 }
 
-const GLACIER_POINTS: { name: string; sublabel: string; lat: number; lon: number }[] = [
-  { name: "Perito Moreno", sublabel: "Los Glaciares NP", lat: -50.4967, lon: -73.0542 },
-  { name: "Campo de Hielo Sur", sublabel: "Hielo Patagónico", lat: -49.6, lon: -73.5 },
-  { name: "Glaciar Grey", sublabel: "Torres del Paine", lat: -51.0, lon: -73.2 },
+const GLACIER_POINTS: { name: string; sublabel: string; sublabelEn: string; lat: number; lon: number }[] = [
+  { name: "Perito Moreno", sublabel: "Los Glaciares NP", sublabelEn: "Los Glaciares NP", lat: -50.4967, lon: -73.0542 },
+  { name: "Campo de Hielo Sur", sublabel: "Hielo Patagónico", sublabelEn: "Patagonian Ice Field", lat: -49.6, lon: -73.5 },
+  { name: "Glaciar Grey", sublabel: "Torres del Paine", sublabelEn: "Torres del Paine", lat: -51.0, lon: -73.2 },
 ]
 
 export async function fetchGlacierData(): Promise<GlacierData[]> {
   const results = await Promise.allSettled(
-    GLACIER_POINTS.map(async ({ name, sublabel, lat, lon }) => {
+    GLACIER_POINTS.map(async ({ name, sublabel, sublabelEn, lat, lon }) => {
       const url =
         `https://api.open-meteo.com/v1/forecast` +
         `?latitude=${lat}&longitude=${lon}` +
@@ -80,6 +93,7 @@ export async function fetchGlacierData(): Promise<GlacierData[]> {
       return {
         location: name,
         sublabel,
+        sublabelEn,
         temperature: Math.round(data.current.temperature_2m),
         snowfall: data.current.snowfall,
         windSpeed: Math.round(data.current.wind_speed_10m),

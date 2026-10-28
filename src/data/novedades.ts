@@ -152,6 +152,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "correccion",
         texto: "El mapa en el celular ocupa toda la pantalla debajo del menú, sin franjas ni el pie de página asomando, y al tocar un punto la ficha ya no queda tapada por los botones de capas y de zoom",
       },
+      {
+        tipo: "mejora",
+        texto: "La portada en inglés es la misma que la de español: el dato del día, los temas, las guías, la escalada, el estado de la Patagonia en vivo y el ozono, todo en inglés, con los últimos artículos al final",
+      },
     ],
   },
   {

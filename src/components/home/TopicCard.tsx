@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { SiteLink } from "@/components/SiteLink"
 import type { LucideIcon } from "lucide-react"
 import { ChevronRight } from "lucide-react"
 
@@ -11,12 +11,15 @@ interface TopicCardProps {
   color: string
   /** Posición en la grilla, para escalonar la animación de entrada. */
   index: number
+  /** Idioma de la home: los links a secciones del otro idioma cargan la página completa. */
+  lang?: "es" | "en"
 }
 
 /** Tarjeta de "Explorá por tema" de la home (ES y EN). */
-export function TopicCard({ label, href, icon: Icon, description, color, index }: TopicCardProps) {
+export function TopicCard({ label, href, icon: Icon, description, color, index, lang = "es" }: TopicCardProps) {
   return (
-    <Link
+    <SiteLink
+      lang={lang}
       href={href}
       style={{ animationDelay: `${index * 70}ms` }}
       className="animate-fade-in-up group relative flex flex-none flex-col items-center basis-[calc((100%-0.75rem)/2)] max-md:last:odd:basis-full md:basis-[calc((100%-3rem)/5)] lg:basis-[calc((100%-4.5rem)/7)] rounded-2xl border border-border bg-card px-3 py-6 text-center overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-teal)]/50 hover:shadow-hover"
@@ -40,6 +43,6 @@ export function TopicCard({ label, href, icon: Icon, description, color, index }
       <p className="relative text-[11px] text-muted-foreground leading-snug mt-1">
         {description}
       </p>
-    </Link>
+    </SiteLink>
   )
 }

@@ -19,4 +19,4 @@ Hay guías en español (`/destinos/[slug]`) y en inglés (`/en/guides/[slug]`). 
 - **Relacionados simétricos** con los parques, senderos, fauna y gastronomía del destino (tipos `destino` y `sendero` en `src/lib/relacionados.ts`).
 - Si ya hay artículos viejos de ese destino (por ejemplo `/lugares/bariloche-argentina`), sumarlos a `LEGACY_TO_GUIDE` en `src/lib/destinos/redirects.ts`. Así `proxy.ts` responde 301, el sitemap los excluye y el sitio no compite consigo mismo.
 - **Cuando se suma la 6ª guía al catálogo, en ese mismo cambio se agrega "Destinos" (`/destinos`) al nav** de `src/components/HeaderShell.tsx` (desktop y mobile, sincronizados) y un bloque en la home. Con menos de 6 guías, se llega a ellas por el buscador, los relacionados y Google.
-- Las guías nuevas las produce la rutina semanal "OP - Guía de destino semanal" (`trig_01Gqz7Knx4E6Az4cLeQAhewY`, lunes 08:30 ART). Abre un PR en una rama `seo/content-<fecha>-<slug>` y se revisa en `/admin/agentes`.
+- Las guías nuevas las produce la rutina `guia-destino-diaria` (ver "Rutinas" en `docs/STATUS.md`). Abre un PR en una rama `seo/content-<fecha>-<slug>` y se revisa en `/admin/agentes`.

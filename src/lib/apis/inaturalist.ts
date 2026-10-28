@@ -132,6 +132,7 @@ function mapToSighting(obs: INatObservation): Sighting {
 
 async function fetchPatagoniaObservations(
   iconicTaxa: IconicTaxa,
+  locale: "es" | "en",
   perPage = 6,
   daysBack = 14,
 ): Promise<Sighting[]> {
@@ -144,7 +145,7 @@ async function fetchPatagoniaObservations(
     order_by: "created_at",
     d1: daysAgo(daysBack),
     photos: "true",
-    locale: "es",
+    locale,
   })
   const url = `https://api.inaturalist.org/v1/observations?${params}`
   const res = await fetch(url, { next: { revalidate: 3600 } })
@@ -153,21 +154,22 @@ async function fetchPatagoniaObservations(
   return data.results.map(mapToSighting)
 }
 
-export async function fetchPatagoniaFauna(): Promise<Sighting[]> {
-  return fetchPatagoniaObservations("Animalia")
+// `locale` define el idioma del nombre común que devuelve iNaturalist.
+export async function fetchPatagoniaFauna(locale: "es" | "en" = "es"): Promise<Sighting[]> {
+  return fetchPatagoniaObservations("Animalia", locale)
 }
 
-export async function fetchPatagoniaFlora(): Promise<Sighting[]> {
-  return fetchPatagoniaObservations("Plantae")
+export async function fetchPatagoniaFlora(locale: "es" | "en" = "es"): Promise<Sighting[]> {
+  return fetchPatagoniaObservations("Plantae", locale)
 }
 
-export async function fetchPatagoniaFungi(): Promise<Sighting[]> {
-  return fetchPatagoniaObservations("Fungi")
+export async function fetchPatagoniaFungi(locale: "es" | "en" = "es"): Promise<Sighting[]> {
+  return fetchPatagoniaObservations("Fungi", locale)
 }
 
 // ─── Status board: photo grid ─────────────────────────────────────────────────
 
-export async function fetchPatagoniaPhotos(perPage = 9): Promise<PhotoSighting[]> {
+export async function fetchPatagoniaPhotos(perPage = 9, locale: "es" | "en" = "es"): Promise<PhotoSighting[]> {
   const params = new URLSearchParams({
     ...PATAGONIA_BBOX,
     quality_grade: "research",
@@ -176,7 +178,7 @@ export async function fetchPatagoniaPhotos(perPage = 9): Promise<PhotoSighting[]
     order_by: "created_at",
     d1: daysAgo(7),
     photos: "true",
-    locale: "es",
+    locale,
   })
   const url = `https://api.inaturalist.org/v1/observations?${params}`
   const res = await fetch(url, { next: { revalidate: 3600 } })

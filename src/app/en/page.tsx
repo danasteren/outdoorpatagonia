@@ -1,26 +1,15 @@
 import type { Metadata } from "next";
-import type { LucideIcon } from "lucide-react";
-import {
-  BookOpen,
-  ChefHat,
-  Download,
-  Landmark,
-  Leaf,
-  Lightbulb,
-  Mountain,
-  PawPrint,
-  Recycle,
-  ScrollText,
-  Signpost,
-  Sprout,
-  Tent,
-} from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
-import { PageHero } from "@/components/PageHero";
+import { StatusBoard } from "@/components/status/StatusBoard";
+import { EstadoCTA } from "@/components/status/EstadoCTA";
+import { OzoneSection } from "@/components/status/OzoneSection";
 import { ArticleTile } from "@/components/ArticleTile";
+import { Hero } from "@/components/home/Hero";
 import { TopicCard } from "@/components/home/TopicCard";
 import { DestinosSection } from "@/components/home/DestinosSection";
+import { EscaladaSection } from "@/components/home/EscaladaSection";
 import { Section, PageShell } from "@/components/layout";
+import { getHomeTopics } from "@/lib/home-topics";
 import { toCategorySlug } from "@/lib/category";
 import { articleRedirect } from "@/lib/article-redirects";
 
@@ -36,24 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Ícono y color de cada categoría en inglés para "Explore by topic"; el resto usa el default
-const TOPIC_STYLES: Record<string, { icon: LucideIcon; color: string }> = {
-  fauna: { icon: PawPrint, color: "from-[var(--color-forest)] to-[var(--color-teal)]" },
-  flora: { icon: Leaf, color: "from-[var(--color-teal)] to-[var(--color-teal-light)]" },
-  fungi: { icon: Sprout, color: "from-[#5a4a3a] to-[var(--color-forest)]" },
-  gastronomy: { icon: ChefHat, color: "from-[#2a1508] to-[#4d2e10]" },
-  destinations: { icon: Signpost, color: "from-[#0a2233] to-[#103a4d]" },
-  landscapes: { icon: Mountain, color: "from-[var(--color-charcoal)] to-[var(--color-forest)]" },
-  history: { icon: ScrollText, color: "from-[#8a4d22] to-[var(--color-charcoal)]" },
-  culture: { icon: Landmark, color: "from-[var(--color-terracotta)] to-[#8a4d22]" },
-  tips: { icon: Lightbulb, color: "from-[#1a6a8a] to-[var(--color-charcoal)]" },
-  "environmental-impact": { icon: Recycle, color: "from-[#3a5a2a] to-[var(--color-forest)]" },
-  dome: { icon: Tent, color: "from-[var(--color-charcoal)] to-[#3a322f]" },
-  "downloadable-resources": { icon: Download, color: "from-[var(--color-teal)] to-[#1a6a8a]" },
-};
-const DEFAULT_TOPIC = { icon: BookOpen, color: "from-[var(--color-forest)] to-[var(--color-teal)]" };
-
-async function getArticles() {
+async function getLatestArticles() {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -65,61 +37,58 @@ async function getArticles() {
     )
     .eq("language", "en")
     .eq("status", "published")
-    .order("published_at", { ascending: false });
+    .order("published_at", { ascending: false })
+    .limit(40);
   // Sin los artículos absorbidos por una guía (301 en proxy.ts)
-  return (data ?? []).filter(
-    (a) => !articleRedirect(`/en/${toCategorySlug(a.category ?? "")}/${a.slug}`)
-  );
+  return (data ?? [])
+    .filter((a) => !articleRedirect(`/en/${toCategorySlug(a.category ?? "")}/${a.slug}`))
+    .slice(0, 12);
 }
 
+// Misma home que la de español (src/app/page.tsx), en inglés. Sin AhoraSection:
+// las publicaciones de /ahora son solo en español. Al final, los últimos artículos.
 export default async function HomeEN() {
-  const articles = await getArticles();
-
-  const counts = new Map<string, { label: string; count: number }>();
-  for (const a of articles) {
-    if (!a.category) continue;
-    const slug = toCategorySlug(a.category);
-    if (slug === "sin-categorizar") continue;
-    const entry = counts.get(slug) ?? { label: a.category, count: 0 };
-    entry.count++;
-    counts.set(slug, entry);
-  }
-  const topics = [...counts.entries()]
-    .sort((a, b) => b[1].count - a[1].count)
-    .map(([slug, { label, count }]) => ({
-      label,
-      href: `/en/category/${slug}`,
-      description: `${count} ${count === 1 ? "article" : "articles"}`,
-      ...(TOPIC_STYLES[slug] ?? DEFAULT_TOPIC),
-    }));
-  const latest = articles.slice(0, 12);
+  const latest = await getLatestArticles();
 
   return (
     <div>
-      <PageHero
-        icon={Mountain}
-        eyebrow="Outdoor Patagonia"
-        title="Nature, culture and stories from Patagonia"
-        description="Travel guides, wildlife, plants, food and history from southern Argentina and Chile."
-      />
+      <Hero lang="en" />
 
-      {topics.length > 0 && (
-        <Section spacing="lg">
-          <PageShell>
-            <h2 className="text-2xl font-bold mb-6" style={{ fontFamily: "var(--font-playfair)" }}>
-              Explore by topic
-            </h2>
-            <div className="flex flex-wrap justify-center gap-3">
-              {topics.map((t, i) => (
-                <TopicCard key={t.href} {...t} index={i} />
-              ))}
-            </div>
-          </PageShell>
-        </Section>
-      )}
+      {/* Categorías */}
+      <Section id="categorias" spacing="lg" className="scroll-mt-20">
+        <PageShell>
+          <h2
+            className="text-2xl font-bold mb-6"
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            Explore by topic
+          </h2>
+          <div className="flex flex-wrap justify-center gap-3">
+            {getHomeTopics("en").map((c, i) => (
+              <TopicCard key={c.href} {...c} index={i} lang="en" />
+            ))}
+          </div>
+        </PageShell>
+      </Section>
 
+      {/* Guías de destino */}
       <DestinosSection lang="en" />
 
+      {/* Escalada */}
+      <EscaladaSection lang="en" />
+
+      {/* Estado en tiempo real */}
+      <StatusBoard lang="en" />
+      <EstadoCTA lang="en" />
+
+      {/* Ozono */}
+      <Section spacing="sm">
+        <PageShell>
+          <OzoneSection lang="en" />
+        </PageShell>
+      </Section>
+
+      {/* Últimos artículos */}
       {latest.length > 0 && (
         <Section spacing="md">
           <PageShell>
