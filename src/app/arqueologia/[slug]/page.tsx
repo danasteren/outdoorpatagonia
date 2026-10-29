@@ -146,7 +146,7 @@ export default async function ArqueologiaDetailPage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       <DetailHero
-        image={wikiImage ? { url: wikiImage.url, alt: entry.nombre, credit: "Wikipedia", creditUrl: wikiImage.pageUrl } : null}
+        image={wikiImage ? { url: wikiImage.url, alt: entry.nombre, credit: "Wikipedia", creditUrl: wikiImage.pageUrl, originalWidth: wikiImage.width } : null}
         fallbackGradient={heroGradient}
         breadcrumb={[
           { label: "Inicio", href: "/" },

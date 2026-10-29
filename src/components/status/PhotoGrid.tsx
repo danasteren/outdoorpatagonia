@@ -44,6 +44,7 @@ export function PhotoGrid({ photos, lang = "es" }: Props) {
               <img
                 src={p.photoUrl}
                 alt={displayName(p)}
+                loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />

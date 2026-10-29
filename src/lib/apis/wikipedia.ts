@@ -11,16 +11,6 @@ export type WikipediaImage = {
   width?: number
 }
 
-// Miniatura de Wikimedia de un ancho estándar (960, 1280, 1920…), para no
-// bajar el original entero. Si el original es más chico o la URL no es de
-// Wikimedia Commons, devuelve el original.
-export function wikipediaImageAt(image: WikipediaImage, width: number): string {
-  if (!image.width || image.width <= width) return image.url
-  const m = image.url.match(/^https:\/\/(?:upload|thumb)\.wikimedia\.org\/wikipedia\/commons\/(?:thumb\/)?([0-9a-f]\/[0-9a-f]{2})\/([^/?]+)/)
-  if (!m) return image.url
-  return `https://upload.wikimedia.org/wikipedia/commons/thumb/${m[1]}/${m[2]}/${width}px-${m[2]}`
-}
-
 export async function fetchWikipediaLeadImage(
   title: string
 ): Promise<WikipediaImage | null> {

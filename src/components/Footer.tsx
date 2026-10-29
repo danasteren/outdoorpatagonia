@@ -83,9 +83,13 @@ export function Footer({ lang = "es" }: { lang?: "es" | "en" }) {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1 flex flex-col gap-4 max-w-xs">
             <Link href={t.home} className="flex items-center">
+              {/* Abajo de todo: diferida, para no competir con la foto de portada */}
               <img
                 src="/brand/op_03.svg"
                 alt="Outdoor Patagonia"
+                width={48}
+                height={48}
+                loading="lazy"
                 className="h-12 w-auto"
               />
             </Link>

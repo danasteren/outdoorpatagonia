@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-29 — Fotos de portada: tamaño por host y sin pantalla de carga global
+**Decisión:** se saca `src/app/loading.tsx` de la raíz y las fotos de portada se sirven en el tamaño de la pantalla, con el servicio de redimensionado de cada host, no con `next/image`.
+**Motivo:** la auditoría del 2026-10-29 midió un LCP mobile de 10 a 13 s. El `loading.tsx` de la raíz tapaba todas las páginas con el logo mientras llegaba el stream, retrasaba el pedido de la foto y hacía que `notFound()` devolviera 200 + `noindex` (el status ya había salido). Las portadas se pedían sin prioridad y en tamaño original (las de Wikimedia, hasta 1,7 MB).
+**Detalle:** `src/lib/responsive-image.ts` arma el `srcset`: Supabase Storage con transformaciones de imagen (`/render/image/`, WebP, quality 70; Supabase cobra por foto original transformada al mes, unos US$ 5 cada 1.000 después de las 100 incluidas; con unas 400 portadas, ~US$ 1–2 por mes), miniaturas de anchos estándar de Wikimedia (500, 960, 1280 y 1920: otros anchos dan 400; nunca más anchas que el original si se conoce), `medium`/`large` de iNaturalist y el parámetro `w` de Pexels. Un host desconocido queda con la URL original. Se descartó `next/image` para no sumar el costo de optimización de imágenes de Vercel ni el riesgo de que un host no listado en `remotePatterns` rompa la página. `DetailHero` recibe `originalWidth` (Wikipedia lo informa) y precarga la foto con `preload()` de `react-dom`; el hero de la home usa `sizes` de 150vw en el celular porque la foto se recorta a lo alto. React precarga solo las `<img>` que no son `loading="lazy"`, por eso el logo del footer, el del modo oscuro y las miniaturas del StatusBoard pasaron a diferidas. Se borró `wikipediaImageAt` (lo reemplaza el helper). `.claude/launch.json` suma la config `start` (build de producción en el puerto 3007) para probar status codes y Lighthouse en local.
+**Estado:** Vigente
+
 ## 2026-10-29 — Las auditorías van en `docs/audits/`
 **Decisión:** los reportes de auditoría se guardan en `docs/audits/AAAA-MM-tema.md`, con un cuadro por punto (estado, evidencia, impacto y fix) ordenado por prioridad. STATUS solo remite al reporte.
 **Motivo:** la usuaria pidió la auditoría de crecimiento en esa ruta. Un reporte largo no entra en STATUS y no es una decisión.

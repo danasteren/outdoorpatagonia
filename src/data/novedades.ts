@@ -164,6 +164,14 @@ export const novedades: VersionNovedades[] = [
         tipo: "mejora",
         texto: "Las fichas de parques, volcanes, termas y platos típicos muestran siempre las guías de viaje que los mencionan, en \"También te puede interesar\"",
       },
+      {
+        tipo: "mejora",
+        texto: "Las fichas, los artículos y la home cargan más rápido en el celular: ya no aparece la pantalla de carga con el logo y la foto de portada llega primero y en el tamaño justo para la pantalla",
+      },
+      {
+        tipo: "correccion",
+        texto: "Las direcciones que no existen muestran la página de error de verdad, en lugar de una página vacía",
+      },
     ],
   },
   {

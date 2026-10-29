@@ -86,7 +86,7 @@ export default async function GastronomiaEntryPage({
     : pexelsPhoto
       ? { url: pexelsPhoto.url, alt: entry.nombre, credit: pexelsPhoto.photographer, creditUrl: pexelsPhoto.pageUrl }
       : wikiImage
-        ? { url: wikiImage.url, alt: entry.nombre, credit: "Wikipedia", creditUrl: wikiImage.pageUrl }
+        ? { url: wikiImage.url, alt: entry.nombre, credit: "Wikipedia", creditUrl: wikiImage.pageUrl, originalWidth: wikiImage.width }
         : null
 
   const jsonLd = {

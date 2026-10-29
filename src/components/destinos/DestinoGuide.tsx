@@ -163,7 +163,7 @@ export function DestinoGuide({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       <DetailHero
-        image={image ? { url: image.url, alt: c.subtitulo ? `${n}, ${c.subtitulo}` : n, credit: "Wikipedia", creditUrl: image.pageUrl } : null}
+        image={image ? { url: image.url, alt: c.subtitulo ? `${n}, ${c.subtitulo}` : n, credit: "Wikipedia", creditUrl: image.pageUrl, originalWidth: image.width } : null}
         fallbackGradient="linear-gradient(135deg, #0a2233 0%, #103a4d 60%, #0a2233 100%)"
         breadcrumb={[
           { label: t.home, href: lang === "es" ? "/" : "/en" },

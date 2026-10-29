@@ -1,7 +1,9 @@
 import type { LucideIcon } from "lucide-react"
 import type { ReactNode } from "react"
+import { preload } from "react-dom"
 import { Breadcrumb, type BreadcrumbItem } from "@/components/primitives/Breadcrumb"
 import { HeroActions } from "@/components/HeroActions"
+import { responsiveImage } from "@/lib/responsive-image"
 
 interface DetailHeroImage {
   url: string
@@ -10,6 +12,8 @@ interface DetailHeroImage {
   creditUrl?: string
   /** "Foto" por defecto; "Photo" en las páginas en inglés. */
   creditLabel?: string
+  /** Ancho del original, si se conoce: evita pedir miniaturas más grandes que la foto. */
+  originalWidth?: number
 }
 
 interface DetailHeroProps {
@@ -37,12 +41,22 @@ export function DetailHero({
   subtitle,
   save,
 }: DetailHeroProps) {
+  // La foto es el LCP de las fichas y los artículos: va con prioridad alta,
+  // precargada desde el <head> y en el tamaño que pide la pantalla.
+  const photo = image ? responsiveImage(image.url, { originalWidth: image.originalWidth }) : null
+  if (photo) {
+    preload(photo.src, { as: "image", fetchPriority: "high", imageSrcSet: photo.srcSet, imageSizes: "100vw" })
+  }
+
   return (
     <div className="relative min-h-72 md:min-h-96 flex flex-col justify-end overflow-hidden">
-      {image && (
+      {image && photo && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={image.url}
+          src={photo.src}
+          srcSet={photo.srcSet}
+          sizes="100vw"
+          fetchPriority="high"
           alt={image.alt}
           className="absolute inset-0 w-full h-full object-cover"
         />

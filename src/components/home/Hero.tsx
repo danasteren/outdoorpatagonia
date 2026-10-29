@@ -1,3 +1,4 @@
+import { preload } from "react-dom"
 import { SiteLink } from "@/components/SiteLink"
 import { ChevronRight, ChevronDown, Camera } from "lucide-react"
 import { PageShell } from "@/components/layout"
@@ -14,9 +15,10 @@ import {
 import type { DestinoEntry } from "@/lib/destinos/catalog"
 import { fetchPatagoniaPhotos } from "@/lib/apis/inaturalist"
 import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
-import { fetchWikipediaLeadImage, wikipediaImageAt } from "@/lib/apis/wikipedia"
+import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
+import { responsiveImage } from "@/lib/responsive-image"
 
-type HeroPhoto = { src: string; credit: string; creditUrl: string }
+type HeroPhoto = { src: string; srcSet?: string; credit: string; creditUrl: string }
 
 // Fondo del hero: la portada de la guía del día (Wikipedia, con su crédito),
 // igual que en la guía. Si no hay, o es muy chica para el ancho de la pantalla
@@ -24,17 +26,21 @@ type HeroPhoto = { src: string; credit: string; creditUrl: string }
 // que rota por día. Si tampoco hay, queda solo el degradé.
 const MIN_COVER_WIDTH = 1200
 
+// En el celular el hero es más alto que ancho y la foto (apaisada) se recorta
+// a lo alto: se ve más ancha que la pantalla.
+const HERO_SIZES = "(max-width: 768px) 150vw, 100vw"
+
 async function getHeroPhoto(destino: DestinoEntry, lang: "es" | "en"): Promise<HeroPhoto | null> {
   const cover = destino.wikipediaTitle ? await fetchWikipediaLeadImage(destino.wikipediaTitle) : null
   if (cover && (cover.width ?? 0) >= MIN_COVER_WIDTH) {
-    return { src: wikipediaImageAt(cover, 1920), credit: `${destino.nombre} · Wikipedia`, creditUrl: cover.pageUrl }
+    return { ...responsiveImage(cover.url, { originalWidth: cover.width }), credit: `${destino.nombre} · Wikipedia`, creditUrl: cover.pageUrl }
   }
   try {
     const photos = await fetchPatagoniaPhotos(8, lang)
     if (photos.length === 0) return null
     const photo = photos[getDayOfYear(new Date()) % photos.length]
     return {
-      src: photo.photoUrl.replace(/\/small\b/, "/large"),
+      ...responsiveImage(photo.photoUrl),
       credit: `${photo.commonName ?? photo.speciesName} ${TEXT[lang].by} @${photo.observerLogin} · iNaturalist`,
       creditUrl: photo.uri,
     }
@@ -130,6 +136,9 @@ export async function Hero({ lang = "es" }: { lang?: "es" | "en" }) {
     getHeroPhoto(destino, lang),
     fetchWeatherForLocation(destino.lat, destino.lng, destino.nombre),
   ])
+  if (photo) {
+    preload(photo.src, { as: "image", fetchPriority: "high", imageSrcSet: photo.srcSet, imageSizes: HERO_SIZES })
+  }
 
   return (
     <section
@@ -142,6 +151,8 @@ export async function Hero({ lang = "es" }: { lang?: "es" | "en" }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={photo.src}
+            srcSet={photo.srcSet}
+            sizes={HERO_SIZES}
             alt=""
             fetchPriority="high"
             className="absolute inset-0 w-full h-full object-cover brightness-[0.55] saturate-[1.1]"

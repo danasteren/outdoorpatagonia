@@ -150,9 +150,11 @@ export function HeaderShell({
               alt="Outdoor Patagonia"
               className={`w-auto transition-all duration-300 dark:hidden ${scrolled ? 'h-9' : 'h-11'}`}
             />
+            {/* Diferida: con display:none (modo claro) no se descarga */}
             <img
               src="/brand/op_02_dark.svg"
               alt="Outdoor Patagonia"
+              loading="lazy"
               className={`hidden w-auto transition-all duration-300 dark:block ${scrolled ? 'h-9' : 'h-11'}`}
             />
           </Link>

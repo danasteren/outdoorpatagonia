@@ -41,6 +41,7 @@ function SightingRow({
         <img
           src={sighting.imageUrl}
           alt={name}
+          loading="lazy"
           className="w-9 h-9 rounded-lg object-cover flex-shrink-0"
         />
       ) : (

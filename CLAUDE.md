@@ -45,6 +45,7 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 ## Comandos
 
 - `npm run dev`: dev server en el **puerto 3006** (está en `package.json` y en `.claude/launch.json`).
+- Para medir status codes o Lighthouse como en producción: `npm run build` y la config `start` de `.claude/launch.json` (puerto 3007). En dev, el streaming y los tiempos no son los reales.
 - `npm run build`: usarlo para verificar antes de dar algo por terminado.
 - `predev` y `prebuild` corren `scripts/gen-destinos.mjs`, que arma `src/lib/destinos/*.generated.ts` (no se versionan). Si TypeScript no encuentra esos archivos, correr `node scripts/gen-destinos.mjs`.
 - `npm run lint`
@@ -86,6 +87,8 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 - `redirect()` dentro de un page component devuelve **200 + meta-refresh**, no un 301 real. Para un 301 real, hacerlo en `src/proxy.ts`.
 - `generateStaticParams` tiene que usar un cliente de Supabase **sin cookies**. Con el cliente de servidor normal falla el build.
 - Nav: las secciones de "Explorar", "Planear" y "Herramientas" salen de una sola lista (`EXPLORE_ITEMS`, `PLAN_ITEMS` y `TOOL_ITEMS` en `src/lib/nav-items.ts`, con el texto en ES y EN). La usan el header (desktop y mobile) y las tarjetas de tema de las dos homes (`src/lib/home-topics.ts`). Excepción: "Herramientas" del drawer mobile sigue escrito a mano en `HeaderShell.tsx` (usa "Mapa interactivo"): mantenerlo sincronizado. El idioma del header sale de la ruta (`/en…`). El layout lo calcula en el servidor, así que un `<Link>` que cambia de idioma deja header y footer en el idioma anterior: los links entre idiomas van con `<a>` (`src/components/SiteLink.tsx` lo decide solo según el idioma de la página y del destino). Por lo mismo, para sacar algo del layout en una ruta se usa `HideOnPaths` (cliente, con `usePathname`), como el footer en `/mapa`. El selector ES | EN (`src/lib/lang-alternate.ts`) lee el hreflang de la página: el par de una página nueva se declara solo en `alternates.languages`.
+- **No poner `loading.tsx` en la raíz de `src/app/`**: envuelve todas las páginas en Suspense, el status 200 sale antes de que la página llame a `notFound()` (queda 200 + `noindex` en vez de 404) y tapa el contenido hasta que llega el stream. Si hace falta, va en el segmento que lo necesita.
+- Fotos de portada (LCP): pasar la URL por `responsiveImage()` (`src/lib/responsive-image.ts`) y precargarla con `preload()` de `react-dom`, como `DetailHero`. React precarga en el `<head>` toda `<img>` que no sea `loading="lazy"`: las imágenes que no se ven al cargar llevan `loading="lazy"` para no competir con la portada.
 - Las fotos de los artículos se sirven desde Supabase Storage. El fallback de portadas está en `src/data/cover-fallbacks.ts`.
 - En `fauna/[especie]` y `flora/[especie]`, si existe un artículo de Supabase con el mismo slug, su `seo_title` le gana al `metaTitle` del catálogo. Antes de editar títulos en el catálogo, fijarse si hay artículo.
 - Mapas: `react-leaflet` + OSM. `maplibre-gl` sigue en `package.json` pero se descartó (pantalla gris): no reintroducirlo.

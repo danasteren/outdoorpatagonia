@@ -98,9 +98,9 @@ export default async function ParqueNacionalPage({
   ])
 
   const heroPhoto = entry.heroImageUrl
-    ? { url: entry.heroImageUrl, credit: "Wikimedia Commons", creditUrl: entry.heroImageUrl }
+    ? { url: entry.heroImageUrl, credit: "Wikimedia Commons", creditUrl: entry.heroImageUrl, originalWidth: undefined }
     : wikipediaImage
-      ? { url: wikipediaImage.url, credit: "Wikipedia", creditUrl: wikipediaImage.pageUrl }
+      ? { url: wikipediaImage.url, credit: "Wikipedia", creditUrl: wikipediaImage.pageUrl, originalWidth: wikipediaImage.width }
       : null
 
   // Cross-reference data from existing structures — no API needed
@@ -127,7 +127,7 @@ export default async function ParqueNacionalPage({
   return (
     <div className="min-h-screen">
       <DetailHero
-        image={heroPhoto ? { url: heroPhoto.url, alt: entry.name, credit: heroPhoto.credit, creditUrl: heroPhoto.creditUrl } : null}
+        image={heroPhoto ? { url: heroPhoto.url, alt: entry.name, credit: heroPhoto.credit, creditUrl: heroPhoto.creditUrl, originalWidth: heroPhoto.originalWidth } : null}
         fallbackGradient={
           entry.country === "ar"
             ? "linear-gradient(135deg, var(--color-forest) 0%, #1a3a2a 60%, #0d2218 100%)"
