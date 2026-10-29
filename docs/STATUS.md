@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-10-28_
+_Última actualización: 2026-10-29_
 
 ## Hecho (a grandes rasgos)
 
@@ -27,6 +27,7 @@ _Última actualización: 2026-10-28_
 - 2026-10-28: `/en` es la misma home que `/` en inglés: Hero, "Explore by topic", guías, escalada, StatusBoard + EstadoCTA y ozono, con "Latest articles" al final (sin `/ahora`, que es solo en español). Los componentes de la home y del StatusBoard reciben `lang` (español por defecto). Las tarjetas de tema salen de `src/lib/home-topics.ts`, que toma nombre, ícono y link de las listas del menú (pasaron a `src/lib/nav-items.ts`). El dato del día en inglés sale de la intro de las guías de destino (parques y senderos solo tienen texto en español) y los nombres de iNaturalist se piden en inglés. Probado: los 47 links de `/en` dan 200; mismos bloques y misma grilla que `/` a 1024 y a 375 px.
 - 2026-10-28: el título del hero de la home (ES y EN) es el destino del día: rota entre las guías por el día de Argentina, muestra la temperatura y el viento de ahora (Open-Meteo, el mismo dato que la guía) y lleva a la guía con "Ver la guía". Fondo: la portada de la guía si mide 1200 px o más; si no, la foto de iNaturalist. Probado con fechas simuladas (cambia a medianoche de Argentina), sin clima (queda "Hoy en {destino}") y a 375 px con el nombre más largo.
 - 2026-10-28: aprobar contenido desde `/admin/agentes` ya no genera conflictos. Cada guía es un archivo propio (`src/lib/destinos/guias/`, índice armado en el build), los PR de contenido no tocan STATUS, DECISIONS ni novedades, la vuelta de los relacionados desde las guías es automática y el panel borra la rama al publicar o descartar. Simulado: 3 guías aprobadas seguidas, sin conflictos.
+- 2026-10-29: auditoría de crecimiento (monetización, SEO técnico y performance), solo lectura: `docs/audits/2026-10-crecimiento.md`.
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 ## En curso
@@ -43,6 +44,7 @@ No hay rutinas en la nube (`RemoteTrigger` devuelve la lista vacía, verificado 
 
 ## Pendiente
 
+- **Auditoría del 2026-10-29** (`docs/audits/2026-10-crecimiento.md`, prioridades y fixes ahí). Lo que es de la usuaria, sin código: apuntar `www` a Vercel (hoy da un certificado autofirmado), excluir `/wp-content/uploads/` del firewall de Vercel, confirmar el mensaje del RGPD en AdSense y revisar bots en GA4. Lo que necesita su aprobación: unidades de AdSense manuales (cambia la decisión del 2026-07-16) y sacar `headers()` del layout para cachear.
 - **Seguridad (la usuaria)**: rotar la service role key de Supabase (y actualizarla en `.env.local` y Vercel). Estuvo en texto plano en `.claude/settings.local.json`; las reglas se sacaron el 2026-10-10. Si existe `NEXT_PUBLIC_AMAZON_TAG` en `.env.local` o Vercel, borrarla.
 - `ADMIN_EMAIL` está repetido en 10 archivos: centralizarlo en un helper.
 - `notification_preferences` (migración 006) existe pero nada lo consume.

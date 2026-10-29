@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-29 — Las auditorías van en `docs/audits/`
+**Decisión:** los reportes de auditoría se guardan en `docs/audits/AAAA-MM-tema.md`, con un cuadro por punto (estado, evidencia, impacto y fix) ordenado por prioridad. STATUS solo remite al reporte.
+**Motivo:** la usuaria pidió la auditoría de crecimiento en esa ruta. Un reporte largo no entra en STATUS y no es una decisión.
+**Detalle:** primera: `docs/audits/2026-10-crecimiento.md` (solo lectura, sin cambios de código). Los fixes que tocan decisiones vigentes (Auto ads del 2026-07-16, el idioma calculado en el layout) quedan para que la usuaria los apruebe; están en la sección 6 del reporte.
+**Estado:** Vigente
+
 ## 2026-10-28 — Aprobar contenido no pasa por archivos compartidos
 **Decisión:** publicar contenido desde `/admin/agentes` sigue siendo mergear un PR, pero cada pieza de contenido es un archivo propio y los PR de contenido no tocan `docs/STATUS.md`, `docs/DECISIONS.md` ni `src/data/novedades.ts`. Esos tres quedan solo para cambios de código.
 **Motivo:** cada aprobación era un PR que tocaba archivos compartidos y los PR pendientes quedaban con merge conflicts (el #15, Coyhaique, chocaba en STATUS). Una guía tocaba siempre el final del array de `destinos/catalog.ts`, `destinos/redirects.ts`, STATUS, novedades y los `relacionados` de parques, termas, volcanes y gastronomía.

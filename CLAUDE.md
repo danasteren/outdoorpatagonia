@@ -8,6 +8,7 @@ El repo es la única fuente de verdad. El chat del Proyecto y Claude Code leen l
 - `.claude/rules/`: flujos temáticos. Se cargan solos cuando tocás los archivos de cada tema.
 - `docs/STATUS.md`: qué está hecho, qué está en curso, qué está pendiente y qué viene después.
 - `docs/DECISIONS.md`: decisiones con fecha, motivo y detalle.
+- `docs/audits/`: reportes de auditoría (estado, evidencia, impacto y fix por punto).
 
 ## Workflow (obligatorio)
 
