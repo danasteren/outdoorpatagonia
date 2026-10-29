@@ -172,6 +172,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "correccion",
         texto: "Las direcciones que no existen muestran la página de error de verdad, en lugar de una página vacía",
       },
+      {
+        tipo: "mejora",
+        texto: "Los videos de los artículos cargan recién cuando tocás play: la página abre más rápido y no gasta datos en videos que no mirás",
+      },
     ],
   },
   {

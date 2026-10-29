@@ -6,6 +6,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { HideOnPaths } from "@/components/HideOnPaths";
+import { YouTubeFacades } from "@/components/YouTubeFacades";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -83,20 +84,25 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
+        {/* AdSense y gtag.js con lazyOnload: cargan cuando terminó la página. Con
+            afterInteractive, Next los precarga en el <head> y le sacan ancho de banda
+            a la foto de portada (el LCP). El init de GA4 sigue temprano: los eventos
+            quedan en dataLayer hasta que llega gtag.js. */}
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3634364666141836"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-0W9F62HBB7"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         <Script id="ga4-init" strategy="afterInteractive">
           {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-0W9F62HBB7');`}
         </Script>
         <ScrollToTop />
+        <YouTubeFacades />
         <Header />
         <main className="flex-1">
           {children}

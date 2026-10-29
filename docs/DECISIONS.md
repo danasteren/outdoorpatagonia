@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-29 — AdSense y GA cargan después de la página; YouTube con fachada
+**Decisión:** el script de AdSense y `gtag.js` se cargan con `strategy="lazyOnload"`. Los iframes de YouTube de los artículos se reemplazan por una fachada que carga el reproductor al hacer clic.
+**Motivo:** después del cambio de las portadas, en producción la foto seguía compitiendo con `adsbygoogle.js` (56 KB) y `gtag.js` (197 KB), que Next precarga en el `<head>` con `afterInteractive`, y en el artículo del Estrecho de Magallanes con el iframe de YouTube (~1 MB). 129 artículos tienen al menos un video.
+**Detalle:** sigue siendo Auto ads (la decisión del 2026-07-16 no cambia): los anuncios aparecen unos segundos más tarde. El init de GA4 (`dataLayer` + `config`) sigue con `afterInteractive`, así que los eventos quedan en cola hasta que llega `gtag.js`. Costo aceptado: si alguien se va antes de que termine de cargar la página, GA no registra la visita. La fachada la arma `fixWpLazyLoad` (`src/lib/utils.ts`) en el HTML del artículo: un `<a>` a `youtube.com/watch` con la miniatura `i.ytimg.com/vi/<id>/hqdefault.jpg` (lazy) y estilos inline, porque el `.wp-block-embed__wrapper` de WordPress ya da el 16:9 y las reglas de `img` de `.article-body` llevan `!important`. Sin JS, o con Ctrl/Cmd, abre YouTube. Al hacer clic, `src/components/YouTubeFacades.tsx` (montado en el layout, con un listener delegado) la cambia por el iframe de `youtube-nocookie.com` con `autoplay=1`. No se tocaron `ArticleLayout.tsx` ni `globals.css`, que estaba editando en paralelo la sesión de las unidades de AdSense.
+**Estado:** Vigente
+
 ## 2026-10-29 — Fotos de portada: tamaño por host y sin pantalla de carga global
 **Decisión:** se saca `src/app/loading.tsx` de la raíz y las fotos de portada se sirven en el tamaño de la pantalla, con el servicio de redimensionado de cada host, no con `next/image`.
 **Motivo:** la auditoría del 2026-10-29 midió un LCP mobile de 10 a 13 s. El `loading.tsx` de la raíz tapaba todas las páginas con el logo mientras llegaba el stream, retrasaba el pedido de la foto y hacía que `notFound()` devolviera 200 + `noindex` (el status ya había salido). Las portadas se pedían sin prioridad y en tamaño original (las de Wikimedia, hasta 1,7 MB).

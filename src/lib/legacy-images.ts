@@ -10,7 +10,8 @@ import { COVER_FALLBACKS, type CoverFallback } from "@/data/cover-fallbacks";
 
 const DEAD_PREFIX = /^https?:\/\/outdoorpatagonia\.dreamhosters\.com\/wp-content\/uploads\//;
 const DEAD_URL = /https?:\/\/outdoorpatagonia\.dreamhosters\.com\/wp-content\/uploads\/[^"'\s)<>,]+/g;
-const STORAGE_BASE = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/wp-uploads/`;
+// trim(): en Vercel la variable tiene un salto de línea al final.
+const STORAGE_BASE = `${process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()}/storage/v1/object/public/wp-uploads/`;
 
 // "2024/09/foto-300x200.jpg" y "2024/09/foto-scaled.jpg" → "2024/09/foto.jpg"
 function originalPath(path: string): string {

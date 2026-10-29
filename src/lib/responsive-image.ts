@@ -33,7 +33,9 @@ function build(widths: number[], at: (w: number) => string, fallbackWidth: numbe
   return { src: at(fallback), srcSet: widths.map((w) => `${at(w)} ${w}w`).join(", ") }
 }
 
-export function responsiveImage(url: string, { originalWidth, fallbackWidth = 1280 }: Options = {}): ResponsiveImage {
+export function responsiveImage(rawUrl: string, { originalWidth, fallbackWidth = 1280 }: Options = {}): ResponsiveImage {
+  // Como el navegador, se ignoran tabs y saltos de línea dentro de la URL.
+  const url = rawUrl.replace(/[\t\n\r]/g, "").trim()
   const supabase = url.match(SUPABASE_OBJECT)
   if (supabase) {
     const [, base, path] = supabase
