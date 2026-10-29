@@ -18,6 +18,7 @@ import { FAUNA_CATALOG } from "@/lib/fauna/catalog"
 import { ALL_GEAR } from "@/lib/planner/data"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
+import { AdSlot } from "@/components/AdSlot"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -158,6 +159,8 @@ export default async function SenderoPage({
                 ))}
               </ul>
             </section>
+
+            <AdSlot unit="fichaContenido" />
 
             {/* Tips */}
             <section>
@@ -334,6 +337,7 @@ export default async function SenderoPage({
             </div>
           </div>
         </div>
+        <AdSlot unit="final" className="mt-12" />
       </div>
 
       {/* Breadcrumb JSON-LD */}

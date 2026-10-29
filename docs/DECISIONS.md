@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-10-29 — AdSense: unidades manuales + Auto ads solo anchor/vignette
+**Decisión:** los anuncios dentro del contenido pasan a unidades manuales con alto reservado (`AdSlot`). Auto ads queda solo para los formatos anchor y vignette, que la usuaria deja prendidos en el panel; el código de Auto ads no se toca.
+**Motivo:** la auditoría del 2026-10-29 (punto 2) verificó que con Auto ads solos, al navegar con links internos (App Router), React reemplaza `<main>` y se lleva los anuncios: solo la página de entrada tenía anuncios en el contenido. Además, Auto ads insertaba anuncios sin espacio reservado y daba un CLS de 0,11 a 0,27 en los artículos.
+**Detalle:** bloques del panel (uno por idioma, el idioma sale de la ruta `/en`) en `src/lib/ads.ts`; componente cliente `src/components/AdSlot.tsx` con `key={pathname}` en el `<ins>` (cada navegación monta uno nuevo y hace `adsbygoogle.push({})`). Distribución, máximo 3 por página y ninguno arriba de la portada: artículos (`ArticleLayout`) con un in-article después del 3.er párrafo de primer nivel (o del 2.º si es corto; `splitAfterParagraph` corta el HTML de la base sin romper etiquetas), multiplex al final y un lateral en el sidebar solo en desktop (en el celular no se monta el `<ins>`, para no pedir un anuncio de ancho 0); fichas de catálogo (parques, senderos, volcanes, termas, arqueología, escalada, gastronomía, fauna y flora) y guías con un in-article entre secciones y multiplex al final. En las guías el in-article va después de "Qué hacer", para no meterlo antes de los links de GetYourGuide. Alto reservado en el contenedor `.ad-slot` (in-article 280 px, multiplex 400 px, lateral 600 px, más la etiqueta "Publicidad"), no en el `<ins>`, porque AdSense pisa el estilo inline de los ancestros del `<ins>`. Si la unidad queda `unfilled`, el contenedor se oculta (`globals.css`). En localhost los `<ins>` llevan `data-adtest="on"`. 404, `/admin`, `/auth`, `/perfil`, legales y `/mapa` no tienen unidades porque no usan esas plantillas. Medido en local con `next start` (Lighthouse mobile simulado, mediana de 3 corridas, antes → después, sobre el mismo commit): Estrecho de Magallanes 10,3 → 9,7 s, hongos en escabeche 8,9 → 8,9 s, morillas 3,7 → 3,5 s (7 corridas), CLS 0 en todas. En localhost AdSense no llena los anuncios, así que el CLS real hay que medirlo en producción.
+**Estado:** Vigente. Reemplaza a 2026-07-16 — AdSense: Auto ads + ads.txt (ads.txt sigue igual).
+
 ## 2026-10-29 — AdSense y GA cargan después de la página; YouTube con fachada
 **Decisión:** el script de AdSense y `gtag.js` se cargan con `strategy="lazyOnload"`. Los iframes de YouTube de los artículos se reemplazan por una fachada que carga el reproductor al hacer clic.
 **Motivo:** después del cambio de las portadas, en producción la foto seguía compitiendo con `adsbygoogle.js` (56 KB) y `gtag.js` (197 KB), que Next precarga en el `<head>` con `afterInteractive`, y en el artículo del Estrecho de Magallanes con el iframe de YouTube (~1 MB). 129 artículos tienen al menos un video.
@@ -234,7 +240,7 @@ Formato:
 **Decisión:** se activan Auto ads y se publica `public/ads.txt`.
 **Motivo:** desde la migración, el script de AdSense cargaba pero no había ni una unidad de anuncio, y faltaba `ads.txt`.
 **Detalle:** el 2026-09-22 se encontró que en el panel los anuncios automáticos estaban apagados y que un experimento de "Optimización automática" de Google bloqueaba la edición. Si caen las impresiones, revisar primero Optimización → Experimentos en el panel.
-**Estado:** Vigente
+**Estado:** Reemplazada por 2026-10-29 — AdSense: unidades manuales + Auto ads solo anchor/vignette (`ads.txt` sigue vigente)
 
 ## 2026-07 — Escalar contenido por keywords, preguntando antes de abrir sección
 **Decisión:** el contenido nuevo sale de keywords con volumen alto y competencia baja, en las secciones existentes. Una sección nueva se le pregunta antes a la usuaria. No se revisa cada página: se marcan los datos que no se pudieron verificar en fuente primaria.

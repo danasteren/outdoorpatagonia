@@ -35,6 +35,7 @@ import { SectorMapClient } from "./SectorMapClient"
 import { RoutesTable } from "./RoutesTable"
 import { GradeBars } from "@/components/escalada/GradeBars"
 import { FuenteCredito } from "@/components/escalada/FuenteCredito"
+import { AdSlot } from "@/components/AdSlot"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -358,6 +359,8 @@ export default async function SectorPage({
             </section>
 
             {entry.fuente && <FuenteCredito fuente={entry.fuente} />}
+
+            <AdSlot unit="fichaContenido" />
 
             {/* Vías por grado */}
             {full && buckets.length > 1 && (
@@ -715,6 +718,7 @@ export default async function SectorPage({
             </div>
           </div>
         </div>
+        <AdSlot unit="final" className="mt-12" />
       </div>
 
       {/* JSON-LD */}

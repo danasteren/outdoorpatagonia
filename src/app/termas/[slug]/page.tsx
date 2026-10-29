@@ -7,6 +7,7 @@ import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
 import { RelacionadosSection } from "@/components/RelacionadosSection"
+import { AdSlot } from "@/components/AdSlot"
 
 export const revalidate = 86400
 export const dynamicParams = false
@@ -119,6 +120,8 @@ export default async function TermaPage({
                 </p>
               ))}
             </div>
+
+            <AdSlot unit="fichaContenido" />
 
             <div>
               <h2 className="text-xl font-bold mb-4" style={{ fontFamily: "var(--font-playfair)" }}>
@@ -241,6 +244,7 @@ export default async function TermaPage({
             </div>
           </div>
         )}
+        <AdSlot unit="final" className="mt-12" />
       </div>
     </div>
   )

@@ -19,6 +19,7 @@ import { gygSearchUrl } from "@/lib/affiliates/getyourguide"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
 import { RelacionadosSection } from "@/components/RelacionadosSection"
+import { AdSlot } from "@/components/AdSlot"
 
 const BASE = "https://outdoorpatagonia.com"
 
@@ -217,6 +218,8 @@ export function DestinoGuide({
               </ol>
               <p className="text-xs text-muted-foreground/70 mt-4">{t.afiliado}</p>
             </section>
+
+            <AdSlot unit="fichaContenido" />
 
             {climate && (
               <section>
@@ -423,6 +426,7 @@ export function DestinoGuide({
             )}
           </aside>
         </div>
+        <AdSlot unit="final" className="mt-12" />
       </div>
     </div>
   )

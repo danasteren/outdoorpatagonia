@@ -7,6 +7,8 @@ import { Card, CardBody } from "@/components/primitives/Card";
 import { categoryHref as categoryHrefFor, toCategorySlug } from "@/lib/category";
 import { articleCover, fixLegacyImages } from "@/lib/legacy-images";
 import { decodeEntities } from "@/lib/text";
+import { AdSlot } from "@/components/AdSlot";
+import { splitAfterParagraph } from "@/lib/ads";
 
 interface Article {
   title: string;
@@ -87,6 +89,10 @@ export function ArticleLayout({
       }
     : null;
 
+  // Anuncio después del 3.er párrafo (o del 2.º si es corto); si no hay dónde cortar, va solo el del final
+  const html = addInstagramPhotoCredits(fixWpLazyLoad(fixLegacyImages(article.content ?? "")), isEnglish);
+  const [bodyStart, bodyRest] = splitAfterParagraph(html, 3) ?? splitAfterParagraph(html, 2) ?? [html, null];
+
   const meta = [publishedDate, article.reading_time_min ? `${article.reading_time_min} min` : null]
     .filter(Boolean)
     .join(" · ");
@@ -133,12 +139,16 @@ export function ArticleLayout({
                 {article.excerpt}
               </p>
             )}
-            <div
-              className="article-body overflow-x-hidden"
-              dangerouslySetInnerHTML={{
-                __html: addInstagramPhotoCredits(fixWpLazyLoad(fixLegacyImages(article.content ?? "")), isEnglish),
-              }}
-            />
+            <div className="article-body overflow-x-hidden">
+              <div dangerouslySetInnerHTML={{ __html: bodyStart }} />
+              {bodyRest != null && (
+                <>
+                  <AdSlot unit="articuloContenido" className="my-8" />
+                  <div dangerouslySetInnerHTML={{ __html: bodyRest }} />
+                </>
+              )}
+            </div>
+            <AdSlot unit="final" className="mt-10" />
           </article>
 
           {/* Sidebar */}
@@ -218,6 +228,9 @@ export function ArticleLayout({
                 </CardBody>
               </Card>
             )}
+
+            {/* Solo desktop: queda fijo al bajar mientras dura el artículo */}
+            <AdSlot unit="lateral" className="sticky top-24" />
           </aside>
         </div>
       </div>

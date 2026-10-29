@@ -11,6 +11,7 @@ import {
 import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
+import { AdSlot } from "@/components/AdSlot"
 
 export const revalidate = 86400
 export const dynamicParams = false
@@ -181,6 +182,8 @@ export default async function ArqueologiaDetailPage({
               ))}
             </div>
 
+            <AdSlot unit="fichaContenido" />
+
             {/* FAQ */}
             {entry.faq.length > 0 && (
               <div>
@@ -301,6 +304,7 @@ export default async function ArqueologiaDetailPage({
             </Link>
           </div>
         </div>
+        <AdSlot unit="final" className="mt-12" />
       </div>
     </div>
   )

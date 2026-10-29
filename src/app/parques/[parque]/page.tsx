@@ -25,6 +25,7 @@ import { Badge } from "@/components/primitives/Badge"
 import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
 import { RelacionadosSection } from "@/components/RelacionadosSection"
+import { AdSlot } from "@/components/AdSlot"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -196,6 +197,8 @@ export default async function ParqueNacionalPage({
                 ))}
               </ul>
             </section>
+
+            <AdSlot unit="fichaContenido" />
 
             {/* Trails */}
             {senderosDelParque.length > 0 && (
@@ -446,6 +449,7 @@ export default async function ParqueNacionalPage({
             )}
           </div>
         </div>
+        <AdSlot unit="final" className="mt-12" />
       </div>
 
       {/* Breadcrumb JSON-LD */}

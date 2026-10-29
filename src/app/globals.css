@@ -342,6 +342,11 @@
   }
 }
 
+/* AdSlot: si AdSense no tiene anuncio para la unidad, no dejar el hueco reservado */
+.ad-slot:has(ins.adsbygoogle[data-ad-status="unfilled"]) {
+  display: none;
+}
+
 /* /mapa: la página ocupa justo el viewport. El header queda en el flujo
    con su alto real y el mapa llena lo que sobra (main → flex-1). */
 body:has([data-map-fullscreen]) {

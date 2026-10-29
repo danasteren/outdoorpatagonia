@@ -27,6 +27,7 @@ import { ArticleLayout } from "@/components/ArticleLayout"
 import { toCategorySlug } from "@/lib/category"
 import { articleCover } from "@/lib/legacy-images"
 import { altLangSlug } from "@/lib/article-translations"
+import { AdSlot } from "@/components/AdSlot"
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -378,6 +379,8 @@ export default async function FloraEspeciePage({
               </section>
             )}
 
+            <AdSlot unit="fichaContenido" />
+
             {gbif && (gbif.order ?? gbif.family ?? gbif.class) && (
               <section>
                 <h2 className="text-xl font-bold mb-3">Clasificación</h2>
@@ -543,6 +546,10 @@ export default async function FloraEspeciePage({
           seeAllLabel="Ver toda la flora"
         />
       )}
+
+      <div className="max-w-6xl mx-auto px-4 md:px-10 pb-10">
+        <AdSlot unit="final" />
+      </div>
 
       {/* FAQPage JSON-LD */}
       {faqItems.length > 0 && (

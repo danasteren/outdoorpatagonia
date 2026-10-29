@@ -25,6 +25,7 @@ import { Badge } from "@/components/primitives/Badge"
 import { ArticleLayout } from "@/components/ArticleLayout"
 import { toCategorySlug } from "@/lib/category"
 import { articleCover } from "@/lib/legacy-images"
+import { AdSlot } from "@/components/AdSlot"
 
 export const revalidate = 3600
 // On-demand rendering for species not pre-built
@@ -364,6 +365,8 @@ export default async function FaunaEspeciePage({
               </section>
             )}
 
+            <AdSlot unit="fichaContenido" />
+
             {/* Taxonomy from GBIF */}
             {gbif && (gbif.order ?? gbif.family ?? gbif.class) && (
               <section>
@@ -535,6 +538,10 @@ export default async function FaunaEspeciePage({
           seeAllLabel="Ver toda la fauna"
         />
       )}
+
+      <div className="max-w-6xl mx-auto px-4 md:px-10 pb-10">
+        <AdSlot unit="final" />
+      </div>
 
       {/* FAQPage JSON-LD */}
       {faqItems.length > 0 && (

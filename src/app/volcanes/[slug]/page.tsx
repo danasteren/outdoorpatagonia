@@ -10,6 +10,7 @@ import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
 import { RelacionadosSection } from "@/components/RelacionadosSection"
 import type { NivelAlerta } from "@/lib/apis/sernageomin"
+import { AdSlot } from "@/components/AdSlot"
 
 export const revalidate = 3600
 export const dynamicParams = false
@@ -187,6 +188,8 @@ export default async function VolcanPage({
                 </p>
               ))}
             </div>
+
+            <AdSlot unit="fichaContenido" />
 
             {/* FAQ */}
             <div>
@@ -379,6 +382,7 @@ export default async function VolcanPage({
             )
           })()}
         </div>
+        <AdSlot unit="final" className="mt-12" />
       </div>
     </div>
   )
