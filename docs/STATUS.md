@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-10-29_
+_Última actualización: 2026-10-30_
 
 ## Hecho (a grandes rasgos)
 
@@ -32,6 +32,7 @@ _Última actualización: 2026-10-29_
 - 2026-10-29: menos competencia para la portada. AdSense y gtag.js pasan a `lazyOnload` (antes Next los precargaba en el `<head>`, en paralelo con la foto). Los 129 artículos con videos de YouTube muestran una fachada (miniatura + play, link a YouTube sin JS) y el reproductor (`youtube-nocookie`) carga al hacer clic; antes cada iframe bajaba ~1 MB al abrir la página. Arreglo: en producción las portadas de Supabase no pasaban por el redimensionado porque `NEXT_PUBLIC_SUPABASE_URL` tiene un salto de línea al final en Vercel (ahora se hace `trim()`). Medido en producción (Lighthouse mobile simulado, contra el cambio anterior): LCP de la home 7,8 → 5,0 s, Estrecho de Magallanes 10,1 → 6,0 s y hongos en escabeche 8,7 → 5,6 s (con throttling real: 3,1 s); morillas sigue en 2,6 s. El TBT subió (de 140–550 ms, según la página) porque AdSense ahora se ejecuta después de la carga, dentro de la ventana de medición: vigilar el INP. Lo que queda es el CLS de Auto ads (0,11–0,27) y ~1 MB de terceros por página.
 - 2026-10-29: LCP y soft 404 (puntos 3 y 6 de la auditoría). Sin `src/app/loading.tsx` en la raíz: las URLs inexistentes dan 404 real (antes, 200 + `noindex`) y el contenido ya no queda tapado por la pantalla de carga. Las fotos de portada (`DetailHero` y hero de la home) van precargadas, con prioridad alta y con `srcset` por host (`src/lib/responsive-image.ts`). Los logos del footer y del modo oscuro, y las miniaturas del StatusBoard, se cargan diferidas. En producción (Lighthouse mobile simulado, antes → después): home FCP 6,1 → 1,9 s y LCP 13,5 → 7,8 s; hongos en escabeche LCP 10,7 → 8,7 s; Estrecho de Magallanes 12,5 → 10,1 s. Sigue lejos de 2,5 s: compiten con la portada los scripts de AdSense y GA (Next los precarga en el `<head>`), el iframe de YouTube del Estrecho (~1 MB) y el TTFB de ~1 s; el CLS de los artículos (0,11–0,27) es de Auto ads. Todo eso sigue en la auditoría.
 - 2026-10-29: auditoría de crecimiento (monetización, SEO técnico y performance), solo lectura: `docs/audits/2026-10-crecimiento.md`.
+- 2026-10-30: hreflang completo y recíproco (punto 4 de la auditoría). Un solo helper (`pageAlternates`, `src/lib/hreflang.ts`) con autorreferencia y `x-default` en todas las páginas con par. 77 pares de artículos de WordPress recuperados por portada + categoría + fecha y revisados por la usuaria (`seo/hreflang-pares.md`, cargados en `src/lib/article-translations.ts`). Las fichas de fauna, flora y gastronomía con artículo EN (chilco, alerce, llao llao, zorro gris…) emiten el par. Categorías con mapa ES ↔ EN (`categoryAltPath`); se sacó `UNRELIABLE_HREFLANG`. Selector sin par: opción deshabilitada con aviso, ya no va a la home (`LangFallbackNotice` se borró). `/fauna` y `/flora` entran al sitemap. Crawl del sitemap (Googlebot): hreflang recíproco completo en 26 URLs (13 EN) en producción → 218 (109 de 114 EN) en el build local; 0 hreflang a URLs que no den 200 (antes, 20). Selector probado en 21 páginas ES y EN y al navegar sin recargar.
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 ## En curso
@@ -55,15 +56,15 @@ No hay rutinas en la nube (`RemoteTrigger` devuelve la lista vacía, verificado 
 - `notification_preferences` (migración 006) existe pero nada lo consume.
 - Fines de octubre de 2026: medir el CTR de los títulos reescritos el 30/09 y el RPM real de AdSense.
 - **Categorías sin emparejar (decide la usuaria)**: solo se emparejaron los slugs idénticos a una sección. Dudosas: `lugares` (10) ↔ `/destinos`; `hongo` (3) ↔ `/flora` (los hongos no son flora); `historia` (9) y `cultura` (2) ↔ `/arqueologia` (solo en parte). Sin candidata: `consejos`, `domo`, `impacto-ambiental`, `paisajes`, `recursos-descargables`. Si se empareja alguna, se suma a `CATEGORY_SECTIONS`.
-- Hreflang de las páginas de categoría: ES y EN se emparejan por el mismo slug, pero casi todos difieren (`historia` ↔ `history`, `gastronomia` ↔ `gastronomy`…), así que apuntan a URLs que no existen. Solo `flora` y `fauna` coinciden. Mientras tanto, el selector de idioma del header lo ignora (`UNRELIABLE_HREFLANG` en `src/lib/lang-alternate.ts`): al arreglarlo, sacar esa excepción.
 - Títulos de artículos con entidades HTML sin decodificar en la base (`&#8211;`, `&#8217;`): las tarjetas y la página de artículo ya los decodifican (`decodeEntities`), pero siguen así en `<title>`, buscador y la home en inglés. Lo prolijo es corregirlos en la tabla.
 - Newsletter: los suscriptores no guardan idioma, así que quien se suscribe desde una página en inglés recibe el mismo mail que el resto. Si el newsletter es solo en español, avisarlo en el footer en inglés o sumar idioma a `subscribers`.
+- Sin par en inglés quedan 5 URLs EN: `red-berries-of-patagonia` (su par ES se absorbió en `/flora/calafate`), `patagonian-gray-fox-habitat-diet-conservation` (segundo artículo EN del zorro gris, compite con `/en/fauna/patagonian-gray-fox`), el de dibujos del cóndor y las categorías `downloadable-resources` y `sin-categorizar`. Detalle en `seo/hreflang-pares.md`.
+- El sitemap no lista varios índices que dan 200: `/parques`, `/senderos`, `/articulos`, `/estado`, `/astronomia`, las legales y `/contacto` (ES y EN), entre otros. Sumarlos a `src/app/sitemap.ts`.
 - _(Lo que se defina en el chat del Proyecto.)_
 
 ## Próximo
 
 - **Tulipanes de Trevelin, después del 7/11/2026**: el artículo dice "temporada 2026" y $45.000. Para 2027, revisar la página oficial de entradas y actualizar fechas y precio en `seo/articles/` + `scripts/upsert_articles.py`.
-- Hreflang de los artículos migrados: ES y EN solo se emparejan si comparten slug. Los pares con slug distinto (p. ej. galeses ↔ `welsh-patagonia`) no tienen hreflang ni botón de idioma hasta cargarlos en `src/lib/article-translations.ts`.
 - `parques/catalog.ts` (Aysén) no coincide con CONAF (lo encontró la rutina en la guía de Coyhaique): Cerro Castillo dice 179.550 ha (CONAF: 143.502 ha) y "75 km" desde Coyhaique (CONAF: 64 km); Queulat dice "200 km (3.5h)" desde Coyhaique (CONAF: 165 km). Revisar las fichas contra la fuente.
 - `parques/catalog.ts` (Chiloé) dice 43.057 ha y "vuelo directo desde Santiago a Castro… o ferry a Chaitén / Quellón"; CONAF dice 42.567 ha. Revisar la ficha contra la fuente.
 - `volcanes/catalog.ts` (Villarrica) dice que el volcán está en la Región de Los Ríos (está entre La Araucanía y Los Ríos, según SERNAGEOMIN) y que Pucón tiene aeropuerto con vuelos desde Santiago (la DGAC no había habilitado vuelos comerciales al aeródromo de Pucón a 2025; los vuelos llegan al Aeropuerto La Araucanía, ZCO). Corregirlo.

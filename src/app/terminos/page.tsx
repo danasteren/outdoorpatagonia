@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { ScrollText } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
+import { pageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
   title: "Términos y Condiciones",
   description: "Términos y condiciones de uso del sitio Outdoor Patagonia.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/terminos",
-    languages: { en: "https://outdoorpatagonia.com/en/terms" },
-  },
+  alternates: pageAlternates("/terminos", "/en/terms"),
 };
 
 export default function TerminosPage() {

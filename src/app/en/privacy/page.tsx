@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
+import { pageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "How we collect, use and protect your personal information at Outdoor Patagonia.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/en/privacy",
-    languages: { es: "https://outdoorpatagonia.com/privacidad" },
-  },
+  alternates: pageAlternates("/en/privacy", "/privacidad"),
 };
 
 export default function PrivacyPage() {

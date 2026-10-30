@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import { ShieldCheck } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
+import { pageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
   title: "Política de Privacidad",
   description:
     "Cómo recopilamos, usamos y protegemos tu información personal en Outdoor Patagonia.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/privacidad",
-    languages: { en: "https://outdoorpatagonia.com/en/privacy" },
-  },
+  alternates: pageAlternates("/privacidad", "/en/privacy"),
 };
 
 export default function PrivacidadPage() {

@@ -11,14 +11,14 @@ import {
 import { Badge } from "@/components/primitives/Badge"
 import { SectionArticles } from "@/components/SectionArticles"
 import { fetchTaxonPhotos } from "@/lib/apis/inaturalist"
+import { pageAlternates } from "@/lib/hreflang"
+import { categoryAltPath } from "@/lib/category"
 
 export const metadata: Metadata = {
   title: "Flora de la Patagonia — Guía de Plantas",
   description:
     "Guía de flora patagónica: lenga, alerce, araucaria, calafate, chilco y más. Observaciones recientes, temporada de floración y dónde encontrar cada especie.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/flora",
-  },
+  alternates: pageAlternates("/flora", categoryAltPath("flora", "en")),
 }
 
 const CATEGORY_COLORS: Record<FloraCategory, string> = {

@@ -176,6 +176,10 @@ export const novedades: VersionNovedades[] = [
         tipo: "mejora",
         texto: "Los videos de los artículos cargan recién cuando tocás play: la página abre más rápido y no gasta datos en videos que no mirás",
       },
+      {
+        tipo: "mejora",
+        texto: "El selector de idioma ES | EN ahora encuentra la versión en el otro idioma de casi todos los artículos, de las fichas de fauna, flora y gastronomía que tienen nota en inglés y de las páginas de categoría. Si una página todavía no está traducida, te quedás donde estás: la opción aparece en gris y avisa que esa página no está en el otro idioma",
+      },
     ],
   },
   {

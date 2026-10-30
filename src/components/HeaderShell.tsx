@@ -8,7 +8,6 @@ import {
 } from 'lucide-react'
 import { DarkModeToggle } from './DarkModeToggle'
 import { LangToggle } from './LangToggle'
-import { LangFallbackNotice } from './LangFallbackNotice'
 import { useAltLang } from '@/lib/lang-alternate'
 import { generateRandomBase64url, generateCodeChallenge } from '@/lib/pkce'
 import { SearchOverlay } from './SearchOverlay'
@@ -341,7 +340,6 @@ export function HeaderShell({
           </div>
         </div>
       </header>
-      <LangFallbackNotice />
 
       {/* Mobile overlay + drawer */}
       <div

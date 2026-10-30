@@ -26,7 +26,8 @@ import { Badge } from "@/components/primitives/Badge"
 import { ArticleLayout } from "@/components/ArticleLayout"
 import { toCategorySlug } from "@/lib/category"
 import { articleCover } from "@/lib/legacy-images"
-import { altLangSlug } from "@/lib/article-translations"
+import { esSectionAltPath } from "@/lib/article-translations"
+import { pageAlternates } from "@/lib/hreflang"
 import { AdSlot } from "@/components/AdSlot"
 
 export const revalidate = 3600
@@ -58,17 +59,6 @@ const getFloraArticle = cache(async (slug: string) => {
   return data
 })
 
-async function getAltLangFloraArticle(slug: string) {
-  const { data } = await buildClient()
-    .from("articles")
-    .select("slug, category")
-    .eq("slug", altLangSlug(slug, "en"))
-    .eq("language", "en")
-    .eq("status", "published")
-    .maybeSingle()
-  return data
-}
-
 export async function generateStaticParams() {
   const { data } = await buildClient()
     .from("articles")
@@ -98,18 +88,10 @@ export async function generateMetadata({
   const floraArticle = entry ? null : await getFloraArticle(especie)
   if (floraArticle) {
     const canonicalUrl = `https://outdoorpatagonia.com/flora/${especie}`
-    const altLang = await getAltLangFloraArticle(especie)
     return {
       title: floraArticle.seo_title || floraArticle.title,
       description: floraArticle.seo_description || floraArticle.excerpt || undefined,
-      alternates: {
-        canonical: canonicalUrl,
-        ...(altLang && {
-          languages: {
-            en: `https://outdoorpatagonia.com/en/${toCategorySlug(altLang.category ?? "")}/${altLang.slug}`,
-          },
-        }),
-      },
+      alternates: pageAlternates(canonicalUrl, await esSectionAltPath(`/flora/${especie}`)),
       openGraph: {
         title: floraArticle.seo_title || floraArticle.title,
         description: floraArticle.seo_description || floraArticle.excerpt || undefined,
@@ -151,9 +133,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: {
-      canonical: `https://outdoorpatagonia.com/flora/${especie}`,
-    },
+    alternates: pageAlternates(`/flora/${especie}`, await esSectionAltPath(`/flora/${especie}`)),
     openGraph: {
       title: `${name} en la Patagonia`,
       description: `Observaciones recientes, temporada y dónde encontrar ${name} en la Patagonia.`,
@@ -212,10 +192,7 @@ export default async function FloraEspeciePage({
   // el artículo viejo solo aparece cuando el slug no es una especie conocida
   const floraArticle = entry ? null : await getFloraArticle(especie)
   if (floraArticle) {
-    const altLang = await getAltLangFloraArticle(especie)
-    const altLangHref = altLang
-      ? `/en/${toCategorySlug(altLang.category ?? "")}/${altLang.slug}`
-      : null
+    const altLangHref = await esSectionAltPath(`/flora/${especie}`)
     const jsonLd = {
       "@context": "https://schema.org",
       "@type": "Article",

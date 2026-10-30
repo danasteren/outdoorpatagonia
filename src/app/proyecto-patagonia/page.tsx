@@ -2,15 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Compass } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
+import { pageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
   title: "Sobre Outdoor Patagonia",
   description:
     "Outdoor Patagonia es una plataforma independiente que explora la cultura, naturaleza, gastronomía, flora y fauna de la Patagonia argentina y chilena.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/proyecto-patagonia",
-    languages: { en: "https://outdoorpatagonia.com/en/patagonia-project" },
-  },
+  alternates: pageAlternates("/proyecto-patagonia", "/en/patagonia-project"),
 };
 
 export default function ProyectoPage() {

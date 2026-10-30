@@ -157,6 +157,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/en`, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/arqueologia`, changeFrequency: "monthly", priority: 0.85 },
     { url: `${BASE}/gastronomia`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE}/fauna`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE}/flora`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/volcanes`, changeFrequency: "daily", priority: 0.8 },
     { url: `${BASE}/termas`, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE}/escalada`, changeFrequency: "monthly", priority: 0.75 },

@@ -5,7 +5,8 @@ import { createClient as createBuildClient } from "@supabase/supabase-js";
 import { ArticleLayout } from "@/components/ArticleLayout";
 import { toCategorySlug } from "@/lib/category";
 import { articleCover } from "@/lib/legacy-images";
-import { altLangSlug } from "@/lib/article-translations";
+import { altArticlePath } from "@/lib/article-translations";
+import { pageAlternates } from "@/lib/hreflang";
 
 export async function generateStaticParams() {
   const supabase = createBuildClient(
@@ -39,18 +40,6 @@ async function getArticle(article: string) {
   return data;
 }
 
-async function getAltLang(article: string) {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("articles")
-    .select("slug, category")
-    .eq("slug", altLangSlug(article, "es"))
-    .eq("language", "es")
-    .eq("status", "published")
-    .maybeSingle();
-  return data;
-}
-
 export async function generateMetadata({
   params,
 }: {
@@ -62,19 +51,12 @@ export async function generateMetadata({
 
   const catSlug = toCategorySlug(articleData.category ?? "");
   const canonicalUrl = `https://outdoorpatagonia.com/en/${catSlug}/${article}`;
-  const altLang = await getAltLang(article);
+  const altPath = await altArticlePath(article, "es");
 
   return {
     title: articleData.seo_title || articleData.title,
     description: articleData.seo_description || articleData.excerpt || undefined,
-    alternates: {
-      canonical: canonicalUrl,
-      ...(altLang && {
-        languages: {
-          es: `https://outdoorpatagonia.com/${toCategorySlug(altLang.category ?? "")}/${altLang.slug}`,
-        },
-      }),
-    },
+    alternates: pageAlternates(canonicalUrl, altPath),
     openGraph: {
       title: articleData.seo_title || articleData.title,
       description: articleData.seo_description || articleData.excerpt || undefined,
@@ -92,9 +74,9 @@ export default async function ArticlePage({
   params: Promise<{ slug: string; article: string }>;
 }) {
   const { slug, article } = await params;
-  const [articleData, altLang] = await Promise.all([
+  const [articleData, altLangHref] = await Promise.all([
     getArticle(article),
-    getAltLang(article),
+    altArticlePath(article, "es"),
   ]);
 
   if (!articleData) notFound();
@@ -104,10 +86,6 @@ export default async function ArticlePage({
   if (slug !== correctCategory) {
     permanentRedirect(`/en/${correctCategory}/${article}`);
   }
-
-  const altLangHref = altLang
-    ? `/${toCategorySlug(altLang.category ?? "")}/${altLang.slug}`
-    : null;
 
   const jsonLd = {
     "@context": "https://schema.org",

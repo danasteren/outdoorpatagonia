@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { TravelResources } from "@/components/TravelResources";
+import { pageAlternates } from "@/lib/hreflang";
 
 const URL = "https://outdoorpatagonia.com/recursos-viaje-patagonia";
 const DESCRIPTION =
@@ -13,10 +14,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: URL,
   },
-  alternates: {
-    canonical: URL,
-    languages: { en: "https://outdoorpatagonia.com/en/resources-traveling-patagonia" },
-  },
+  alternates: pageAlternates(URL, "/en/resources-traveling-patagonia"),
 };
 
 export default function RecursosPage() {

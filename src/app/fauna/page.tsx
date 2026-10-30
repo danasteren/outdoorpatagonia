@@ -11,14 +11,14 @@ import {
 import { Badge } from "@/components/primitives/Badge"
 import { SectionArticles } from "@/components/SectionArticles"
 import { fetchTaxonPhotos } from "@/lib/apis/inaturalist"
+import { pageAlternates } from "@/lib/hreflang"
+import { categoryAltPath } from "@/lib/category"
 
 export const metadata: Metadata = {
   title: "Fauna de la Patagonia — Guía de Especies",
   description:
     "Guía de fauna patagónica: guanaco, puma, cóndor andino, pingüino de Magallanes y más. Avistamientos recientes, temporada y dónde verlos en los parques nacionales.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/fauna",
-  },
+  alternates: pageAlternates("/fauna", categoryAltPath("fauna", "en")),
 }
 
 const CATEGORY_COLORS: Record<FaunaCategory, string> = {

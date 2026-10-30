@@ -25,6 +25,8 @@ import { Badge } from "@/components/primitives/Badge"
 import { ArticleLayout } from "@/components/ArticleLayout"
 import { toCategorySlug } from "@/lib/category"
 import { articleCover } from "@/lib/legacy-images"
+import { esSectionAltPath } from "@/lib/article-translations"
+import { pageAlternates } from "@/lib/hreflang"
 import { AdSlot } from "@/components/AdSlot"
 
 export const revalidate = 3600
@@ -53,17 +55,6 @@ const getFaunaArticle = cache(async (slug: string) => {
   if (!data || toCategorySlug(data.category ?? "") !== "fauna") return null
   return data
 })
-
-async function getAltLangFaunaArticle(slug: string) {
-  const { data } = await buildClient()
-    .from("articles")
-    .select("slug, category")
-    .eq("slug", slug)
-    .eq("language", "en")
-    .eq("status", "published")
-    .maybeSingle()
-  return data
-}
 
 // ─── generateStaticParams: pre-build known species + fauna articles ───────────
 
@@ -99,7 +90,7 @@ export async function generateMetadata({
     return {
       title: faunaArticle.seo_title || faunaArticle.title,
       description: faunaArticle.seo_description || faunaArticle.excerpt || undefined,
-      alternates: { canonical: canonicalUrl },
+      alternates: pageAlternates(canonicalUrl, await esSectionAltPath(`/fauna/${especie}`)),
       openGraph: {
         title: faunaArticle.seo_title || faunaArticle.title,
         description: faunaArticle.seo_description || faunaArticle.excerpt || undefined,
@@ -123,9 +114,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: {
-      canonical: `https://outdoorpatagonia.com/fauna/${especie}`,
-    },
+    alternates: pageAlternates(`/fauna/${especie}`, await esSectionAltPath(`/fauna/${especie}`)),
     openGraph: {
       title,
       description,
@@ -183,10 +172,7 @@ export default async function FaunaEspeciePage({
   // Only check for a Supabase article when the slug is NOT a known catalog entry
   const faunaArticle = isCatalogSpecies ? null : await getFaunaArticle(especie)
   if (faunaArticle) {
-    const altLang = await getAltLangFaunaArticle(especie)
-    const altLangHref = altLang
-      ? `/en/${toCategorySlug(altLang.category ?? "")}/${especie}`
-      : null
+    const altLangHref = await esSectionAltPath(`/fauna/${especie}`)
     const jsonLd = {
       "@context": "https://schema.org",
       "@type": "Article",

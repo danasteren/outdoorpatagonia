@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
+import { pageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
   title: "Terms of Use",
   description: "Terms and conditions for using the Outdoor Patagonia website.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/en/terms",
-    languages: { es: "https://outdoorpatagonia.com/terminos" },
-  },
+  alternates: pageAlternates("/en/terms", "/terminos"),
 };
 
 export default function TermsPage() {

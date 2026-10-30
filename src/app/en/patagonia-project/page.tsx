@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { Heart } from "lucide-react";
+import { pageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
   title: "Support Outdoor Patagonia",
   description:
     "Outdoor Patagonia is an independent platform exploring the culture, nature, gastronomy, flora and fauna of Patagonia. Your support helps us keep growing.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/en/patagonia-project",
-    languages: { es: "https://outdoorpatagonia.com/proyecto-patagonia" },
-  },
+  alternates: pageAlternates("/en/patagonia-project", "/proyecto-patagonia"),
 };
 
 export default function PatagoniaProjectPage() {

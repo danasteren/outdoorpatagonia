@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { DestinosIndex } from "@/components/destinos/DestinosIndex"
 import { DESTINOS_CATALOG } from "@/lib/destinos/catalog"
+import { pageAlternates } from "@/lib/hreflang"
 
 const URL = "https://outdoorpatagonia.com/en/guides"
 
@@ -15,10 +16,7 @@ export const metadata: Metadata = {
     locale: "en_US",
   },
   twitter: { card: "summary_large_image" },
-  alternates: {
-    canonical: URL,
-    languages: { es: "https://outdoorpatagonia.com/destinos", en: URL, "x-default": "https://outdoorpatagonia.com/destinos" },
-  },
+  alternates: pageAlternates(URL, "/destinos"),
 }
 
 const jsonLd = {

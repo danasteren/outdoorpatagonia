@@ -8,6 +8,8 @@ import {
   type GastronomiaCategoria,
 } from "@/lib/gastronomia/catalog"
 import { SectionArticles } from "@/components/SectionArticles"
+import { pageAlternates } from "@/lib/hreflang"
+import { categoryAltPath } from "@/lib/category"
 
 const BASE = "https://outdoorpatagonia.com"
 
@@ -21,9 +23,7 @@ export const metadata: Metadata = {
       "Gastronomía de la Patagonia: hongos de pino, cordero al asador, curanto, torta galesa y productos típicos de Argentina y Chile.",
     url: `${BASE}/gastronomia`,
   },
-  alternates: {
-    canonical: `${BASE}/gastronomia`,
-  },
+  alternates: pageAlternates("/gastronomia", categoryAltPath("gastronomia", "en")),
 }
 
 const jsonLd = {

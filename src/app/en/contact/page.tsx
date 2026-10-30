@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { Mail } from "lucide-react";
+import { pageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
   title: "Contact",
   description: "Have a question or suggestion? Get in touch with Outdoor Patagonia.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/en/contact",
-    languages: { es: "https://outdoorpatagonia.com/contacto" },
-  },
+  alternates: pageAlternates("/en/contact", "/contacto"),
 };
 
 export default function ContactPage() {

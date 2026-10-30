@@ -4,6 +4,7 @@ import { fetchClimateNormals } from "@/lib/apis/climate"
 import { fetchWeatherForLocation } from "@/lib/apis/openmeteo"
 import { fetchWikipediaLeadImage } from "@/lib/apis/wikipedia"
 import { destinoUrl } from "@/components/destinos/DestinoGuide"
+import { pageAlternates } from "@/lib/hreflang"
 
 // Lógica compartida por /destinos/[slug] (es) y /en/guides/[slug] (en).
 
@@ -15,14 +16,7 @@ export function buildDestinoMetadata(slug: string, lang: DestinoLang): Metadata 
   return {
     title: c.metaTitle,
     description: c.metaDescription,
-    alternates: {
-      canonical: url,
-      languages: {
-        es: destinoUrl(slug, "es"),
-        en: destinoUrl(slug, "en"),
-        "x-default": destinoUrl(slug, "es"),
-      },
-    },
+    alternates: pageAlternates(url, destinoUrl(slug, lang === "es" ? "en" : "es")),
     openGraph: {
       title: c.metaTitle,
       description: c.metaDescription,

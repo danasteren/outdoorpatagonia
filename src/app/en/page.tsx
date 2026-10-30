@@ -12,6 +12,7 @@ import { Section, PageShell } from "@/components/layout";
 import { getHomeTopics } from "@/lib/home-topics";
 import { toCategorySlug } from "@/lib/category";
 import { articleRedirect } from "@/lib/article-redirects";
+import { pageAlternates } from "@/lib/hreflang";
 
 export const revalidate = 3600;
 
@@ -19,10 +20,7 @@ export const metadata: Metadata = {
   title: { absolute: "Outdoor Patagonia — Nature, culture and stories from the south" },
   description:
     "The definitive guide to Patagonia: trekking, flora, fauna, gastronomy and tools to explore southern Argentina and Chile.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/en",
-    languages: { es: "https://outdoorpatagonia.com" },
-  },
+  alternates: pageAlternates("/en", "/"),
 };
 
 async function getLatestArticles() {

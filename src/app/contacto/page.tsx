@@ -2,15 +2,13 @@ import type { Metadata } from "next";
 import { Mail } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { ContactForm } from "@/components/ContactForm";
+import { pageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
   title: "Contacto",
   description:
     "¿Tenés una consulta, sugerencia o propuesta? Escribinos a Outdoor Patagonia.",
-  alternates: {
-    canonical: "https://outdoorpatagonia.com/contacto",
-    languages: { en: "https://outdoorpatagonia.com/en/contact" },
-  },
+  alternates: pageAlternates("/contacto", "/en/contact"),
 };
 
 export default function ContactoPage() {

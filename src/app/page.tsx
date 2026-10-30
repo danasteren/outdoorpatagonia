@@ -10,11 +10,12 @@ import { EscaladaSection } from "@/components/home/EscaladaSection";
 import { DestinosSection } from "@/components/home/DestinosSection";
 import { TopicCard } from "@/components/home/TopicCard";
 import { getHomeTopics } from "@/lib/home-topics";
+import { pageAlternates } from "@/lib/hreflang";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  alternates: { languages: { en: "https://outdoorpatagonia.com/en" } },
+  alternates: pageAlternates("/", "/en"),
 };
 
 export default function Home() {

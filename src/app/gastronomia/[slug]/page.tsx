@@ -17,6 +17,8 @@ import { Card, CardBody } from "@/components/primitives/Card"
 import { DetailHero } from "@/components/DetailHero"
 import { RelacionadosSection } from "@/components/RelacionadosSection"
 import { AdSlot } from "@/components/AdSlot"
+import { esSectionAltPath } from "@/lib/article-translations"
+import { pageAlternates } from "@/lib/hreflang"
 
 export const revalidate = 86400
 export const dynamicParams = false
@@ -48,9 +50,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: {
-      canonical: `https://outdoorpatagonia.com/gastronomia/${slug}`,
-    },
+    alternates: pageAlternates(`/gastronomia/${slug}`, await esSectionAltPath(`/gastronomia/${slug}`)),
     openGraph: {
       title: `${entry.nombre} | Outdoor Patagonia`,
       description,

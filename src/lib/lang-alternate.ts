@@ -2,26 +2,15 @@
 
 import { usePathname } from 'next/navigation'
 import { useSyncExternalStore } from 'react'
+import { langOfPath, type Lang } from '@/lib/hreflang'
 
 // URL de la página actual en el otro idioma, para el selector ES | EN del
 // header. No hay mapa de pares propio: se lee el <link rel="alternate"
-// hreflang> que ya renderiza la metadata de cada página (alternates.languages),
-// así el selector y el hreflang no se pueden desalinear. Si la página no
-// declara par, se va a la home del otro idioma con NO_PAIR_HASH, que muestra
-// el aviso de LangFallbackNotice.
+// hreflang> que ya renderiza la metadata de cada página (pageAlternates en
+// src/lib/hreflang.ts), así el selector y el hreflang no se pueden desalinear.
+// Si la página no declara par, el selector deja la opción deshabilitada.
 
-export type Lang = 'es' | 'en'
-
-export const NO_PAIR_HASH = '#sin-traduccion'
-
-export function langOfPath(pathname: string): Lang {
-  return pathname === '/en' || pathname.startsWith('/en/') ? 'en' : 'es'
-}
-
-// El hreflang de las categorías empareja por slug y casi todos difieren entre
-// idiomas (historia ↔ history): apunta a URLs que dan 404 (ver STATUS). Hasta
-// arreglarlo, el selector no lo usa.
-const UNRELIABLE_HREFLANG = [/^\/categoria\//, /^\/en\/category\//]
+export type { Lang }
 
 // La metadata se streamea y cambia en cada navegación: hay que volver a leerla.
 function subscribe(onChange: () => void) {
@@ -44,16 +33,15 @@ function readAltPath(to: Lang): string | null {
   }
 }
 
+/** `href`: el par; null si la página no tiene; undefined mientras no se leyó (render del servidor). */
 export function useAltLang() {
   const pathname = usePathname()
   const current = langOfPath(pathname)
   const to: Lang = current === 'es' ? 'en' : 'es'
-  const reliable = !UNRELIABLE_HREFLANG.some((r) => r.test(pathname))
-  const pair = useSyncExternalStore(
+  const href = useSyncExternalStore<string | null | undefined>(
     subscribe,
-    () => (reliable ? readAltPath(to) : null),
-    () => null,
+    () => readAltPath(to),
+    () => undefined,
   )
-  const href = pair ?? `${to === 'en' ? '/en' : '/'}${NO_PAIR_HASH}`
   return { pathname, current, href }
 }

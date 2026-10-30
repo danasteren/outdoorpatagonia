@@ -5,7 +5,8 @@ import { createClient as createBuildClient } from "@supabase/supabase-js";
 import { BookOpen } from "lucide-react";
 import { ArticleTile } from "@/components/ArticleTile";
 import { PageHero } from "@/components/PageHero";
-import { categorySection, toCategorySlug } from "@/lib/category";
+import { categoryAltPath, categorySection, toCategorySlug } from "@/lib/category";
+import { pageAlternates } from "@/lib/hreflang";
 import { articleRedirect } from "@/lib/article-redirects";
 
 async function resolveCategoryName(slug: string): Promise<string | null> {
@@ -68,10 +69,7 @@ export async function generateMetadata({
   return {
     title: `${label}`,
     description: `Artículos sobre ${label.toLowerCase()} en Outdoor Patagonia.`,
-    alternates: {
-      canonical: `https://outdoorpatagonia.com/categoria/${cat}`,
-      languages: { en: `https://outdoorpatagonia.com/en/category/${cat}` },
-    },
+    alternates: pageAlternates(`/categoria/${cat}`, categoryAltPath(cat, "en")),
   };
 }
 
