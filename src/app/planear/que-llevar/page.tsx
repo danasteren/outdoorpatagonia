@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Qué llevar a la Patagonia — Lista por destino y mes",
   description:
     "Qué ropa y equipamiento llevar al Calafate, Chaltén, Ushuaia, Puerto Madryn, Bariloche y más. Seleccioná tu destino y el mes para saber exactamente qué necesitás.",
+  alternates: { canonical: "https://outdoorpatagonia.com/planear/que-llevar" },
   keywords: [
     "qué llevar a la patagonia",
     "qué ropa llevar al calafate",

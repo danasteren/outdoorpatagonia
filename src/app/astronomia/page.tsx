@@ -24,6 +24,7 @@ export const metadata: Metadata = {
   title: "Astronomía en Patagonia — cielos oscuros y observación",
   description:
     "Fase lunar, Vía Láctea, lluvias de meteoros y eventos astronómicos. Patagonia es uno de los mejores cielos oscuros del mundo.",
+  alternates: { canonical: "https://outdoorpatagonia.com/astronomia" },
   openGraph: {
     title: "Astronomía en Patagonia — cielos oscuros y observación",
     description:

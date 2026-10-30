@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Estado de la Patagonia — datos en tiempo real",
   description:
     "Panel ambiental en tiempo real: clima, glaciares e incendios activos en la Patagonia. Actualizado cada hora.",
+  alternates: { canonical: "https://outdoorpatagonia.com/estado" },
   openGraph: {
     title: "Estado de la Patagonia — datos en tiempo real",
     description:
