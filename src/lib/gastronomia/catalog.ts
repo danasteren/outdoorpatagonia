@@ -49,6 +49,9 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
   {
     slug: "cordero-patagonico",
     nombre: "Cordero patagónico",
+    metaTitle: "Cordero Patagónico: Qué Es, Origen y Cómo Se Prepara",
+    metaDescription:
+      "El cordero patagónico es el ovino joven criado a pastoreo extensivo en Chubut, Santa Cruz, Río Negro y Tierra del Fuego: carne magra, cría, asado y tradición.",
     pais: "AR",
     categoria: "plato",
     descripcion: [
