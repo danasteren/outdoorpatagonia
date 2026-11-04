@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-04 — Formulario de contacto: Turnstile + filtro de lead-gen
+**Decisión:** el formulario de contacto exige un token de Cloudflare Turnstile y descarta en silencio los mensajes que parecen lead-gen.
+**Motivo:** el honeypot y el rate limit por email/IP no frenaban mensajes con emails rotativos (ultraleadgeneration.com, amazingleadgen.com, boostleadgen.com, freeb2bdata.org).
+**Detalle:** `verifyTurnstile()` y `looksLikeSpam()` en `src/lib/antispam.ts`, usados por `submitContactForm`. Sin `TURNSTILE_SECRET_KEY`: en producción rechaza todo (falla cerrado); fuera de producción avisa por log y saltea. Sin `NEXT_PUBLIC_TURNSTILE_SITE_KEY` el widget no se renderiza. `looksLikeSpam` es true con dominio de la lista o que contenga "leadgen"/"b2bdata", 2 o más URLs, o frases en inglés de lead-gen (lead generation, guest post, backlinks, SEO services, business email list); responde `{ success: true }` sin guardar ni notificar. Riesgo conocido: una consulta legítima que diga "guest post" o "backlinks" se pierde sin aviso. Las listas se repiten en `scripts/list_spam_contact_messages.py`. `/en/contact` no tiene formulario (solo mailto), así que no lleva widget. Newsletter y `operator_applications` no se tocaron.
+**Estado:** Vigente
+
 ## 2026-10-29 — Selector de idioma: sin par, quedarse en la página
 **Decisión:** si una página no tiene par en el otro idioma, el selector no lleva a la home: la opción queda deshabilitada con el aviso "Esta página todavía no está en inglés / not yet available in Spanish". Se recuperan los pares ES ↔ EN de los artículos migrados de WordPress y todo hreflang incluye autorreferencia y x-default.
 **Motivo:** de 113 URLs en inglés, solo 34 tienen par (auditoría 2026-10-29, punto 4). Mandar a la home hace perder al lector, y el tráfico en inglés es el de mayor RPM.

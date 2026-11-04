@@ -1,6 +1,7 @@
 "use client"
 
-import { useActionState } from "react"
+import { useActionState, useEffect } from "react"
+import Script from "next/script"
 import { CheckCircle, Send } from "lucide-react"
 import { submitContactForm } from "@/lib/actions/forms"
 
@@ -14,8 +15,21 @@ const ASUNTOS = [
 const inputCls =
   "w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]/40 focus:border-[var(--color-teal)] transition-colors"
 
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+
+declare global {
+  interface Window {
+    turnstile?: { reset: () => void }
+  }
+}
+
 export function ContactForm() {
   const [state, action, pending] = useActionState(submitContactForm, null)
+
+  // El token de Turnstile es de un solo uso: tras un error hay que pedir otro.
+  useEffect(() => {
+    if (state && !state.success) window.turnstile?.reset()
+  }, [state])
 
   if (state?.success) {
     return (
@@ -91,6 +105,16 @@ export function ContactForm() {
           className={inputCls + " resize-none"}
         />
       </div>
+
+      {TURNSTILE_SITE_KEY && (
+        <>
+          <Script
+            src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+            strategy="lazyOnload"
+          />
+          <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-language="es" />
+        </>
+      )}
 
       {state && !state.success && (
         <p className="text-sm text-[var(--color-terracotta)]">{state.error}</p>

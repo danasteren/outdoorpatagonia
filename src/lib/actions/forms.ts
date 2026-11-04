@@ -34,7 +34,7 @@
 */
 
 import { createClient } from "@/lib/supabase/server"
-import { getClientIp, isRateLimited } from "@/lib/antispam"
+import { getClientIp, isRateLimited, looksLikeSpam, verifyTurnstile } from "@/lib/antispam"
 import { sendContactNotificationEmail } from "@/lib/email"
 
 export type FormState = { success: true } | { success: false; error: string } | null
@@ -62,6 +62,20 @@ export async function submitContactForm(
   }
 
   const ip = await getClientIp()
+
+  const token = formData.get("cf-turnstile-response")?.toString()
+  if (!(await verifyTurnstile(token, ip))) {
+    return {
+      success: false,
+      error: "No pudimos verificar que sos una persona. Recargá e intentá de nuevo.",
+    }
+  }
+
+  // Spam de lead-gen: éxito falso, sin guardar ni mandar mail.
+  if (looksLikeSpam({ email, asunto, mensaje })) {
+    return { success: true }
+  }
+
   if (await isRateLimited({ table: "contact_messages", email, ip, maxByEmail: 3, maxByIp: 5 })) {
     return { success: false, error: "Enviaste muchos mensajes en poco tiempo. Probá de nuevo más tarde." }
   }
