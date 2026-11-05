@@ -292,14 +292,22 @@ Ordenada por idioma y gravedad. `—` = sin par.
 - 29 artículos (16 ES, 13 EN) no usan portada propia (cae al fallback de Wikimedia o no tiene).
 - Secciones H2 con menos de 40 palabras (sin contar el índice): 52 artículos. La mayoría son secciones cortas legítimas (listas, citas): no se las trata como pérdida de contenido sin revisar.
 
-## Hipótesis sobre la causa (no verificadas)
+## Investigación de la causa (Wayback Machine, 2026-11-05)
 
-Ninguna está confirmada; cada una dice qué la confirmaría o descartaría.
+Medido en copias públicas de archive.org (solo lectura):
 
-1. **El cuerpo ES se truncó al generarse o al cargarse el contenido (no es un efecto de `fixLegacyImages`).** El render no recorta texto, y los 9 casos no tenían fotos. Para confirmarlo: comparar `content` con el `content.rendered` de la API de WordPress de cada `wp_id` (si todavía existe) o con los backups.
-2. **Una de las dos cargas masivas (2026-06-11 o 2026-10-01) pisó el cuerpo con una versión sin secciones.** Compatible con que los incompletos coincidan con esas fechas, pero esas fechas incluyen a casi todos los artículos, así que no lo prueba. Confirmaría: historial de la tabla o el SQL que se corrió ese día (`seo/updates/`, `scripts/upsert_articles.py`).
-3. **El texto ya estaba así en la fuente** (WordPress/WPML guardaba solo intro + índice + FAQ para ES). Se descartaría si la API de WordPress devuelve el cuerpo completo.
+- `fauna/jabali-europeo`: la copia del **2026-01-29** (WordPress, con `wp-content`) tiene ~2.100 palabras y 9 H2. La del **2026-07-15** (ya en el sitio actual) está truncada: 1 H2 y solo la intro.
+- `gastronomia/kuchen-chileno-historia-tradicion`: la del **2025-12-06** tiene ~1.380 palabras y 8 H2; la del 2026-07-15 está truncada.
+- `hongos-de-pino-en-escabeche` y `mermelada-rosa-mosqueta-patagonica`: sin copia completa disponible; las del 2026-07-15 están truncadas. Para los otros cinco no hay copia en las rutas probadas.
+- No hay copias de la API de WordPress (`wp-json`).
+
+Con eso:
+
+- **Descartada la hipótesis 3** (el texto ya estaba así en la fuente) para jabalí y kuchen: en WordPress estaban completos.
+- **Descartada la carga masiva del 2026-10-01** como causa del jabalí (su `updated_at` es 10-01, pero ya estaba truncado el 07-15). El corte ocurrió entre enero y el 15 de julio de 2026, es decir, en la migración a Supabase (filas creadas el 2026-06-04) o en la carga del 06-11.
+- **Hipótesis más probable (no verificada):** el `content.rendered` que devolvió la API de WordPress en la migración ya venía sin el cuerpo, mientras la página pública sí lo mostraba. Lo respalda que `reading_time_min`, que `migrate_wp_articles.py` calcula del `content.rendered` original, coincide con el cuerpo corto (jabalí 2 min vs. 11 min de `wild-boar`). Pero el `reading_time_min` pudo recalcularse después, así que no es prueba. Un posible mecanismo (el cuerpo vivía en otro campo o lo armaba el tema/constructor de páginas) tampoco está comprobado.
+- **Sigue abierta:** si la causa fue la API o un paso posterior, y por qué solo 9 artículos ES (y ninguno EN).
 
 ## Qué falta para arreglarlo (fuera de alcance de esta auditoría)
 
-Esta auditoría no tocó contenido. Para recuperar los 9 hace falta primero decidir la fuente del texto ES (recuperarlo de WordPress o de backups, o traducir/reescribir desde el EN), y recién ahí un SQL o `upsert_articles.py`. Lo que está debajo de la línea marcadora no lo regenera el script.
+Esta auditoría no tocó contenido. Para recuperar los 9 hace falta primero decidir la fuente del texto ES (las copias de Wayback Machine (jabalí y kuchen tienen una completa), backups del WordPress, o traducir desde el EN), y recién ahí un SQL o `upsert_articles.py`. Lo que está debajo de la línea marcadora no lo regenera el script.

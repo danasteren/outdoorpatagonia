@@ -53,7 +53,7 @@ No hay rutinas en la nube (`RemoteTrigger` devuelve la lista vacía, verificado 
 
 ## Pendiente
 
-- **Cuerpos ES incompletos** (auditoría 2026-11-05, `docs/audits/2026-11-contenido-articulos.md`): 9 artículos para recuperar. Falta decidir la fuente del texto (API de WordPress por `wp_id`, backups, o traducir desde el EN) y averiguar la causa. `tero` tiene el índice con anclas sin destino (ids distintos), aunque el cuerpo está completo.
+- **Cuerpos ES incompletos** (auditoría 2026-11-05, `docs/audits/2026-11-contenido-articulos.md`): 9 artículos para recuperar. Causa acotada: estaban completos en WordPress (copias de Wayback de dic-2025 y ene-2026) y ya truncados el 2026-07-15, o sea se perdieron en la migración. Falta decidir la fuente del texto (Wayback, backups o traducir desde el EN). `tero` tiene el índice con anclas sin destino (ids distintos), aunque el cuerpo está completo.
 - **Vercel (la usuaria)**: `NEXT_PUBLIC_SUPABASE_URL` tiene un salto de línea al final. El código ya lo tolera (`trim()` en `legacy-images.ts` y en `responsive-image.ts`), pero conviene volver a cargarla limpia.
 - **Auditoría del 2026-10-29** (`docs/audits/2026-10-crecimiento.md`, prioridades y fixes ahí). Lo que es de la usuaria, sin código: apuntar `www` a Vercel (hoy da un certificado autofirmado), excluir `/wp-content/uploads/` del firewall de Vercel, confirmar el mensaje del RGPD en AdSense y revisar bots en GA4. Lo que necesita su aprobación: sacar `headers()` del layout para cachear.
 - **Seguridad (la usuaria)**: rotar la service role key de Supabase (y actualizarla en `.env.local` y Vercel). Estuvo en texto plano en `.claude/settings.local.json`; las reglas se sacaron el 2026-10-10. Si existe `NEXT_PUBLIC_AMAZON_TAG` en `.env.local` o Vercel, borrarla.
