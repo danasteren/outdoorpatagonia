@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-05 — Recuperar los cuerpos ES truncados de artículos migrados
+**Decisión:** los 8 artículos ES con el cuerpo truncado en la migración (sin `chalten-patagonia-argentina`, que queda afuera) se recuperan así: jabalí y kuchen, de la copia de Wayback anterior a la migración; amanita, hongos de pino en escabeche, mermelada de rosa mosqueta y pino introducido, traduciendo su par EN; paxillus y viajar-patagonia solo si aparece una copia completa. Se deja el texto listo en `seo/articles/recuperados/` y un SQL a mano; nada se publica hasta que la usuaria lo corra.
+**Motivo:** el reporte `docs/audits/2026-11-contenido-articulos.md` mostró que esos artículos estaban completos en WordPress y se perdieron en la migración. (Esta entrada se escribió al ejecutar la tarea: la decisión la tomó la usuaria en el pedido, pero no estaba registrada.)
+**Detalle:** SQL en `seo/updates/2026-11-05-recuperar-cuerpos.sql` (6 UPDATE por `slug` + `language = 'es'`; `content` y `reading_time_min`). Las URLs de fotos se pasaron de `outdoorpatagonia.com/wp-content/uploads/` a `outdoorpatagonia.dreamhosters.com/wp-content/uploads/`, que es lo que guarda la base y lo que traduce `fixLegacyImages`. El `<script>` JSON-LD de FAQ no se repone (no debe haber scripts en el cuerpo); si se quiere, va por el render. Los 4 traducidos tienen su `.revision.md` con los datos a contrastar; conviene publicarlos después de revisarlos. Sin copia completa en Wayback para paxillus ni viajar-patagonia (solo existe la del 2026-07-15, ya truncada): quedan sin recuperar.
+**Estado:** Vigente
+
 ## 2026-11-05 — Auditoría de contenido de `articles`: solo lectura, sin arreglar todavía
 **Decisión:** el diagnóstico de cuerpos incompletos y fotos perdidas se hace con un script de solo lectura (`scripts/audit_articles.py`) y su reporte (`docs/audits/2026-11-contenido-articulos.md`). No se corrige ningún artículo hasta decidir la fuente del texto.
 **Motivo:** `/fauna/jabali-europeo` (ES) tenía 176 palabras y su par EN 1.830; la causa no se conoce y arreglar sin saberla puede repetir el problema.
