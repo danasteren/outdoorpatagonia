@@ -21,6 +21,10 @@ export const novedades: VersionNovedades[] = [
     esUltima: true,
     cambios: [
       {
+        tipo: "mejora",
+        texto: "Escalada más fácil de recorrer — en cada sector, los subsectores arrancan cerrados con su cantidad de vías y se abren al tocarlos",
+      },
+      {
         tipo: "nuevo",
         texto: "Guías de viaje por destino — qué hacer, clima mes a mes, cuándo ir, cómo llegar y cuántos días quedarse. La primera es Ushuaia, en español y en inglés",
       },

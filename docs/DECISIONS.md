@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-05 — Escalada: subsectores del acordeón arrancan cerrados
+**Decisión:** en `/escalada/[sector]`, cada subsector arranca cerrado y se abre al tocarlo. Con filtros activos rige la misma regla (siguen cerrados salvo que se abran).
+**Motivo:** la página arrancaba con todas las vías desplegadas y era muy larga, sobre todo en mobile.
+**Detalle:** `RoutesTable.tsx`: el estado pasó de `closed` a `opened` (vacío al inicio). El contenido ya no se desmonta: va en un `div` con `hidden`, así que las vías siguen en el HTML del servidor (rastreable por Google). `aria-expanded` y `aria-controls` en el botón. Datos, filtros y diseño de filas sin cambios.
+**Estado:** Vigente
+
 ## 2026-11-04 — Formulario de contacto: Turnstile + filtro de lead-gen
 **Decisión:** el formulario de contacto exige un token de Cloudflare Turnstile y descarta en silencio los mensajes que parecen lead-gen.
 **Motivo:** el honeypot y el rate limit por email/IP no frenaban mensajes con emails rotativos (ultraleadgeneration.com, amazingleadgen.com, boostleadgen.com, freeb2bdata.org).

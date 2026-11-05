@@ -61,7 +61,7 @@ type Props = {
 }
 
 export function RoutesTable({ subareas }: Props) {
-  const [closed, setClosed] = useState<Set<string>>(() => new Set())
+  const [opened, setOpened] = useState<Set<string>>(() => new Set())
   const [selectedNivel, setSelectedNivel] = useState<string | null>(null)
   const [selectedZona, setSelectedZona] = useState<string | null>(null)
   const [selectedDesplome, setSelectedDesplome] = useState<Desplome | null>(null)
@@ -103,7 +103,7 @@ export function RoutesTable({ subareas }: Props) {
   const hasFilters = selectedNivel || selectedZona || selectedDesplome || soloRecomendadas
 
   function toggleSubarea(key: string) {
-    setClosed((prev) => {
+    setOpened((prev) => {
       const next = new Set(prev)
       if (next.has(key)) next.delete(key)
       else next.add(key)
@@ -188,7 +188,8 @@ export function RoutesTable({ subareas }: Props) {
       <div className="space-y-3">
         {filteredSubareas.map((sub, i) => {
           const key = subareaKey(sub)
-          const isOpen = !closed.has(key)
+          const isOpen = opened.has(key)
+          const panelId = `subsector-${i}`
           const showZona = sub.zona && sub.zona !== filteredSubareas[i - 1]?.zona
           return (
             <div key={key}>
@@ -201,6 +202,7 @@ export function RoutesTable({ subareas }: Props) {
                 <button
                   onClick={() => toggleSubarea(key)}
                   aria-expanded={isOpen}
+                  aria-controls={panelId}
                   className="w-full flex items-center gap-3 px-4 py-3 bg-muted/40 hover:bg-muted/60 transition-colors text-left"
                 >
                   {isOpen ? (
@@ -223,8 +225,8 @@ export function RoutesTable({ subareas }: Props) {
                   </span>
                 </button>
 
-                {isOpen && (
-                  <>
+                {/* Siempre en el HTML (rastreable); cerrado = hidden */}
+                <div id={panelId} hidden={!isOpen}>
                     {sub.descripcion && (
                       <p className="px-4 py-2.5 text-xs text-muted-foreground leading-relaxed border-b border-border/50">
                         {sub.descripcion}
@@ -290,8 +292,7 @@ export function RoutesTable({ subareas }: Props) {
                         </li>
                       ))}
                     </ul>
-                  </>
-                )}
+                </div>
               </div>
             </div>
           )

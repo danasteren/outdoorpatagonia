@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-11-04_
+_Última actualización: 2026-11-05_
 
 ## Hecho (a grandes rasgos)
 
@@ -35,6 +35,7 @@ _Última actualización: 2026-11-04_
 - 2026-10-30: hreflang completo y recíproco (punto 4 de la auditoría). Un solo helper (`pageAlternates`, `src/lib/hreflang.ts`) con autorreferencia y `x-default` en todas las páginas con par. 77 pares de artículos de WordPress recuperados por portada + categoría + fecha y revisados por la usuaria (`seo/hreflang-pares.md`, cargados en `src/lib/article-translations.ts`). Las fichas de fauna, flora y gastronomía con artículo EN (chilco, alerce, llao llao, zorro gris…) emiten el par. Categorías con mapa ES ↔ EN (`categoryAltPath`); se sacó `UNRELIABLE_HREFLANG`. Selector sin par: opción deshabilitada con aviso, ya no va a la home (`LangFallbackNotice` se borró). `/fauna` y `/flora` entran al sitemap. Crawl del sitemap (Googlebot): hreflang recíproco completo en 26 URLs (13 EN) en producción → 218 (109 de 114 EN) en el build local; 0 hreflang a URLs que no den 200 (antes, 20). Selector probado en 21 páginas ES y EN y al navegar sin recargar.
 - 2026-10-30: el sitemap suma 14 páginas fijas que daban 200 y no estaban: `/parques`, `/senderos`, `/articulos`, `/estado`, `/astronomia`, `/planear/que-llevar`, proyecto, contacto, privacidad y términos (ES y EN). Afuera a propósito: `/admin`, `/perfil` y `/buscar`. `/estado`, `/astronomia` y `/planear/que-llevar` suman el canonical que les faltaba (`/astronomia?tab=…` apunta a `/astronomia`). Build local: 379 URLs en el sitemap, todas 200 menos la de dibujos del cóndor, que ya estaba en la auditoría; 226 con hreflang recíproco (113 EN).
 - 2026-11-04: antispam del formulario de contacto (lead-gen con emails rotativos). Cloudflare Turnstile en `ContactForm`, verificación en `submitContactForm`, `looksLikeSpam()` en `src/lib/antispam.ts` (éxito falso sin guardar ni mandar mail) y `scripts/list_spam_contact_messages.py` (solo lectura). Build OK; **no probado contra Cloudflare real** (faltan las claves). **Pendiente de la usuaria:** crear el widget Turnstile (managed) y cargar `NEXT_PUBLIC_TURNSTILE_SITE_KEY` y `TURNSTILE_SECRET_KEY` en Vercel (Production); sin la secret, en producción el form rechaza todos los envíos. Después correr el script de limpieza y borrar desde `/admin`.
+- 2026-11-05: escalada: los subsectores del acordeón arrancan cerrados (con la cantidad de vías); las vías siguen en el HTML con `hidden`. Probado en `/escalada/esquel` a 1024 y 375 px.
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 ## En curso
