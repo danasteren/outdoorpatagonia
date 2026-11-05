@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-05 — Auditoría de contenido de `articles`: solo lectura, sin arreglar todavía
+**Decisión:** el diagnóstico de cuerpos incompletos y fotos perdidas se hace con un script de solo lectura (`scripts/audit_articles.py`) y su reporte (`docs/audits/2026-11-contenido-articulos.md`). No se corrige ningún artículo hasta decidir la fuente del texto.
+**Motivo:** `/fauna/jabali-europeo` (ES) tenía 176 palabras y su par EN 1.830; la causa no se conoce y arreglar sin saberla puede repetir el problema.
+**Detalle:** solo GET contra Supabase; mide palabras, H2/H3, secciones con menos de 40 palabras (sin contar el índice), `reading_time_min` guardado vs. calculado, relación con el par ES↔EN, fotos antes y después de un port de `fixLegacyImages`, y portada con fallback. El reporte separa lo medido de las hipótesis; lo que está debajo de la línea marcadora no lo regenera el script. Hallazgos: 9 ES con el cuerpo reducido a intro + índice + JSON-LD; `reading_time_min` y `updated_at` no discriminan la causa.
+**Estado:** Vigente
+
 ## 2026-11-05 — Escalada: subsectores del acordeón arrancan cerrados
 **Decisión:** en `/escalada/[sector]`, cada subsector arranca cerrado y se abre al tocarlo. Con filtros activos rige la misma regla (siguen cerrados salvo que se abran). Es un acordeón de uno solo: abrir un subsector cierra el que estaba abierto (pedido de la usuaria el mismo día).
 **Motivo:** la página arrancaba con todas las vías desplegadas y era muy larga, sobre todo en mobile.
