@@ -61,7 +61,7 @@ type Props = {
 }
 
 export function RoutesTable({ subareas }: Props) {
-  const [opened, setOpened] = useState<Set<string>>(() => new Set())
+  const [opened, setOpened] = useState<string | null>(null)
   const [selectedNivel, setSelectedNivel] = useState<string | null>(null)
   const [selectedZona, setSelectedZona] = useState<string | null>(null)
   const [selectedDesplome, setSelectedDesplome] = useState<Desplome | null>(null)
@@ -103,12 +103,7 @@ export function RoutesTable({ subareas }: Props) {
   const hasFilters = selectedNivel || selectedZona || selectedDesplome || soloRecomendadas
 
   function toggleSubarea(key: string) {
-    setOpened((prev) => {
-      const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
-      return next
-    })
+    setOpened((prev) => (prev === key ? null : key))
   }
 
   function clearFilters() {
@@ -188,7 +183,7 @@ export function RoutesTable({ subareas }: Props) {
       <div className="space-y-3">
         {filteredSubareas.map((sub, i) => {
           const key = subareaKey(sub)
-          const isOpen = opened.has(key)
+          const isOpen = opened === key
           const panelId = `subsector-${i}`
           const showZona = sub.zona && sub.zona !== filteredSubareas[i - 1]?.zona
           return (
