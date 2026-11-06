@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-06 — Medir las guías de destino en Search Console (solo lectura)
+**Decisión:** la primera medición de las 14 guías se hace con consultas puntuales a la API (rendimiento por URL desde su fecha de alta e inspección de URL) y su reporte `docs/audits/2026-11-guias-search-console.md`. No se agregó script al repo ni se tocó contenido; no se pide indexación manual todavía.
+**Motivo:** las guías tienen entre 3 y 9 días y Search Console tarda en consolidar; con tan pocas impresiones no hay base para cambiar nada.
+**Detalle:** la cuenta de servicio de `gsc.json` sí permite `urlInspection`. Cada inspección tarda ~2 min en serie: correr en paralelo. Siguiente medición sugerida: ~3 semanas, contra los términos de `seo/destinos-prioridad.md`.
+**Estado:** Vigente
+
 ## 2026-11-05 — Recuperar los cuerpos ES truncados de artículos migrados
 **Decisión:** los 8 artículos ES con el cuerpo truncado en la migración (sin `chalten-patagonia-argentina`, que queda afuera) se recuperan así: jabalí y kuchen, de la copia de Wayback anterior a la migración; amanita, hongos de pino en escabeche, mermelada de rosa mosqueta y pino introducido, traduciendo su par EN; paxillus y viajar-patagonia solo si aparece una copia completa. Se deja el texto listo en `seo/articles/recuperados/` y un SQL a mano; nada se publica hasta que la usuaria lo corra.
 **Motivo:** el reporte `docs/audits/2026-11-contenido-articulos.md` mostró que esos artículos estaban completos en WordPress y se perdieron en la migración. (Esta entrada se escribió al ejecutar la tarea: la decisión la tomó la usuaria en el pedido, pero no estaba registrada.)
