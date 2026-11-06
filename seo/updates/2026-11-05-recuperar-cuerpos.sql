@@ -1,7 +1,8 @@
 -- Recupera los cuerpos ES truncados en la migración (decisión 2026-11-05).
 -- Correr a mano en el SQL Editor de Supabase. Idempotente: se puede correr más de una vez.
--- Solo cambia `content` y `reading_time_min` de 6 artículos ES. El HTML sale de seo/articles/recuperados/<slug>.es.html.
--- Los 4 traducidos desde el EN (amanita, escabeche, mermelada, pino) conviene publicarlos recién después de contrastar su .revision.md.
+-- Solo cambia `content` y `reading_time_min` de 8 artículos ES. El HTML sale de seo/articles/recuperados/<slug>.es.html.
+-- Jabalí y kuchen son copias de Wayback anteriores a la migración. Los otros 6 son texto nuevo (traducido del EN o escrito con fuentes):
+-- conviene publicarlos recién después de contrastar su .revision.md.
 -- reading_time_min = ceil(palabras / 200), mismo cálculo que scripts/migrate_wp_articles.py (etiquetas fuera, sin espacio).
 
 update articles
@@ -611,3 +612,165 @@ set content = $html$<p>En la Patagonia, uno de los árboles más visibles y pol�
 <p></p>$html$,
     reading_time_min = 5
 where slug = 'pino-introducido-patagonia-uso-impacto' and language = 'es';
+
+update articles
+set content = $html$<p>El <em>Paxillus involutus</em>, conocido como «paxilo enrollado», es un hongo de la familia Paxillaceae que aparece en bosques y plantaciones del hemisferio sur, incluida la Patagonia. Se lo confunde con hongos comestibles y es peligroso: provoca una reacción inmunológica que puede destruir los glóbulos rojos y dañar los riñones, y puede aparecer incluso en quien lo comió muchas veces sin problemas. Este artículo explica cómo es, dónde se lo registró en la región y por qué conviene no comerlo.</p>
+<nav>
+<h2>Índice de contenidos</h2>
+<ul>
+<li><a href="#taxonomia">Taxonomía y descripción</a></li>
+<li><a href="#distribucion">Distribución en la Patagonia</a></li>
+<li><a href="#toxicidad">Toxicidad y peligros</a></li>
+<li><a href="#especies-similares">Especies similares</a></li>
+<li><a href="#importancia-ecologica">Importancia ecológica</a></li>
+<li><a href="#preguntas-frecuentes">Preguntas frecuentes</a></li>
+<li><a href="#fuentes">Fuentes</a></li>
+</ul>
+</nav>
+<h2 id="taxonomia">Taxonomía y descripción</h2>
+<p>Pertenece al orden Boletales y a la familia Paxillaceae. El nombre válido hoy es <em>Paxillus involutus</em> (Batsch) Fr.: la combinación de Batsch es de 1786 y Fries le dio el nombre actual en 1838. Aunque tiene láminas, está emparentado con los boletos, los hongos con poros. Estudios genéticos sugieren que podría ser un complejo de especies y no una sola.</p>
+<ul>
+<li><strong>Sombrero:</strong> de 4 a 12 cm, en forma de embudo, con el borde enrollado hacia adentro (de ahí «involutus»). Su color va del pardo rojizo al oliváceo.</li>
+<li><strong>Láminas:</strong> decurrentes (bajan por el pie), bifurcadas y fáciles de separar del sombrero.</li>
+<li><strong>Pie:</strong> de 3 a 6 cm de alto.</li>
+<li><strong>Carne:</strong> se oscurece al magullarla.</li>
+<li><strong>Esporada:</strong> parda.</li>
+</ul>
+<blockquote>
+<p><strong>Importante:</strong> una descripción no alcanza para identificar un hongo. No uses este artículo para decidir si algo se puede comer.</p>
+</blockquote>
+<h2 id="distribucion">Distribución en la Patagonia</h2>
+<p>Es una especie muy extendida en el hemisferio norte. En el hemisferio sur se la considera introducida: llegó, probablemente, con tierra de árboles europeos, y se la encontró en plantaciones de <em>Pinus radiata</em> fuera de su área natural.</p>
+<p>En GBIF, la base mundial de registros de biodiversidad (consultada el 5 de noviembre de 2026), figuran 13 registros en Argentina y 18 en Chile. En Argentina, 9 son de la Patagonia (Neuquén, Chubut y Tierra del Fuego) y 3 de Córdoba; el más antiguo es de 1995, de Neuquén. En Chile los registros van desde Coquimbo hasta Aysén. Son pocos datos, casi todos observaciones de aficionados, así que no alcanzan para dibujar su distribución real.</p>
+<p>No encontramos un estudio que lo describa como habitante típico de los bosques nativos de <em>Nothofagus</em> (lenga, ñire, coihue). Sí aparece asociado a árboles exóticos, como los pinos de las plantaciones.</p>
+<h2 id="toxicidad">Toxicidad y peligros</h2>
+<p>Durante mucho tiempo se lo comió en Europa central y oriental, aunque se sabía que crudo hacía mal. La sospecha de que era peligroso llegó después de la muerte del micólogo Julius Schäffer, en 1944. Hoy se lo describe como un hongo mortal.</p>
+<p>El problema principal no es un veneno clásico, sino una reacción autoinmune: el cuerpo produce anticuerpos contra el hongo que atacan los glóbulos rojos (anemia hemolítica inmunomediada). Estos son los datos clínicos que describe la literatura médica:</p>
+<ul>
+<li><strong>Primeros síntomas:</strong> náuseas, vómitos, dolor en la boca del estómago y diarrea, entre 30 minutos y 3 horas después de comerlo.</li>
+<li><strong>Complicaciones:</strong> anemia hemolítica, insuficiencia renal aguda y, en los casos graves, shock.</li>
+<li><strong>Quién lo sufre:</strong> en general, personas que lo comen seguido y se sensibilizan; puede aparecer después de años de consumo sin síntomas.</li>
+<li><strong>Tratamiento:</strong> no hay antídoto; se hace tratamiento de sostén en un hospital.</li>
+</ul>
+<p>Cocinarlo no lo vuelve seguro. El Instituto de Salud Pública de Chile advierte, para los hongos tóxicos en general, que cocidos, hervidos o conservados en sal o vinagre mantienen sus toxinas. La Resolución 754/2001 del Ministerio de Salud de la Nación recomienda evitar los hongos silvestres recolectados y no comprarlos a vendedores ambulantes.</p>
+<blockquote>
+<p><strong>Si sospechás una intoxicación:</strong> andá a una guardia o llamá a emergencias sin esperar a que aparezcan los síntomas graves, y llevá una muestra del hongo si podés.</p>
+</blockquote>
+<h2 id="especies-similares">Especies similares</h2>
+<p>Se lo confunde con varios <em>Lactarius</em>, como los mízcalos o «hongos de pino» que se recolectan en las plantaciones. Una diferencia que se señala es que el <em>Paxillus involutus</em> no larga látex al cortarlo. Otras especies parecidas, como <em>Paxillus vernalis</em>, <em>P. filamentosus</em>, <em>P. obscurosporus</em> y <em>P. validus</em>, viven en el hemisferio norte. También se lo confunde con <em>Phylloporus arenicola</em> y con especies de <em>Tapinella</em>.</p>
+<p>Si vas a recolectar hongos, leé antes cómo se recolecta el <a href="/gastronomia/hongo-de-pino-recoleccion-secado-usos">hongo de pino</a> y cuáles son los riesgos. Ante la duda, no lo comas: el Instituto de Salud Pública de Chile aclara que estos hongos son difíciles de distinguir, incluso para personas con experiencia.</p>
+<h2 id="importancia-ecologica">Importancia ecológica</h2>
+<p>El <em>Paxillus involutus</em> forma ectomicorrizas: una asociación con las raíces de muchos árboles, coníferas y de hoja ancha, en la que el hongo y el árbol se intercambian nutrientes. Crece en bosques, pastizales y praderas, sobre todo a fines del verano y en otoño, y prefiere suelos húmedos.</p>
+<p>En la Patagonia, las invasiones de pinos y de abeto Douglas se asociaron con una menor presencia de los hongos micorrícicos de los bosques de <em>Nothofagus</em>, según trabajos de investigadores del CONICET. No encontramos estudios que midan el efecto específico de esta especie sobre los bosques nativos. Para el contexto, ver el artículo sobre el <a href="/flora/pino-introducido-patagonia-uso-impacto">pino introducido en la Patagonia</a>.</p>
+<h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
+<h3>¿Cómo se reconoce el Paxillus involutus?</h3>
+<p>Por el sombrero pardo, en forma de embudo y con el borde enrollado, las láminas decurrentes y la carne que se oscurece al magullarse. Pero no alcanza para decidir si es comestible: no lo comas.</p>
+<h3>¿En qué zonas de la Patagonia argentina se lo registró?</h3>
+<p>En Neuquén, Chubut y Tierra del Fuego, según los registros de GBIF consultados el 5 de noviembre de 2026. Son pocos datos.</p>
+<h3>¿Qué tan peligroso es comerlo por accidente?</h3>
+<p>Puede dar síntomas digestivos en las primeras horas y, en algunas personas, una reacción inmunológica que destruye glóbulos rojos y daña los riñones. No hay antídoto. Ante cualquier sospecha, consultá a un servicio de salud.</p>
+<h3>¿Cuál es su rol en el ecosistema?</h3>
+<p>Forma ectomicorrizas con las raíces de muchos árboles. En el hemisferio sur se lo considera introducido y se lo encontró en plantaciones de pinos.</p>
+<h3>¿Con qué hongos se lo puede confundir?</h3>
+<p>Con varios <em>Lactarius</em>, como los mízcalos. A diferencia de ellos, no larga látex.</p>
+<h3>¿Qué precauciones conviene tomar en bosques con hongos?</h3>
+<p>No comer hongos silvestres que no haya identificado un especialista, no comprarlos a vendedores ambulantes y no confiar en que cocinarlos elimina el riesgo.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://www.ispch.gob.cl/noticia/instituto-de-salud-publica-advierte-sobre-los-peligros-de-recolectar-y-consumir-hongos-silvestres/" target="_blank">Instituto de Salud Pública de Chile: peligros de recolectar y consumir hongos silvestres</a></li>
+<li><a href="https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-754-2001-68431/texto" target="_blank">Ministerio de Salud de la Nación: Resolución 754/2001</a></li>
+<li><a href="https://www.gbif.org/species/5240002" target="_blank">GBIF: <em>Paxillus involutus</em> (Batsch) Fr.</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/31561486/" target="_blank">Revista <em>Diagnostics</em> (2019): síndrome de <em>Paxillus involutus</em></a></li>
+<li><a href="https://en.wikipedia.org/wiki/Paxillus_involutus" target="_blank">Wikipedia: <em>Paxillus involutus</em></a> (solo como apoyo para la descripción)</li>
+</ul>$html$,
+    reading_time_min = 6
+where slug = 'paxillus-involutus' and language = 'es';
+
+update articles
+set content = $html$<p>La Patagonia es una región enorme que comparten la Argentina y Chile, y se recorre de muchas maneras: de ciudad en ciudad, en trekking de varios días o por rutas como la Carretera Austral. Esta guía reúne lo que conviene decidir antes de viajar (cuándo ir, adónde, cuántos días y qué trámites hacer) y te lleva a las guías de cada destino, que tienen el detalle.</p>
+<p>Una referencia de escala: el Campo de Hielo Patagónico Sur, entre la Argentina y Chile, es el tercer campo de hielo continental más grande del planeta, después de la Antártida y Groenlandia. Su lado argentino está protegido por el Parque Nacional Los Glaciares, creado en 1937 y Patrimonio de la Humanidad de la UNESCO desde 1981.</p>
+<nav>
+<h2>Contenidos de la guía</h2>
+<ul>
+<li><a href="#planificar-viaje">Cómo planificar un viaje a la Patagonia</a></li>
+<li><a href="#destinos-argentina">Patagonia argentina: destinos</a></li>
+<li><a href="#destinos-chile">Patagonia chilena: destinos</a></li>
+<li><a href="#mejor-epoca">La mejor época para viajar</a></li>
+<li><a href="#documentos-frontera">Documentos, seguro y cruce de fronteras</a></li>
+<li><a href="#que-descubrir">Qué descubrir: comida, fauna y flora</a></li>
+<li><a href="#preguntas-frecuentes">Preguntas frecuentes</a></li>
+<li><a href="#fuentes">Fuentes</a></li>
+</ul>
+</nav>
+<h2 id="planificar-viaje">Cómo planificar un viaje a la Patagonia</h2>
+<p>Las distancias son largas y los destinos están lejos entre sí, así que lo primero es elegir una zona y no intentar abarcarlo todo. Estos son los días que recomiendan nuestras guías por destino:</p>
+<ul>
+<li><strong>Ushuaia:</strong> 3 a 4 días.</li>
+<li><strong>El Calafate:</strong> 3 a 4 días.</li>
+<li><strong>El Chaltén:</strong> 3 a 7 días.</li>
+<li><strong>Puerto Natales (Torres del Paine):</strong> 4 a 5 días.</li>
+<li><strong>Bariloche:</strong> 4 a 5 días.</li>
+<li><strong>Coyhaique y la Carretera Austral:</strong> 4 a 7 días.</li>
+</ul>
+<p>Para un viaje largo conviene combinar dos o tres de estas bases. Revisá los horarios y conexiones de cada destino en su guía antes de reservar.</p>
+<h2 id="destinos-argentina">Patagonia argentina: destinos</h2>
+<ul>
+<li><a href="/destinos/bariloche">Bariloche</a> (Río Negro, lago Nahuel Huapi): verano y temporada de nieve.</li>
+<li><a href="/destinos/san-martin-de-los-andes">San Martín de los Andes y Villa La Angostura</a> (Neuquén): Ruta de los Siete Lagos.</li>
+<li><a href="/destinos/esquel">Esquel y El Bolsón</a> (Chubut y Río Negro): la Comarca Andina.</li>
+<li><a href="/destinos/puerto-madryn">Puerto Madryn y Península Valdés</a> (Chubut): fauna marina.</li>
+<li><a href="/destinos/el-calafate">El Calafate</a> (Santa Cruz): Glaciar Perito Moreno y Lago Argentino.</li>
+<li><a href="/destinos/el-chalten">El Chaltén</a> (Santa Cruz): Capital Nacional del Trekking.</li>
+<li><a href="/destinos/ushuaia">Ushuaia</a> (Tierra del Fuego): Canal Beagle.</li>
+</ul>
+<h2 id="destinos-chile">Patagonia chilena: destinos</h2>
+<ul>
+<li><a href="/destinos/pucon">Pucón</a> (La Araucanía): lago y volcán Villarrica.</li>
+<li><a href="/destinos/puerto-varas">Puerto Varas y Puerto Montt</a> (Los Lagos): lago Llanquihue y volcán Osorno.</li>
+<li><a href="/destinos/chiloe">Chiloé</a> (Los Lagos): Castro, Ancud y Dalcahue.</li>
+<li><a href="/destinos/coyhaique">Coyhaique y la Carretera Austral</a> (Aysén): Ruta 7, de Puerto Montt a Villa O'Higgins.</li>
+<li><a href="/destinos/puerto-natales">Puerto Natales</a> (Magallanes): puerta de entrada a Torres del Paine.</li>
+<li><a href="/destinos/punta-arenas">Punta Arenas</a> (Magallanes): a orillas del Estrecho de Magallanes.</li>
+<li><a href="/destinos/puerto-williams">Puerto Williams</a> (Isla Navarino): al sur del Canal Beagle.</li>
+</ul>
+<h2 id="mejor-epoca">La mejor época para viajar</h2>
+<p>Depende de lo que busques. Según nuestras guías de cada destino:</p>
+<ul>
+<li><strong>Verano (diciembre a marzo):</strong> la mejor época en Bariloche, San Martín de los Andes, Esquel, Pucón, Puerto Varas y la Carretera Austral. En Chiloé, de noviembre a marzo.</li>
+<li><strong>Octubre a marzo:</strong> El Calafate y El Chaltén. En Ushuaia, el verano va de octubre a marzo.</li>
+<li><strong>Octubre a abril:</strong> Puerto Natales (temporada de trekking) y Punta Arenas (temporada de pingüinos).</li>
+<li><strong>Septiembre a noviembre:</strong> Puerto Madryn y Península Valdés.</li>
+<li><strong>Nieve (julio a septiembre):</strong> Bariloche, San Martín de los Andes, Esquel y Ushuaia, para quienes viajan a esquiar.</li>
+</ul>
+<h2 id="documentos-frontera">Documentos, seguro y cruce de fronteras</h2>
+<p>Las reglas cambian con frecuencia: confirmá todo en las páginas oficiales antes de salir.</p>
+<ul>
+<li><strong>Visa:</strong> depende de tu nacionalidad. Consultala en el consulado del país al que vas o en el sitio de su cancillería.</li>
+<li><strong>Entrar a la Argentina:</strong> el DNU 366/2025, publicado el 29 de mayo de 2025, modificó la Ley de Migraciones: quienes piden ingresar como extranjeros deben presentar una declaración jurada con el motivo del viaje y en la que declaren que tienen un seguro de salud. La norma aclara que se exigirá una vez que se reglamente cómo se implementa; confirmá su estado en Migraciones.</li>
+<li><strong>Salud en la Argentina:</strong> desde la Resolución 1066/2026 del Ministerio de Salud (nota oficial del 11 de agosto de 2026), los extranjeros sin residencia permanente deben presentar un seguro válido o pagar antes las prestaciones habituales en hospitales nacionales. La atención de emergencia queda garantizada para todas las personas.</li>
+<li><strong>Entrar a Chile:</strong> el Servicio Agrícola y Ganadero (SAG) exige una declaración jurada, gratuita, a quien lleve plantas, animales o productos de origen vegetal o animal (incluidas artesanías). Se puede completar en www.ingresoachile.cl. No declarar productos de riesgo puede traer multas, y lo que no cumple los requisitos no ingresa y se destruye.</li>
+<li><strong>Pasos entre Argentina y Chile:</strong> de El Calafate a Puerto Natales hay buses de unas 5 horas que cruzan por el paso Río Don Guillermo, en Cerro Castillo. El paso Dorotea, cerca de Natales, está habilitado para todo tipo de vehículos. Revisá los horarios de los pasos antes de viajar.</li>
+</ul>
+<h2 id="que-descubrir">Qué descubrir: comida, fauna y flora</h2>
+<p>Además de los paisajes, la región tiene una cocina propia, mucha fauna y flora nativas. Podés explorarlo en las secciones de <a href="/gastronomia">gastronomía</a>, <a href="/fauna">fauna</a> y <a href="/flora">flora</a> de Outdoor Patagonia, y en los <a href="/parques">parques</a> y <a href="/senderos">senderos</a> del catálogo.</p>
+<h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
+<h3>¿Se necesita visa para viajar a la Patagonia?</h3>
+<p>Depende de tu nacionalidad y del país por el que entres (Argentina o Chile). Consultalo en el consulado o en la cancillería correspondiente antes de reservar.</p>
+<h3>¿Cuántos días se recomiendan para un viaje completo?</h3>
+<p>No hay un número único: cada destino pide entre 3 y 7 días, según nuestras guías. Para un viaje largo conviene elegir dos o tres bases.</p>
+<h3>¿Hace falta seguro de salud?</h3>
+<p>Para ingresar a la Argentina, el DNU 366/2025 prevé una declaración jurada que incluye contar con un seguro de salud, una vez reglamentada. Además, los hospitales nacionales cobran la atención habitual a los extranjeros no residentes; la de emergencia está garantizada.</p>
+<h3>¿Puedo llevar comida al cruzar a Chile?</h3>
+<p>Hay que declararla: el SAG exige una declaración jurada por productos de origen vegetal o animal, y lo que no cumple los requisitos no ingresa. Ante la duda, consultá al inspector en el control fronterizo.</p>
+<h3>¿Cuál es la mejor época?</h3>
+<p>Para la mayoría de los destinos, de diciembre a marzo; para el trekking del sur, de octubre a abril; y para esquiar, de julio a septiembre. El detalle está en la guía de cada destino.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://www.argentina.gob.ar/interior/ambiente/parquesnacionales/losglaciares" target="_blank">Administración de Parques Nacionales: Parque Nacional Los Glaciares</a></li>
+<li><a href="https://www.argentina.gob.ar/sites/default/files/2019/06/folleto_informacion_gral_pnlg_espanol.pdf" target="_blank">APN: folleto de información general del Parque Nacional Los Glaciares</a></li>
+<li><a href="https://www.argentina.gob.ar/normativa/nacional/decreto-366-2025-413297/texto" target="_blank">Decreto 366/2025 (DNU), Ley de Migraciones</a></li>
+<li><a href="https://www.argentina.gob.ar/noticias/los-hospitales-nacionales-comenzaran-cobrarles-los-extranjeros-no-residentes-en-el-pais" target="_blank">Ministerio de Salud: cobro a extranjeros no residentes en hospitales nacionales</a></li>
+<li><a href="https://www.sag.gob.cl/ambitos-de-accion/declaracion-jurada-sag-de-ingreso-chile" target="_blank">SAG de Chile: declaración jurada de ingreso</a></li>
+</ul>$html$,
+    reading_time_min = 6
+where slug = 'viajar-patagonia-guia-consejos' and language = 'es';
