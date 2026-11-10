@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-11-06_
+_Última actualización: 2026-11-10_
 
 ## Hecho (a grandes rasgos)
 
@@ -37,7 +37,7 @@ _Última actualización: 2026-11-06_
 - 2026-11-04: antispam del formulario de contacto (lead-gen con emails rotativos). Cloudflare Turnstile en `ContactForm`, verificación en `submitContactForm`, `looksLikeSpam()` en `src/lib/antispam.ts` (éxito falso sin guardar ni mandar mail) y `scripts/list_spam_contact_messages.py` (solo lectura). Build OK; **no probado contra Cloudflare real** (faltan las claves). **Pendiente de la usuaria:** crear el widget Turnstile (managed) y cargar `NEXT_PUBLIC_TURNSTILE_SITE_KEY` y `TURNSTILE_SECRET_KEY` en Vercel (Production); sin la secret, en producción el form rechaza todos los envíos. Después correr el script de limpieza y borrar desde `/admin`.
 - 2026-11-05: escalada: los subsectores del acordeón arrancan cerrados (con la cantidad de vías); las vías siguen en el HTML con `hidden`. Probado en `/escalada/esquel` a 1024 y 375 px.
 - 2026-11-05: auditoría de solo lectura del contenido de `articles` (`scripts/audit_articles.py` → `docs/audits/2026-11-contenido-articulos.md`). 9 artículos ES (jabalí europeo, amanita, hongos de pino en escabeche, etc.) tienen el cuerpo reducido a intro + índice + JSON-LD, sin las secciones; su par EN está completo. 54% de las fotos del HTML (708 de 1.317) no se recuperan. La causa no está confirmada (hipótesis en el reporte). No se tocó contenido ni base.
-- 2026-11-06: medición de las 14 guías de destino (28 URLs) en Search Console, solo lectura: `docs/audits/2026-11-guias-search-console.md`. 11 de 14 guías ya tienen impresiones (ES 92, EN 60 en total; 2 clics); sin impresiones en ningún idioma: Bariloche, Puerto Madryn y Puerto Williams. 21 de 28 URLs indexadas; 7 "desconocidas para Google" (Bariloche ES, Esquel ES y EN: Coyhaique, Puerto Williams, Punta Arenas, SMA y Ushuaia). Datos de 3 a 9 días: repetir en ~3 semanas.
+- 2026-11-06: medición de las 14 guías de destino (28 URLs) en Search Console, solo lectura: `docs/audits/2026-11-guias-search-console.md`. **Corregida el 2026-11-10**: las fechas de alta venían del split del 28/10; con las reales las guías tienen entre 3 y 36 días (no 3 a 9). Recalculado: 13 de 14 guías con impresiones (solo Bariloche sin ninguna; ES 216 impresiones y 2 clics, EN 119 y 1 clic). 21 de 28 URLs indexadas; 7 "desconocidas", de las que solo 3 son viejas (Bariloche ES, Ushuaia EN, Punta Arenas EN): indexación manual solo de esas y rutina diaria pausada (decisión 2026-11-10, a hacer por la usuaria). Repetir la medición en ~3 semanas.
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 ## En curso

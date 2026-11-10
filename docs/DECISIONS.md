@@ -16,11 +16,17 @@ Formato:
 
 ---
 
+## 2026-11-10 — Guías: indexación manual solo de las 3 viejas desconocidas; pausar la rutina diaria
+**Decisión:** se pide indexación manual (Search Console) solo de las 3 URLs viejas que siguen "desconocidas para Google": `/destinos/bariloche`, `/en/guides/ushuaia` y `/en/guides/punta-arenas`. Las otras 4 desconocidas (Coyhaique EN, San Martín de los Andes EN, Esquel ES, Puerto Williams EN) son recientes y se esperan sin pedir nada. La rutina `guia-destino-diaria` se pausa.
+**Motivo:** _(a completar: el texto de la usuaria no llegó con el pedido; no se inventa)_.
+**Detalle:** corrige la medición de 2026-11-06: las fechas de alta de `git log --diff-filter=A` marcaban 28/10 para 10 guías por el split "una guía = un archivo" (`728ce1c`). Las fechas reales salen del historial de `catalog.ts` y están en `docs/audits/2026-11-guias-search-console.md`: Ushuaia 10-01, El Calafate 10-03, Bariloche 10-05, Natales y Chaltén 10-20, Madryn 10-21, Puerto Varas y Punta Arenas 10-23, Pucón 10-26, Chiloé 10-27, Coyhaique 10-29, SMA 10-30, Esquel 11-02, Puerto Williams 11-03. Al 2026-11-06 las guías tienen entre 3 y 36 días; Bariloche ES (32), Ushuaia EN (36) y Punta Arenas EN (14) son las 3 viejas desconocidas. Recalculado el periodo por URL: ES 216 impresiones y 2 clics, EN 119 y 1 clic; 13 de 14 guías con impresiones (solo Bariloche sin ninguna). Esta tarea solo registró la decisión: no se pidió ninguna indexación ni se pausó la rutina (eso lo hace la usuaria desde Search Console y la app).
+**Estado:** Vigente
+
 ## 2026-11-06 — Medir las guías de destino en Search Console (solo lectura)
 **Decisión:** la primera medición de las 14 guías se hace con consultas puntuales a la API (rendimiento por URL desde su fecha de alta e inspección de URL) y su reporte `docs/audits/2026-11-guias-search-console.md`. No se agregó script al repo ni se tocó contenido; no se pide indexación manual todavía.
 **Motivo:** las guías tienen entre 3 y 9 días y Search Console tarda en consolidar; con tan pocas impresiones no hay base para cambiar nada.
 **Detalle:** la cuenta de servicio de `gsc.json` sí permite `urlInspection`. Cada inspección tarda ~2 min en serie: correr en paralelo. Siguiente medición sugerida: ~3 semanas, contra los términos de `seo/destinos-prioridad.md`.
-**Estado:** Vigente
+**Estado:** Reemplazada por 2026-11-10 — Guías: indexación manual solo de las 3 viejas desconocidas; pausar la rutina diaria (la premisa "entre 3 y 9 días" era un error de fecha: las guías tienen entre 3 y 36 días; ver el reporte corregido)
 
 ## 2026-11-05 — Recuperar los cuerpos ES truncados de artículos migrados
 **Decisión:** los 8 artículos ES con el cuerpo truncado en la migración (sin `chalten-patagonia-argentina`, que queda afuera) se recuperan así: jabalí y kuchen, de la copia de Wayback anterior a la migración; amanita, hongos de pino en escabeche, mermelada de rosa mosqueta y pino introducido, traduciendo su par EN; paxillus y viajar-patagonia solo si aparece una copia completa. Se deja el texto listo en `seo/articles/recuperados/` y un SQL a mano; nada se publica hasta que la usuaria lo corra.
