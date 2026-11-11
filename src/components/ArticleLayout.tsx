@@ -6,6 +6,7 @@ import { DetailHero } from "@/components/DetailHero";
 import { Card, CardBody } from "@/components/primitives/Card";
 import { categoryHref as categoryHrefFor, toCategorySlug } from "@/lib/category";
 import { articleCover, fixLegacyImages } from "@/lib/legacy-images";
+import { isDatedArticle } from "@/lib/dated-articles";
 import { decodeEntities } from "@/lib/text";
 import { AdSlot } from "@/components/AdSlot";
 import { splitAfterParagraph } from "@/lib/ads";
@@ -43,7 +44,8 @@ export function ArticleLayout({
 }) {
   const isEnglish = article.language === "en";
   const title = decodeEntities(article.title);
-  const publishedDate = article.published_at
+  const isDated = isDatedArticle(article.slug);
+  const publishedDate = article.published_at && isDated
     ? new Intl.DateTimeFormat(isEnglish ? "en-US" : "es-AR", {
         year: "numeric",
         month: "long",
@@ -62,6 +64,7 @@ export function ArticleLayout({
     ? categoryHrefFor(article.category, article.language)
     : null;
   const isLegacy = article.wp_id != null;
+  const showLegacyBanner = isLegacy && isDated;
   const Icon = (article.category && CATEGORY_ICONS[toCategorySlug(article.category)]) || BookOpen;
 
   // Crédito de la portada: Wikimedia (reemplazos) o Instagram (foto original de WordPress)
@@ -117,7 +120,7 @@ export function ArticleLayout({
       />
 
       {/* Aviso de artículo migrado del WordPress; va debajo del hero para que no lo tapen los botones fijos de HeroActions */}
-      {isLegacy && (
+      {showLegacyBanner && (
         <Link
           href={homeHref}
           className="flex items-center justify-center gap-2 bg-[var(--color-teal)] px-4 py-2 text-center text-xs md:text-sm text-white hover:bg-[var(--color-teal)]/90 transition-colors"

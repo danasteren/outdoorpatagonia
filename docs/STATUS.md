@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-11-10_
+_Última actualización: 2026-11-11_
 
 ## Hecho (a grandes rasgos)
 
@@ -39,6 +39,8 @@ _Última actualización: 2026-11-10_
 - 2026-11-05: auditoría de solo lectura del contenido de `articles` (`scripts/audit_articles.py` → `docs/audits/2026-11-contenido-articulos.md`). 9 artículos ES (jabalí europeo, amanita, hongos de pino en escabeche, etc.) tienen el cuerpo reducido a intro + índice + JSON-LD, sin las secciones; su par EN está completo. 54% de las fotos del HTML (708 de 1.317) no se recuperan. La causa no está confirmada (hipótesis en el reporte). No se tocó contenido ni base.
 - 2026-11-06: medición de las 14 guías de destino (28 URLs) en Search Console, solo lectura: `docs/audits/2026-11-guias-search-console.md`. **Corregida el 2026-11-10**: las fechas de alta venían del split del 28/10; con las reales las guías tienen entre 3 y 36 días (no 3 a 9). Recalculado: 13 de 14 guías con impresiones (solo Bariloche sin ninguna; ES 216 impresiones y 2 clics, EN 119 y 1 clic). 21 de 28 URLs indexadas; 7 "desconocidas", de las que solo 3 son viejas (Bariloche ES, Ushuaia EN, Punta Arenas EN): indexación manual solo de esas y rutina diaria pausada (decisión 2026-11-10, a hacer por la usuaria). Repetir la medición en ~3 semanas.
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
+
+- 2026-11-11: artículos atemporales. Sin fecha (encabezado, "Datos" y tarjetas) ni banner de "sitio anterior", salvo 4 slugs de eclipse y tulipanes (`src/lib/dated-articles.ts`). JSON-LD sin cambios.
 
 ## En curso
 

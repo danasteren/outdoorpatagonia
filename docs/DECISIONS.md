@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-11 — Artículos atemporales: sin fecha ni banner de "sitio anterior"
+**Decisión:** No mostrar fecha ni banner de "sitio anterior" en los artículos, salvo en una lista corta de excepciones temporales.
+**Motivo:** Los artículos viejos se ven desactualizados aunque el contenido siga vigente.
+**Detalle:** Excepciones: eclipse-solar-anular-esquel-2027, annular-solar-eclipse-2027, tulipanes-trevelin, trevelin-tulip-fields. El JSON-LD conserva datePublished; no se agrega dateModified. La lista es una sola constante (`DATED_ARTICLE_SLUGS` en `src/lib/dated-articles.ts`) usada por `ArticleLayout` y `ArticleTile`.
+**Estado:** Vigente
+
 ## 2026-11-10 — Guías: indexación manual solo de las 3 viejas desconocidas; pausar la rutina diaria
 **Decisión:** se pide indexación manual (Search Console) solo de las 3 URLs viejas que siguen "desconocidas para Google": `/destinos/bariloche`, `/en/guides/ushuaia` y `/en/guides/punta-arenas`. Las otras 4 desconocidas (Coyhaique EN, San Martín de los Andes EN, Esquel ES, Puerto Williams EN) son recientes y se esperan sin pedir nada. La rutina `guia-destino-diaria` se pausa.
 **Motivo:** _(a completar: el texto de la usuaria no llegó con el pedido; no se inventa)_.

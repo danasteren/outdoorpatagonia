@@ -22,6 +22,10 @@ export const novedades: VersionNovedades[] = [
     cambios: [
       {
         tipo: "mejora",
+        texto: "Artículos atemporales — los artículos ya no muestran fecha de publicación ni el aviso del sitio anterior, para que se lean siempre vigentes (salvo los atados a una fecha, como el eclipse de 2027)",
+      },
+      {
+        tipo: "mejora",
         texto: "Escalada más fácil de recorrer — en cada sector, los subsectores arrancan cerrados con su cantidad de vías y se abren al tocarlos",
       },
       {

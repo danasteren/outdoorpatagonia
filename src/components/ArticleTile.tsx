@@ -3,6 +3,7 @@ import { BookOpen } from "lucide-react"
 import { Badge } from "@/components/primitives/Badge"
 import { toCategorySlug } from "@/lib/category"
 import { articleCover } from "@/lib/legacy-images"
+import { isDatedArticle } from "@/lib/dated-articles"
 import { decodeEntities } from "@/lib/text"
 
 interface ArticleTileProps {
@@ -36,7 +37,7 @@ export function ArticleTile({
   const catSlug = category ? toCategorySlug(category) : ""
   const href = isEnglish ? `/en/${catSlug}/${slug}` : `/${catSlug}/${slug}`
   const coverUrl = articleCover({ slug, cover_image_url })?.url
-  const year = published_at ? new Date(published_at).getFullYear() : null
+  const year = published_at && isDatedArticle(slug) ? new Date(published_at).getFullYear() : null
   const meta = [reading_time_min ? `${reading_time_min} min` : null, year].filter(Boolean).join(" · ")
 
   return (
