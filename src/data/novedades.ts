@@ -15,10 +15,25 @@ export interface VersionNovedades {
 
 export const novedades: VersionNovedades[] = [
   {
+    numero: "1.8",
+    fecha: "Noviembre 2026",
+    titulo: "Nuevas guías: Esquel y El Bolsón, y Puerto Williams",
+    esUltima: true,
+    cambios: [
+      {
+        tipo: "nuevo",
+        texto: "Guía de viaje de Esquel y El Bolsón — qué hacer, clima, cuándo ir y cómo llegar, con el Parque Nacional Los Alerces, el Glaciar Torrecillas, La Trochita, La Hoya y el cerro Piltriquitrón, en español y en inglés",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Guía de viaje de Puerto Williams — qué hacer, clima, cuándo ir y cómo llegar, con el circuito Dientes de Navarino, el Parque Nacional Cabo de Hornos, la navegación por el Canal Beagle y el museo yagán, en español y en inglés",
+      },
+    ],
+  },
+  {
     numero: "1.7",
     fecha: "Octubre 2026",
     titulo: "Guías de viaje por destino, empezando por Ushuaia",
-    esUltima: true,
     cambios: [
       {
         tipo: "mejora",
@@ -71,6 +86,14 @@ export const novedades: VersionNovedades[] = [
       {
         tipo: "nuevo",
         texto: "Guía de viaje de Chiloé — qué hacer, clima, cuándo ir y cómo llegar, con las iglesias Patrimonio de la Humanidad, los palafitos de Castro, los pingüinos de Puñihuil y el Parque Nacional Chiloé, en español y en inglés",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Guía de viaje de Coyhaique y la Carretera Austral — qué hacer, clima, cuándo ir y cómo llegar, con las Capillas de Mármol, el Parque Nacional Cerro Castillo, el Ventisquero Colgante de Queulat y el Glaciar San Rafael, en español y en inglés",
+      },
+      {
+        tipo: "nuevo",
+        texto: "Guía de viaje de San Martín de los Andes y Villa La Angostura — qué hacer, clima, cuándo ir y cómo llegar, con la Ruta de los Siete Lagos, el lago Lácar, el volcán Lanín y el esquí en Chapelco, en español y en inglés",
       },
       {
         tipo: "mejora",

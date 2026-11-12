@@ -24,7 +24,7 @@ El repo es la única fuente de verdad. El chat del Proyecto y Claude Code leen l
 4. Si cambió la arquitectura, un comando o una trampa: actualizar este archivo.
 5. Commit en `main` (sin PR) con los docs actualizados, y push. Antes del push, `npm run build` si hubo cambios de código. (Las rutinas sí abren PR.)
 
-**Los pasos 1 a 3 son solo para cambios de código.** Los PR de contenido (guías, títulos SEO y todo lo que abren las rutinas para publicar desde `/admin/agentes`) **no tocan** `docs/STATUS.md`, `docs/DECISIONS.md` ni `src/data/novedades.ts`: solo agregan o editan los archivos de cada pieza, y lo que haya que contar va en la descripción del PR. Así varios PR pendientes no chocan entre sí.
+**Los pasos 1 a 3 son solo para cambios de código.** Los PR de contenido (guías, títulos SEO y todo lo que abren las rutinas para publicar desde `/admin/agentes`) **no tocan** `docs/STATUS.md`, `docs/DECISIONS.md` ni `src/data/novedades.ts`: solo agregan o editan los archivos de cada pieza, y lo que haya que contar va en la descripción del PR. Así varios PR pendientes no chocan entre sí. Lo que publican las rutinas llega a novedades en la siguiente tarea de código (ver `.claude/rules/novedades.md`).
 
 **Reglas de documentación**
 - No hacer inventarios de rutas, tablas, componentes o env vars completos. Documentar la estructura, las reglas y lo que no se deduce del código, y remitir al archivo fuente.

@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-12 — Novedades al día con el contenido de las rutinas y criterio de versión
+**Decisión:** los PR de contenido de las rutinas siguen sin tocar `novedades.ts`. En cambio, la próxima tarea de código pone novedades al día con lo que las rutinas publicaron desde la última edición del archivo (un ítem por guía nueva). Una versión nueva se abre cuando aparece una sección o función nueva, o cuando cambia el mes respecto de la fecha de la entrada `esUltima`; si no, los ítems se suman a la actual. Solo se confirma con la usuaria cuando cambia el número.
+**Motivo:** desde el 2026-10-28 las guías publicadas por rutinas no llegaban a novedades (Coyhaique, San Martín de los Andes y Puerto Williams estaban publicadas y sin registrar), y la 1.7 venía juntando ítems desde octubre sin criterio para cerrarla.
+**Detalle:** complementa 2026-09-29 (novedades se actualizan solas) y 2026-10-28 (los PR de contenido no tocan STATUS, DECISIONS ni novedades). Se descartó que las rutinas editen `novedades.ts`: es el archivo compartido que generaba los conflictos. Lo que ve el lector se sigue filtrando con "Nunca publicar" de `.claude/rules/novedades.md`: nada interno entra a la página pública. Las reglas quedan en ese archivo.
+**Estado:** Vigente
+
 ## 2026-11-12 — Medir los clics a GetYourGuide con un evento de GA4
 **Decisión:** Se mide cada clic a GetYourGuide con el evento `affiliate_click`.
 **Motivo:** No sabemos qué páginas generan interés de reserva, y la monetización del sitio depende de eso.
