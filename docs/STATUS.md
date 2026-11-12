@@ -43,7 +43,7 @@ _Última actualización: 2026-11-12_
 - 2026-11-11: artículos atemporales. Sin fecha (encabezado, "Datos" y tarjetas) ni banner de "sitio anterior", salvo 4 slugs de eclipse y tulipanes (`src/lib/dated-articles.ts`). JSON-LD sin cambios.
 - 2026-11-12: evento GA4 `affiliate_click` en cada clic a GetYourGuide (listener delegado, sin tocar enlaces). Probado en local en `/parques/nahuel-huapi` y `/en/guides/el-chalten`. **Pendiente de la usuaria:** registrar `page_slug`, `language` y `placement_type` como dimensiones personalizadas en GA4 (Administrar → Definiciones personalizadas).
 - 2026-11-12: mermelada de rosa mosqueta (ES) recortada y lista en `seo/updates/2026-11-12-mermelada-recortada.sql` (un solo UPDATE; la usuaria lo corre). Qué se sacó: `seo/articles/recuperados/mermelada-rosa-mosqueta-patagonica.recorte.md`.
-- 2026-11-12: novedades al día con las rutinas y criterio de versión (decisión 2026-11-12). Se registraron las guías de Coyhaique y San Martín de los Andes y Villa La Angostura en la 1.7, y se abrió la 1.8 (noviembre) con Esquel y El Bolsón y Puerto Williams; `package.json` en 1.8.0. Reglas nuevas en `.claude/rules/novedades.md`.
+- 2026-11-12: novedades al día con las rutinas y criterio de versión (decisión 2026-11-12). Se registraron las guías de Coyhaique y San Martín de los Andes y Villa La Angostura en la 1.7, y se abrió la 1.8 (noviembre) con Esquel y El Bolsón y Puerto Williams; `package.json` en 1.8.0. Reglas nuevas en `.claude/rules/novedades.md`. Los ítems de noviembre (artículos atemporales, subsectores de escalada) pasaron de la 1.7 a la 1.8.
 
 ## En curso
 

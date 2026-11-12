@@ -21,6 +21,14 @@ export const novedades: VersionNovedades[] = [
     esUltima: true,
     cambios: [
       {
+        tipo: "mejora",
+        texto: "Artículos atemporales — los artículos ya no muestran fecha de publicación ni el aviso del sitio anterior, para que se lean siempre vigentes (salvo los atados a una fecha, como el eclipse de 2027)",
+      },
+      {
+        tipo: "mejora",
+        texto: "Escalada más fácil de recorrer — en cada sector, los subsectores arrancan cerrados con su cantidad de vías y se abren al tocarlos",
+      },
+      {
         tipo: "nuevo",
         texto: "Guía de viaje de Esquel y El Bolsón — qué hacer, clima, cuándo ir y cómo llegar, con el Parque Nacional Los Alerces, el Glaciar Torrecillas, La Trochita, La Hoya y el cerro Piltriquitrón, en español y en inglés",
       },
@@ -35,14 +43,6 @@ export const novedades: VersionNovedades[] = [
     fecha: "Octubre 2026",
     titulo: "Guías de viaje por destino, empezando por Ushuaia",
     cambios: [
-      {
-        tipo: "mejora",
-        texto: "Artículos atemporales — los artículos ya no muestran fecha de publicación ni el aviso del sitio anterior, para que se lean siempre vigentes (salvo los atados a una fecha, como el eclipse de 2027)",
-      },
-      {
-        tipo: "mejora",
-        texto: "Escalada más fácil de recorrer — en cada sector, los subsectores arrancan cerrados con su cantidad de vías y se abren al tocarlos",
-      },
       {
         tipo: "nuevo",
         texto: "Guías de viaje por destino — qué hacer, clima mes a mes, cuándo ir, cómo llegar y cuántos días quedarse. La primera es Ushuaia, en español y en inglés",
