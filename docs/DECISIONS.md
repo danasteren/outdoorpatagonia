@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-12 — Mermelada de rosa mosqueta (ES): versión recortada, solo con lo que tiene fuente
+**Decisión:** el artículo ES se publica sin propiedades de salud, fechas e historia, exportación/orgánico, "mejores ferias", afirmaciones de conservación/envasado ni el video. Se conserva la descripción del fruto, las dos recetas y las preguntas que no dependen de datos sin fuente. Va en un SQL propio con un solo UPDATE, y se sacó el bloque del SQL del 2026-11-05.
+**Motivo:** regla de dominio "si no hay fuente, el dato no va"; los 24 puntos de `.revision.md` seguían sin contrastar.
+**Detalle:** `seo/updates/2026-11-12-mermelada-recortada.sql`; lista de lo sacado en `seo/articles/recuperados/mermelada-rosa-mosqueta-patagonica.recorte.md`. Quedan sin fuente algunos datos menores (nombre científico, zonas, cosecha, proporciones) y la ficha de `gastronomia/catalog.ts` sigue con las afirmaciones viejas: pendiente. Complementa 2026-11-05 (recuperar cuerpos). No se tocó el par EN ni la base.
+**Estado:** Vigente
+
 ## 2026-11-12 — Novedades al día con el contenido de las rutinas y criterio de versión
 **Decisión:** los PR de contenido de las rutinas siguen sin tocar `novedades.ts`. En cambio, la próxima tarea de código pone novedades al día con lo que las rutinas publicaron desde la última edición del archivo (un ítem por guía nueva). Una versión nueva se abre cuando aparece una sección o función nueva, o cuando cambia el mes respecto de la fecha de la entrada `esUltima`; si no, los ítems se suman a la actual. Solo se confirma con la usuaria cuando cambia el número.
 **Motivo:** desde el 2026-10-28 las guías publicadas por rutinas no llegaban a novedades (Coyhaique, San Martín de los Andes y Puerto Williams estaban publicadas y sin registrar), y la 1.7 venía juntando ítems desde octubre sin criterio para cerrarla.

@@ -1,0 +1,84 @@
+-- Mermelada de rosa mosqueta (ES): versión recortada, sin afirmaciones sin fuente (decisión 2026-11-12).
+-- Correr a mano en el SQL Editor de Supabase. Idempotente. Reemplaza al bloque de la mermelada del SQL del 2026-11-05.
+-- Solo cambia `content` y `reading_time_min`. El HTML sale de seo/articles/recuperados/mermelada-rosa-mosqueta-patagonica.es.html.
+-- reading_time_min = ceil(palabras / 200), mismo cálculo que scripts/migrate_wp_articles.py.
+
+update articles
+set content = $html$<p>La <strong>mermelada de rosa mosqueta</strong> es uno de los productos más emblemáticos de la Patagonia. Su aroma silvestre y su sabor intenso la convirtieron en un clásico de la mesa del sur argentino. Si querés saber más sobre la planta y su origen, podés leer <a href="https://outdoorpatagonia.com/flora/rosa-mosqueta-patagonia/" target="_blank">todo sobre la rosa mosqueta en la Patagonia</a>.</p>
+<nav>
+<h2>Índice de contenidos</h2>
+<ul>
+<li><a href="#origen">Origen y valor cultural de la rosa mosqueta</a></li>
+<li><a href="#recoleccion">Cosecha y elaboración artesanal</a></li>
+<li><a href="#receta-tradicional">Receta tradicional patagónica</a></li>
+<li><a href="#version-saludable">Versión saludable sin azúcar</a></li>
+<li><a href="#usos">Usos culinarios y maridajes</a></li>
+<li><a href="#conclusion">Conclusión</a></li>
+<li><a href="#faqs">Preguntas frecuentes</a></li>
+</ul>
+</nav>
+<h2 id="origen">Origen y valor cultural de la rosa mosqueta</h2>
+<p>La rosa mosqueta (<em>Rosa rubiginosa</em>) llegó a la Patagonia desde Europa. Se adaptó perfectamente al clima frío y a los suelos andinos, y se extendió por toda la región, sobre todo en <strong>Bariloche, El Bolsón, Esquel, Trevelin y Villa La Angostura</strong>, y en muchas zonas cercanas. Para profundizar en sus características botánicas y su impacto ambiental, mirá <a href="https://outdoorpatagonia.com/flora/rosa-mosqueta-patagonia/" target="_blank">este artículo sobre la rosa mosqueta en la Patagonia</a>.</p>
+<blockquote>
+<p>¿Sabías que la rosa mosqueta se introdujo como planta ornamental y hoy es una de las especies silvestres más aprovechadas de la Patagonia?</p>
+</blockquote>
+<h2 id="recoleccion">Cosecha y elaboración artesanal</h2>
+<p>En la Patagonia, la cosecha de rosa mosqueta se hace entre <strong>marzo y mayo</strong>, cuando los frutos alcanzan su intenso color rojizo. La recolección es manual y se cuida de no dañar los arbustos para que puedan dar frutos otra vez al año siguiente. Después, los frutos se limpian, se hierven y se cuelan para quitar las semillas internas y los pelitos finos, que son irritantes.</p>
+<figure><a href="https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/10/rosa-mosqueta-3-1.jpg"><img src="https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/10/rosa-mosqueta-3-1.jpg" alt="Cosecha artesanal de rosa mosqueta en la Patagonia" width="1440" height="1200" /></a><figcaption id="caption-attachment-7744">Cosecha artesanal de rosa mosqueta en la Patagonia</figcaption></figure>
+<p>Este proceso es lento pero fundamental para conservar la textura fina y el sabor característico del dulce patagónico.</p>
+<h2 id="receta-tradicional">Receta tradicional de mermelada de rosa mosqueta patagónica</h2>
+<p>La receta clásica se transmite de generación en generación. Requiere paciencia, pero el resultado es una mermelada intensa y brillante, de aroma único.</p>
+<h3>🧺 Ingredientes</h3>
+<ul>
+<li>1 kg de frutos de rosa mosqueta</li>
+<li>750 g de azúcar</li>
+<li>Jugo de 1 limón</li>
+<li>Agua (cantidad necesaria)</li>
+</ul>
+<h3>👩‍🍳 Preparación paso a paso</h3>
+<ol>
+<li>Lavá bien los frutos y sacales los tallos o impurezas.</li>
+<li>Ponelos en una olla con agua y hervilos hasta que se ablanden (unos 20 minutos).</li>
+<li>Pasalos por un tamiz o colador fino para obtener una pulpa limpia, sin semillas.</li>
+<li>Pesá la pulpa obtenida y agregale los 750 g de azúcar.</li>
+<li>Cociná a fuego medio, revolviendo con cuchara de madera hasta que espese.</li>
+<li>Agregá el jugo de limón para realzar el sabor.</li>
+</ol>
+<blockquote>
+<p>Tip: la textura ideal se logra cuando la mermelada forma una gota espesa que no se desliza fácilmente de un plato una vez fría.</p>
+</blockquote>
+<h2 id="version-saludable">Versión saludable sin azúcar</h2>
+<p>Con la tendencia creciente hacia una alimentación más consciente, muchos productores patagónicos ofrecen <strong>mermeladas de rosa mosqueta sin azúcar</strong> o endulzadas con miel, stevia o azúcar integral.</p>
+<h3>🧺 Ingredientes</h3>
+<ul>
+<li>1 kg de frutos de rosa mosqueta</li>
+<li>2 cucharadas de miel natural o 1 cucharadita de stevia (ajustar a gusto)</li>
+<li>Jugo de 1 limón</li>
+</ul>
+<h3>👩‍🍳 Preparación</h3>
+<ol>
+<li>Cociná la pulpa de rosa mosqueta a fuego bajo para reducir parte del agua.</li>
+<li>Agregá la miel o el edulcorante, mezclando con suavidad.</li>
+<li>Seguí cocinando unos minutos más hasta obtener una consistencia espesa.</li>
+<li>Dejala enfriar.</li>
+</ol>
+<p>Este tipo de mermelada conserva el sabor original del fruto.</p>
+<figure><a href="https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/10/rosa-mosqueta-2-1.jpg"><img src="https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/10/rosa-mosqueta-2-1.jpg" alt="Fruto de la rosa mosqueta" width="1440" height="1200" /></a><figcaption id="caption-attachment-7742">Fruto de la rosa mosqueta</figcaption></figure>
+<h2 id="usos">Usos culinarios y maridajes</h2>
+<p>La mermelada de rosa mosqueta es muy versátil. En la Patagonia se usa tanto en el desayuno como en preparaciones gourmet. Es común verla acompañando <strong>pan casero, scones, tortas, panqueques o queso de cabra</strong>. También se usa como relleno de alfajores y como cobertura de yogures y postres de frutas.</p>
+<ul>
+<li>Ideal con pan integral y manteca</li>
+<li>Excelente complemento para quesos blandos</li>
+<li>Perfecta para postres fríos o tartas</li>
+<li>Puede usarse como glaseado de carnes o aves</li>
+</ul>
+<figure><a href="https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/10/rosa-mosqueta-4.jpg"><img src="https://outdoorpatagonia.dreamhosters.com/wp-content/uploads/2025/10/rosa-mosqueta-4.jpg" alt="Planta de rosa mosqueta" width="1440" height="1200" /></a><figcaption id="caption-attachment-7746">Planta de rosa mosqueta</figcaption></figure>
+<h2 id="conclusion">Conclusión</h2>
+<p>La <strong>mermelada de rosa mosqueta patagónica</strong> condensa la esencia del sur: naturaleza pura, trabajo artesanal y un sabor inconfundible. Tanto en su versión tradicional como en su alternativa sin azúcar, es una forma de conectar con la tierra y las costumbres de quienes viven entre montañas, bosques y valles. Más que un dulce, es un símbolo de la identidad patagónica que perdura con cada frasco elaborado.</p>
+<h2 id="faqs">Preguntas frecuentes</h2>
+<h3>¿Cuál es la diferencia entre mermelada y jalea de rosa mosqueta?</h3>
+<p>La jalea se hace solo con el jugo del fruto, mientras que la mermelada conserva parte de la pulpa.</p>
+<h3>¿Se puede hacer sin azúcar?</h3>
+<p>Sí, se puede hacer con miel o stevia sin perder su sabor característico.</p>$html$,
+    reading_time_min = 4
+where slug = 'mermelada-rosa-mosqueta-patagonica' and language = 'es';
