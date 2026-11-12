@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import Script from "next/script";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { AffiliateClickTracker } from "@/components/AffiliateClickTracker"
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { HideOnPaths } from "@/components/HideOnPaths";
 import { YouTubeFacades } from "@/components/YouTubeFacades";
@@ -102,6 +103,7 @@ export default async function RootLayout({
           {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-0W9F62HBB7');`}
         </Script>
         <ScrollToTop />
+        <AffiliateClickTracker />
         <YouTubeFacades />
         <Header />
         <main className="flex-1">

@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-12 — Medir los clics a GetYourGuide con un evento de GA4
+**Decisión:** Se mide cada clic a GetYourGuide con el evento `affiliate_click`.
+**Motivo:** No sabemos qué páginas generan interés de reserva, y la monetización del sitio depende de eso.
+**Detalle:** Parámetros: slug, idioma y tipo de ubicación. No se agregan enlaces nuevos. Un solo listener delegado (`src/components/AffiliateClickTracker.tsx`, montado en `layout.tsx`) que cuenta los clics en `<a>` con host `getyourguide.com`: cubre guías, parques, senderos, escalada, planificador y links dentro de artículos. Parámetros del evento: `page_slug` (último tramo de la ruta), `language` (`es`/`en`, por el prefijo `/en`), `placement_type` (`guia`, `parque`, `sendero`, `escalada`, `planificador`, `mapa`, `articulo` para `/[categoria]/[slug]`, `otro`) y `affiliate: "getyourguide"`. Sin banner de cookies en el sitio: no hay consentimiento que respetar. En GA4 hay que registrar `page_slug`, `language` y `placement_type` como dimensiones personalizadas del evento para verlas en los informes.
+**Estado:** Vigente
+
 ## 2026-11-11 — Artículos atemporales: sin fecha ni banner de "sitio anterior"
 **Decisión:** No mostrar fecha ni banner de "sitio anterior" en los artículos, salvo en una lista corta de excepciones temporales.
 **Motivo:** Los artículos viejos se ven desactualizados aunque el contenido siga vigente.

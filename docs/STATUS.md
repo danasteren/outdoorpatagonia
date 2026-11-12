@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-11-11_
+_Última actualización: 2026-11-12_
 
 ## Hecho (a grandes rasgos)
 
@@ -41,6 +41,7 @@ _Última actualización: 2026-11-11_
 - Versión publicada: ver la entrada `esUltima` de `src/data/novedades.ts`.
 
 - 2026-11-11: artículos atemporales. Sin fecha (encabezado, "Datos" y tarjetas) ni banner de "sitio anterior", salvo 4 slugs de eclipse y tulipanes (`src/lib/dated-articles.ts`). JSON-LD sin cambios.
+- 2026-11-12: evento GA4 `affiliate_click` en cada clic a GetYourGuide (listener delegado, sin tocar enlaces). Probado en local en `/parques/nahuel-huapi` y `/en/guides/el-chalten`. **Pendiente de la usuaria:** registrar `page_slug`, `language` y `placement_type` como dimensiones personalizadas en GA4 (Administrar → Definiciones personalizadas).
 
 ## En curso
 
