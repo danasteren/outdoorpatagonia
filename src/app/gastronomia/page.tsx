@@ -3,17 +3,24 @@ import Link from "next/link"
 import { ChefHat } from "lucide-react"
 import {
   GASTRONOMIA_CATALOG,
+  CATEGORIA_LABELS,
   CATEGORIA_LABELS_PLURAL,
   PAIS_LABELS,
   type GastronomiaCategoria,
 } from "@/lib/gastronomia/catalog"
 import { SectionArticles } from "@/components/SectionArticles"
-import { pageAlternates } from "@/lib/hreflang"
 import { categoryAltPath } from "@/lib/category"
+import { Pagination } from "@/components/Pagination"
+import { listingAlternates, listingHref, paginate, parsePage } from "@/lib/listing"
 
 const BASE = "https://outdoorpatagonia.com"
 
-export const metadata: Metadata = {
+type SP = Promise<{ cat?: string; page?: string }>
+
+export async function generateMetadata({ searchParams }: { searchParams: SP }): Promise<Metadata> {
+  const { cat, page } = await searchParams
+  const filtered = getAvailableCategorias().includes(cat as GastronomiaCategoria)
+  return {
   title: "Gastronomía Patagónica — Recetas y Productos Típicos",
   description:
     "Gastronomía de la Patagonia: hongos de pino, cordero al asador, curanto, torta galesa y productos típicos de Argentina y Chile. Recetas, origen y temporada.",
@@ -23,7 +30,11 @@ export const metadata: Metadata = {
       "Gastronomía de la Patagonia: hongos de pino, cordero al asador, curanto, torta galesa y productos típicos de Argentina y Chile.",
     url: `${BASE}/gastronomia`,
   },
-  alternates: pageAlternates("/gastronomia", categoryAltPath("gastronomia", "en")),
+  alternates: listingAlternates("/gastronomia", categoryAltPath("gastronomia", "en"), {
+    filtered,
+    page: parsePage(page),
+  }),
+  }
 }
 
 const jsonLd = {
@@ -43,16 +54,23 @@ function getAvailableCategorias(): GastronomiaCategoria[] {
 export default async function GastronomiaPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cat?: string }>
+  searchParams: SP
 }) {
-  const { cat } = await searchParams
+  const { cat, page: rawPage } = await searchParams
   const categorias = getAvailableCategorias()
-  const activeCategoria: GastronomiaCategoria =
-    categorias.includes(cat as GastronomiaCategoria) ? (cat as GastronomiaCategoria) : categorias[0]
+  const activeCategoria: GastronomiaCategoria | null =
+    categorias.includes(cat as GastronomiaCategoria) ? (cat as GastronomiaCategoria) : null
 
-  const entradas = GASTRONOMIA_CATALOG
-    .filter((e) => e.categoria === activeCategoria)
+  const filtradas = GASTRONOMIA_CATALOG
+    .filter((e) => !activeCategoria || e.categoria === activeCategoria)
     .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))
+  const { items: entradas, page, totalPages } = paginate(filtradas, parsePage(rawPage))
+  const tabClass = (isActive: boolean) =>
+    `shrink-0 px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
+      isActive
+        ? "border-b-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] -mb-px"
+        : "text-muted-foreground hover:text-foreground"
+    }`
 
   return (
     <>
@@ -78,18 +96,18 @@ export default async function GastronomiaPage({
         <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
           <div className="max-w-6xl mx-auto px-4 md:px-10">
             <div className="flex gap-1 overflow-x-auto">
+              <Link href="/gastronomia" className={tabClass(!activeCategoria)} aria-current={!activeCategoria ? "page" : undefined}>
+                Todas
+                <span className="ml-1.5 text-xs opacity-60">({GASTRONOMIA_CATALOG.length})</span>
+              </Link>
               {categorias.map((c) => {
                 const isActive = c === activeCategoria
                 const count = GASTRONOMIA_CATALOG.filter((e) => e.categoria === c).length
                 return (
                   <Link
                     key={c}
-                    href={`/gastronomia?cat=${c}`}
-                    className={`px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
-                      isActive
-                        ? "border-b-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] -mb-px"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
+                    href={listingHref("/gastronomia", c)}
+                    className={tabClass(isActive)}
                   >
                     {CATEGORIA_LABELS_PLURAL[c]}
                     <span className="ml-1.5 text-xs opacity-60">({count})</span>
@@ -102,9 +120,9 @@ export default async function GastronomiaPage({
 
         <div className="max-w-6xl mx-auto px-4 md:px-10 py-10">
           <div className="flex items-center gap-3 mb-6">
-            <h2 className="text-xl font-bold">{CATEGORIA_LABELS_PLURAL[activeCategoria]}</h2>
+            <h2 className="text-xl font-bold">{activeCategoria ? CATEGORIA_LABELS_PLURAL[activeCategoria] : "Todas"}</h2>
             <span className="text-sm text-muted-foreground">
-              {entradas.length} {entradas.length === 1 ? "entrada" : "entradas"}
+              {filtradas.length} {filtradas.length === 1 ? "entrada" : "entradas"}
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -119,7 +137,9 @@ export default async function GastronomiaPage({
                     <p className="font-semibold text-base leading-snug group-hover:text-[var(--color-teal)] transition-colors">
                       {e.nombre}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{PAIS_LABELS[e.pais]}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {activeCategoria ? PAIS_LABELS[e.pais] : `${CATEGORIA_LABELS[e.categoria]} · ${PAIS_LABELS[e.pais]}`}
+                    </p>
                   </div>
                   <div className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center ring-2 ring-border bg-[var(--color-teal)]/10 text-[var(--color-teal)]">
                     <ChefHat size={18} strokeWidth={1.5} />
@@ -129,6 +149,7 @@ export default async function GastronomiaPage({
               </Link>
             ))}
           </div>
+          <Pagination base="/gastronomia" cat={activeCategoria} page={page} totalPages={totalPages} />
         </div>
 
         <SectionArticles

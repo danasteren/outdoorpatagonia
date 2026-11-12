@@ -7,8 +7,20 @@ import {
   CATEGORIA_LABELS_PLURAL,
   type ArqueologiaCategoria,
 } from "@/lib/arqueologia/catalog"
+import { Pagination } from "@/components/Pagination"
+import { listingHref, paginate, parsePage } from "@/lib/listing"
 
-export const metadata: Metadata = {
+type SP = Promise<{ cat?: string; page?: string }>
+
+export async function generateMetadata({ searchParams }: { searchParams: SP }): Promise<Metadata> {
+  const { cat, page: rawPage } = await searchParams
+  const filtered = getAvailableCategories().includes(cat as ArqueologiaCategoria)
+  const page = parsePage(rawPage)
+  const canonical =
+    !filtered && page >= 2
+      ? listingHref("https://outdoorpatagonia.com/arqueologia", null, page)
+      : "https://outdoorpatagonia.com/arqueologia"
+  return {
   title: "Arqueología de la Patagonia — Dinosaurios, Fósiles y Arte Rupestre",
   description:
     "Guía de arqueología patagónica: dinosaurios gigantes como Argentinosaurus y Patagotitan, fósiles del Mesozoico, sitios humanos como Cueva de las Manos y petroglifos de 10.000 años.",
@@ -20,7 +32,8 @@ export const metadata: Metadata = {
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Arqueología de la Patagonia" }],
   },
   twitter: { card: "summary_large_image" },
-  alternates: { canonical: "https://outdoorpatagonia.com/arqueologia" },
+  alternates: { canonical },
+  }
 }
 
 const jsonLd = {
@@ -82,18 +95,22 @@ function getAvailableCategories(): ArqueologiaCategoria[] {
 export default async function ArqueologiaPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cat?: string }>
+  searchParams: SP
 }) {
-  const { cat } = await searchParams
+  const { cat, page: rawPage } = await searchParams
   const categories = getAvailableCategories()
-  const activeCategory: ArqueologiaCategoria =
-    categories.includes(cat as ArqueologiaCategoria)
-      ? (cat as ArqueologiaCategoria)
-      : categories[0]
+  const activeCategory: ArqueologiaCategoria | null =
+    categories.includes(cat as ArqueologiaCategoria) ? (cat as ArqueologiaCategoria) : null
 
-  const entries = ARQUEOLOGIA_CATALOG.filter((e) => e.categoria === activeCategory)
-  const colors = CATEGORIA_COLOR[activeCategory]
-  const CatIcon = CATEGORIA_ICON[activeCategory]
+  const filtered = ARQUEOLOGIA_CATALOG.filter((e) => !activeCategory || e.categoria === activeCategory)
+  const { items: entries, page, totalPages } = paginate(filtered, parsePage(rawPage))
+  // Sin filtro (vista "Todas") el hero usa la paleta del primer tipo.
+  const heroCat = activeCategory ?? categories[0]
+  const colors = CATEGORIA_COLOR[heroCat]
+  const CatIcon = CATEGORIA_ICON[heroCat]
+  const tabAllClass = !activeCategory
+    ? "border-b-2 -mb-px border-amber-600 text-amber-700"
+    : "text-muted-foreground hover:text-foreground"
 
   return (
     <>
@@ -129,6 +146,14 @@ export default async function ArqueologiaPage({
         <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
           <div className="max-w-6xl mx-auto px-4 md:px-10">
             <div className="flex gap-1 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain">
+              <Link
+                href="/arqueologia"
+                aria-current={!activeCategory ? "page" : undefined}
+                className={`flex shrink-0 items-center gap-1.5 px-4 py-3.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${tabAllClass}`}
+              >
+                Todas
+                <span className="ml-0.5 text-xs opacity-60">({ARQUEOLOGIA_CATALOG.length})</span>
+              </Link>
               {categories.map((cat) => {
                 const isActive = cat === activeCategory
                 const count = ARQUEOLOGIA_CATALOG.filter((e) => e.categoria === cat).length
@@ -136,7 +161,7 @@ export default async function ArqueologiaPage({
                 return (
                   <Link
                     key={cat}
-                    href={`/arqueologia?cat=${cat}`}
+                    href={listingHref("/arqueologia", cat)}
                     className={`flex shrink-0 items-center gap-1.5 px-4 py-3.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
                       isActive
                         ? `border-b-2 -mb-px ${CATEGORIA_COLOR[cat].tab}`
@@ -156,15 +181,16 @@ export default async function ArqueologiaPage({
         {/* Grid */}
         <div className="max-w-6xl mx-auto px-4 md:px-10 py-10">
           <div className="flex items-center gap-3 mb-6">
-            <h2 className="text-xl font-bold">{CATEGORIA_LABELS_PLURAL[activeCategory]}</h2>
+            <h2 className="text-xl font-bold">{activeCategory ? CATEGORIA_LABELS_PLURAL[activeCategory] : "Todas"}</h2>
             <span className="text-sm text-muted-foreground">
-              {entries.length} {entries.length === 1 ? "hallazgo" : "hallazgos"}
+              {filtered.length} {filtered.length === 1 ? "hallazgo" : "hallazgos"}
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {entries.map((e) => {
               const Icon = CATEGORIA_ICON[e.categoria]
+              const badge = CATEGORIA_COLOR[e.categoria]
               return (
                 <Link
                   key={e.slug}
@@ -178,7 +204,7 @@ export default async function ArqueologiaPage({
                           {e.nombre}
                         </p>
                         <span
-                          className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0 ${colors.badge}`}
+                          className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0 ${badge.badge}`}
                         >
                           {CATEGORIA_LABELS[e.categoria]}
                         </span>
@@ -190,7 +216,7 @@ export default async function ArqueologiaPage({
                       )}
                     </div>
                     <div
-                      className={`shrink-0 w-11 h-11 rounded-full flex items-center justify-center ring-2 ring-border ${colors.icon}`}
+                      className={`shrink-0 w-11 h-11 rounded-full flex items-center justify-center ring-2 ring-border ${badge.icon}`}
                     >
                       <Icon size={18} strokeWidth={1.5} />
                     </div>
@@ -217,6 +243,7 @@ export default async function ArqueologiaPage({
               )
             })}
           </div>
+          <Pagination base="/arqueologia" cat={activeCategory} page={page} totalPages={totalPages} />
 
           {/* GEO content */}
           <div className="mt-12 prose prose-sm max-w-none text-muted-foreground space-y-4">

@@ -22,6 +22,10 @@ export const novedades: VersionNovedades[] = [
     cambios: [
       {
         tipo: "mejora",
+        texto: "Todas las fichas a la vista — gastronomía, fauna, flora y arqueología abren mostrando todo el catálogo, y las subcategorías (platos, aves, árboles…) pasan a ser filtros",
+      },
+      {
+        tipo: "mejora",
         texto: "Artículos atemporales — los artículos ya no muestran fecha de publicación ni el aviso del sitio anterior, para que se lean siempre vigentes (salvo los atados a una fecha, como el eclipse de 2027)",
       },
       {

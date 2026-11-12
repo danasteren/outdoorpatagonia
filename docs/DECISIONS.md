@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-12 — Secciones con subcategorías: "Todas" por defecto, subcategorías como filtros, paginación de 24
+**Decisión:** gastronomía, fauna, flora y arqueología muestran todas las fichas por defecto ("Todas (N)", link a la URL base). `?cat=<válida>` filtra; `?cat=<inválida>` es "Todas". Paginación de 24 (`PAGE_SIZE`) con `?page=N`: inválido cae a 1, fuera de rango da 404. Canonical: base para la página 1 y para cualquier `?cat=`; `?page=N` propio solo en page >= 2 sin filtro. El hreflang no cambia.
+**Motivo:** con la primera subcategoría como vista por defecto, el resto del catálogo quedaba detrás de pestañas y la home de la sección indexaba solo una parte.
+**Detalle:** `src/lib/listing.ts` (helpers) y `src/components/Pagination.tsx` (`<a>` reales). El texto del pedido citaba esta decisión como ya registrada, pero no estaba en el archivo; se registra acá. El pedido suponía 37 fichas en fauna; el catálogo tiene 17, así que hoy no hay paginador en ninguna sección. Arqueología no tenía `pageAlternates` ni `SectionArticles`: no se sumaron.
+**Estado:** Vigente
+
 ## 2026-11-12 — Mermelada de rosa mosqueta (ES): versión recortada, solo con lo que tiene fuente
 **Decisión:** el artículo ES se publica sin propiedades de salud, fechas e historia, exportación/orgánico, "mejores ferias", afirmaciones de conservación/envasado ni el video. Se conserva la descripción del fruto, las dos recetas y las preguntas que no dependen de datos sin fuente. Va en un SQL propio con un solo UPDATE, y se sacó el bloque del SQL del 2026-11-05.
 **Motivo:** regla de dominio "si no hay fuente, el dato no va"; los 24 puntos de `.revision.md` seguían sin contrastar.

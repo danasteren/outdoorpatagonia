@@ -11,14 +11,24 @@ import {
 import { Badge } from "@/components/primitives/Badge"
 import { SectionArticles } from "@/components/SectionArticles"
 import { fetchTaxonPhotos } from "@/lib/apis/inaturalist"
-import { pageAlternates } from "@/lib/hreflang"
 import { categoryAltPath } from "@/lib/category"
+import { Pagination } from "@/components/Pagination"
+import { listingAlternates, listingHref, paginate, parsePage } from "@/lib/listing"
 
-export const metadata: Metadata = {
+type SP = Promise<{ cat?: string; page?: string }>
+
+export async function generateMetadata({ searchParams }: { searchParams: SP }): Promise<Metadata> {
+  const { cat, page } = await searchParams
+  const filtered = getAvailableCategories().includes(cat as FloraCategory)
+  return {
   title: "Flora de la Patagonia — Guía de Plantas",
   description:
     "Guía de flora patagónica: lenga, alerce, araucaria, calafate, chilco y más. Observaciones recientes, temporada de floración y dónde encontrar cada especie.",
-  alternates: pageAlternates("/flora", categoryAltPath("flora", "en")),
+  alternates: listingAlternates("/flora", categoryAltPath("flora", "en"), {
+    filtered,
+    page: parsePage(page),
+  }),
+  }
 }
 
 const CATEGORY_COLORS: Record<FloraCategory, string> = {
@@ -45,16 +55,23 @@ function getAvailableCategories(): FloraCategory[] {
 export default async function FloraIndexPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cat?: string }>
+  searchParams: SP
 }) {
-  const { cat } = await searchParams
+  const { cat, page: rawPage } = await searchParams
   const categories = getAvailableCategories()
-  const activeCategory: FloraCategory =
-    categories.includes(cat as FloraCategory) ? (cat as FloraCategory) : categories[0]
+  const activeCategory: FloraCategory | null =
+    categories.includes(cat as FloraCategory) ? (cat as FloraCategory) : null
 
-  const species = FLORA_CATALOG.filter((e) => e.category === activeCategory).sort(
+  const filtered = FLORA_CATALOG.filter((e) => !activeCategory || e.category === activeCategory).sort(
     (a, b) => a.commonNameEs.localeCompare(b.commonNameEs, "es")
   )
+  const { items: species, page, totalPages } = paginate(filtered, parsePage(rawPage))
+  const tabClass = (isActive: boolean) =>
+    `shrink-0 px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
+      isActive
+        ? "border-b-2 border-[var(--color-forest)] text-[var(--color-forest)] -mb-px"
+        : "text-muted-foreground hover:text-foreground"
+    }`
 
   const taxonIds = species.flatMap((e) => (e.taxonId ? [e.taxonId] : []))
   const photoMap = await fetchTaxonPhotos(taxonIds)
@@ -84,19 +101,19 @@ export default async function FloraIndexPage({
 
       <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto px-4 md:px-10">
-          <div className="flex gap-1">
+          <div className="flex gap-1 overflow-x-auto">
+            <Link href="/flora" className={tabClass(!activeCategory)} aria-current={!activeCategory ? "page" : undefined}>
+              Todas
+              <span className="ml-1.5 text-xs opacity-60">({FLORA_CATALOG.length})</span>
+            </Link>
             {categories.map((cat) => {
               const isActive = cat === activeCategory
               const count = FLORA_CATALOG.filter((e) => e.category === cat).length
               return (
                 <Link
                   key={cat}
-                  href={`/flora?cat=${cat}`}
-                  className={`px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
-                    isActive
-                      ? "border-b-2 border-[var(--color-forest)] text-[var(--color-forest)] -mb-px"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  href={listingHref("/flora", cat)}
+                  className={tabClass(isActive)}
                 >
                   {CATEGORY_LABELS_PLURAL[cat]}
                   <span className="ml-1.5 text-xs opacity-60">({count})</span>
@@ -110,9 +127,9 @@ export default async function FloraIndexPage({
       <div className="max-w-6xl mx-auto px-4 md:px-10 py-10">
         <section>
           <div className="flex items-center gap-3 mb-6">
-            <h2 className="text-xl font-bold">{CATEGORY_LABELS_PLURAL[activeCategory]}</h2>
+            <h2 className="text-xl font-bold">{activeCategory ? CATEGORY_LABELS_PLURAL[activeCategory] : "Todas"}</h2>
             <span className="text-sm text-muted-foreground">
-              {species.length} {species.length === 1 ? "especie" : "especies"}
+              {filtered.length} {filtered.length === 1 ? "especie" : "especies"}
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -174,6 +191,7 @@ export default async function FloraIndexPage({
               )
             })}
           </div>
+          <Pagination base="/flora" cat={activeCategory} page={page} totalPages={totalPages} />
         </section>
       </div>
 

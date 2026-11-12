@@ -11,14 +11,24 @@ import {
 import { Badge } from "@/components/primitives/Badge"
 import { SectionArticles } from "@/components/SectionArticles"
 import { fetchTaxonPhotos } from "@/lib/apis/inaturalist"
-import { pageAlternates } from "@/lib/hreflang"
 import { categoryAltPath } from "@/lib/category"
+import { Pagination } from "@/components/Pagination"
+import { listingAlternates, listingHref, paginate, parsePage } from "@/lib/listing"
 
-export const metadata: Metadata = {
+type SP = Promise<{ cat?: string; page?: string }>
+
+export async function generateMetadata({ searchParams }: { searchParams: SP }): Promise<Metadata> {
+  const { cat, page } = await searchParams
+  const filtered = getAvailableCategories().includes(cat as FaunaCategory)
+  return {
   title: "Fauna de la Patagonia — Guía de Especies",
   description:
     "Guía de fauna patagónica: guanaco, puma, cóndor andino, pingüino de Magallanes y más. Avistamientos recientes, temporada y dónde verlos en los parques nacionales.",
-  alternates: pageAlternates("/fauna", categoryAltPath("fauna", "en")),
+  alternates: listingAlternates("/fauna", categoryAltPath("fauna", "en"), {
+    filtered,
+    page: parsePage(page),
+  }),
+  }
 }
 
 const CATEGORY_COLORS: Record<FaunaCategory, string> = {
@@ -47,16 +57,23 @@ function getAvailableCategories(): FaunaCategory[] {
 export default async function FaunaIndexPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cat?: string }>
+  searchParams: SP
 }) {
-  const { cat } = await searchParams
+  const { cat, page: rawPage } = await searchParams
   const categories = getAvailableCategories()
-  const activeCategory: FaunaCategory =
-    categories.includes(cat as FaunaCategory) ? (cat as FaunaCategory) : categories[0]
+  const activeCategory: FaunaCategory | null =
+    categories.includes(cat as FaunaCategory) ? (cat as FaunaCategory) : null
 
-  const species = FAUNA_CATALOG.filter((e) => e.category === activeCategory).sort(
+  const filtered = FAUNA_CATALOG.filter((e) => !activeCategory || e.category === activeCategory).sort(
     (a, b) => a.commonNameEs.localeCompare(b.commonNameEs, "es")
   )
+  const { items: species, page, totalPages } = paginate(filtered, parsePage(rawPage))
+  const tabClass = (isActive: boolean) =>
+    `shrink-0 px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
+      isActive
+        ? "border-b-2 border-[var(--color-forest)] text-[var(--color-forest)] -mb-px"
+        : "text-muted-foreground hover:text-foreground"
+    }`
 
   const photoMap = await fetchTaxonPhotos(species.map((e) => e.taxonId))
 
@@ -85,19 +102,19 @@ export default async function FaunaIndexPage({
 
       <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto px-4 md:px-10">
-          <div className="flex gap-1">
+          <div className="flex gap-1 overflow-x-auto">
+            <Link href="/fauna" className={tabClass(!activeCategory)} aria-current={!activeCategory ? "page" : undefined}>
+              Todas
+              <span className="ml-1.5 text-xs opacity-60">({FAUNA_CATALOG.length})</span>
+            </Link>
             {categories.map((cat) => {
               const isActive = cat === activeCategory
               const count = FAUNA_CATALOG.filter((e) => e.category === cat).length
               return (
                 <Link
                   key={cat}
-                  href={`/fauna?cat=${cat}`}
-                  className={`px-4 py-2.5 text-sm font-medium rounded-t transition-colors whitespace-nowrap ${
-                    isActive
-                      ? "border-b-2 border-[var(--color-forest)] text-[var(--color-forest)] -mb-px"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  href={listingHref("/fauna", cat)}
+                  className={tabClass(isActive)}
                 >
                   {CATEGORY_LABELS_PLURAL[cat]}
                   <span className="ml-1.5 text-xs opacity-60">({count})</span>
@@ -111,9 +128,9 @@ export default async function FaunaIndexPage({
       <div className="max-w-6xl mx-auto px-4 md:px-10 py-10">
         <section>
           <div className="flex items-center gap-3 mb-6">
-            <h2 className="text-xl font-bold">{CATEGORY_LABELS_PLURAL[activeCategory]}</h2>
+            <h2 className="text-xl font-bold">{activeCategory ? CATEGORY_LABELS_PLURAL[activeCategory] : "Todas"}</h2>
             <span className="text-sm text-muted-foreground">
-              {species.length} {species.length === 1 ? "especie" : "especies"}
+              {filtered.length} {filtered.length === 1 ? "especie" : "especies"}
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -175,6 +192,7 @@ export default async function FaunaIndexPage({
               )
             })}
           </div>
+          <Pagination base="/fauna" cat={activeCategory} page={page} totalPages={totalPages} />
         </section>
       </div>
 
