@@ -205,6 +205,9 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     nombre: "Llao llao (hongo)",
     pais: "AR/CL",
     categoria: "ingrediente",
+    metaTitle: "Hongo Llao Llao (Cyttaria hariotii): Qué Es y Si Se Come",
+    metaDescription:
+      "El llao llao (Cyttaria hariotii) es un hongo comestible que crece en coihue, lenga y ñire, en esferas blancas de 2 a 5 cm. Dónde verlo y cómo se cocina.",
     descripcion: [
       "El llao llao, cuyo nombre científico es Cyttaria hariotii, es un hongo que parasita los troncos y ramas de árboles del género Nothofagus —coihue, lenga, ñire— muy comunes en los bosques patagónicos de ambos lados de la cordillera. Al parasitarlos genera tumores globosos llamados \"nudos\" que obstruyen los conductos de savia, a través de los cuales el hongo se expande. Se presenta en racimos esféricos blanco-amarillentos de entre 2 y 5 centímetros, y cuando fructifica produce esferas comestibles conocidas como llao llao.",
       "El nombre viene del mapudungún, la lengua mapuche, donde \"llao llao\" significa \"dulce dulce\", en referencia al sabor de las esferas comestibles que las comunidades indígenas recolectaban tradicionalmente como alimento. También se lo conoce como llaullao o pan de indio. Su relación con el árbol huésped es en gran medida simbiótica: le provoca deformaciones en la corteza pero no pone en peligro su vida.",
@@ -238,6 +241,9 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     nombre: "Merkén",
     pais: "AR/CL",
     categoria: "condimento",
+    metaTitle: "Merkén: Qué Es, Cómo Se Usa y Dónde Comprarlo en Patagonia",
+    metaDescription:
+      "El merkén es un ají ahumado mapuche, molido con sal. Qué es, cómo usarlo en carnes y guisos, marcas como Trallenko y Santa Juana y su precio de referencia.",
     descripcion: [
       "El merkén, también conocido como ají cacho de cabra ahumado, es un condimento tradicional de la cultura mapuche del sur de Chile y Argentina. Se elabora secando y ahumando un ají de sabor profundo y picante, que luego se muele junto con sal y, a veces, semillas de cilantro: ese proceso de ahumado es lo que le da su sabor característico.",
       "Su elaboración fue desarrollada por los mapuches como forma de preservar alimentos en un entorno de bajas temperaturas y alta humedad. Con el tiempo se extendió a la Patagonia argentina, donde realza ingredientes locales como el cordero patagónico o el salmón. Además del sabor, se le atribuyen propiedades antioxidantes por la vitamina C del ají, efecto antiinflamatorio y estimulante de la digestión, junto con una larga vida útil gracias al ahumado y la sal.",
@@ -266,9 +272,9 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     nombre: "Morillas",
     pais: "AR/CL",
     categoria: "ingrediente",
-    metaTitle: "Morillas en la Patagonia: Dónde y Cuándo Recolectarlas",
+    metaTitle: "Morillas (Morchella) en Patagonia: Dónde y Cuándo Buscarlas",
     metaDescription:
-      "Las morillas (género Morchella) crecen en bosques de ciprés de la Patagonia Andina entre septiembre y octubre. Dónde buscarlas y cómo recolectarlas bien.",
+      "Las morillas (Morchella) brotan en bosques de ciprés de la Patagonia Andina de mediados de septiembre a fines de octubre. Dónde buscarlas y cómo recolectarlas.",
     descripcion: [
       "Las morillas (género Morchella) son hongos silvestres que en la Patagonia Andina crecen sobre todo en bosques de ciprés (Austrocedrus chilensis), emergiendo tras el calentamiento del suelo en primavera. En el hemisferio sur su temporada es corta, de mediados de septiembre a fines de octubre; en el hemisferio norte, de fines de marzo a principios de mayo.",
       "Se distinguen por un sabor terroso y una textura carnosa muy distinta a la de otros hongos más viscosos, lo que las vuelve muy codiciadas en la gastronomía. Su recolección manual en zonas libres de contaminación y la dificultad para encontrarlas explican que sean uno de los hongos silvestres más caros del mercado.",
@@ -301,9 +307,9 @@ export const GASTRONOMIA_CATALOG: GastronomiaEntry[] = [
     nombre: "Hongo de pino",
     pais: "AR",
     categoria: "ingrediente",
-    metaTitle: "Hongo de Pino Comestible en Patagonia: Cómo Identificarlo",
+    metaTitle: "Hongo de Pino (Suillus luteus): Cómo Identificarlo y Secarlo",
     metaDescription:
-      "El hongo de pino (Suillus luteus) es comestible: sombrero viscoso ocre-castaño. Cómo identificarlo, recolectarlo en otoño y secarlo en bosques patagónicos.",
+      "El hongo de pino (Suillus luteus) crece bajo pinos patagónicos: sombrero castaño viscoso, tallo claro. Cómo identificarlo, cosecharlo en otoño y secarlo.",
     descripcion: [
       "El hongo de pino (Suillus luteus) crece en simbiosis con los pinos, en densos bosques de coníferas patagónicos, debajo de las acículas (hojas de pino). Se identifica por un sombrero de color castaño oscuro a ocre amarillento, liso y viscoso, y un tallo firme y claro; un ejemplar sano tiene la base esponjosa amarillenta, sin manchas oscuras ni partes blandas. Se recolecta sobre todo en otoño, y de forma menos común a inicios de primavera.",
       "Para cosecharlo se corta con un cuchillo limpio y afilado en la base del tallo, cuidando no dañar el micelio, o se extrae con un giro suave desde la base. Una práctica de recolectores locales es devolver al bosque los restos de la limpieza —esponja del sombrero, pedazos de tallo— cerca del punto de recolección, ya que puede favorecer nuevos brotes en la misma temporada o al año siguiente.",
