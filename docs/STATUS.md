@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-11-12_
+_Última actualización: 2026-11-17_
 
 ## Hecho (a grandes rasgos)
 
@@ -44,6 +44,7 @@ _Última actualización: 2026-11-12_
 - 2026-11-12: evento GA4 `affiliate_click` en cada clic a GetYourGuide (listener delegado, sin tocar enlaces). Probado en local en `/parques/nahuel-huapi` y `/en/guides/el-chalten`. **Pendiente de la usuaria:** registrar `page_slug`, `language` y `placement_type` como dimensiones personalizadas en GA4 (Administrar → Definiciones personalizadas).
 - 2026-11-12: mermelada de rosa mosqueta (ES) recortada y lista en `seo/updates/2026-11-12-mermelada-recortada.sql` (un solo UPDATE; la usuaria lo corre). Qué se sacó: `seo/articles/recuperados/mermelada-rosa-mosqueta-patagonica.recorte.md`.
 - 2026-11-12: novedades al día con las rutinas y criterio de versión (decisión 2026-11-12). Se registraron las guías de Coyhaique y San Martín de los Andes y Villa La Angostura en la 1.7, y se abrió la 1.8 (noviembre) con Esquel y El Bolsón y Puerto Williams; `package.json` en 1.8.0. Reglas nuevas en `.claude/rules/novedades.md`. Los ítems de noviembre (artículos atemporales, subsectores de escalada) pasaron de la 1.7 a la 1.8.
+- 2026-11-17: embudo de viaje (decisión 2026-11-17). Bloque `TravelFunnel` en las dos URLs del Estrecho de Magallanes (config en `src/lib/article-funnels.ts`), con guías de Punta Arenas y Puerto Natales y link a GetYourGuide. Probado en local a 375 px y desktop: links `<a>` reales por idioma, `affiliate_click` y `funnel_click` con `placement_type: "embudo"`, orden de anuncios igual; build OK. Falta la medición de 90 días (revisar en GA4 hacia el 2026-02-15).
 
 ## En curso
 

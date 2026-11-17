@@ -16,6 +16,12 @@ Formato:
 
 ---
 
+## 2026-11-17 — Prueba de 90 días: embudo de viaje desde los artículos con más tráfico
+**Decisión:** los artículos con mucho tráfico muestran un bloque "Planeá tu viaje" (`TravelFunnel`) con 2 tarjetas a guías de destino y un link a GetYourGuide armado con el primer `gygQuery` de las guías. Se prueba 90 días; arranca con el Estrecho de Magallanes (ES y EN).
+**Motivo:** llevar el tráfico de los artículos a las guías y a GetYourGuide. El pedido citaba esta decisión como ya registrada, pero no estaba en el archivo; se registra acá.
+**Detalle:** qué artículos lo tienen: `src/lib/article-funnels.ts` (`idioma:slug` → slugs de guías; sumar uno es una entrada). Se renderiza en `ArticleLayout` después de `bodyStart` y antes del `AdSlot` del contenido (sin cambiar cantidad ni posición de anuncios). Sin datos nuevos: títulos y subtítulos salen de la guía. Medición (`AffiliateClickTracker`): los links llevan `data-funnel`; GetYourGuide manda `affiliate_click` con `placement_type: "embudo"` y las guías `funnel_click` con `page_slug`, `language` y `placement_type: "embudo"` (mismos parámetros de siempre, sin dimensiones nuevas en GA4). Si ninguna guía tiene `gygQuery`, no se muestra el link.
+**Estado:** Vigente
+
 ## 2026-11-12 — Secciones con subcategorías: "Todas" por defecto, subcategorías como filtros, paginación de 24
 **Decisión:** gastronomía, fauna, flora y arqueología muestran todas las fichas por defecto ("Todas (N)", link a la URL base). `?cat=<válida>` filtra; `?cat=<inválida>` es "Todas". Paginación de 24 (`PAGE_SIZE`) con `?page=N`: inválido cae a 1, fuera de rango da 404. Canonical: base para la página 1 y para cualquier `?cat=`; `?page=N` propio solo en page >= 2 sin filtro. El hreflang no cambia.
 **Motivo:** con la primera subcategoría como vista por defecto, el resto del catálogo quedaba detrás de pestañas y la home de la sección indexaba solo una parte.

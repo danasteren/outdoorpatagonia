@@ -39,25 +39,35 @@ export function AffiliateClickTracker() {
     function onClick(e: MouseEvent) {
       if (e.type === "auxclick" && e.button !== 1) return;
       const a = (e.target as Element | null)?.closest?.("a");
-      if (!a || !isGyg(a as HTMLAnchorElement)) return;
+      if (!a) return;
+      const funnel = a.hasAttribute("data-funnel");
+      const gyg = isGyg(a as HTMLAnchorElement);
+      // Links del embudo de viaje: a guías mandan funnel_click; a GetYourGuide, affiliate_click
+      if (!gyg && !funnel) return;
       const { slug, lang, placement } = pageContext(window.location.pathname);
       const w = window as unknown as { gtag?: Gtag; dataLayer?: unknown[] };
-      const params = {
+      const eventName = gyg ? "affiliate_click" : "funnel_click";
+      const params = gyg ? {
         page_slug: slug,
         language: lang,
-        placement_type: placement,
+        placement_type: funnel ? "embudo" : placement,
         affiliate: "getyourguide",
         transport_type: "beacon", // sobrevive a la navegación si el link abre en la misma pestaña
+      } : {
+        page_slug: slug,
+        language: lang,
+        placement_type: "embudo",
+        transport_type: "beacon",
       };
       if (typeof w.gtag === "function") {
-        w.gtag("event", "affiliate_click", params);
+        w.gtag("event", eventName, params);
       } else {
         // gtag aún no existe: gtag.js procesa los Arguments de dataLayer al cargar
         w.dataLayer = w.dataLayer || [];
         (function (..._args: unknown[]) {
           // eslint-disable-next-line prefer-rest-params
           w.dataLayer!.push(arguments);
-        })("event", "affiliate_click", params);
+        })("event", eventName, params);
       }
     }
     document.addEventListener("click", onClick, true);

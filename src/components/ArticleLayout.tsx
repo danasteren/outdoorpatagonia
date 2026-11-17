@@ -10,6 +10,8 @@ import { isDatedArticle } from "@/lib/dated-articles";
 import { decodeEntities } from "@/lib/text";
 import { AdSlot } from "@/components/AdSlot";
 import { splitAfterParagraph } from "@/lib/ads";
+import { TravelFunnel } from "@/components/TravelFunnel";
+import { getArticleFunnel } from "@/lib/article-funnels";
 
 interface Article {
   title: string;
@@ -96,6 +98,8 @@ export function ArticleLayout({
   const html = addInstagramPhotoCredits(fixWpLazyLoad(fixLegacyImages(article.content ?? "")), isEnglish);
   const [bodyStart, bodyRest] = splitAfterParagraph(html, 3) ?? splitAfterParagraph(html, 2) ?? [html, null];
 
+  const funnelSlugs = getArticleFunnel(article.language, article.slug);
+
   const meta = [publishedDate, article.reading_time_min ? `${article.reading_time_min} min` : null]
     .filter(Boolean)
     .join(" · ");
@@ -144,6 +148,7 @@ export function ArticleLayout({
             )}
             <div className="article-body overflow-x-hidden">
               <div dangerouslySetInnerHTML={{ __html: bodyStart }} />
+              {funnelSlugs && <TravelFunnel slugs={funnelSlugs} lang={isEnglish ? "en" : "es"} />}
               {bodyRest != null && (
                 <>
                   <AdSlot unit="articuloContenido" className="my-8" />

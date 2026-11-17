@@ -21,6 +21,10 @@ export const novedades: VersionNovedades[] = [
     esUltima: true,
     cambios: [
       {
+        tipo: "nuevo",
+        texto: "Planeá tu viaje — el artículo del Estrecho de Magallanes (ES y EN) suma un bloque con las guías de Punta Arenas y Puerto Natales y excursiones para reservar",
+      },
+      {
         tipo: "mejora",
         texto: "Todas las fichas a la vista — gastronomía, fauna, flora y arqueología abren mostrando todo el catálogo, y las subcategorías (platos, aves, árboles…) pasan a ser filtros",
       },
