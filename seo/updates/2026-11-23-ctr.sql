@@ -2,7 +2,7 @@
 
 UPDATE articles AS a SET seo_title = v.t, seo_description = v.d
 FROM (VALUES
-  ('questions-region-patagonia', 'en', 'Patagonia Travel FAQ: Safety, Clothing, Gear & Tips', 'Patagonia is generally safe for tourists with basic precautions. Answers on safety, what to wear, essential gear, how long to stay and more trip questions.'),
+  ('questions-region-patagonia', 'en', 'Is Patagonia Safe to Visit? Safety, Weather & Packing Tips', 'Patagonia is generally safe for tourists with basic precautions. Answers on safety, what to wear, essential gear, how long to stay and more trip questions.'),
   ('climbing-shoes-guide', 'en', 'How to Choose Climbing Shoes: Bouldering, Sport & Trad', 'Pick climbing shoes by style: SCARPA Drago and Drago LV for bouldering, La Sportiva TC Pro for trad and big walls, Black Diamond Method for value.'),
   ('amancay-patagonia', 'en', 'Amancay (Alstroemeria aurea): Patagonia''s Lily of the Incas', 'Amancay, the Lily of the Incas, blooms in summer in Patagonia''s windy mountains in yellow, orange and red. Cultural meaning, medicinal uses and how it grows.'),
   ('nalgene-water-bottle-review', 'en', 'Nalgene Water Bottle Review: Durability, Leaks & Models', 'Nalgene review for Patagonia hikers: BPA-free Tritan, leak-proof lids, Wide Mouth, Easy Sipper and 50% recycled Sustain models, plus care tips and where to buy.'),
