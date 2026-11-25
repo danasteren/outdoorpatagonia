@@ -69,7 +69,7 @@ def faq_json_ld(content: str) -> Optional[str]:
 
 
 def build_row(entry: dict, base_dir: Path) -> dict:
-    row = {k: v for k, v in entry.items() if k != "content_file"}
+    row = {k: v for k, v in entry.items() if k not in ("content_file", "keep_cover")}
     content = (base_dir / entry["content_file"]).read_text(encoding="utf-8").strip()
     words = len(plain_text(content).split())
     faq = faq_json_ld(content)
@@ -79,8 +79,10 @@ def build_row(entry: dict, base_dir: Path) -> dict:
         content=content,
         reading_time_min=max(1, round(words / WORDS_PER_MINUTE)),
         status="published",
-        cover_image_url=None,
     )
+    # "keep_cover": true en el JSON = artículo que ya existe con portada: no se pisa.
+    if not entry.get("keep_cover"):
+        row["cover_image_url"] = None
     return row
 
 

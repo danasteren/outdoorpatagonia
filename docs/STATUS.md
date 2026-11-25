@@ -48,6 +48,8 @@ _Última actualización: 2026-11-25_
 
 - 2026-11-25: trazabilidad de los SQL manuales. Migración `009_sql_log.sql` (tabla `sql_log`, RLS sin políticas), insert en cada SQL de `seo/updates/` y `2026-11-05-recuperar-cuerpos.sql` separado en un archivo por artículo. Lista en "Pendientes manuales". **Pendiente de la usuaria:** correr la 009 en el SQL Editor y los SQL pendientes de la tabla.
 
+- 2026-11-25: artículo de seguridad "¿Es seguro viajar a la Patagonia?" (decisión 2026-11-25). Reescrito en su URL (ES y EN) con fuentes oficiales fechadas, cobertura médica para viajeros, teléfonos y `TravelFunnel` (Bariloche, El Calafate); hreflang, FAQPage y 3 anuncios verificados en local, build OK. Ya cargado en la base (portada intacta). **Pendiente de la usuaria:** re-correr `seo/updates/2026-11-23-ctr.sql` (ya trae el título nuevo) y, tras el deploy, pedir reindexación de la URL EN en Search Console. Revisar los avisos de viaje y la reglamentación del seguro cada tanto; medir CTR a ~28 días.
+
 ## En curso
 
 - **Guías de destino** (prioridad #1 de contenido). Las hechas son los archivos de `src/lib/destinos/guias/` (los PR de contenido no actualizan este archivo); orden en `seo/destinos-prioridad.md`. Las produce la rutina `guia-destino-diaria`.
@@ -78,7 +80,7 @@ Se corren a mano en el SQL Editor de Supabase. Cada archivo termina con un inser
 | `2026-11-05-recuperar-viajar.sql` | Cuerpo ES recuperado de la guía de viajar a la Patagonia (texto nuevo) | **Estacionado**: 0 impresiones en 28 días y datos sin verificar en su `.revision.md`. Sigue truncado en vivo | No correr hasta retomarlo |
 | `2026-11-05-recuperar-cuerpos.sql` | Original con los 7 bloques juntos; histórico, usar los de arriba | No correr | — |
 | `2026-11-12-mermelada-recortada.sql` | Mermelada de rosa mosqueta (ES), versión recortada | **Sin efecto visible**: `/gastronomia/mermelada-rosa-mosqueta-patagonica` se arma desde `catalog.ts`, no desde `articles`. El texto recortado, si se quiere en el sitio, va en el catálogo | Solo en la base (`sql_log` o `length(content)`). En vivo no se puede |
-| `2026-11-23-ctr.sql` | Títulos por CTR bajo; **re-correr** por el cambio de título de `questions-region-patagonia` (EN) | Re-correr | `<title>` "Is Patagonia Safe to Visit?" |
+| `2026-11-23-ctr.sql` | Títulos por CTR bajo; **re-correr** por el cambio de título de `questions-region-patagonia` (EN, ya actualizado a "Real Risks & Official Advice"; el artículo ya está en la base con ese título) | Re-correr | `<title>` "Is Patagonia Safe to Visit?" |
 
 **Si se retoma amanita o pino:** no se corre el texto actual. Va una versión recortada, solo con lo que tiene fuente (como la mermelada, `2026-11-12-mermelada-recortada.sql`). En amanita hay que revisar también el artículo EN, que no se miró.
 

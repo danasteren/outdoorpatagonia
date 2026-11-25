@@ -21,6 +21,10 @@ export const novedades: VersionNovedades[] = [
     esUltima: true,
     cambios: [
       {
+        tipo: "mejora",
+        texto: "¿Es seguro viajar a la Patagonia? — el artículo de preguntas frecuentes (ES y EN) se rehízo: respuesta directa, riesgos por tema (robos, fauna, clima, senderos, salud), cobertura médica para viajeros, teléfonos de emergencia y la fuente oficial con fecha de cada dato",
+      },
+      {
         tipo: "nuevo",
         texto: "Planeá tu viaje — el artículo del Estrecho de Magallanes (ES y EN) suma un bloque con las guías de Punta Arenas y Puerto Natales y excursiones para reservar",
       },

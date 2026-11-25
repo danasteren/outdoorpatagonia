@@ -7,6 +7,8 @@
 export const ARTICLE_FUNNELS: Record<string, string[]> = {
   "es:estrecho-de-magallanes-historia-y-relevancia": ["punta-arenas", "puerto-natales"],
   "en:strait-of-magellan-history-significance": ["punta-arenas", "puerto-natales"],
+  "es:preguntas-region-patagonia": ["bariloche", "el-calafate"],
+  "en:questions-region-patagonia": ["bariloche", "el-calafate"],
 }
 
 export function getArticleFunnel(language: string, slug: string): string[] | null {

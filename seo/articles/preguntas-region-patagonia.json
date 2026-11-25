@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "preguntas-region-patagonia",
+    "language": "es",
+    "category": "Consejos",
+    "title": "¿Es seguro viajar a la Patagonia? Avisos oficiales, riesgos y qué hacer",
+    "excerpt": "La Patagonia es segura con precauciones básicas. Qué dicen los avisos de viaje oficiales, los riesgos reales (robos, fauna, clima, senderos, salud), cobertura médica y teléfonos de emergencia.",
+    "seo_title": "Seguridad en la Patagonia: Riesgos Reales y Qué Hacer",
+    "seo_description": "La Patagonia es segura con precauciones básicas. Riesgos reales (robos, clima, senderos, salud) con fuente oficial, teléfonos de emergencia y qué hacer.",
+    "published_at": "2024-07-16T18:28:04+00:00",
+    "keep_cover": true,
+    "content_file": "preguntas-region-patagonia.es.html"
+  },
+  {
+    "slug": "questions-region-patagonia",
+    "language": "en",
+    "category": "Tips",
+    "title": "Is Patagonia Safe to Visit? Official Advice, Risks and What to Do",
+    "excerpt": "Patagonia is safe with basic precautions. What official travel advice says, the real risks (theft, wildlife, weather, trails, health), medical coverage and emergency numbers.",
+    "seo_title": "Is Patagonia Safe to Visit? Real Risks & Official Advice",
+    "seo_description": "Patagonia is generally safe for tourists. The real risks (theft, weather, trails, health) with official sources, emergency numbers and what to do.",
+    "published_at": "2024-07-16T18:28:04+00:00",
+    "keep_cover": true,
+    "content_file": "questions-region-patagonia.en.html"
+  }
+]
