@@ -1,3 +1,6 @@
+-- NOTA: este archivo quedó como histórico. Cada artículo tiene ahora su propio archivo (2026-11-05-recuperar-jabali.sql,
+-- -kuchen, -amanita, -escabeche, -pino, -paxillus y -viajar). Usar esos, para correr y registrar de a uno en sql_log.
+
 -- Recupera los cuerpos ES truncados en la migración (decisión 2026-11-05).
 -- Correr a mano en el SQL Editor de Supabase. Idempotente: se puede correr más de una vez.
 -- Solo cambia `content` y `reading_time_min` de 7 artículos ES (la mermelada va aparte, ver abajo). El HTML sale de seo/articles/recuperados/<slug>.es.html.
@@ -661,3 +664,5 @@ set content = $html$<p>La Patagonia es una región enorme que comparten la Argen
 </ul>$html$,
     reading_time_min = 6
 where slug = 'viajar-patagonia-guia-consejos' and language = 'es';
+
+insert into sql_log(file) values ('2026-11-05-recuperar-cuerpos.sql') on conflict (file) do update set applied_at = now();

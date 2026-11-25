@@ -23,3 +23,5 @@ set content = replace(
 where slug = 'welsh-patagonia'
   and language = 'en'
   and position('/en/flora/trevelin-tulip-fields' in content) = 0;
+
+insert into sql_log(file) values ('2026-10-22-galeses-link-tulipanes.sql') on conflict (file) do update set applied_at = now();

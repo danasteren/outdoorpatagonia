@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-11-17_
+_Última actualización: 2026-11-25_
 
 ## Hecho (a grandes rasgos)
 
@@ -46,6 +46,8 @@ _Última actualización: 2026-11-17_
 - 2026-11-12: novedades al día con las rutinas y criterio de versión (decisión 2026-11-12). Se registraron las guías de Coyhaique y San Martín de los Andes y Villa La Angostura en la 1.7, y se abrió la 1.8 (noviembre) con Esquel y El Bolsón y Puerto Williams; `package.json` en 1.8.0. Reglas nuevas en `.claude/rules/novedades.md`. Los ítems de noviembre (artículos atemporales, subsectores de escalada) pasaron de la 1.7 a la 1.8.
 - 2026-11-17: embudo de viaje (decisión 2026-11-17). Bloque `TravelFunnel` en las dos URLs del Estrecho de Magallanes (config en `src/lib/article-funnels.ts`), con guías de Punta Arenas y Puerto Natales y link a GetYourGuide. Probado en local a 375 px y desktop: links `<a>` reales por idioma, `affiliate_click` y `funnel_click` con `placement_type: "embudo"`, orden de anuncios igual; build OK. Falta la medición de 90 días (revisar en GA4 hacia el 2027-02-15).
 
+- 2026-11-25: trazabilidad de los SQL manuales. Migración `009_sql_log.sql` (tabla `sql_log`, RLS sin políticas), insert en cada SQL de `seo/updates/` y `2026-11-05-recuperar-cuerpos.sql` separado en un archivo por artículo. Lista en "Pendientes manuales". **Pendiente de la usuaria:** correr la 009 en el SQL Editor y los SQL pendientes de la tabla.
+
 ## En curso
 
 - **Guías de destino** (prioridad #1 de contenido). Las hechas son los archivos de `src/lib/destinos/guias/` (los PR de contenido no actualizan este archivo); orden en `seo/destinos-prioridad.md`. Las produce la rutina `guia-destino-diaria`.
@@ -57,6 +59,26 @@ No hay rutinas en la nube (`RemoteTrigger` devuelve la lista vacía, verificado 
 - **Guía de destino**: `guia-destino-diaria`, lunes a viernes 08:30. Funciona: abrió del #8 al #15 (del 19 al 28/10). Trabaja en una worktree propia (`.claude/worktrees/`, no se versiona) y deja una por corrida: se pueden borrar las de PR ya mergeados. Desde el 2026-10-28 el PR solo agrega `guias/<slug>.ts` (y `legacy/<slug>.ts`): no toca STATUS, DECISIONS, novedades ni otros catálogos.
 - **Auditoría SEO/CTR**: `auditoria-ctr-semanal`, lunes 09:30, recreada el 2026-10-28 (primera corrida: 2/11). Toma hasta 10 páginas de "CTR bajo en top 10" de `scripts/keyword_research.py` (Search Console con `~/.config/outdoorpatagonia/gsc.json`), saltea las que cambiaron hace menos de 28 días y abre un PR en `seo/ctr-titles-<fecha>`. Los artículos de Supabase van en un SQL de `seo/updates/` para correr a mano.
 - **Borrador del newsletter**: `borrador-newsletter-semanal`, lunes 10:00, recreada el 2026-10-28. Solo lectura: deja el borrador (asunto, preheader y cuerpo) en el mensaje final de la corrida. El envío sigue siendo manual desde `/admin`.
+
+## Pendientes manuales (SQL de `seo/updates/`)
+
+Se corren a mano en el SQL Editor de Supabase. Cada archivo termina con un insert en `sql_log` (migración `009_sql_log.sql`, correrla primero). Estado verificado en el sitio en vivo el 2026-11-24; al correr uno, actualizar la fila.
+
+| Archivo | Qué hace | Estado | Cómo verificar |
+|---|---|---|---|
+| `2026-09-30-titulos-articulos.sql` | Títulos y descripciones SEO de 151 artículos con título en formato pregunta | Sin verificar | `select * from sql_log` y `<title>` de `/patagonia-ubicacion-consejos-viaje` |
+| `2026-10-22-galeses-link-tulipanes.sql` | Link a los tulipanes de Trevelin en el tip del artículo de los galeses (ES y EN) | Sin verificar (aplicado por API el 22/10) | `<a>` a `/flora/tulipanes-trevelin` en el artículo de los galeses |
+| `2026-11-02-ctr.sql` | Títulos y descripciones por CTR bajo en top 10 | Corrido | `<title>` de `nutria` (EN) |
+| `2026-11-05-recuperar-jabali.sql` | Cuerpo ES recuperado de jabalí europeo | Corrido | Secciones completas en `jabali-europeo` |
+| `2026-11-05-recuperar-kuchen.sql` | Cuerpo ES recuperado del kuchen chileno | **Pendiente** | Secciones completas en `kuchen-chileno-historia-tradicion` |
+| `2026-11-05-recuperar-amanita.sql` | Cuerpo ES recuperado de amanita muscaria (texto nuevo: contrastar `.revision.md`) | Pendiente | Secciones en `amanita-muscaria` |
+| `2026-11-05-recuperar-escabeche.sql` | Cuerpo ES recuperado de hongos de pino en escabeche (texto nuevo) | Pendiente | Secciones en `hongos-de-pino-en-escabeche` |
+| `2026-11-05-recuperar-pino.sql` | Cuerpo ES recuperado del pino introducido (texto nuevo) | Pendiente | Secciones en `pino-introducido-patagonia-uso-impacto` |
+| `2026-11-05-recuperar-paxillus.sql` | Cuerpo ES recuperado de Paxillus involutus (texto nuevo) | Pendiente | Secciones en `paxillus-involutus` |
+| `2026-11-05-recuperar-viajar.sql` | Cuerpo ES recuperado de la guía de viajar a la Patagonia (texto nuevo) | Pendiente | Secciones en `viajar-patagonia-guia-consejos` |
+| `2026-11-05-recuperar-cuerpos.sql` | Original con los 7 bloques juntos; histórico, usar los de arriba | No correr | — |
+| `2026-11-12-mermelada-recortada.sql` | Mermelada de rosa mosqueta (ES), versión recortada | **Pendiente** | Sin afirmaciones sin fuente en `mermelada-rosa-mosqueta-patagonica` |
+| `2026-11-23-ctr.sql` | Títulos por CTR bajo; **re-correr** por el cambio de título de `questions-region-patagonia` (EN) | Re-correr | `<title>` "Is Patagonia Safe to Visit?" |
 
 ## Pendiente
 

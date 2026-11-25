@@ -82,3 +82,5 @@ set content = $html$<p>La <strong>mermelada de rosa mosqueta</strong> es uno de 
 <p>Sí, se puede hacer con miel o stevia sin perder su sabor característico.</p>$html$,
     reading_time_min = 4
 where slug = 'mermelada-rosa-mosqueta-patagonica' and language = 'es';
+
+insert into sql_log(file) values ('2026-11-12-mermelada-recortada.sql') on conflict (file) do update set applied_at = now();

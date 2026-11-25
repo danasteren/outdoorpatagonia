@@ -157,3 +157,5 @@ FROM (VALUES
 ) AS v(slug, lang, t, d)
 WHERE a.slug = v.slug AND a.language = v.lang
 RETURNING a.language, a.slug, a.seo_title;
+
+insert into sql_log(file) values ('2026-09-30-titulos-articulos.sql') on conflict (file) do update set applied_at = now();

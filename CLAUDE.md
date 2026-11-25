@@ -51,6 +51,7 @@ Esta versión de Next.js tiene cambios que rompen compatibilidad: las APIs, las 
 - `npm run lint`
 - Scripts Python en `scripts/`. Cada uno documenta su uso en el docstring. El de research semanal es `scripts/keyword_research.py`.
 - Migraciones SQL en `supabase/migrations/` (numeradas; 005 y 006 están repetidas). **Se corren a mano en el SQL Editor de Supabase**: no hay CLI linkeado ni `supabase/config.toml`. Las nuevas tienen que poder correrse más de una vez (`if not exists`, `drop … if exists`, como `008`). Las 001 a 007 no son idempotentes: no volver a correrlas.
+- **SQL manuales de `seo/updates/`**: un archivo por cambio, idempotente, que termina con su insert en `sql_log` (migración 009). Todo SQL manual nuevo trae ese insert y se anota en "Pendientes manuales" de `docs/STATUS.md`.
 - Los scripts Python no leen `.env.local`: usan `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` (sin `NEXT_PUBLIC_`), pasadas por entorno. Para Search Console en local: `GSC_SERVICE_ACCOUNT_FILE=~/.config/outdoorpatagonia/gsc.json`.
 - **Deploy**: Vercel deploya solo cuando se pushea a `main`. Los PR tienen preview, cuyo entorno Preview tiene a propósito solo `NEXT_PUBLIC_SUPABASE_*` (sin Resend ni service role).
 
