@@ -16,6 +16,13 @@ Formato:
 
 ---
 
+## 2026-11-25 — Los SQL manuales se pasan por el chat, no como archivos nuevos
+**Decisión:** el SQL manual nuevo se le entrega a la usuaria en el chat (listo para pegar en el SQL Editor), idempotente y con su insert en `sql_log`. No se crean más archivos en `seo/updates/`.
+**Motivo:** pedido de la usuaria; los corre pegándolos, la carpeta se le llenaba de archivos.
+**Detalle:** los archivos existentes de `seo/updates/` quedan como histórico. Reemplaza en parte la regla "un archivo por cambio" de la decisión 2026-11-25 (Registro de SQL manuales en `sql_log`): sigue vigente el insert en `sql_log` y el seguimiento en "Pendientes manuales".
+**Estado:** Vigente
+
+
 ## 2026-11-25 — "¿Es seguro viajar a la Patagonia?": se reescribe el artículo existente, no se crea otra página
 **Decisión:** el artículo `/consejos/preguntas-region-patagonia` y su par `/en/tips/questions-region-patagonia` se reescriben en la misma URL (sin 301) como guía de seguridad, con ES y EN de misma estructura. El embudo `TravelFunnel` apunta a las guías de Bariloche y El Calafate.
 **Motivo:** la URL EN ya concentra las impresiones de "is patagonia safe to visit" (9.638 en 28 días, posición 8,6) y tiene el par hreflang; una página nueva arrancaría de cero y dejaría la vieja compitiendo con otra. El contenido viejo (ropa, equipamiento, historia, sin fuentes oficiales) no cumplía la regla de datos y la ropa ya está en `guia-ropa-outdoor-patagonia`.
