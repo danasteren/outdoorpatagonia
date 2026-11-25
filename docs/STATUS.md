@@ -62,22 +62,22 @@ No hay rutinas en la nube (`RemoteTrigger` devuelve la lista vacía, verificado 
 
 ## Pendientes manuales (SQL de `seo/updates/`)
 
-Se corren a mano en el SQL Editor de Supabase. Cada archivo termina con un insert en `sql_log` (migración `009_sql_log.sql`, correrla primero). Estado verificado en el sitio en vivo el 2026-11-24; al correr uno, actualizar la fila.
+Se corren a mano en el SQL Editor de Supabase. Cada archivo termina con un insert en `sql_log` (migración `009_sql_log.sql`, correrla primero). Estado verificado el 2026-11-24 y 25. **Ojo:** contar palabras en vivo solo sirve para las páginas que leen `articles.content` (fauna, flora, hongo, consejos…). `/gastronomia/[slug]` se arma desde `src/lib/gastronomia/catalog.ts` (`descripcion`, `datosExtra`, `faq`) y no refleja la base, así que ahí el SQL no tiene efecto visible. Al correr uno, actualizar la fila.
 
 | Archivo | Qué hace | Estado | Cómo verificar |
 |---|---|---|---|
 | `2026-09-30-titulos-articulos.sql` | Títulos y descripciones SEO de 151 artículos con título en formato pregunta | Sin verificar | `select * from sql_log` y `<title>` de `/patagonia-ubicacion-consejos-viaje` |
 | `2026-10-22-galeses-link-tulipanes.sql` | Link a los tulipanes de Trevelin en el tip del artículo de los galeses (ES y EN) | Sin verificar (aplicado por API el 22/10) | `<a>` a `/flora/tulipanes-trevelin` en el artículo de los galeses |
 | `2026-11-02-ctr.sql` | Títulos y descripciones por CTR bajo en top 10 | Corrido | `<title>` de `nutria` (EN) |
-| `2026-11-05-recuperar-jabali.sql` | Cuerpo ES recuperado de jabalí europeo | Corrido | Secciones completas en `jabali-europeo` |
-| `2026-11-05-recuperar-kuchen.sql` | Cuerpo ES recuperado del kuchen chileno | **Pendiente** | Secciones completas en `kuchen-chileno-historia-tradicion` |
-| `2026-11-05-recuperar-amanita.sql` | Cuerpo ES recuperado de amanita muscaria (texto nuevo: contrastar `.revision.md`) | Pendiente | Secciones en `amanita-muscaria` |
-| `2026-11-05-recuperar-escabeche.sql` | Cuerpo ES recuperado de hongos de pino en escabeche (texto nuevo) | Pendiente | Secciones en `hongos-de-pino-en-escabeche` |
-| `2026-11-05-recuperar-pino.sql` | Cuerpo ES recuperado del pino introducido (texto nuevo) | Pendiente | Secciones en `pino-introducido-patagonia-uso-impacto` |
-| `2026-11-05-recuperar-paxillus.sql` | Cuerpo ES recuperado de Paxillus involutus (texto nuevo) | Pendiente | Secciones en `paxillus-involutus` |
-| `2026-11-05-recuperar-viajar.sql` | Cuerpo ES recuperado de la guía de viajar a la Patagonia (texto nuevo) | Pendiente | Secciones en `viajar-patagonia-guia-consejos` |
+| `2026-11-05-recuperar-jabali.sql` | Cuerpo ES recuperado de jabalí europeo | Corrido | `/fauna/jabali-europeo` lee `articles.content`: en vivo ~1.980 palabras y 9 H2 |
+| `2026-11-05-recuperar-kuchen.sql` | Cuerpo ES recuperado del kuchen chileno | Sin efecto visible: `/gastronomia/kuchen-chileno-historia-tradicion` se arma desde `catalog.ts`, no desde `articles`. Si la DB está actualizada no se sabe ni importa para el lector | Solo en la base: `select length(content) from articles where slug = 'kuchen-chileno-historia-tradicion' and language = 'es'` o `sql_log`. En vivo no se puede |
+| `2026-11-05-recuperar-amanita.sql` | Cuerpo ES recuperado de amanita muscaria (texto nuevo: contrastar `.revision.md`) | **Pendiente** (verificado 2026-11-25: sigue truncado) | `/hongo/amanita-muscaria` lee `articles.content`: en vivo ~60 palabras y 2 H2; tras correrlo, ~1.100 palabras y las secciones |
+| `2026-11-05-recuperar-escabeche.sql` | Cuerpo ES recuperado de hongos de pino en escabeche | Sin efecto visible: `/gastronomia/hongos-de-pino-en-escabeche` se arma desde `catalog.ts`, no desde `articles` | Solo en la base (`sql_log` o `length(content)`). En vivo no se puede |
+| `2026-11-05-recuperar-pino.sql` | Cuerpo ES recuperado del pino introducido (texto nuevo) | **Pendiente** (verificado 2026-11-25: sigue truncado) | `/flora/pino-introducido-patagonia-uso-impacto` lee `articles.content`: en vivo ~160 palabras y 2 H2; tras correrlo, ~1.100 palabras y las secciones |
+| `2026-11-05-recuperar-paxillus.sql` | Cuerpo ES recuperado de Paxillus involutus (texto nuevo) | **Pendiente** (verificado 2026-11-25: sigue truncado) | `/hongo/paxillus-involutus` lee `articles.content`: en vivo ~140 palabras y 2 H2; tras correrlo, ~1.100 palabras y las secciones |
+| `2026-11-05-recuperar-viajar.sql` | Cuerpo ES recuperado de la guía de viajar a la Patagonia (texto nuevo) | **Pendiente** (verificado 2026-11-25: sigue truncado) | `/consejos/viajar-patagonia-guia-consejos` lee `articles.content`: en vivo ~270 palabras y 2 H2; tras correrlo, ~1.100 palabras y las secciones |
 | `2026-11-05-recuperar-cuerpos.sql` | Original con los 7 bloques juntos; histórico, usar los de arriba | No correr | — |
-| `2026-11-12-mermelada-recortada.sql` | Mermelada de rosa mosqueta (ES), versión recortada | **Pendiente** | Sin afirmaciones sin fuente en `mermelada-rosa-mosqueta-patagonica` |
+| `2026-11-12-mermelada-recortada.sql` | Mermelada de rosa mosqueta (ES), versión recortada | Sin efecto visible: `/gastronomia/mermelada-rosa-mosqueta-patagonica` se arma desde `catalog.ts`, no desde `articles`. El texto recortado, si se quiere en el sitio, va en el catálogo | Solo en la base (`sql_log` o `length(content)`). En vivo no se puede |
 | `2026-11-23-ctr.sql` | Títulos por CTR bajo; **re-correr** por el cambio de título de `questions-region-patagonia` (EN) | Re-correr | `<title>` "Is Patagonia Safe to Visit?" |
 
 ## Pendiente

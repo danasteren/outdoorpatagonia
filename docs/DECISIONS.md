@@ -19,7 +19,7 @@ Formato:
 ## 2026-11-25 — Registro de SQL manuales en `sql_log` y un archivo por cambio
 **Decisión:** cada SQL de `seo/updates/` termina con un insert en `sql_log(file)` (upsert, actualiza `applied_at`), y cada cambio de contenido va en su propio archivo. El estado de cada uno se lleva en "Pendientes manuales" de `docs/STATUS.md`.
 **Motivo:** los SQL se corren a mano y no quedaba registro de cuáles se habían corrido; el de recuperar cuerpos juntaba 7 artículos, así que no se podía correr ni registrar de a uno.
-**Detalle:** migración `009_sql_log.sql` (idempotente, RLS activado sin políticas: solo se accede desde el SQL Editor o con service role). `2026-11-05-recuperar-cuerpos.sql` queda como histórico con una nota; sus 7 bloques están en `2026-11-05-recuperar-<articulo>.sql`. El contenido de los UPDATE no se tocó. Un SQL corrido antes de esta fecha no figura en `sql_log` hasta que se re-corra (son idempotentes).
+**Detalle:** migración `009_sql_log.sql` (idempotente, RLS activado sin políticas: solo se accede desde el SQL Editor o con service role). `2026-11-05-recuperar-cuerpos.sql` queda como histórico con una nota; sus 7 bloques están en `2026-11-05-recuperar-<articulo>.sql`. El contenido de los UPDATE no se tocó. Los SQL de gastronomía (kuchen, escabeche, mermelada) actualizan `articles`, pero `/gastronomia/[slug]` se arma desde el catálogo: no tienen efecto visible. Un SQL corrido antes de esta fecha no figura en `sql_log` hasta que se re-corra (son idempotentes).
 **Estado:** Vigente
 
 ## 2026-11-17 — Prueba de 90 días: embudo de viaje desde los artículos con más tráfico
