@@ -82,6 +82,7 @@ Se corren a mano en el SQL Editor de Supabase. Cada archivo termina con un inser
 | `2026-11-05-recuperar-cuerpos.sql` | Original con los 7 bloques juntos; histórico, usar los de arriba | No correr | — |
 | `2026-11-12-mermelada-recortada.sql` | Mermelada de rosa mosqueta (ES), versión recortada | **Sin efecto visible**: `/gastronomia/mermelada-rosa-mosqueta-patagonica` se arma desde `catalog.ts`, no desde `articles`. El texto recortado, si se quiere en el sitio, va en el catálogo | Solo en la base (`sql_log` o `length(content)`). En vivo no se puede |
 | `2026-11-23-ctr.sql` | Títulos por CTR bajo, incluido `questions-region-patagonia` (EN, "Real Risks & Official Advice") | **Corrido** (2026-11-25, con la 009) | `<title>` EN "Is Patagonia Safe to Visit? Real Risks & Official Advice" |
+| `2026-11-26-borrar-spam-contacto` (por chat) | Borra 4 `contact_messages` de spam (3 de lead-gen y el de touristfare.com) | **Corrido** (2026-11-26) | `select count(*) from contact_messages` = 4; `sql_log` |
 
 **Si se retoma amanita o pino:** no se corre el texto actual. Va una versión recortada, solo con lo que tiene fuente (como la mermelada, `2026-11-12-mermelada-recortada.sql`). En amanita hay que revisar también el artículo EN, que no se miró.
 
