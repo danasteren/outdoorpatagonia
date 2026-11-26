@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Lista (solo lectura, no borra nada) los contact_messages cuyo email es de un
-dominio de lead-gen, para revisarlos y borrarlos a mano desde /admin.
+dominio de lead-gen (o texto de outreach de catálogos turísticos), para revisarlos y borrarlos a mano desde /admin.
 
 Las listas repiten las de src/lib/antispam.ts: mantenerlas iguales.
 
@@ -14,8 +14,19 @@ import os, requests
 SUPABASE_URL = os.environ["SUPABASE_URL"].strip().rstrip("/")
 SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 
-SPAM_DOMAINS = ["ultraleadgeneration.com", "amazingleadgen.com", "boostleadgen.com", "freeb2bdata.org"]
+SPAM_DOMAINS = ["ultraleadgeneration.com", "amazingleadgen.com", "boostleadgen.com", "freeb2bdata.org", "touristfare.com"]
 SPAM_PATTERNS = ["leadgen", "b2bdata"]
+# Outreach de catálogos de ofertas turísticas: 2 o más coincidencias.
+OUTREACH_PHRASES = [
+    "add outdoorpatagonia.com",
+    "catalogue of travel offers",
+    "catalog of travel offers",
+    "no commission",
+    "bookings go straight to you",
+    "through your contact form",
+    "won't write again",
+    'a short "yes"',
+]
 
 HEADERS = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"}
 
@@ -45,9 +56,15 @@ def is_spam_email(email: str) -> bool:
     )
 
 
+def is_outreach(row: dict) -> bool:
+    text = f'{row.get("asunto") or ""} {row.get("mensaje") or ""}'.lower()
+    text = text.replace("\u2018", "'").replace("\u2019", "'").replace("\u201c", '"').replace("\u201d", '"')
+    return sum(p in text for p in OUTREACH_PHRASES) >= 2
+
+
 def main() -> None:
     rows = fetch_all()
-    hits = [r for r in rows if is_spam_email(r["email"])]
+    hits = [r for r in rows if is_spam_email(r["email"]) or is_outreach(r)]
     for r in hits:
         print(f'{r["created_at"][:16]}  {r["email"]:<40} {r["asunto"]:<28} id={r["id"]}')
     print(f"\n{len(hits)} de {len(rows)} mensajes coinciden. No se borró nada: revisalos y borralos desde /admin.")

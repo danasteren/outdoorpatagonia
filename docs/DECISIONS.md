@@ -16,6 +16,13 @@ Formato:
 
 ---
 
+## 2026-11-26 — Filtro de outreach de catálogos turísticos: dominio + frases (2 o más)
+**Decisión:** `looksLikeSpam()` bloquea el dominio `touristfare.com` y cualquier mensaje con 2 o más frases de `OUTREACH_PHRASES` (inglés, minúsculas, asunto + mensaje). Una sola coincidencia no bloquea.
+**Motivo:** el outreach de "directorios de ofertas turísticas" pasaba Turnstile y las frases de lead-gen; frases como "no commission" pueden aparecer solas en una consulta legítima, por eso el umbral de 2.
+**Detalle:** se normalizan comillas y apóstrofes tipográficos antes de comparar. `scripts/list_spam_contact_messages.py` repite el dominio y el grupo (y ahora también revisa el texto, no solo el dominio). Sin cambios en Turnstile, honeypot, rate limit ni las frases de lead-gen. Complementa 2026-11-04 (Turnstile + filtro de lead-gen).
+**Estado:** Vigente
+
+
 ## 2026-11-25 — Los SQL manuales se pasan por el chat, no como archivos nuevos
 **Decisión:** el SQL manual nuevo se le entrega a la usuaria en el chat (listo para pegar en el SQL Editor), idempotente y con su insert en `sql_log`. No se crean más archivos en `seo/updates/`.
 **Motivo:** pedido de la usuaria; los corre pegándolos, la carpeta se le llenaba de archivos.

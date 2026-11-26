@@ -2,7 +2,7 @@
 
 > Lo actualiza Code al final de cada tarea (ver Workflow en `CLAUDE.md`). Se escribe corto: el detalle de lo que ve el lector está en `src/data/novedades.ts`, el de los cambios en `git log` y los porqués en `docs/DECISIONS.md`.
 
-_Última actualización: 2026-11-25_
+_Última actualización: 2026-11-26_
 
 ## Hecho (a grandes rasgos)
 
@@ -49,6 +49,7 @@ _Última actualización: 2026-11-25_
 - 2026-11-25: trazabilidad de los SQL manuales. Migración `009_sql_log.sql` (tabla `sql_log`, RLS sin políticas), insert en cada SQL de `seo/updates/` y `2026-11-05-recuperar-cuerpos.sql` separado en un archivo por artículo. Lista en "Pendientes manuales". La 009 ya se corrió (2026-11-25). **Pendiente de la usuaria:** los SQL pendientes de la tabla.
 
 - 2026-11-25: artículo de seguridad "¿Es seguro viajar a la Patagonia?" (decisión 2026-11-25). Reescrito en su URL (ES y EN) con fuentes oficiales fechadas, cobertura médica para viajeros, teléfonos y `TravelFunnel` (Bariloche, El Calafate); hreflang, FAQPage y 3 anuncios verificados en local, build OK. Ya cargado en la base (portada intacta). **Pendiente de la usuaria:** tras el deploy, pedir reindexación de la URL EN en Search Console (el SQL de títulos ya se corrió). Revisar los avisos de viaje y la reglamentación del seguro cada tanto; medir CTR a ~28 días.
+- 2026-11-26: el formulario de contacto descarta el outreach de catálogos turísticos (touristfare.com): dominio en `SPAM_EMAIL_DOMAINS` y grupo `OUTREACH_PHRASES` (2 o más coincidencias) en `looksLikeSpam()`; el script de listado repite ambos. Probado: el mensaje de ejemplo da true; una consulta de operador y una de turista en inglés (con una sola frase suelta) dan false. Build OK.
 
 ## En curso
 

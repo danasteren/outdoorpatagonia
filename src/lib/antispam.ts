@@ -57,6 +57,7 @@ export const SPAM_EMAIL_DOMAINS = [
   "amazingleadgen.com",
   "boostleadgen.com",
   "freeb2bdata.org",
+  "touristfare.com",
 ]
 export const SPAM_DOMAIN_PATTERNS = ["leadgen", "b2bdata"]
 
@@ -66,6 +67,20 @@ const SPAM_PHRASES = [
   "backlinks",
   "seo services",
   "business email list",
+]
+
+// Outreach de directorios/catálogos de ofertas turísticas (en inglés). Una
+// sola coincidencia no bloquea (una consulta legítima puede decir "no commission"):
+// hacen falta 2 o más. Se compara en minúsculas sobre asunto + mensaje.
+export const OUTREACH_PHRASES = [
+  "add outdoorpatagonia.com",
+  "catalogue of travel offers",
+  "catalog of travel offers",
+  "no commission",
+  "bookings go straight to you",
+  "through your contact form",
+  "won't write again",
+  'a short "yes"',
 ]
 
 // Heurística de spam de lead-gen. Si da true, el action responde éxito sin
@@ -91,7 +106,11 @@ export function looksLikeSpam({
   if (urls.length >= 2) return true
 
   const text = `${asunto} ${mensaje}`.toLowerCase()
-  return SPAM_PHRASES.some((p) => text.includes(p))
+  if (SPAM_PHRASES.some((p) => text.includes(p))) return true
+
+  // Comillas y apóstrofes tipográficos → rectos, para que "won’t" y “yes” coincidan.
+  const plain = text.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"')
+  return OUTREACH_PHRASES.filter((p) => plain.includes(p)).length >= 2
 }
 
 // Verifica el token de Cloudflare Turnstile contra siteverify.
